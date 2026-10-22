@@ -31,11 +31,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     <Link href={`/products/${product.slug}`} className="group">
       <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
         {/* Image Container */}
-        <div className="relative aspect-square overflow-hidden bg-[var(--color-mist)]">
-          <div className="w-full h-full flex items-center justify-center text-[var(--color-stone)]">
-            {/* Placeholder for product image */}
-            <div className="text-6xl">📦</div>
-          </div>
+        <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-[var(--color-mist)] to-white">
+          <img
+            src={product.image}
+            alt={product.name}
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+          />
 
           {/* Discount Badge */}
           {discountPercentage > 0 && (

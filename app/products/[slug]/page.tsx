@@ -59,8 +59,12 @@ export default function ProductPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
           {/* Product Image */}
           <div className="bg-white rounded-2xl p-8 shadow-sm">
-            <div className="aspect-square flex items-center justify-center bg-[var(--color-mist)] rounded-xl">
-              <div className="text-9xl">📦</div>
+            <div className="aspect-square overflow-hidden rounded-xl bg-gradient-to-br from-[var(--color-mist)] to-white">
+              <img
+                src={product.image}
+                alt={product.name}
+                className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+              />
             </div>
           </div>
 

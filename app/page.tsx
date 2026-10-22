@@ -12,18 +12,35 @@ export default function HomePage() {
     <div className="animate-fade-in">
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-[var(--color-cream)] via-[var(--color-mist)] to-[var(--color-earth-light)] overflow-hidden">
-        <div className="container mx-auto px-6 py-20 md:py-32">
+        {/* Background Image */}
+        <div className="absolute inset-0 opacity-5">
+          <img
+            src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1920&h=1080&fit=crop"
+            alt="Natural ingredients"
+            className="w-full h-full object-cover"
+          />
+        </div>
+
+        <div className="relative container mx-auto px-6 py-24 md:py-40">
           <div className="max-w-3xl">
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-balance">
+            <div className="inline-block px-4 py-2 bg-[var(--color-primary)]/10 backdrop-blur-sm rounded-full mb-6">
+              <span className="text-[var(--color-primary)] font-medium text-sm">100% Natural • Science-Backed • Third-Party Tested</span>
+            </div>
+
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-balance leading-tight">
               Clarity Through{' '}
-              <span className="text-[var(--color-primary)]">Nature</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)]">Nature</span>
             </h1>
-            <p className="text-xl md:text-2xl text-[var(--color-stone)] mb-8 max-w-2xl">
+
+            <p className="text-xl md:text-2xl text-[var(--color-stone)] mb-10 max-w-2xl leading-relaxed">
               Science-backed supplements to enhance focus, energy, and wellness—naturally and effectively.
             </p>
+
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/shop">
-                <Button variant="primary" size="lg">Shop Now</Button>
+                <Button variant="primary" size="lg" className="shadow-xl shadow-[var(--color-primary)]/20">
+                  Shop Now
+                </Button>
               </Link>
               <Link href="/learn">
                 <Button variant="secondary" size="lg">Learn More</Button>
@@ -32,10 +49,9 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Decorative Background Elements */}
-        <div className="absolute top-0 right-0 w-1/2 h-full opacity-5 pointer-events-none">
-          <div className="text-[20rem] text-[var(--color-primary)]">🌿</div>
-        </div>
+        {/* Decorative Elements */}
+        <div className="absolute top-1/4 right-10 w-72 h-72 bg-[var(--color-primary)]/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 left-10 w-96 h-96 bg-[var(--color-accent)]/5 rounded-full blur-3xl"></div>
       </section>
 
       {/* Value Propositions */}

@@ -41,8 +41,12 @@ export default function CartPage() {
               <div key={`${item.product.id}-${item.isSubscription}`} className="bg-white rounded-xl p-6 shadow-sm">
                 <div className="flex gap-6">
                   {/* Product Image */}
-                  <div className="w-24 h-24 flex-shrink-0 bg-[var(--color-mist)] rounded-lg flex items-center justify-center">
-                    <div className="text-4xl">📦</div>
+                  <div className="w-24 h-24 flex-shrink-0 bg-gradient-to-br from-[var(--color-mist)] to-white rounded-lg overflow-hidden">
+                    <img
+                      src={item.product.image}
+                      alt={item.product.name}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
 
                   {/* Product Info */}
