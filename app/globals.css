@@ -10,6 +10,7 @@
   --color-soft: #f3f6fa;
   --color-line: #e5e9f0;
   --color-muted: #6b7280;
+  --color-logo-plus: var(--color-blue);
 
   /* Noovit Pets accent */
   --color-pets: #e8833a;
@@ -29,10 +30,15 @@
   --color-sage-light: #93c5fd;
   --color-sage: var(--color-blue);
 
-  /* Fonts are self-hosted via next/font (app/layout.tsx): Inter for text, Manrope for headings, Kanit for the wordmark. */
+  /* Fonts are self-hosted via next/font (app/layout.tsx): Inter for text, Manrope for headings, Alexandria for the wordmark. */
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-manrope), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-logo: var(--font-kanit), var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-logo: var(--font-alexandria), var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+
+  /* Lighter type scale: every font-semibold/bold/extrabold class on the site renders a step lighter. */
+  --font-weight-semibold: 550;
+  --font-weight-bold: 600;
+  --font-weight-extrabold: 650;
 }
 
 @layer base {
@@ -50,7 +56,7 @@
   h1, h2, h3, h4 {
     font-family: var(--font-display);
     color: var(--color-navy);
-    font-weight: 800;
+    font-weight: 650;
     letter-spacing: -0.02em;
     line-height: 1.15;
   }
@@ -79,7 +85,7 @@
     gap: 0.5rem;
     padding: 0.9rem 2rem;
     border-radius: 999px;
-    font-weight: 700;
+    font-weight: 600;
     transition: background 0.2s, color 0.2s, transform 0.2s;
   }
 

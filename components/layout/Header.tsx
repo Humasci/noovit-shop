@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Menu, X, ShoppingBag, Leaf, Star, FlaskConical, ShieldCheck, BadgeCheck } from 'lucide-react';
 import { useCart, cartCount } from '@/lib/store/cart';
 import { useHydrated } from '@/lib/useHydrated';
+import { Logo } from '@/components/layout/Logo';
 
 const NAV = [
   { name: 'Shop', href: '/shop' },
@@ -67,8 +68,8 @@ export function Header({ trustBar, announcement }: { trustBar: string[]; announc
             {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
 
-          <Link href="/" className="justify-self-center text-2xl font-logo font-bold tracking-tight text-[var(--color-navy)]">
-            noovit<span className="text-[var(--color-blue)]">.</span>
+          <Link href="/" className="justify-self-center text-[1.65rem] text-[var(--color-navy)]">
+            <Logo />
           </Link>
 
           <div className="flex items-center justify-self-end gap-5 text-sm font-semibold">

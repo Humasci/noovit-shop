@@ -8,6 +8,7 @@ import {
 import { requireAdmin, endSession } from '@/lib/admin/auth';
 import { can, Permission } from '@/lib/admin/permissions';
 import { dbConfigured, stripeConfigured } from '@/lib/config';
+import { Logo } from '@/components/layout/Logo';
 
 export const metadata: Metadata = { title: 'Admin — Noovit', robots: { index: false } };
 
@@ -64,8 +65,8 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     <div className="min-h-screen bg-[var(--color-soft)] md:flex">
       <aside className="border-b border-[var(--color-line)] bg-white md:sticky md:top-0 md:flex md:h-screen md:w-60 md:shrink-0 md:flex-col md:border-b-0 md:border-r">
         <div className="flex items-center justify-between px-5 py-5">
-          <Link href="/admin" className="font-logo text-xl font-bold text-[var(--color-navy)]">
-            noovit<span className="text-[var(--color-blue)]">.</span> <span className="text-xs font-semibold text-[var(--color-muted)]">admin</span>
+          <Link href="/admin" className="text-xl text-[var(--color-navy)]">
+            <Logo /> <span className="text-xs font-semibold text-[var(--color-muted)]">admin</span>
           </Link>
         </div>
         <nav className="no-scrollbar flex gap-1 overflow-x-auto px-3 pb-3 md:flex-1 md:flex-col md:overflow-y-auto">

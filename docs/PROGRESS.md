@@ -38,7 +38,7 @@ _Last updated: 2026-10-26_
 - [ ] Supplier replies → choose US supplier, map supplier SKUs, decide API vs CSV fulfilment.
 - [x] Preliminary trademark knock-out search (owner, Oct 2026) — see below.
 - [ ] Attorney clearance + file NOOVIT in US and UK (class 5 + 35, consider 30/31) before ordering labelled samples.
-- [x] Fonts: Kanit wordmark, Manrope headings, Inter body text.
+- [x] Fonts: noovit⁺ wordmark in Alexandria (raised + mark, also the favicon), Manrope headings, Inter body text; lighter weights throughout.
 - [ ] Logo + mockups → apply brand styling.
 
 ## Before launch

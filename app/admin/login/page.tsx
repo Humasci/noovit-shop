@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { authenticate, staffCount, startSession } from '@/lib/admin/auth';
 import { adminConfigured } from '@/lib/admin/session';
+import { Logo } from '@/components/layout/Logo';
 
 export const metadata: Metadata = { title: 'Admin login — Noovit', robots: { index: false } };
 
@@ -24,8 +25,8 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
   return (
     <div className="flex min-h-screen items-center justify-center bg-[var(--color-soft)] px-6">
       <form action={login} className="w-full max-w-sm rounded-3xl bg-white p-8 shadow-sm">
-        <p className="font-logo text-2xl font-bold text-[var(--color-navy)]">
-          noovit<span className="text-[var(--color-blue)]">.</span> <span className="text-sm font-semibold text-[var(--color-muted)]">admin</span>
+        <p className="text-2xl text-[var(--color-navy)]">
+          <Logo /> <span className="text-sm font-semibold text-[var(--color-muted)]">admin</span>
         </p>
         {!adminConfigured() ? (
           <p className="mt-6 text-sm text-[var(--color-muted)]">
