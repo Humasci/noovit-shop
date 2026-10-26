@@ -103,7 +103,26 @@ Any visitor can submit a review from a product page or the Reviews page. It **do
 
 ## 3. The admin dashboard
 
-Open your **secret admin address** (`noovit.com/<ADMIN_PATH>`, set in Vercel) and sign in with your own email and password. Each new browser or device needs the secret address once; after that `noovit.com/admin` works there for 90 days. Anyone without it sees "page not found" at `/admin`. Share the address only with staff, and change `ADMIN_PATH` in Vercel if it leaks. You stay signed in for 7 days on that device. Your name (→ **My account**, to change your password) and **Log out** are at the bottom of the menu.
+### Signing in
+
+The admin has a **secret address**: `noovit.com/` followed by the `ADMIN_PATH` word set in Vercel (for example `noovit.com/team-k7q2x9m4`). Typing `noovit.com/admin` on its own shows "page not found" to anyone who hasn't used the secret address, so people guessing can't even find the login page.
+
+There is **one secret address for everyone and every device**. There's nothing to create per device: you just open the same address once on each phone, laptop or browser.
+
+**On each new device or browser:**
+1. Open the secret address. It takes you straight to the login page.
+2. Sign in with your email and password.
+3. Bookmark the page. On a phone, use **Share → Add to Home Screen** (iPhone, Safari) or **⋮ → Add to Home screen** (Android, Chrome) to get an app-style icon.
+
+After that, that browser remembers it for 90 days, and plain `noovit.com/admin` works there too. You'll need the secret address again if you clear your browser data, use a private/incognito window, switch to a different browser, or haven't visited the admin for 90 days.
+
+**Giving staff access:** create their account on the **Staff** page, then send them the secret address and their temporary password separately (for example the address by email and the password by text). Ask them to change the password under **My account** after signing in.
+
+**If the address leaks:** change `ADMIN_PATH` in Vercel (Project → Settings → Environment Variables) and redeploy. The old address stops working at once. Anyone already signed in stays signed in until they log out, so also deactivate any staff account you no longer trust. Then send the new address to your team.
+
+The secret address is an extra layer of protection. Passwords and staff roles still protect everything behind it.
+
+You stay signed in for 7 days on that device. Your name (→ **My account**, to change your password) and **Log out** are at the bottom of the menu.
 
 **First-time setup:** before any staff accounts exist, the login page asks for the setup password (`ADMIN_PASSWORD` in the hosting settings). Sign in with it, create your own **Owner** account on the Staff page, and the setup password stops working.
 
