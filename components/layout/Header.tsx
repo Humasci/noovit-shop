@@ -68,7 +68,7 @@ export function Header({ trustBar, announcement }: { trustBar: string[]; announc
             {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
 
-          <Link href="/" className="justify-self-center text-[1.65rem] text-[var(--color-navy)]">
+          <Link href="/" className="justify-self-center text-[1.75rem] text-[var(--color-navy)] md:text-[2rem]">
             <Logo />
           </Link>
 
