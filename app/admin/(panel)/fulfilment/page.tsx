@@ -66,7 +66,7 @@ export default async function FulfilmentPage({ searchParams }: { searchParams: P
             return (
               <Card key={f.id}>
                 <div className="mb-3 flex flex-wrap items-center gap-3 text-sm">
-                  <Link href={`/admin/orders/${o.order_number}`} className="font-bold text-[var(--color-blue)]">#{o.order_number}</Link>
+                  <Link href={`/admin/orders/${o.order_number}`} className="font-bold text-[var(--color-accent)]">#{o.order_number}</Link>
                   <Badge status={f.status} />
                   <span>{o.shipping_name}</span>
                   <span className="text-[var(--color-muted)]">{o.shipping_address?.city}, {o.shipping_address?.state}</span>

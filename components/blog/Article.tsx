@@ -7,7 +7,7 @@ export const postDate = (iso: string | null) =>
 export function Article({ post }: { post: Post }) {
   return (
     <article className="container max-w-3xl px-6 py-12">
-      <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-blue)]">Noovit Journal</p>
+      <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-accent)]">Noovit Journal</p>
       <h1 className="mt-3 text-balance text-4xl md:text-5xl">{post.title}</h1>
       <p className="mt-4 text-sm text-[var(--color-muted)]">
         {post.author} · {postDate(post.publishedAt)}

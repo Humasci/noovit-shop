@@ -61,7 +61,7 @@ export function NewsletterPopup() {
         <button onClick={() => setOpen(false)} className="absolute right-4 top-4" aria-label="Close">
           <X className="h-5 w-5" />
         </button>
-        <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-blue)]">Noovit</p>
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-accent)]">Noovit</p>
         <h2 id="popup-title" className="mt-2 text-2xl">{popup.headline}</h2>
         {popup.text && <p className="mt-2 text-sm text-[var(--color-muted)]">{popup.text}</p>}
         <form onSubmit={submit} className="mt-6 flex flex-col gap-3">

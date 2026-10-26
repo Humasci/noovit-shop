@@ -128,7 +128,7 @@ export default async function OrderDetail({ params, searchParams }: { params: Pr
             <h2 className="mb-3 text-lg">Customer</h2>
             <p className="font-semibold">{o.shipping_name ?? '—'}</p>
             <p className="text-sm">{o.email}</p>
-            {o.customer_id && <Link href={`/admin/customers/${o.customer_id}`} className="text-sm text-[var(--color-blue)]">View customer →</Link>}
+            {o.customer_id && <Link href={`/admin/customers/${o.customer_id}`} className="text-sm text-[var(--color-accent)]">View customer →</Link>}
             <h3 className="mb-1 mt-4 text-sm">Ship to</h3>
             <p className="text-sm leading-relaxed text-[var(--color-muted)]">
               {addr.line1}<br />
@@ -145,14 +145,14 @@ export default async function OrderDetail({ params, searchParams }: { params: Pr
               <p className="text-sm">
                 <Badge status={sub.paused ? 'paused' : sub.status} /> every {sub.frequency_days} days
               </p>
-              <Link href="/admin/subscriptions" className="mt-2 inline-block text-sm text-[var(--color-blue)]">Manage subscriptions →</Link>
+              <Link href="/admin/subscriptions" className="mt-2 inline-block text-sm text-[var(--color-accent)]">Manage subscriptions →</Link>
             </Card>
           )}
 
           <Card>
             <h2 className="mb-2 text-lg">Payment</h2>
             {o.stripe_payment_intent_id ? (
-              <a href={`${stripeBase}/payments/${o.stripe_payment_intent_id}`} target="_blank" rel="noreferrer" className="text-sm text-[var(--color-blue)]">
+              <a href={`${stripeBase}/payments/${o.stripe_payment_intent_id}`} target="_blank" rel="noreferrer" className="text-sm text-[var(--color-accent)]">
                 View in Stripe →
               </a>
             ) : (

@@ -46,7 +46,7 @@ export default async function AbandonedPage() {
               <td className={td}>{r.email_sent_at ? dateTime(r.email_sent_at) : <span className="text-[var(--color-muted)]">not sent (no consent)</span>}</td>
               <td className={td}>
                 {r.recovered_at ? (
-                  order ? <Link href={`/admin/orders/${order.order_number}`} className="font-bold text-[var(--color-blue)]">Recovered #{order.order_number}</Link> : <Badge status="active" />
+                  order ? <Link href={`/admin/orders/${order.order_number}`} className="font-bold text-[var(--color-accent)]">Recovered #{order.order_number}</Link> : <Badge status="active" />
                 ) : (
                   <Badge status="pending" />
                 )}

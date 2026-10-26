@@ -22,7 +22,7 @@ export function BestSellers({ products }: { products: Product[] }) {
       <div className="container px-6">
         <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <h2 className="text-3xl md:text-4xl">Best Sellers</h2>
-          <Link href="/shop" className="inline-flex items-center gap-1 text-sm font-bold text-[var(--color-blue)]">
+          <Link href="/shop" className="inline-flex items-center gap-1 text-sm font-bold text-[var(--color-accent)]">
             Shop All <ArrowRight className="h-4 w-4" />
           </Link>
         </div>

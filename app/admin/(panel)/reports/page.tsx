@@ -53,7 +53,7 @@ export default async function ReportsPage({ searchParams }: { searchParams: Prom
         <p className="mb-4 text-xs text-[var(--color-muted)]">Days in UTC. Hover or tab through the columns for details.</p>
         <RevenueChart data={r.daily} />
         <details className="mt-4 text-sm">
-          <summary className="cursor-pointer text-xs font-semibold text-[var(--color-blue)]">Show as table</summary>
+          <summary className="cursor-pointer text-xs font-semibold text-[var(--color-accent)]">Show as table</summary>
           <div className="mt-2 max-h-72 overflow-y-auto">
             <table className="w-full">
               <thead><tr><th className={th}>Date</th><th className={th}>Subscription</th><th className={th}>One-time</th><th className={th}>Total</th></tr></thead>

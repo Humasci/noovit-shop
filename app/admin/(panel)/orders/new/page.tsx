@@ -18,7 +18,7 @@ export default async function NewOrderPage({ searchParams }: { searchParams: Pro
 
   return (
     <>
-      <Link href="/admin/orders" className="mb-2 inline-block text-sm text-[var(--color-blue)]">← Orders</Link>
+      <Link href="/admin/orders" className="mb-2 inline-block text-sm text-[var(--color-accent)]">← Orders</Link>
       <PageTitle title="New manual order" />
       <Flash msg={msg} />
 

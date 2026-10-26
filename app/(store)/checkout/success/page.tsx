@@ -85,7 +85,7 @@ export default async function SuccessPage({ searchParams }: { searchParams: Prom
         {session.mode === 'subscription' && (
           <p className="mt-4 text-sm text-[var(--color-muted)]">
             Your subscription is active. Manage or cancel anytime from{' '}
-            <Link href="/account" className="font-semibold text-[var(--color-blue)] underline">My Subscriptions</Link>.
+            <Link href="/account" className="font-semibold text-[var(--color-accent)] underline">My Subscriptions</Link>.
           </p>
         )}
       </div>

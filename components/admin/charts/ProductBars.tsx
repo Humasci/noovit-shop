@@ -29,7 +29,7 @@ export function ProductBars({ rows, total }: { rows: ProductBar[]; total: number
             onPointerLeave={() => setHover(null)}
             onFocus={() => setHover(r.slug)}
             onBlur={() => setHover(null)}
-            className="grid grid-cols-[minmax(8rem,12rem)_1fr] items-center gap-3 rounded-lg px-1 py-0.5 outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blue)]"
+            className="grid grid-cols-[minmax(8rem,12rem)_1fr] items-center gap-3 rounded-lg px-1 py-0.5 outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]"
             aria-label={`${r.name}: ${formatPrice(r.revenue / 100)}, ${r.units} bottles, ${r.orders} orders`}
           >
             <span className="truncate text-sm text-[var(--color-ink)]" title={r.name}>{r.name}</span>

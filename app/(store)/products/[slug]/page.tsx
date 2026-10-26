@@ -109,7 +109,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                 <Stars rating={product.rating} /> <span className="font-semibold">{product.reviewCount.toLocaleString()} Reviews</span>
               </>
             ) : (
-              <span className="font-semibold text-[var(--color-blue)]">Be the first to review</span>
+              <span className="font-semibold text-[var(--color-accent)]">Be the first to review</span>
             )}
           </a>
           <p className="mt-4 text-lg text-[var(--color-muted)]">{product.shortBenefit}</p>
@@ -127,7 +127,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               </blockquote>
               <figcaption className="mt-2 text-xs font-bold">
                 {isPet ? 'Vet Advisor Name' : 'Advisor Name'}{' '}
-                <span className="font-semibold text-[var(--color-blue)]">· {isPet ? 'DVM' : 'Registered Nutritionist'}</span>
+                <span className="font-semibold text-[var(--color-accent)]">· {isPet ? 'DVM' : 'Registered Nutritionist'}</span>
               </figcaption>
             </div>
           </figure>
@@ -141,7 +141,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                   return (
                     <li key={b.slug} className="flex items-center justify-between text-sm">
                       {item ? (
-                        <Link href={`/products/${item.slug}`} className="font-semibold hover:text-[var(--color-blue)]">{item.name}</Link>
+                        <Link href={`/products/${item.slug}`} className="font-semibold hover:text-[var(--color-accent)]">{item.name}</Link>
                       ) : (
                         <span className="font-semibold">{b.slug}</span>
                       )}
@@ -197,14 +197,14 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           <div className="mb-10 flex flex-wrap justify-center gap-3">
             {quality.map(({ icon: Icon, label }) => (
               <span key={label} className="flex items-center gap-2 rounded-full bg-white px-5 py-2 text-sm font-bold">
-                <Icon className="h-4 w-4 text-[var(--color-blue)]" /> {label}
+                <Icon className="h-4 w-4 text-[var(--color-accent)]" /> {label}
               </span>
             ))}
           </div>
           <div className="grid gap-5 md:grid-cols-3">
             {product.ingredients.slice(0, 3).map((i) => (
               <div key={i.name} className="rounded-2xl bg-white p-6">
-                <p className="text-sm font-bold text-[var(--color-blue)]">{i.amount}</p>
+                <p className="text-sm font-bold text-[var(--color-accent)]">{i.amount}</p>
                 <h3 className="mt-1 text-lg">{i.name}</h3>
                 {i.description && <p className="mt-2 text-sm text-[var(--color-muted)]">{i.description}</p>}
               </div>
@@ -219,14 +219,14 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {VALUES.map(({ icon: Icon, title, text }) => (
               <div key={title} className="rounded-2xl border border-[var(--color-line)] p-6">
-                <Icon className="h-8 w-8 text-[var(--color-blue)]" strokeWidth={1.5} />
+                <Icon className="h-8 w-8 text-[var(--color-accent)]" strokeWidth={1.5} />
                 <h3 className="mt-4 text-lg">{title}</h3>
                 <p className="mt-1 text-sm text-[var(--color-muted)]">{text}</p>
               </div>
             ))}
           </div>
           <div className="mt-8 text-center">
-            <Link href="/about" className="font-bold text-[var(--color-blue)]">Learn More →</Link>
+            <Link href="/about" className="font-bold text-[var(--color-accent)]">Learn More →</Link>
           </div>
         </div>
       </section>
@@ -242,7 +242,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               const Icon = [Zap, ShieldCheck, Sparkles, Leaf][i % 4];
               return (
                 <div key={b} className="rounded-2xl bg-white/5 p-6">
-                  <Icon className="h-8 w-8 text-[#93c5fd]" strokeWidth={1.5} />
+                  <Icon className="h-8 w-8 text-[var(--color-accent-light)]" strokeWidth={1.5} />
                   <p className="mt-4 font-semibold">{b}</p>
                 </div>
               );

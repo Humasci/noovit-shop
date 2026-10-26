@@ -31,13 +31,13 @@ export default async function BlogAdmin({ searchParams }: { searchParams: Promis
           return (
             <tr key={p.slug}>
               <td className={td}>
-                <Link href={`/admin/blog/${p.slug}`} className="font-semibold hover:text-[var(--color-blue)]">{p.title}</Link>
+                <Link href={`/admin/blog/${p.slug}`} className="font-semibold hover:text-[var(--color-accent)]">{p.title}</Link>
                 <div className="text-xs text-[var(--color-muted)]">/blog/{p.slug}</div>
               </td>
               <td className={td}><Badge status={scheduled ? 'scheduled' : p.status === 'published' ? 'active' : 'pending'} /></td>
               <td className={td}>{date(p.publishedAt)}</td>
               <td className={td}>{p.author}</td>
-              <td className={td}><Link href={`/admin/blog/${p.slug}`} className="text-sm font-bold text-[var(--color-blue)]">Edit</Link></td>
+              <td className={td}><Link href={`/admin/blog/${p.slug}`} className="text-sm font-bold text-[var(--color-accent)]">Edit</Link></td>
             </tr>
           );
         })}

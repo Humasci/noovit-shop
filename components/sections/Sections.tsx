@@ -12,7 +12,7 @@ import { SocialLinks } from '@/components/layout/Footer';
 export function SectionHeading({ eyebrow, title, sub, center = true }: { eyebrow?: string; title: string; sub?: string; center?: boolean }) {
   return (
     <div className={`mb-10 ${center ? 'mx-auto max-w-2xl text-center' : ''}`}>
-      {eyebrow && <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-blue)]">{eyebrow}</p>}
+      {eyebrow && <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-accent)]">{eyebrow}</p>}
       <h2 className="text-balance text-3xl md:text-4xl">{title}</h2>
       {sub && <p className="mt-3 text-[var(--color-muted)]">{sub}</p>}
     </div>
@@ -39,7 +39,7 @@ export function TrustSection() {
         <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
           {TRUST_ITEMS.map(({ icon: Icon, label }) => (
             <div key={label} className="flex flex-col items-center rounded-2xl bg-white p-6 text-center">
-              <Icon className="mb-3 h-9 w-9 text-[var(--color-blue)]" strokeWidth={1.5} />
+              <Icon className="mb-3 h-9 w-9 text-[var(--color-accent)]" strokeWidth={1.5} />
               <p className="text-sm font-bold text-[var(--color-navy)]">{label}</p>
             </div>
           ))}
@@ -71,7 +71,7 @@ export function ReviewsSection({ title = 'Real people, real results', reviews = 
                       <BadgeCheck className="h-3.5 w-3.5" /> Verified Buyer
                     </span>
                   </span>
-                  <Link href={`/products/${r.productSlug}`} className="text-xs font-bold text-[var(--color-blue)]">
+                  <Link href={`/products/${r.productSlug}`} className="text-xs font-bold text-[var(--color-accent)]">
                     View Product
                   </Link>
                 </div>
@@ -149,7 +149,7 @@ export function NewsletterSection() {
       <div className="container px-6">
         <div className="grid overflow-hidden rounded-3xl bg-[var(--color-navy)] text-white md:grid-cols-2">
           <div className="p-10 md:p-14">
-            <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-[#93c5fd]">Newsletter</p>
+            <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-accent-light)]">Newsletter</p>
             <h2 className="text-3xl text-white md:text-4xl">10% off your first order</h2>
             <p className="mt-3 text-white/70">Sign up for nutrition tips, early access to launches, and member-only offers.</p>
             <form
@@ -181,7 +181,7 @@ export function NewsletterSection() {
                 />
               </div>
               <input name="company" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden />
-              <button className="btn bg-[var(--color-blue)] text-white hover:bg-[var(--color-blue-dark)]">Get 10% Off</button>
+              <button className="btn bg-[var(--color-accent)] text-white hover:bg-[var(--color-accent-dark)]">Get 10% Off</button>
             </form>
           </div>
           <img src={IMAGES.nutrition} alt="" className="hidden h-full w-full object-cover md:block" />

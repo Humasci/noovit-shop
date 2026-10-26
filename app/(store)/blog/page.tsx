@@ -15,7 +15,7 @@ export default async function BlogIndex() {
     <>
       <section className="bg-[var(--color-soft)] py-16 text-center">
         <div className="container px-6">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-blue)]">Noovit Journal</p>
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-accent)]">Noovit Journal</p>
           <h1 className="mt-3 text-4xl md:text-5xl">Guides for feeling your best</h1>
           <p className="mt-3 text-[var(--color-muted)]">Practical, evidence-based reads on supplements, sleep, gut health and more.</p>
         </div>
@@ -32,7 +32,7 @@ export default async function BlogIndex() {
                     {p.coverImage && <img src={p.coverImage} alt="" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />}
                   </div>
                   <p className="mt-4 text-xs text-[var(--color-muted)]">{postDate(p.publishedAt)}</p>
-                  <h2 className="mt-1 text-xl group-hover:text-[var(--color-blue)]">{p.title}</h2>
+                  <h2 className="mt-1 text-xl group-hover:text-[var(--color-accent)]">{p.title}</h2>
                   {p.excerpt && <p className="mt-2 text-sm text-[var(--color-muted)]">{p.excerpt}</p>}
                 </Link>
               ))}

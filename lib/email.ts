@@ -63,7 +63,7 @@ export function sendShippedEmail(to: string, orderNumber: number, carrier: strin
       <h1 style="font-size:20px">Your order is on its way.</h1>
       <p>Order <b>#${orderNumber}</b>${carrier ? ` shipped with ${esc(carrier)}` : ' has shipped'}.</p>
       ${trackingNumber ? `<p>Tracking number: <b>${esc(trackingNumber)}</b></p>` : ''}
-      ${trackingUrl ? `<p><a href="${esc(trackingUrl)}" style="color:#2563eb">Track your package</a></p>` : ''}`)
+      ${trackingUrl ? `<p><a href="${esc(trackingUrl)}" style="color:#3a8069">Track your package</a></p>` : ''}`)
   );
 }
 
@@ -155,7 +155,7 @@ export function sendReviewRequest(to: string, name: string | null, products: { n
   const rows = products
     .map(
       (p) =>
-        `<li style="margin-bottom:8px">${esc(p.name)} — <a href="${esc(p.url)}" style="color:#2563eb;font-weight:bold">Write a review</a></li>`
+        `<li style="margin-bottom:8px">${esc(p.name)} — <a href="${esc(p.url)}" style="color:#3a8069;font-weight:bold">Write a review</a></li>`
     )
     .join('');
   return send(

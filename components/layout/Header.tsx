@@ -29,7 +29,7 @@ export function Header({ trustBar, announcement }: { trustBar: string[]; announc
   return (
     <>
       {announcement?.text && (
-        <div className="bg-[var(--color-blue)] px-4 py-2 text-center text-sm font-semibold text-white">
+        <div className="bg-[var(--color-accent)] px-4 py-2 text-center text-sm font-semibold text-white">
           {announcement.href ? (
             <Link href={announcement.href} className="underline-offset-4 hover:underline">{announcement.text} →</Link>
           ) : (
@@ -58,7 +58,7 @@ export function Header({ trustBar, announcement }: { trustBar: string[]; announc
               <Link
                 key={n.href}
                 href={n.href}
-                className={n.href === '/pets' ? 'text-[var(--color-pets)] hover:text-[var(--color-pets-dark)]' : 'hover:text-[var(--color-blue)]'}
+                className={n.href === '/pets' ? 'text-[var(--color-pets)] hover:text-[var(--color-pets-dark)]' : 'hover:text-[var(--color-accent)]'}
               >
                 {n.name}
               </Link>
@@ -73,12 +73,12 @@ export function Header({ trustBar, announcement }: { trustBar: string[]; announc
           </Link>
 
           <div className="flex items-center justify-self-end gap-5 text-sm font-semibold">
-            <Link href="/account" className="hidden hover:text-[var(--color-blue)] sm:block">
+            <Link href="/account" className="hidden hover:text-[var(--color-accent)] sm:block">
               My Subscriptions
             </Link>
             <button onClick={openCart} className="relative" aria-label="Open cart">
               <ShoppingBag className="h-6 w-6" />
-              <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-[var(--color-blue)] text-[10px] font-bold text-white">
+              <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-[var(--color-accent)] text-[10px] font-bold text-white">
                 {count}
               </span>
             </button>

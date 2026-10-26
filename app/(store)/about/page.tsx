@@ -22,7 +22,7 @@ export default async function AboutPage() {
         <img src={IMAGES.support} alt="" className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-[var(--color-navy)]/70" />
         <div className="container relative px-6 py-28 text-center text-white">
-          <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[#93c5fd]">About Noovit</p>
+          <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-accent-light)]">About Noovit</p>
           <h1 className="mx-auto max-w-3xl text-balance text-4xl text-white md:text-6xl">Supplements you can actually understand.</h1>
           <p className="mx-auto mt-5 max-w-xl text-lg text-white/80">
             We started Noovit because the supplement aisle was full of proprietary blends, underdosed formulas and confusing labels.

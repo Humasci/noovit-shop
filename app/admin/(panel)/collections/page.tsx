@@ -25,12 +25,12 @@ export default async function CollectionsPage() {
         {collections.map((c) => (
           <tr key={c.slug}>
             <td className={td}>
-              <Link href={`/admin/collections/${c.slug}`} className="font-semibold hover:text-[var(--color-blue)]">{c.title}</Link>
+              <Link href={`/admin/collections/${c.slug}`} className="font-semibold hover:text-[var(--color-accent)]">{c.title}</Link>
               <div className="text-xs text-[var(--color-muted)]">/collections/{c.slug}</div>
             </td>
             <td className={td}>{c.productSlugs.length}</td>
             <td className={td}><Badge status={c.status} /></td>
-            <td className={td}><Link href={`/admin/collections/${c.slug}`} className="text-sm font-bold text-[var(--color-blue)]">Edit</Link></td>
+            <td className={td}><Link href={`/admin/collections/${c.slug}`} className="text-sm font-bold text-[var(--color-accent)]">Edit</Link></td>
           </tr>
         ))}
       </Table>

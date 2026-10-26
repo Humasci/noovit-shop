@@ -123,5 +123,5 @@ export function Flash({ msg }: { msg?: string }) {
 }
 
 export const inputCls = 'rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-sm';
-export const btnSm = 'rounded-lg bg-[var(--color-navy)] px-3 py-2 text-xs font-bold text-white hover:bg-[var(--color-blue)] disabled:opacity-50';
+export const btnSm = 'rounded-lg bg-[var(--color-navy)] px-3 py-2 text-xs font-bold text-white hover:bg-[var(--color-accent)] disabled:opacity-50';
 export const btnSmOutline = 'rounded-lg border border-[var(--color-line)] bg-white px-3 py-2 text-xs font-bold text-[var(--color-navy)] hover:border-[var(--color-navy)]';

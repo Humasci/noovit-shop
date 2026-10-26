@@ -98,7 +98,7 @@ export default async function PetsPage() {
           <div className="rounded-3xl bg-[var(--color-navy)] p-10 text-center text-white md:p-14">
             <h2 className="text-3xl text-white md:text-4xl">Shopping for yourself too?</h2>
             <p className="mt-3 text-white/70">Add human supplements to the same order and subscription.</p>
-            <Link href="/shop" className="btn mt-6 bg-white text-[var(--color-navy)] hover:bg-[#93c5fd]">Shop Noovit</Link>
+            <Link href="/shop" className="btn mt-6 bg-white text-[var(--color-navy)] hover:bg-[var(--color-accent-light)]">Shop Noovit</Link>
           </div>
         </div>
       </section>

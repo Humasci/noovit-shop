@@ -130,7 +130,7 @@ export function ShopBrowser({
                 </Pill>
               ))}
               {tags.length > 0 && (
-                <button onClick={() => setTags([])} className="shrink-0 text-sm font-semibold text-[var(--color-blue)] underline">
+                <button onClick={() => setTags([])} className="shrink-0 text-sm font-semibold text-[var(--color-accent)] underline">
                   Clear
                 </button>
               )}

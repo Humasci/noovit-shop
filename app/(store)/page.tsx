@@ -76,18 +76,18 @@ export default async function HomePage() {
         <div className="container px-6">
           <div className="grid items-center gap-10 rounded-3xl bg-[var(--color-navy)] p-8 text-white md:grid-cols-2 md:p-14">
             <div>
-              <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-[#93c5fd]">Customer favourites</p>
+              <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-accent-light)]">Customer favourites</p>
               <h2 className="text-3xl text-white md:text-4xl">Our most-loved formulas</h2>
               <ul className="mt-6 space-y-3">
                 {spotlight.map((p) => (
                   <li key={p.slug}>
-                    <Link href={`/products/${p.slug}`} className="flex items-center gap-3 text-lg font-semibold hover:text-[#93c5fd]">
+                    <Link href={`/products/${p.slug}`} className="flex items-center gap-3 text-lg font-semibold hover:text-[var(--color-accent-light)]">
                       <Stars size={14} /> {p.name}
                     </Link>
                   </li>
                 ))}
               </ul>
-              <Link href="/shop" className="btn mt-8 bg-white text-[var(--color-navy)] hover:bg-[#93c5fd]">
+              <Link href="/shop" className="btn mt-8 bg-white text-[var(--color-navy)] hover:bg-[var(--color-accent-light)]">
                 Shop Now
               </Link>
             </div>
@@ -123,7 +123,7 @@ export default async function HomePage() {
           <div>
             <SectionHeading eyebrow="Expert formulated" title="Build your routine with our nutritionists" center={false} />
             <p className="-mt-6 text-[var(--color-muted)]">Every formula is reviewed by our panel of qualified nutrition professionals.</p>
-            <Link href="/shop" className="mt-6 inline-flex items-center gap-1 text-sm font-bold text-[var(--color-blue)]">
+            <Link href="/shop" className="mt-6 inline-flex items-center gap-1 text-sm font-bold text-[var(--color-accent)]">
               Explore our best sellers <ArrowRight className="h-4 w-4" />
             </Link>
             <div>
@@ -138,7 +138,7 @@ export default async function HomePage() {
                 </div>
                 <div>
                   <p className="font-bold">{e.name}</p>
-                  <p className="text-xs font-semibold text-[var(--color-blue)]">{e.credentials}</p>
+                  <p className="text-xs font-semibold text-[var(--color-accent)]">{e.credentials}</p>
                   <p className="mt-2 text-sm text-[var(--color-muted)]">&ldquo;{e.quote}&rdquo;</p>
                 </div>
               </div>
@@ -155,21 +155,21 @@ export default async function HomePage() {
             <SectionHeading eyebrow="Our approach" title="Nutrition backed by evidence, made for real life" center={false} />
             <div className="space-y-6">
               <div className="flex gap-4">
-                <Microscope className="h-8 w-8 shrink-0 text-[var(--color-blue)]" />
+                <Microscope className="h-8 w-8 shrink-0 text-[var(--color-accent)]" />
                 <div>
                   <h3 className="text-lg">Researched doses</h3>
                   <p className="text-[var(--color-muted)]">We use the forms and amounts studied in research — not pixie dust.</p>
                 </div>
               </div>
               <div className="flex gap-4">
-                <Sprout className="h-8 w-8 shrink-0 text-[var(--color-blue)]" />
+                <Sprout className="h-8 w-8 shrink-0 text-[var(--color-accent)]" />
                 <div>
                   <h3 className="text-lg">Nothing you don&apos;t need</h3>
                   <p className="text-[var(--color-muted)]">No artificial colours, fillers or unnecessary additives.</p>
                 </div>
               </div>
             </div>
-            <Link href="/about" className="mt-8 inline-flex items-center gap-1 font-bold text-[var(--color-blue)]">
+            <Link href="/about" className="mt-8 inline-flex items-center gap-1 font-bold text-[var(--color-accent)]">
               Learn More <ArrowRight className="h-4 w-4" />
             </Link>
           </div>

@@ -18,7 +18,7 @@ export default async function EditCollectionPage({ params }: { params: Promise<{
 
   return (
     <>
-      <Link href="/admin/collections" className="mb-2 inline-block text-sm text-[var(--color-blue)]">← All collections</Link>
+      <Link href="/admin/collections" className="mb-2 inline-block text-sm text-[var(--color-accent)]">← All collections</Link>
       <PageTitle title={existing?.title ?? 'New collection'} />
       <CollectionEditor
         key={slug}

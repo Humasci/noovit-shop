@@ -63,7 +63,7 @@ function Account() {
       <ul className="mt-12 grid grid-cols-2 gap-4">
         {FEATURES.map(({ icon: Icon, text }) => (
           <li key={text} className="flex items-center gap-3 rounded-2xl bg-[var(--color-soft)] p-4 text-sm font-semibold">
-            <Icon className="h-5 w-5 shrink-0 text-[var(--color-blue)]" /> {text}
+            <Icon className="h-5 w-5 shrink-0 text-[var(--color-accent)]" /> {text}
           </li>
         ))}
       </ul>

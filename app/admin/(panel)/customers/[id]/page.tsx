@@ -33,7 +33,7 @@ export default async function CustomerPage({ params, searchParams }: { params: P
 
   return (
     <>
-      <Link href="/admin/customers" className="mb-2 inline-block text-sm text-[var(--color-blue)]">← Customers</Link>
+      <Link href="/admin/customers" className="mb-2 inline-block text-sm text-[var(--color-accent)]">← Customers</Link>
       <PageTitle title={c.name ?? c.email} />
       <Flash msg={msg} />
       <p className="-mt-4 mb-6 text-sm text-[var(--color-muted)]">
@@ -54,7 +54,7 @@ export default async function CustomerPage({ params, searchParams }: { params: P
             <Table head={['Order', 'Type', 'Total', 'Status', 'Placed']} empty={!orders.length}>
               {orders.map((o) => (
                 <tr key={o.id}>
-                  <td className={td}><Link href={`/admin/orders/${o.order_number}`} className="font-bold text-[var(--color-blue)]">#{o.order_number}</Link></td>
+                  <td className={td}><Link href={`/admin/orders/${o.order_number}`} className="font-bold text-[var(--color-accent)]">#{o.order_number}</Link></td>
                   <td className={td}>{o.kind.replace(/_/g, ' ')}</td>
                   <td className={td}>{money(o.total_cents)}</td>
                   <td className={td}><Badge status={o.status} /></td>

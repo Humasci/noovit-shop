@@ -91,7 +91,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: Pro
                 <ProductImage product={p} className="h-12 w-12 rounded-lg" />
               </td>
               <td className={td}>
-                <Link href={`/admin/products/${p.slug}`} className="font-semibold hover:text-[var(--color-blue)]">{p.name}</Link>
+                <Link href={`/admin/products/${p.slug}`} className="font-semibold hover:text-[var(--color-accent)]">{p.name}</Link>
                 <div className="text-xs text-[var(--color-muted)]">
                   /{p.slug}
                   {p.bundleItems?.length ? ' · bundle' : ''}
@@ -104,7 +104,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: Pro
               <td className={td}>{money(asLowAs(p) * 100)}</td>
               <td className={td}>{p.supplierSku ?? <span className="text-red-600">—</span>}</td>
               <td className={td}>
-                {count ? <Link href={`/admin/products/${p.slug}`} className="text-sm font-bold text-[var(--color-blue)]">Edit</Link> : null}
+                {count ? <Link href={`/admin/products/${p.slug}`} className="text-sm font-bold text-[var(--color-accent)]">Edit</Link> : null}
               </td>
             </tr>
           ))}

@@ -42,7 +42,7 @@ export default async function OrdersPage({ searchParams }: { searchParams: Promi
       </PageTitle>
       {tag && (
         <p className="mb-4 text-sm">
-          Tagged <b>{tag}</b> · <Link href="/admin/orders" className="text-[var(--color-blue)]">clear</Link>
+          Tagged <b>{tag}</b> · <Link href="/admin/orders" className="text-[var(--color-accent)]">clear</Link>
         </p>
       )}
       <Flash msg={msg} />
@@ -54,7 +54,7 @@ export default async function OrdersPage({ searchParams }: { searchParams: Promi
         {orders?.map((o) => (
           <tr key={o.id}>
             <td className={td}>
-              <Link href={`/admin/orders/${o.order_number}`} className="font-bold text-[var(--color-blue)]">#{o.order_number}</Link>
+              <Link href={`/admin/orders/${o.order_number}`} className="font-bold text-[var(--color-accent)]">#{o.order_number}</Link>
             </td>
             <td className={td}>
               <div className="font-semibold">{o.shipping_name ?? '—'}</div>

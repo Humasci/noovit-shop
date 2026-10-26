@@ -19,7 +19,7 @@ export function FaqBrowser({ products }: { products: Product[] }) {
           <h1 className="text-4xl md:text-5xl">Frequently Asked Questions</h1>
           <p className="mt-4 text-[var(--color-muted)]">
             Is your question missing?{' '}
-            <Link href="/contact" className="font-bold text-[var(--color-blue)] underline">
+            <Link href="/contact" className="font-bold text-[var(--color-accent)] underline">
               Contact us
             </Link>
           </p>

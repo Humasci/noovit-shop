@@ -130,7 +130,7 @@ export function CollectionEditor({ initial, isNew, image, products }: { initial:
           </button>
           {!isNew && (
             <>
-              <Link href={`/collections/${c.slug}`} target="_blank" className="mt-3 flex items-center justify-center gap-1 text-sm text-[var(--color-blue)]">
+              <Link href={`/collections/${c.slug}`} target="_blank" className="mt-3 flex items-center justify-center gap-1 text-sm text-[var(--color-accent)]">
                 View in store <ExternalLink className="h-3.5 w-3.5" />
               </Link>
               <button

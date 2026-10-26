@@ -33,7 +33,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ sl
 
   return (
     <>
-      <Link href="/admin/products" className="mb-2 inline-block text-sm text-[var(--color-blue)]">← All products</Link>
+      <Link href="/admin/products" className="mb-2 inline-block text-sm text-[var(--color-accent)]">← All products</Link>
       <PageTitle title={isNew ? 'New product' : initial.data.name} />
       {isNew ? (
         <p className="mb-4 text-sm text-[var(--color-muted)]">New products start as <b>hidden</b>. Add photos after the first save, then set the status to Active.</p>

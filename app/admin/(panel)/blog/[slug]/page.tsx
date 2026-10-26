@@ -29,7 +29,7 @@ export default async function EditPost({ params, searchParams }: { params: Promi
 
   return (
     <>
-      <Link href="/admin/blog" className="mb-2 inline-block text-sm text-[var(--color-blue)]">← All posts</Link>
+      <Link href="/admin/blog" className="mb-2 inline-block text-sm text-[var(--color-accent)]">← All posts</Link>
       <PageTitle title={post?.title ?? 'New post'}>
         {post && (
           <Link href={`/admin/blog/${post.slug}/preview`} target="_blank" className={btnSmOutline}>Preview</Link>

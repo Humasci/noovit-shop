@@ -44,14 +44,14 @@ export default async function CustomersPage({ searchParams }: { searchParams: Pr
         ))}
       </div>
       {sp.tag && (
-        <p className="mb-4 text-sm">Tagged <b>{sp.tag}</b> · <Link href="/admin/customers" className="text-[var(--color-blue)]">clear</Link></p>
+        <p className="mb-4 text-sm">Tagged <b>{sp.tag}</b> · <Link href="/admin/customers" className="text-[var(--color-accent)]">clear</Link></p>
       )}
 
       <Table head={['Customer', 'Orders', 'Lifetime spend', 'Subscriptions', 'Last order', 'Tags', 'Since']} empty={!rows.length}>
         {rows.slice(0, SHOW).map((c) => (
           <tr key={c.id}>
             <td className={td}>
-              <Link href={`/admin/customers/${c.id}`} className="font-semibold hover:text-[var(--color-blue)]">{c.name ?? '—'}</Link>
+              <Link href={`/admin/customers/${c.id}`} className="font-semibold hover:text-[var(--color-accent)]">{c.name ?? '—'}</Link>
               <div className="text-xs text-[var(--color-muted)]">{c.email}</div>
             </td>
             <td className={td}>{c.orderCount}</td>

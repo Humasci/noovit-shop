@@ -4,13 +4,16 @@
 @theme inline {
   --color-navy: #14213d;
   --color-ink: #1f2937;
-  --color-blue: #2563eb;
-  --color-blue-dark: #1d4ed8;
-  --color-green: #16a34a;
-  --color-soft: #f3f6fa;
-  --color-line: #e5e9f0;
+  /* Opal green accent: links, icons, highlights. -dark for hover, -light on navy backgrounds. */
+  --color-opal: #5fa68d;
+  --color-accent: #3a8069;
+  --color-accent-dark: #2f6f5b;
+  --color-accent-light: #9cc9b8;
+  --color-green: #3a8069;
+  --color-soft: #eef5f2;
+  --color-line: #e2ebe7;
   --color-muted: #6b7280;
-  --color-logo-plus: var(--color-blue);
+  --color-logo-plus: var(--color-opal);
 
   /* Noovit Pets accent */
   --color-pets: #e8833a;
@@ -21,19 +24,18 @@
   --color-primary: var(--color-navy);
   --color-primary-dark: #0b1426;
   --color-primary-light: #3b4f7a;
-  --color-accent: var(--color-blue);
   --color-charcoal: var(--color-ink);
   --color-stone: var(--color-muted);
   --color-cream: var(--color-soft);
   --color-mist: var(--color-line);
   --color-earth-light: var(--color-soft);
-  --color-sage-light: #93c5fd;
-  --color-sage: var(--color-blue);
+  --color-sage-light: var(--color-accent-light);
+  --color-sage: var(--color-accent);
 
-  /* Fonts are self-hosted via next/font (app/layout.tsx): Inter for text, Manrope for headings, Alexandria for the wordmark. */
+  /* Fonts are self-hosted via next/font (app/layout.tsx): Inter for text, Manrope for headings, Funnel Display for the wordmark. */
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-manrope), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-logo: var(--font-alexandria), var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-logo: var(--font-funnel), var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
 
   /* Lighter type scale: every font-semibold/bold/extrabold class on the site renders a step lighter. */
   --font-weight-semibold: 550;
@@ -62,7 +64,7 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-blue);
+    outline: 2px solid var(--color-accent);
     outline-offset: 2px;
   }
 }
@@ -99,7 +101,7 @@
   }
 
   .btn-primary:hover {
-    background: var(--color-blue);
+    background: var(--color-accent);
   }
 
   .btn-outline {
@@ -157,7 +159,7 @@
 .prose-noovit > * + * { margin-top: 1.1em; }
 .prose-noovit h2 { font-size: 1.75rem; margin-top: 2em; }
 .prose-noovit h3 { font-size: 1.35rem; margin-top: 1.6em; }
-.prose-noovit a { color: var(--color-blue); text-decoration: underline; text-underline-offset: 3px; }
+.prose-noovit a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 3px; }
 .prose-noovit ul { list-style: disc; padding-left: 1.4em; }
 .prose-noovit ol { list-style: decimal; padding-left: 1.4em; }
 .prose-noovit li + li { margin-top: 0.35em; }

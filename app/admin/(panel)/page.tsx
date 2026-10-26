@@ -93,7 +93,7 @@ export default async function Overview({ searchParams }: { searchParams: Promise
             {recentRes.data?.map((o) => (
               <tr key={o.id}>
                 <td className={td}>
-                  <Link href={`/admin/orders/${o.order_number}`} className="font-bold text-[var(--color-blue)]">#{o.order_number}</Link>
+                  <Link href={`/admin/orders/${o.order_number}`} className="font-bold text-[var(--color-accent)]">#{o.order_number}</Link>
                 </td>
                 <td className={td}>{o.email}</td>
                 <td className={td}>{o.kind.replace(/_/g, ' ')}</td>

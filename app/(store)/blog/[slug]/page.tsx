@@ -46,7 +46,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
       />
       <Article post={post} />
       <div className="container max-w-3xl px-6 pb-16">
-        <Link href="/blog" className="text-sm font-bold text-[var(--color-blue)]">← All articles</Link>
+        <Link href="/blog" className="text-sm font-bold text-[var(--color-accent)]">← All articles</Link>
       </div>
     </>
   );
