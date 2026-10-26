@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Award, FlaskConical, GraduationCap, MapPin, ShieldCheck, ChevronDown, BadgeCheck, Mail } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { FAQ } from '@/types';
+import { FAQ, Review } from '@/types';
 import { REVIEWS, IMAGES, SUBSCRIPTION_PERKS } from '@/data/content';
 import { getProductBySlug } from '@/data/products';
 import { Stars } from '@/components/ui/Stars';
@@ -53,13 +53,13 @@ export function TrustSection() {
   );
 }
 
-export function ReviewsSection({ title = 'Real people, real results' }: { title?: string }) {
+export function ReviewsSection({ title = 'Real people, real results', reviews = REVIEWS }: { title?: string; reviews?: Review[] }) {
   return (
     <section className="section">
       <div className="container px-6">
         <SectionHeading eyebrow="Reviews" title={title} />
         <div className="no-scrollbar -mx-6 flex snap-x gap-5 overflow-x-auto px-6 pb-2">
-          {REVIEWS.map((r) => {
+          {reviews.map((r) => {
             const p = getProductBySlug(r.productSlug);
             return (
               <article key={r.id} className="w-80 shrink-0 snap-start rounded-2xl border border-[var(--color-line)] p-6">
@@ -120,13 +120,21 @@ export function FAQSection({ faqs, title = 'Frequently asked questions', showBut
   );
 }
 
-export function CommunitySection() {
+export function CommunitySection({
+  images = IMAGES.community,
+  handle = '@noovit',
+  title = 'Join the Noovit community',
+}: {
+  images?: string[];
+  handle?: string;
+  title?: string;
+}) {
   return (
     <section className="section bg-[var(--color-soft)]">
       <div className="container px-6">
-        <SectionHeading eyebrow="@noovit" title="Join the Noovit community" sub="Tag us to be featured." />
+        <SectionHeading eyebrow={handle} title={title} sub="Tag us to be featured." />
         <div className="no-scrollbar -mx-6 flex snap-x gap-4 overflow-x-auto px-6">
-          {IMAGES.community.map((src, i) => (
+          {images.map((src, i) => (
             <div key={i} className="aspect-[2/3] w-56 shrink-0 snap-start overflow-hidden rounded-2xl md:w-auto md:flex-1">
               <img src={src} alt="" className="h-full w-full object-cover" loading="lazy" />
             </div>

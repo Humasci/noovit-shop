@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Check, Microscope, Sprout, ArrowRight } from 'lucide-react';
+import { Check, Microscope, Sprout, ArrowRight, PawPrint } from 'lucide-react';
 import { BestSellers } from '@/components/home/BestSellers';
 import {
   TrustSection,
@@ -13,7 +13,7 @@ import {
 import { Stars } from '@/components/ui/Stars';
 import { ProductImage } from '@/components/product/ProductImage';
 import { getProductBySlug } from '@/data/products';
-import { EXPERTS, GENERAL_FAQS, IMAGES } from '@/data/content';
+import { EXPERTS, GENERAL_FAQS, IMAGES, PET_IMAGES } from '@/data/content';
 
 // PLACEHOLDER: swap these for press/retailer logos once you have them.
 const MARQUEE = ['Clean Ingredients', 'Third-Party Tested', 'GMP Certified', 'Nutritionist Formulated', 'Made in the USA', 'Vegan Options', '90-Day Guarantee'];
@@ -88,6 +88,23 @@ export default function HomePage() {
               ))}
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Noovit Pets teaser */}
+      <section className="pb-4">
+        <div className="container px-6">
+          <Link href="/pets" className="group grid overflow-hidden rounded-3xl bg-[var(--color-pets-soft)] md:grid-cols-2">
+            <div className="p-10 md:p-14">
+              <p className="mb-3 inline-flex items-center gap-2 rounded-full bg-[var(--color-pets)] px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-white">
+                <PawPrint className="h-4 w-4" /> New · Noovit Pets
+              </p>
+              <h2 className="text-3xl md:text-4xl">Clean supplements for dogs and cats</h2>
+              <p className="mt-3 text-[var(--color-muted)]">Vet-formulated chews and powders for digestion, joints, calm and coat — in the same cart as yours.</p>
+              <span className="btn mt-6 bg-[var(--color-pets)] text-white group-hover:bg-[var(--color-pets-dark)]">Shop Pets</span>
+            </div>
+            <img src={PET_IMAGES.hero} alt="A cat and dog cuddling" className="h-full min-h-64 w-full object-cover" loading="lazy" />
+          </Link>
         </div>
       </section>
 

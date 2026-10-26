@@ -19,6 +19,7 @@ const COLUMNS = [
       { name: 'Best Sellers', href: '/shop?type=best-sellers' },
       { name: 'Supplements', href: '/shop?type=supplements' },
       { name: 'Sports', href: '/shop?type=sports' },
+      { name: 'Noovit Pets', href: '/pets' },
     ],
   },
   {

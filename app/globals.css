@@ -12,6 +12,11 @@
   --color-line: #e5e9f0;
   --color-muted: #6b7280;
 
+  /* Noovit Pets accent */
+  --color-pets: #e8833a;
+  --color-pets-dark: #c96a24;
+  --color-pets-soft: #fff4ea;
+
   /* Aliases used by older pages */
   --color-primary: var(--color-navy);
   --color-primary-dark: #0b1426;

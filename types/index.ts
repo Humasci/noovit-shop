@@ -1,4 +1,6 @@
-export type ProductType = 'supplements' | 'sports' | 'specialties';
+export type ProductType = 'supplements' | 'sports' | 'specialties' | 'pets';
+
+export type Species = 'dog' | 'cat';
 
 export type DietaryTag =
   | 'vegan'
@@ -33,12 +35,13 @@ export interface Product {
   otherIngredients: string;
   dosage: string;
   servings: number;
-  form: 'capsules' | 'powder' | 'softgels';
+  form: 'capsules' | 'powder' | 'softgels' | 'chews';
   basePrice: number;
   color: string;
   productType: ProductType;
   dietaryTags: DietaryTag[];
   audiences: Audience[];
+  species?: Species[];
   bestSeller: boolean;
   rating: number;
   reviewCount: number;

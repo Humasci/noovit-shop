@@ -54,4 +54,42 @@ export const SUBSCRIPTION_PERKS = [
   { title: 'Better Results', text: 'Consistency is what makes supplements work. We make it automatic.', image: IMAGES.results },
 ];
 
-export const PAYMENT_METHODS = ['Visa', 'Mastercard', 'Amex', 'PayPal', 'Apple Pay', 'Google Pay', 'Shop Pay'];
+const u = (id: string, w = 1200, h?: number) => `https://images.unsplash.com/${id}?w=${w}${h ? `&h=${h}` : ''}&q=80&fit=crop`;
+
+export const PET_IMAGES = {
+  hero: u('photo-1450778869180-41d0601e046e', 1920),
+  dog: u('photo-1543466835-00a7907e9de1', 900),
+  cat: u('photo-1514888286974-6c03e2ca1dba', 900),
+  community: [
+    u('photo-1548199973-03cce0bbc87b', 600, 900),
+    u('photo-1574158622682-e40e69881006', 600, 900),
+    u('photo-1583511655857-d19b40a7a54e', 600, 900),
+    u('photo-1592194996308-7b43878e84a6', 600, 900),
+    u('photo-1517849845537-4d257902454a', 600, 900),
+  ],
+};
+
+// PLACEHOLDER: replace with real customer reviews before launch.
+export const PET_REVIEWS: Review[] = [
+  { id: 'p1', name: 'Emma & Biscuit', productSlug: 'dog-probiotic-chews', rating: 5, title: 'No more upset tummy', body: 'Biscuit has a sensitive stomach and these sorted him out within a week. He thinks they are treats.', date: '2026-09-20' },
+  { id: 'p2', name: 'Dan & Luna', productSlug: 'dog-hip-joint-chews', rating: 5, title: 'Our 11-year-old is bouncing again', body: 'Luna is taking the stairs again and is keen on longer walks. Huge difference.', date: '2026-09-11' },
+  { id: 'p3', name: 'Rachel & Miso', productSlug: 'cat-probiotic-powder', rating: 5, title: 'Even my picky cat eats it', body: 'Unflavoured, so Miso does not notice it in her food. Litter box is much better.', date: '2026-08-30' },
+  { id: 'p4', name: 'Tom & Archie', productSlug: 'dog-calming-chews', rating: 5, title: 'Fireworks night was calm', body: 'Gave two an hour before and Archie actually slept through it.', date: '2026-08-12' },
+];
+
+// PLACEHOLDER: replace with your real veterinary advisors.
+export const VETS: Expert[] = [
+  { name: 'Vet Advisor Name', credentials: 'DVM, Small Animal Practice', quote: 'Simple formulas at sensible doses, sized by weight.' },
+  { name: 'Vet Advisor Name', credentials: 'DVM, Veterinary Nutritionist', quote: 'Ingredients chosen for pets, not borrowed from human products.' },
+  { name: 'Vet Advisor Name', credentials: 'DVM, Feline Medicine', quote: 'Cats need their own formulas — and something they will actually eat.' },
+];
+
+export const PET_FAQS: FAQ[] = [
+  { q: 'Are Noovit Pets products vet formulated?', a: 'Yes. Every pet formula is developed with veterinarians and dosed by body weight.' },
+  { q: 'How long until I see results?', a: 'Most pet parents notice a difference in 2–4 weeks with daily use. Joint and coat support can take 6–8 weeks.' },
+  { q: 'Can I give human supplements to my pet?', a: 'No — some human ingredients (like xylitol) are dangerous for pets, and doses differ. Use formulas made for pets.' },
+  { q: 'What if my pet won’t eat it?', a: 'Our 90-day guarantee covers picky eaters too. Contact us for a full refund.' },
+  { q: 'Can I add pet products to my existing subscription?', a: 'Yes — one cart, one checkout, one subscription for the whole family.' },
+];
+
+export const PAYMENT_METHODS =['Visa', 'Mastercard', 'Amex', 'PayPal', 'Apple Pay', 'Google Pay', 'Shop Pay'];

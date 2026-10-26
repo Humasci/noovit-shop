@@ -8,6 +8,7 @@ import { TRUST_BAR } from '@/data/content';
 
 const NAV = [
   { name: 'Shop', href: '/shop' },
+  { name: 'Pets', href: '/pets' },
   { name: 'About Us', href: '/about' },
   { name: 'Reviews', href: '/reviews' },
   { name: 'FAQ', href: '/faq' },
@@ -45,7 +46,11 @@ export function Header() {
         <div className="container grid grid-cols-3 items-center px-4 py-4 md:px-6">
           <nav className="hidden gap-6 text-sm font-semibold lg:flex">
             {NAV.map((n) => (
-              <Link key={n.href} href={n.href} className="hover:text-[var(--color-blue)]">
+              <Link
+                key={n.href}
+                href={n.href}
+                className={n.href === '/pets' ? 'text-[var(--color-pets)] hover:text-[var(--color-pets-dark)]' : 'hover:text-[var(--color-blue)]'}
+              >
                 {n.name}
               </Link>
             ))}

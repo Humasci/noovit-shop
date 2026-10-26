@@ -1,4 +1,4 @@
-import { Product, ProductType, DietaryTag, PackOption, PurchaseMode } from '@/types';
+import { Product, ProductType, DietaryTag, PackOption, PurchaseMode, Species } from '@/types';
 
 const COMMON_FAQS = [
   { q: 'Is it gluten free?', a: 'Yes. Every Noovit formula is made without gluten-containing ingredients.' },
@@ -335,6 +335,123 @@ const seeds: Seed[] = [
     productType: 'specialties', dietaryTags: ['vegan', 'gluten-free', 'sugar-free'],
     audiences: ['women', 'men'], bestSeller: false, reviewCount: 742,
   },
+
+  // NOOVIT PETS — PLACEHOLDER: formulas and doses need veterinary review and pet-supplement regulatory checks (FDA CVM / state feed rules) before launch.
+  {
+    name: 'Probiotic Chews for Dogs',
+    slug: 'dog-probiotic-chews',
+    shortBenefit: 'Supports healthy digestion and firm stools.',
+    description: 'Soft chicken-flavoured chews with a dog-specific probiotic blend and pumpkin fibre.',
+    whoFor: 'Dogs with sensitive tummies, diet changes, or occasional loose stools.',
+    benefits: ['Supports digestive balance', 'Supports stool quality', 'Supports immune health', 'Tasty soft chew'],
+    ingredients: [
+      { name: 'Probiotic Blend (6 strains)', amount: '3 Billion CFU' },
+      { name: 'Pumpkin Powder', amount: '200mg' },
+      { name: 'Inulin', amount: '50mg' },
+    ],
+    otherIngredients: 'Chicken liver, oat flour, sunflower oil, natural chicken flavour.',
+    dosage: 'Under 25 lb: 1 chew daily. 25–75 lb: 2 chews. Over 75 lb: 3 chews.',
+    servings: 90, form: 'chews', basePrice: 38, color: '#E8833A',
+    productType: 'pets', dietaryTags: ['sugar-free'], species: ['dog'],
+    audiences: [], bestSeller: true, reviewCount: 612,
+  },
+  {
+    name: 'Hip & Joint Chews for Dogs',
+    slug: 'dog-hip-joint-chews',
+    shortBenefit: 'Supports mobility, hips and joints.',
+    description: 'Glucosamine, chondroitin, MSM and green-lipped mussel in a duck-flavoured soft chew.',
+    whoFor: 'Senior dogs, large breeds, and active dogs who love to run and jump.',
+    benefits: ['Supports joint comfort', 'Supports cartilage health', 'Supports mobility', 'Great for seniors'],
+    ingredients: [
+      { name: 'Glucosamine HCl', amount: '500mg' },
+      { name: 'Chondroitin Sulfate', amount: '100mg' },
+      { name: 'MSM', amount: '250mg' },
+      { name: 'Green-Lipped Mussel', amount: '50mg' },
+    ],
+    otherIngredients: 'Duck, sweet potato, oat flour, natural duck flavour.',
+    dosage: 'Under 25 lb: 1 chew daily. 25–75 lb: 2 chews. Over 75 lb: 3 chews.',
+    servings: 90, form: 'chews', basePrice: 40, color: '#2E8B7A',
+    productType: 'pets', dietaryTags: [], species: ['dog'],
+    audiences: [], bestSeller: true, reviewCount: 845,
+  },
+  {
+    name: 'Calming Chews for Dogs',
+    slug: 'dog-calming-chews',
+    shortBenefit: 'Supports calm during storms, travel and alone time.',
+    description: 'L-theanine, chamomile and thiamine in a turkey-flavoured chew for calmer moments.',
+    whoFor: 'Dogs who get anxious with fireworks, car rides, vet visits or separation.',
+    benefits: ['Supports relaxation', 'Non-drowsy formula', 'Fast-acting', 'Great for travel'],
+    ingredients: [
+      { name: 'L-Theanine', amount: '50mg' },
+      { name: 'Chamomile', amount: '75mg' },
+      { name: 'Thiamine (B1)', amount: '25mg' },
+    ],
+    otherIngredients: 'Turkey, oat flour, sunflower oil, natural turkey flavour.',
+    dosage: 'Give 30–60 minutes before a stressful event. Under 25 lb: 1 chew. 25–75 lb: 2. Over 75 lb: 3.',
+    servings: 90, form: 'chews', basePrice: 38, color: '#7B6BB5',
+    productType: 'pets', dietaryTags: [], species: ['dog'],
+    audiences: [], bestSeller: false, reviewCount: 503,
+  },
+  {
+    name: 'Skin & Coat Chews',
+    slug: 'skin-coat-chews',
+    shortBenefit: 'Supports a shiny coat and less itchy skin.',
+    description: 'Wild salmon oil omega-3s with biotin and vitamin E for a soft, glossy coat.',
+    whoFor: 'Dogs with dry, itchy skin, dull coats, or seasonal shedding.',
+    benefits: ['Supports skin moisture', 'Supports a shiny coat', 'Supports normal shedding', 'Wild salmon omega-3'],
+    ingredients: [
+      { name: 'Wild Alaskan Salmon Oil', amount: '300mg', description: 'EPA + DHA' },
+      { name: 'Biotin', amount: '100mcg' },
+      { name: 'Vitamin E', amount: '10 IU' },
+    ],
+    otherIngredients: 'Salmon, oat flour, natural salmon flavour.',
+    dosage: 'Under 25 lb: 1 chew daily. 25–75 lb: 2 chews. Over 75 lb: 3 chews.',
+    servings: 90, form: 'chews', basePrice: 38, color: '#D9668F',
+    productType: 'pets', dietaryTags: [], species: ['dog'],
+    audiences: [], bestSeller: false, reviewCount: 398,
+  },
+  {
+    name: 'Probiotic Powder for Cats',
+    slug: 'cat-probiotic-powder',
+    shortBenefit: 'Supports digestion and litter-box regularity.',
+    description: 'An unflavoured probiotic powder that sprinkles over wet or dry food — even picky cats eat it.',
+    whoFor: 'Cats with sensitive stomachs, hairballs, or recent food changes.',
+    benefits: ['Supports digestive health', 'Supports litter-box regularity', 'Supports immune health', 'Picky-eater friendly'],
+    ingredients: [
+      { name: 'Probiotic Blend (4 strains)', amount: '1 Billion CFU' },
+      { name: 'Inulin', amount: '30mg' },
+    ],
+    otherIngredients: 'Maltodextrin (carrier).',
+    dosage: 'Sprinkle 1 scoop over food once daily.',
+    servings: 60, form: 'powder', basePrice: 35, color: '#4C8BC9',
+    productType: 'pets', dietaryTags: ['gluten-free', 'sugar-free'], species: ['cat'],
+    audiences: [], bestSeller: true, reviewCount: 287,
+  },
+  {
+    name: 'Hairball & Digestive Chews for Cats',
+    slug: 'cat-hairball-chews',
+    shortBenefit: 'Supports hairball control and healthy digestion.',
+    description: 'Salmon-flavoured soft chews with psyllium, pumpkin and digestive enzymes.',
+    whoFor: 'Long-haired cats, frequent groomers, and cats prone to hairballs.',
+    benefits: ['Supports hairball elimination', 'Supports digestion', 'Supports skin and coat', 'Cats love the taste'],
+    ingredients: [
+      { name: 'Psyllium Husk', amount: '100mg' },
+      { name: 'Pumpkin Powder', amount: '50mg' },
+      { name: 'Digestive Enzyme Blend', amount: '10mg' },
+    ],
+    otherIngredients: 'Salmon, chicken liver, oat flour, natural salmon flavour.',
+    dosage: 'Give 2 chews daily.',
+    servings: 60, form: 'chews', basePrice: 32, color: '#C9A13B',
+    productType: 'pets', dietaryTags: [], species: ['cat'],
+    audiences: [], bestSeller: false, reviewCount: 214,
+  },
+];
+
+const PET_FAQS = [
+  { q: 'Is it safe for puppies and kittens?', a: 'Most of our pet formulas are suitable from 12 weeks. Check with your vet first for young, pregnant or nursing pets.' },
+  { q: 'Can I give it with medication?', a: 'Please check with your veterinarian before combining supplements with any medication.' },
+  { q: 'What if my pet won’t eat it?', a: 'Our 90-day guarantee covers picky eaters too — contact us for a full refund.' },
+  { q: 'When will my order ship?', a: 'Orders placed before 2pm on business days ship the same day.' },
 ];
 
 export const products: Product[] = seeds.map((s, i) => ({
@@ -342,8 +459,17 @@ export const products: Product[] = seeds.map((s, i) => ({
   id: String(i + 1),
   rating: 4.8,
   reviewCount: s.reviewCount ?? 1000,
-  faqs: [...(s.faqs ?? []), { q: 'How do I take it?', a: s.dosage }, ...COMMON_FAQS],
+  faqs: [
+    ...(s.faqs ?? []),
+    { q: s.productType === 'pets' ? 'How much should I give?' : 'How do I take it?', a: s.dosage },
+    ...(s.productType === 'pets' ? PET_FAQS : COMMON_FAQS),
+  ],
 }));
+
+export const humanProducts = products.filter((p) => p.productType !== 'pets');
+
+export const getPetProducts = (species?: Species) =>
+  products.filter((p) => p.productType === 'pets' && (!species || p.species?.includes(species)));
 
 export const packOptions = (product: Product, mode: PurchaseMode): PackOption[] => {
   const b = product.basePrice;
@@ -359,7 +485,7 @@ export const maxSavingPercent = (product: Product) =>
 
 export const getProductBySlug = (slug: string) => products.find((p) => p.slug === slug);
 
-export const getBestSellers = () => products.filter((p) => p.bestSeller);
+export const getBestSellers = () => humanProducts.filter((p) => p.bestSeller);
 
 export const getByAudience = (audience: 'women' | 'men') => products.filter((p) => p.audiences.includes(audience));
 
@@ -367,6 +493,7 @@ export const PRODUCT_TYPES: { value: ProductType; label: string }[] = [
   { value: 'supplements', label: 'Supplements' },
   { value: 'sports', label: 'Sports' },
   { value: 'specialties', label: 'Specialties' },
+  { value: 'pets', label: 'Noovit Pets' },
 ];
 
 export const DIETARY_TAGS: { value: DietaryTag; label: string }[] = [
