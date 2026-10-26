@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { ShoppingCart, Menu, X, User } from 'lucide-react';
+import { ShoppingCart, Menu, X, User, Star, Shield, Award, Leaf, CheckCircle } from 'lucide-react';
 import { useCart } from '@/lib/store/cart';
 
 export const Header: React.FC = () => {
@@ -11,13 +11,38 @@ export const Header: React.FC = () => {
 
   const navigation = [
     { name: 'Shop', href: '/shop' },
-    { name: 'About', href: '/about' },
-    { name: 'Learn', href: '/learn' },
+    { name: 'About Us', href: '/about' },
+    { name: 'Reviews', href: '/reviews' },
+    { name: 'FAQ', href: '/faq' },
     { name: 'Contact', href: '/contact' },
   ];
 
+  const trustMarkers = [
+    { icon: Leaf, text: 'Clean Ingredients' },
+    { icon: Star, text: 'Five Star Reviews' },
+    { icon: Award, text: 'Science-Driven' },
+    { icon: Shield, text: '90-Day Guarantee' },
+    { icon: CheckCircle, text: 'Third-Party Tested' },
+  ];
+
   return (
-    <header className="sticky top-0 z-50 bg-[var(--color-cream)] border-b border-[var(--color-mist)] backdrop-blur-sm bg-opacity-95">
+    <>
+      {/* Trust Bar */}
+      <div className="bg-[var(--color-primary)] text-white py-2 px-4">
+        <div className="container mx-auto">
+          <div className="flex items-center justify-center gap-6 md:gap-12 text-xs md:text-sm font-medium overflow-x-auto">
+            {trustMarkers.map((marker, index) => (
+              <div key={index} className="flex items-center gap-1.5 whitespace-nowrap">
+                <marker.icon className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                <span>{marker.text}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Main Header */}
+      <header className="sticky top-0 z-50 bg-white border-b border-[var(--color-mist)] shadow-sm">
       <nav className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -96,5 +121,6 @@ export const Header: React.FC = () => {
         )}
       </nav>
     </header>
+    </>
   );
 };

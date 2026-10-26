@@ -66,40 +66,38 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             {product.name}
           </h3>
 
-          {/* Tagline */}
-          <p className="text-sm text-[var(--color-stone)] mb-4 line-clamp-2">
-            {product.tagline}
+          {/* Star Rating */}
+          <div className="flex items-center gap-1 mb-2">
+            {[...Array(5)].map((_, i) => (
+              <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+            ))}
+            <span className="text-xs text-[var(--color-stone)] ml-1">(1,024)</span>
+          </div>
+
+          {/* Benefit Statement */}
+          <p className="text-sm text-[var(--color-stone)] mb-3 line-clamp-1">
+            {product.benefits[0]}
           </p>
 
-          {/* Price & CTA */}
-          <div className="flex items-center justify-between">
-            <div className="flex flex-col">
-              <div className="flex items-center gap-2">
-                <span className="text-2xl font-bold text-[var(--color-charcoal)]">
-                  {formatPrice(product.price)}
-                </span>
-                {product.originalPrice && (
-                  <span className="text-sm text-[var(--color-stone)] line-through">
-                    {formatPrice(product.originalPrice)}
-                  </span>
-                )}
-              </div>
-              {product.subscriptionAvailable && (
-                <span className="text-xs text-[var(--color-primary)] mt-1">
-                  Save {product.subscriptionDiscount}% with subscription
-                </span>
-              )}
-            </div>
+          {/* Add to Cart Link */}
+          <button
+            onClick={handleAddToCart}
+            className="text-sm font-semibold text-blue-600 hover:text-blue-700 mb-3 inline-block"
+          >
+            Add to Cart →
+          </button>
 
-            <Button
-              variant="primary"
-              size="sm"
-              onClick={handleAddToCart}
-              icon={<ShoppingCart className="w-4 h-4" />}
-              className="!px-4"
-            >
-              Add
-            </Button>
+          {/* Price */}
+          <div className="flex items-baseline gap-2">
+            <span className="text-xs text-[var(--color-stone)]">from</span>
+            <span className="text-xl font-bold text-[var(--color-charcoal)]">
+              {formatPrice(product.price)}
+            </span>
+            {product.originalPrice && (
+              <span className="text-sm text-[var(--color-stone)] line-through">
+                {formatPrice(product.originalPrice)}
+              </span>
+            )}
           </div>
 
           {/* Stock Status */}
