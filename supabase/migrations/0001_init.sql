@@ -26,6 +26,7 @@ create table subscriptions (
   stripe_subscription_id text not null unique,
   status text not null,
   frequency_days int not null check (frequency_days in (30, 60, 90)),
+  amount_cents int not null default 0,
   current_period_end timestamptz,
   cancel_at_period_end boolean not null default false,
   paused boolean not null default false,
@@ -107,7 +108,6 @@ create table reviews (
 -- Admin overrides on top of the catalog in data/products.ts.
 create table product_settings (
   slug text primary key,
-  hidden boolean not null default false,
   supplier_sku text,
   updated_at timestamptz not null default now()
 );
@@ -118,6 +118,44 @@ create table stripe_events (
   type text not null,
   processed_at timestamptz not null default now()
 );
+
+-- Creates an order, its items and a queued fulfilment atomically.
+-- Unique violations (duplicate session/invoice) surface as 23505 so callers can treat them as "already done".
+create or replace function create_order(p_order jsonb, p_items jsonb, p_supplier text)
+returns table (order_id uuid, order_no bigint)
+language plpgsql as $$
+declare
+  v_id uuid;
+  v_num bigint;
+begin
+  insert into orders (kind, customer_id, subscription_id, email, currency, subtotal_cents, discount_cents, tax_cents,
+                      shipping_cents, total_cents, shipping_name, shipping_address, age_confirmed,
+                      stripe_checkout_session_id, stripe_invoice_id, stripe_payment_intent_id)
+  select r.kind, r.customer_id, r.subscription_id, r.email, r.currency, r.subtotal_cents, r.discount_cents, r.tax_cents,
+         r.shipping_cents, r.total_cents, r.shipping_name, r.shipping_address, coalesce(r.age_confirmed, false),
+         r.stripe_checkout_session_id, r.stripe_invoice_id, r.stripe_payment_intent_id
+  from jsonb_populate_record(null::orders, p_order) r
+  returning orders.id, orders.order_number into v_id, v_num;
+
+  insert into order_items (order_id, product_slug, product_name, purchase_mode, bottles, frequency_days,
+                           unit_amount_cents, quantity, stripe_price_id, supplier_sku)
+  select v_id, i.product_slug, i.product_name, i.purchase_mode, i.bottles, i.frequency_days,
+         i.unit_amount_cents, i.quantity, i.stripe_price_id, i.supplier_sku
+  from jsonb_populate_recordset(null::order_items, p_items) i;
+
+  insert into fulfilments (order_id, supplier) values (v_id, p_supplier);
+
+  return query select v_id, v_num;
+end;
+$$;
+
+revoke all on function create_order(jsonb, jsonb, text) from public;
+do $$
+begin
+  if exists (select 1 from pg_roles where rolname = 'anon') then
+    revoke all on function create_order(jsonb, jsonb, text) from anon, authenticated;
+  end if;
+end $$;
 
 create index orders_customer_idx on orders (customer_id);
 create index orders_created_idx on orders (created_at desc);

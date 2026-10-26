@@ -1,17 +1,17 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Minus, Plus, Trash2, ShieldCheck, Truck, RotateCcw } from 'lucide-react';
 import { useCart, cartTotal, lineTotal } from '@/lib/store/cart';
 import { formatPrice } from '@/lib/utils/format';
 import { ProductImage } from '@/components/product/ProductImage';
+import { CheckoutButton } from '@/components/cart/CheckoutButton';
+import { useHydrated } from '@/lib/useHydrated';
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity } = useCart();
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-  if (!mounted) return <div className="min-h-[60vh]" />;
+  const hydrated = useHydrated();
+  if (!hydrated) return <div className="min-h-[60vh]" />;
 
   if (items.length === 0) {
     return (
@@ -73,8 +73,11 @@ export default function CartPage() {
           <div className="flex justify-between border-t border-[var(--color-line)] pt-3 text-lg font-bold">
             <dt>Total</dt><dd>{formatPrice(cartTotal(items))}</dd>
           </div>
+          <p className="text-xs text-[var(--color-muted)]">Taxes and discount codes are applied at checkout.</p>
         </dl>
-        <Link href="/checkout" className="btn btn-primary mt-6 w-full">Checkout</Link>
+        <div className="mt-6">
+          <CheckoutButton />
+        </div>
         <ul className="mt-6 space-y-2 text-sm text-[var(--color-muted)]">
           <li className="flex items-center gap-2"><Truck className="h-4 w-4" /> Free shipping on every order</li>
           <li className="flex items-center gap-2"><RotateCcw className="h-4 w-4" /> 90-day money-back guarantee</li>

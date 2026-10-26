@@ -42,6 +42,7 @@ export interface Product {
   dietaryTags: DietaryTag[];
   audiences: Audience[];
   species?: Species[];
+  ageRestricted?: boolean;
   bestSeller: boolean;
   rating: number;
   reviewCount: number;
@@ -74,6 +75,7 @@ export interface Review {
   title: string;
   body: string;
   date: string;
+  verified?: boolean;
   image?: string;
 }
 

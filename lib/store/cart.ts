@@ -18,14 +18,23 @@ interface CartStore {
   addItem: (input: AddInput) => void;
   removeItem: (key: string) => void;
   updateQuantity: (key: string, quantity: number) => void;
+  setFrequency: (frequency: Frequency) => void;
   clearCart: () => void;
 }
+
+const itemKey = (productId: string, mode: PurchaseMode, bottles: number) => `${productId}-${mode}-${bottles}`;
 
 export const lineTotal = (item: CartItem) => item.pricePerBottle * item.bottles * item.quantity;
 
 export const cartTotal = (items: CartItem[]) => items.reduce((sum, i) => sum + lineTotal(i), 0);
 
 export const cartCount = (items: CartItem[]) => items.reduce((sum, i) => sum + i.quantity, 0);
+
+export const cartFrequency = (items: CartItem[]) => items.find((i) => i.mode === 'subscribe')?.frequency;
+
+// A Stripe subscription has one billing interval, so every subscription line in the cart shares one frequency.
+const withFrequency = (items: CartItem[], frequency: Frequency) =>
+  items.map((i) => (i.mode === 'subscribe' ? { ...i, frequency } : i));
 
 export const useCart = create<CartStore>()(
   persist(
@@ -37,11 +46,12 @@ export const useCart = create<CartStore>()(
 
       addItem: ({ product, mode, bottles, pricePerBottle, frequency }) =>
         set((state) => {
-          const key = `${product.id}-${mode}-${bottles}-${frequency ?? 0}`;
+          const key = itemKey(product.id, mode, bottles);
           const existing = state.items.find((i) => i.key === key);
-          const items = existing
+          let items = existing
             ? state.items.map((i) => (i.key === key ? { ...i, quantity: i.quantity + 1 } : i))
             : [...state.items, { key, product, mode, bottles, pricePerBottle, frequency, quantity: 1 }];
+          if (mode === 'subscribe' && frequency) items = withFrequency(items, frequency);
           return { items, isOpen: true };
         }),
 
@@ -52,13 +62,15 @@ export const useCart = create<CartStore>()(
           items:
             quantity <= 0
               ? state.items.filter((i) => i.key !== key)
-              : state.items.map((i) => (i.key === key ? { ...i, quantity } : i)),
+              : state.items.map((i) => (i.key === key ? { ...i, quantity: Math.min(quantity, 20) } : i)),
         })),
+
+      setFrequency: (frequency) => set((state) => ({ items: withFrequency(state.items, frequency) })),
 
       clearCart: () => set({ items: [] }),
     }),
     {
-      name: 'noovit-cart-v2',
+      name: 'noovit-cart-v3',
       partialize: (state) => ({ items: state.items }),
     }
   )

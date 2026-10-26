@@ -190,7 +190,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
       <FAQSection faqs={product.faqs} />
       <SubscriptionPerks />
-      <ReviewsModule reviews={productReviews} total={product.reviewCount} rating={product.rating} />
+      <ReviewsModule reviews={productReviews} total={product.reviewCount} rating={product.rating} productSlug={product.slug} />
     </>
   );
 }

@@ -7,6 +7,7 @@ import { useCart, cartTotal, cartCount, lineTotal } from '@/lib/store/cart';
 import { formatPrice } from '@/lib/utils/format';
 import { ProductImage } from '@/components/product/ProductImage';
 import { getBestSellers } from '@/data/products';
+import { CheckoutButton } from './CheckoutButton';
 
 export function CartDrawer() {
   const { items, isOpen, close, updateQuantity, removeItem } = useCart();
@@ -96,9 +97,7 @@ export function CartDrawer() {
               <span>Subtotal</span>
               <span>{formatPrice(cartTotal(items))}</span>
             </div>
-            <Link href="/checkout" onClick={close} className="btn btn-primary w-full">
-              Checkout
-            </Link>
+            <CheckoutButton />
             <Link href="/cart" onClick={close} className="mt-3 block text-center text-sm font-semibold underline">
               View Cart
             </Link>

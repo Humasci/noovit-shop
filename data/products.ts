@@ -296,7 +296,7 @@ const seeds: Seed[] = [
     dosage: 'Mix 1 scoop (5g) into water or a shake daily.',
     servings: 60, form: 'powder', basePrice: 40, color: '#2F4858',
     productType: 'sports', dietaryTags: ['vegan', 'gluten-free', 'sugar-free', 'low-fodmap'],
-    audiences: ['men', 'women'], bestSeller: false, reviewCount: 3021,
+    audiences: ['men', 'women'], bestSeller: false, reviewCount: 3021, ageRestricted: true,
     faqs: [{ q: 'How many servings are in a jar?', a: '60 servings of 5g.' }],
   },
   {

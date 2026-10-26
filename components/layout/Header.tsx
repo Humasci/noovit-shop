@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { Menu, X, ShoppingBag, Leaf, Star, FlaskConical, ShieldCheck, BadgeCheck } from 'lucide-react';
 import { useCart, cartCount } from '@/lib/store/cart';
 import { TRUST_BAR } from '@/data/content';
+import { useHydrated } from '@/lib/useHydrated';
 
 const NAV = [
   { name: 'Shop', href: '/shop' },
@@ -19,12 +20,10 @@ const TRUST_ICONS = [Leaf, Star, FlaskConical, ShieldCheck, BadgeCheck];
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
   const items = useCart((s) => s.items);
   const openCart = useCart((s) => s.open);
 
-  useEffect(() => setMounted(true), []);
-  const count = mounted ? cartCount(items) : 0;
+  const count = useHydrated() ? cartCount(items) : 0;
 
   return (
     <>

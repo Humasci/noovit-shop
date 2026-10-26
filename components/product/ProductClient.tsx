@@ -1,12 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useSyncExternalStore } from 'react';
 import { Check, Truck } from 'lucide-react';
 import { Frequency, Product, PurchaseMode } from '@/types';
 import { packOptions, maxSavingPercent } from '@/data/products';
 import { PAYMENT_METHODS } from '@/data/content';
-import { useCart } from '@/lib/store/cart';
+import toast from 'react-hot-toast';
+import { useCart, cartFrequency } from '@/lib/store/cart';
 import { formatPrice } from '@/lib/utils/format';
+
 import { ProductImage, ImageVariant } from './ProductImage';
 
 const VARIANTS: ImageVariant[] = ['front', 'capsules', 'duo', 'facts'];
@@ -34,6 +36,22 @@ export function Gallery({ product }: { product: Product }) {
   );
 }
 
+const deliveryText = () => {
+  const day = (offset: number) => new Date(Date.now() + offset * 86400000).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  return `${day(3)} – ${day(6)}`;
+};
+
+// Pages are statically generated, so the estimate is computed in the browser rather than frozen at build time.
+function DeliveryEstimate() {
+  const text = useSyncExternalStore(() => () => {}, deliveryText, () => null);
+  return text ? (
+    <>
+      {' · Estimated '}
+      <span className="font-semibold">{text}</span>
+    </>
+  ) : null;
+}
+
 const PERKS = ['Pause, skip or cancel anytime', 'Price locked in for life', '90-day money-back guarantee', 'Priority customer support'];
 
 export function PurchaseBox({ product }: { product: Product }) {
@@ -45,14 +63,12 @@ export function PurchaseBox({ product }: { product: Product }) {
   const options = packOptions(product, mode);
   const pack = options[Math.min(packIdx, options.length - 1)];
 
-  const delivery = (days: number) =>
-    new Date(Date.now() + days * 86400000).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-
   return (
     <div>
       <p className="mb-5 flex items-center gap-2 text-sm">
         <Truck className="h-4 w-4 text-[var(--color-green)]" />
-        Free delivery · Estimated <span className="font-semibold">{delivery(3)} – {delivery(6)}</span>
+        Free delivery
+        <DeliveryEstimate />
       </p>
 
       <div className="grid grid-cols-2 gap-2 rounded-full bg-[var(--color-soft)] p-1">
@@ -130,9 +146,13 @@ export function PurchaseBox({ product }: { product: Product }) {
       )}
 
       <button
-        onClick={() =>
-          addItem({ product, mode, bottles: pack.bottles, pricePerBottle: pack.pricePerBottle, frequency: mode === 'subscribe' ? frequency : undefined })
-        }
+        onClick={() => {
+          const current = cartFrequency(useCart.getState().items);
+          if (mode === 'subscribe' && current && current !== frequency) {
+            toast(`All subscription items in your cart will now arrive every ${frequency} days.`);
+          }
+          addItem({ product, mode, bottles: pack.bottles, pricePerBottle: pack.pricePerBottle, frequency: mode === 'subscribe' ? frequency : undefined });
+        }}
         className="btn btn-primary mt-5 w-full text-lg"
       >
         Add to Cart — {formatPrice(pack.pricePerBottle * pack.bottles)}

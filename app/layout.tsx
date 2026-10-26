@@ -1,8 +1,5 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { Header } from '@/components/layout/Header';
-import { Footer } from '@/components/layout/Footer';
-import { CartDrawer } from '@/components/cart/CartDrawer';
 import { Toaster } from 'react-hot-toast';
 
 export const metadata: Metadata = {
@@ -16,10 +13,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body className="antialiased">
-        <Header />
-        <main className="min-h-screen">{children}</main>
-        <Footer />
-        <CartDrawer />
+        {children}
         <Toaster position="bottom-center" />
       </body>
     </html>
