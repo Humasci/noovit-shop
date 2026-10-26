@@ -1,137 +1,65 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { Product, CartItem, Cart } from '@/types';
+import { CartItem, Frequency, Product, PurchaseMode } from '@/types';
 
-interface CartStore extends Cart {
-  addItem: (product: Product, quantity?: number, isSubscription?: boolean) => void;
-  removeItem: (productId: string) => void;
-  updateQuantity: (productId: string, quantity: number) => void;
-  toggleSubscription: (productId: string) => void;
-  clearCart: () => void;
-  getItemCount: () => number;
+interface AddInput {
+  product: Product;
+  mode: PurchaseMode;
+  bottles: number;
+  pricePerBottle: number;
+  frequency?: Frequency;
 }
 
-const calculateTotals = (items: CartItem[]) => {
-  const subtotal = items.reduce((sum, item) => {
-    const price = item.isSubscription && item.product.subscriptionDiscount
-      ? item.product.price * (1 - item.product.subscriptionDiscount / 100)
-      : item.product.price;
-    return sum + (price * item.quantity);
-  }, 0);
+interface CartStore {
+  items: CartItem[];
+  isOpen: boolean;
+  open: () => void;
+  close: () => void;
+  addItem: (input: AddInput) => void;
+  removeItem: (key: string) => void;
+  updateQuantity: (key: string, quantity: number) => void;
+  clearCart: () => void;
+}
 
-  const discount = items.reduce((sum, item) => {
-    if (item.isSubscription && item.product.subscriptionDiscount) {
-      const discountAmount = item.product.price * (item.product.subscriptionDiscount / 100);
-      return sum + (discountAmount * item.quantity);
-    }
-    return sum;
-  }, 0);
+export const lineTotal = (item: CartItem) => item.pricePerBottle * item.bottles * item.quantity;
 
-  return {
-    subtotal: subtotal + discount,
-    discount,
-    total: subtotal,
-  };
-};
+export const cartTotal = (items: CartItem[]) => items.reduce((sum, i) => sum + lineTotal(i), 0);
+
+export const cartCount = (items: CartItem[]) => items.reduce((sum, i) => sum + i.quantity, 0);
 
 export const useCart = create<CartStore>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       items: [],
-      total: 0,
-      subtotal: 0,
-      discount: 0,
+      isOpen: false,
+      open: () => set({ isOpen: true }),
+      close: () => set({ isOpen: false }),
 
-      addItem: (product, quantity = 1, isSubscription = false) => {
+      addItem: ({ product, mode, bottles, pricePerBottle, frequency }) =>
         set((state) => {
-          const existingItem = state.items.find(
-            (item) => item.product.id === product.id && item.isSubscription === isSubscription
-          );
+          const key = `${product.id}-${mode}-${bottles}-${frequency ?? 0}`;
+          const existing = state.items.find((i) => i.key === key);
+          const items = existing
+            ? state.items.map((i) => (i.key === key ? { ...i, quantity: i.quantity + 1 } : i))
+            : [...state.items, { key, product, mode, bottles, pricePerBottle, frequency, quantity: 1 }];
+          return { items, isOpen: true };
+        }),
 
-          let newItems: CartItem[];
+      removeItem: (key) => set((state) => ({ items: state.items.filter((i) => i.key !== key) })),
 
-          if (existingItem) {
-            newItems = state.items.map((item) =>
-              item.product.id === product.id && item.isSubscription === isSubscription
-                ? { ...item, quantity: item.quantity + quantity }
-                : item
-            );
-          } else {
-            newItems = [...state.items, { product, quantity, isSubscription }];
-          }
+      updateQuantity: (key, quantity) =>
+        set((state) => ({
+          items:
+            quantity <= 0
+              ? state.items.filter((i) => i.key !== key)
+              : state.items.map((i) => (i.key === key ? { ...i, quantity } : i)),
+        })),
 
-          const totals = calculateTotals(newItems);
-
-          return {
-            items: newItems,
-            ...totals,
-          };
-        });
-      },
-
-      removeItem: (productId) => {
-        set((state) => {
-          const newItems = state.items.filter((item) => item.product.id !== productId);
-          const totals = calculateTotals(newItems);
-
-          return {
-            items: newItems,
-            ...totals,
-          };
-        });
-      },
-
-      updateQuantity: (productId, quantity) => {
-        set((state) => {
-          if (quantity <= 0) {
-            return get().removeItem(productId) as any;
-          }
-
-          const newItems = state.items.map((item) =>
-            item.product.id === productId ? { ...item, quantity } : item
-          );
-
-          const totals = calculateTotals(newItems);
-
-          return {
-            items: newItems,
-            ...totals,
-          };
-        });
-      },
-
-      toggleSubscription: (productId) => {
-        set((state) => {
-          const newItems = state.items.map((item) =>
-            item.product.id === productId
-              ? { ...item, isSubscription: !item.isSubscription }
-              : item
-          );
-
-          const totals = calculateTotals(newItems);
-
-          return {
-            items: newItems,
-            ...totals,
-          };
-        });
-      },
-
-      clearCart: () => {
-        set({
-          items: [],
-          total: 0,
-          subtotal: 0,
-          discount: 0,
-        });
-      },
-
-      getItemCount: () => {
-        return get().items.reduce((sum, item) => sum + item.quantity, 0);
-      },
+      clearCart: () => set({ items: [] }),
     }),
     {
-      name: 'noovit-cart',
+      name: 'noovit-cart-v2',
+      partialize: (state) => ({ items: state.items }),
     }
   )
 );

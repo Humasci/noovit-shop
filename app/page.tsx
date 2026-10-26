@@ -1,120 +1,160 @@
-import React from 'react';
 import Link from 'next/link';
-import { Button } from '@/components/ui/Button';
-import { ProductCard } from '@/components/product/ProductCard';
-import { getFeaturedProducts } from '@/data/products';
-import { Leaf, Award, ShieldCheck, Truck, CheckCircle } from 'lucide-react';
+import { Check, Microscope, Sprout, ArrowRight } from 'lucide-react';
+import { BestSellers } from '@/components/home/BestSellers';
+import {
+  TrustSection,
+  ReviewsSection,
+  FAQSection,
+  CommunitySection,
+  NewsletterSection,
+  SubscriptionPerks,
+  SectionHeading,
+} from '@/components/sections/Sections';
+import { Stars } from '@/components/ui/Stars';
+import { ProductImage } from '@/components/product/ProductImage';
+import { getProductBySlug } from '@/data/products';
+import { EXPERTS, GENERAL_FAQS, IMAGES } from '@/data/content';
+
+// PLACEHOLDER: swap these for press/retailer logos once you have them.
+const MARQUEE = ['Clean Ingredients', 'Third-Party Tested', 'GMP Certified', 'Nutritionist Formulated', 'Made in the USA', 'Vegan Options', '90-Day Guarantee'];
+
+const SPOTLIGHT = ['probiotic-complex', 'glucosamine-complex', 'turmeric-complex', 'marine-collagen-complex'];
 
 export default function HomePage() {
-  const featuredProducts = getFeaturedProducts();
+  const spotlight = SPOTLIGHT.map((s) => getProductBySlug(s)!);
 
   return (
-    <div>
-      {/* Simple Hero Section */}
-      <section className="bg-white py-10 md:py-14 border-b border-[var(--color-mist)]">
-        <div className="container mx-auto px-6 text-center">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-2 text-balance">
-            Reward yourself with locally-made, science-driven nutrition.{' '}
-            <span className="text-[var(--color-primary)]">You deserve better.</span>
-          </h1>
+    <>
+      {/* Hero */}
+      <section className="relative overflow-hidden">
+        <img src={IMAGES.hero} alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-r from-white via-white/85 to-white/10" />
+        <div className="container relative px-6 py-20 md:py-32">
+          <div className="max-w-xl">
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold shadow-sm">
+              <Stars size={14} /> 4.8/5 from 25,000+ customers
+            </div>
+            <h1 className="text-balance text-4xl md:text-6xl">Feel the difference of supplements done right.</h1>
+            <p className="mt-5 text-lg text-[var(--color-ink)]/80">
+              Clean, nutritionist-formulated supplements made in the USA and third-party tested — for gut health, sleep, joints, skin and energy.
+            </p>
+            <Link href="/shop" className="btn btn-primary mt-8">
+              Shop Now
+            </Link>
+            <ul className="mt-6 flex flex-col gap-2 text-sm font-semibold sm:flex-row sm:gap-6">
+              <li className="flex items-center gap-2"><Check className="h-4 w-4 text-[var(--color-green)]" /> 90-day money-back guarantee</li>
+              <li className="flex items-center gap-2"><Check className="h-4 w-4 text-[var(--color-green)]" /> Free delivery</li>
+            </ul>
+          </div>
         </div>
       </section>
 
-      {/* Featured Products */}
-      <section className="py-12 md:py-16 bg-[var(--color-cream)]">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl md:text-4xl font-bold mb-3">Our Supplements</h2>
-          </div>
+      {/* Marquee */}
+      <div className="overflow-hidden border-y border-[var(--color-line)] bg-[var(--color-soft)] py-5">
+        <div className="animate-marquee flex w-max gap-12 whitespace-nowrap text-sm font-bold uppercase tracking-[0.2em] text-[var(--color-navy)]/60">
+          {[...MARQUEE, ...MARQUEE].map((m, i) => (
+            <span key={i}>{m} ✦</span>
+          ))}
+        </div>
+      </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featuredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
+      <BestSellers />
+
+      <TrustSection />
+
+      {/* Product spotlight */}
+      <section className="section">
+        <div className="container px-6">
+          <div className="grid items-center gap-10 rounded-3xl bg-[var(--color-navy)] p-8 text-white md:grid-cols-2 md:p-14">
+            <div>
+              <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-[#93c5fd]">Customer favourites</p>
+              <h2 className="text-3xl text-white md:text-4xl">Our most-loved formulas</h2>
+              <ul className="mt-6 space-y-3">
+                {spotlight.map((p) => (
+                  <li key={p.slug}>
+                    <Link href={`/products/${p.slug}`} className="flex items-center gap-3 text-lg font-semibold hover:text-[#93c5fd]">
+                      <Stars size={14} /> {p.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              <Link href="/shop" className="btn mt-8 bg-white text-[var(--color-navy)] hover:bg-[#93c5fd]">
+                Shop Now
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              {spotlight.map((p) => (
+                <ProductImage key={p.slug} product={p} className="aspect-square w-full rounded-2xl" />
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* In Better We Trust */}
-      <section className="py-12 md:py-16 bg-white">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-bold mb-2">In Better We Trust</h2>
+      {/* Nutritionists */}
+      <section className="section bg-[var(--color-soft)]">
+        <div className="container grid gap-12 px-6 lg:grid-cols-[1fr_2fr]">
+          <div>
+            <SectionHeading eyebrow="Expert formulated" title="Build your routine with our nutritionists" center={false} />
+            <p className="-mt-6 text-[var(--color-muted)]">Every formula is reviewed by our panel of qualified nutrition professionals.</p>
+            <Link href="/shop" className="mt-6 inline-flex items-center gap-1 text-sm font-bold text-[var(--color-blue)]">
+              Explore our best sellers <ArrowRight className="h-4 w-4" />
+            </Link>
+            <div>
+              <Link href="/shop" className="btn btn-primary mt-6">Shop Now</Link>
+            </div>
           </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
-            {[
-              { icon: Award, label: 'GMP Certified' },
-              { icon: ShieldCheck, label: 'Third Party Tested' },
-              { icon: Leaf, label: 'Nutritionist Formulated' },
-              { icon: CheckCircle, label: 'Locally Produced in The US' },
-              { icon: Truck, label: '90-Day Money-Back Guarantee' },
-            ].map((item, index) => (
-              <div key={index} className="text-center">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[var(--color-mist)] mb-3 mx-auto">
-                  <item.icon className="w-8 h-8 text-[var(--color-primary)]" />
+          <div className="grid gap-4 sm:grid-cols-2">
+            {EXPERTS.map((e, i) => (
+              <div key={i} className="flex gap-4 rounded-2xl bg-white p-5">
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[var(--color-navy)] text-lg font-bold text-white">
+                  {e.credentials[0]}
                 </div>
-                <p className="text-sm font-medium text-[var(--color-charcoal)]">{item.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Vouched For - Testimonials */}
-      <section className="py-12 md:py-16 bg-[var(--color-cream)]">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-bold mb-2">Vouched For</h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              {
-                name: 'Sarah M.',
-                product: "Lion's Mane Capsules",
-                content: "This has completely transformed my focus at work. No more brain fog! I feel sharper and more productive throughout the day.",
-                rating: 5,
-                verified: true,
-              },
-              {
-                name: 'Mike R.',
-                product: 'Creatine Monohydrate',
-                content: 'The creatine is pure and effective. Noticeable strength gains within weeks. Best quality I\'ve found.',
-                rating: 5,
-                verified: true,
-              },
-              {
-                name: 'Emma L.',
-                product: 'Melatonin',
-                content: 'Finally sleeping through the night! This melatonin is gentle but effective. Game changer for my sleep quality.',
-                rating: 5,
-                verified: true,
-              },
-            ].map((testimonial, index) => (
-              <div key={index} className="bg-white rounded-xl p-6 shadow-sm">
-                <div className="flex items-center gap-1 mb-3">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <span key={i} className="text-yellow-400 text-lg">★</span>
-                  ))}
-                </div>
-                <p className="text-sm text-[var(--color-charcoal)] mb-4">{testimonial.content}</p>
-                <div className="border-t border-[var(--color-mist)] pt-4">
-                  <p className="font-semibold text-sm">{testimonial.name}</p>
-                  {testimonial.verified && (
-                    <p className="text-xs text-[var(--color-primary)] flex items-center gap-1 mt-1">
-                      <CheckCircle className="w-3 h-3" /> Verified Buyer
-                    </p>
-                  )}
-                  <Link href="/shop" className="text-xs text-blue-600 hover:underline mt-1 inline-block">
-                    {testimonial.product}
-                  </Link>
+                <div>
+                  <p className="font-bold">{e.name}</p>
+                  <p className="text-xs font-semibold text-[var(--color-blue)]">{e.credentials}</p>
+                  <p className="mt-2 text-sm text-[var(--color-muted)]">&ldquo;{e.quote}&rdquo;</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
       </section>
-    </div>
+
+      {/* Approach */}
+      <section className="section">
+        <div className="container grid items-center gap-12 px-6 md:grid-cols-2">
+          <img src={IMAGES.approach} alt="" className="aspect-[4/3] w-full rounded-3xl object-cover" loading="lazy" />
+          <div>
+            <SectionHeading eyebrow="Our approach" title="Nutrition backed by evidence, made for real life" center={false} />
+            <div className="space-y-6">
+              <div className="flex gap-4">
+                <Microscope className="h-8 w-8 shrink-0 text-[var(--color-blue)]" />
+                <div>
+                  <h3 className="text-lg">Researched doses</h3>
+                  <p className="text-[var(--color-muted)]">We use the forms and amounts studied in research — not pixie dust.</p>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <Sprout className="h-8 w-8 shrink-0 text-[var(--color-blue)]" />
+                <div>
+                  <h3 className="text-lg">Nothing you don&apos;t need</h3>
+                  <p className="text-[var(--color-muted)]">No artificial colours, fillers or unnecessary additives.</p>
+                </div>
+              </div>
+            </div>
+            <Link href="/about" className="mt-8 inline-flex items-center gap-1 font-bold text-[var(--color-blue)]">
+              Learn More <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <ReviewsSection />
+      <FAQSection faqs={GENERAL_FAQS.slice(0, 5)} />
+      <CommunitySection />
+      <NewsletterSection />
+      <SubscriptionPerks />
+    </>
   );
 }

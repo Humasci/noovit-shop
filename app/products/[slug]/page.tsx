@@ -1,223 +1,183 @@
-'use client';
-
-import React, { useState } from 'react';
-import { useParams } from 'next/navigation';
-import { getProductBySlug } from '@/data/products';
-import { Button } from '@/components/ui/Button';
-import { useCart } from '@/lib/store/cart';
-import { formatPrice } from '@/lib/utils/format';
-import { ShoppingCart, Check, Minus, Plus, Package, Shield, Truck } from 'lucide-react';
-import toast from 'react-hot-toast';
+import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import type { Metadata } from 'next';
+import { Leaf, MapPin, FlaskConical, Sparkles, Gem, BadgeDollarSign, ShieldCheck, Zap, BadgeCheck } from 'lucide-react';
+import { products, getProductBySlug } from '@/data/products';
+import { REVIEWS } from '@/data/content';
+import { Gallery, PurchaseBox, InfoTabs } from '@/components/product/ProductClient';
+import { ProductCard } from '@/components/product/ProductCard';
+import { Stars } from '@/components/ui/Stars';
+import { ReviewsModule } from '@/components/reviews/ReviewsModule';
+import { ReviewsSection, FAQSection, SubscriptionPerks, SectionHeading } from '@/components/sections/Sections';
 
-export default function ProductPage() {
-  const params = useParams();
-  const product = getProductBySlug(params.slug as string);
-  const [quantity, setQuantity] = useState(1);
-  const [isSubscription, setIsSubscription] = useState(false);
-  const addItem = useCart((state) => state.addItem);
+export function generateStaticParams() {
+  return products.map((p) => ({ slug: p.slug }));
+}
 
-  if (!product) {
-    return (
-      <div className="container mx-auto px-6 py-20 text-center">
-        <h1 className="text-3xl font-bold mb-4">Product Not Found</h1>
-        <p className="text-[var(--color-stone)] mb-6">
-          Sorry, we couldn&apos;t find the product you&apos;re looking for.
-        </p>
-        <Link href="/shop">
-          <Button variant="primary">Back to Shop</Button>
-        </Link>
-      </div>
-    );
-  }
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const product = getProductBySlug((await params).slug);
+  return product ? { title: `${product.name} — Noovit`, description: product.description } : {};
+}
 
-  const handleAddToCart = () => {
-    addItem(product, quantity, isSubscription);
-    toast.success(`${product.name} added to cart!`);
-  };
+const VALUES = [
+  { icon: Sparkles, title: 'Effective Nutrition', text: 'Researched forms and doses.' },
+  { icon: Leaf, title: 'Clean Ingredients', text: 'No artificial colours or fillers.' },
+  { icon: Gem, title: 'Premium Formulas', text: 'Made in GMP-certified facilities.' },
+  { icon: BadgeDollarSign, title: '90-Day Guarantee', text: 'Love it or get your money back.' },
+];
 
-  const currentPrice = isSubscription && product.subscriptionDiscount
-    ? product.price * (1 - product.subscriptionDiscount / 100)
-    : product.price;
+export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
+  const product = getProductBySlug((await params).slug);
+  if (!product) notFound();
+
+  const productReviews = [...REVIEWS].sort((a, b) => Number(b.productSlug === product.slug) - Number(a.productSlug === product.slug));
+  const related = products.filter((p) => p.id !== product.id && p.bestSeller).slice(0, 4);
+  const quality = [
+    { icon: Leaf, label: product.dietaryTags.includes('vegan') ? 'Vegan & Gluten-Free' : 'Gluten-Free' },
+    { icon: MapPin, label: 'Made in the USA' },
+    { icon: FlaskConical, label: '3rd Party Tested' },
+  ];
 
   return (
-    <div className="min-h-screen bg-[var(--color-cream)]">
-      <div className="container mx-auto px-6 py-12">
-        {/* Breadcrumb */}
-        <nav className="mb-8 text-sm">
-          <Link href="/" className="text-[var(--color-stone)] hover:text-[var(--color-primary)]">
-            Home
-          </Link>
-          <span className="mx-2 text-[var(--color-stone)]">/</span>
-          <Link href="/shop" className="text-[var(--color-stone)] hover:text-[var(--color-primary)]">
-            Shop
-          </Link>
-          <span className="mx-2 text-[var(--color-stone)]">/</span>
-          <span className="text-[var(--color-charcoal)]">{product.name}</span>
-        </nav>
+    <>
+      <nav className="container px-6 pt-6 text-xs text-[var(--color-muted)]">
+        <Link href="/">Home</Link> / <Link href="/shop">Shop</Link> / <span className="text-[var(--color-ink)]">{product.name}</span>
+      </nav>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-          {/* Product Image */}
-          <div className="bg-white rounded-2xl p-8 shadow-sm">
-            <div className="aspect-square overflow-hidden rounded-xl bg-gradient-to-br from-[var(--color-mist)] to-white">
-              <img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-              />
-            </div>
+      <section className="container grid gap-10 px-6 py-8 lg:grid-cols-2 lg:gap-16">
+        <div className="lg:sticky lg:top-24 lg:self-start">
+          <Gallery product={product} />
+        </div>
+        <div>
+          {product.bestSeller && (
+            <span className="rounded-full bg-[var(--color-soft)] px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-[var(--color-navy)]">
+              Best Seller
+            </span>
+          )}
+          <h1 className="mt-3 text-4xl md:text-5xl">{product.name}</h1>
+          <a href="#write" className="mt-3 flex items-center gap-2 text-sm">
+            <Stars rating={product.rating} /> <span className="font-semibold">{product.reviewCount.toLocaleString()} Reviews</span>
+          </a>
+          <p className="mt-4 text-lg text-[var(--color-muted)]">{product.shortBenefit}</p>
+
+          <div className="mt-6">
+            <PurchaseBox product={product} />
           </div>
 
-          {/* Product Info */}
-          <div>
-            <div className="mb-2">
-              <span className="inline-block px-3 py-1 bg-[var(--color-primary)] text-white text-sm font-medium rounded-full uppercase tracking-wide">
-                {product.category}
+          {/* PLACEHOLDER: replace with a real nutritionist's note, photo and signature. */}
+          <figure className="mt-8 flex gap-4 rounded-2xl border border-[var(--color-line)] p-5">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[var(--color-navy)] font-bold text-white">N</div>
+            <div>
+              <blockquote className="text-sm italic">
+                &ldquo;{product.name} is one I recommend often — {product.shortBenefit.charAt(0).toLowerCase() + product.shortBenefit.slice(1)}&rdquo;
+              </blockquote>
+              <figcaption className="mt-2 text-xs font-bold">
+                Advisor Name <span className="font-semibold text-[var(--color-blue)]">· Registered Nutritionist</span>
+              </figcaption>
+            </div>
+          </figure>
+
+          <div className="mt-8">
+            <InfoTabs product={product} />
+          </div>
+        </div>
+      </section>
+
+      {/* Review snippets */}
+      <section className="section bg-[var(--color-soft)]">
+        <div className="container px-6">
+          <SectionHeading title="See what people think" />
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {productReviews.slice(0, 4).map((r) => (
+              <article key={r.id} className="rounded-2xl bg-white p-5">
+                <Stars rating={r.rating} size={14} />
+                <p className="mt-3 text-sm">{r.body}</p>
+                <p className="mt-3 flex items-center gap-1 text-xs font-bold">
+                  {r.name} <BadgeCheck className="h-3.5 w-3.5 text-[var(--color-green)]" />
+                  <span className="font-semibold text-[var(--color-green)]">Verified Buyer</span>
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Related */}
+      <section className="section">
+        <div className="container px-6">
+          <SectionHeading title="Build your health routine" sub="Pairs well with" />
+          <div className="grid grid-cols-2 gap-x-5 gap-y-10 lg:grid-cols-4">
+            {related.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Ingredient quality */}
+      <section className="section bg-[var(--color-soft)]">
+        <div className="container px-6">
+          <SectionHeading eyebrow="Inside the bottle" title="Ingredients that earn their place" />
+          <div className="mb-10 flex flex-wrap justify-center gap-3">
+            {quality.map(({ icon: Icon, label }) => (
+              <span key={label} className="flex items-center gap-2 rounded-full bg-white px-5 py-2 text-sm font-bold">
+                <Icon className="h-4 w-4 text-[var(--color-blue)]" /> {label}
               </span>
-            </div>
-
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">{product.name}</h1>
-            <p className="text-xl text-[var(--color-stone)] mb-6">{product.tagline}</p>
-
-            {/* Price */}
-            <div className="mb-6">
-              <div className="flex items-baseline gap-3 mb-2">
-                <span className="text-4xl font-bold text-[var(--color-charcoal)]">
-                  {formatPrice(currentPrice)}
-                </span>
-                {product.originalPrice && !isSubscription && (
-                  <span className="text-xl text-[var(--color-stone)] line-through">
-                    {formatPrice(product.originalPrice)}
-                  </span>
-                )}
+            ))}
+          </div>
+          <div className="grid gap-5 md:grid-cols-3">
+            {product.ingredients.slice(0, 3).map((i) => (
+              <div key={i.name} className="rounded-2xl bg-white p-6">
+                <p className="text-sm font-bold text-[var(--color-blue)]">{i.amount}</p>
+                <h3 className="mt-1 text-lg">{i.name}</h3>
+                {i.description && <p className="mt-2 text-sm text-[var(--color-muted)]">{i.description}</p>}
               </div>
-              <p className="text-sm text-[var(--color-stone)]">
-                {product.servingSize} • {product.servingsPerContainer} servings
-              </p>
-            </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-            {/* Subscription Option */}
-            {product.subscriptionAvailable && (
-              <div className="mb-6 bg-gradient-to-r from-[var(--color-mist)] to-white rounded-xl p-4 border-2 border-[var(--color-primary-light)]">
-                <label className="flex items-start cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={isSubscription}
-                    onChange={() => setIsSubscription(!isSubscription)}
-                    className="mt-1 mr-3"
-                  />
-                  <div>
-                    <p className="font-semibold text-[var(--color-charcoal)]">
-                      Subscribe & Save {product.subscriptionDiscount}%
-                    </p>
-                    <p className="text-sm text-[var(--color-stone)]">
-                      Get it delivered monthly and save on every order. Cancel anytime.
-                    </p>
-                  </div>
-                </label>
+      {/* Brand values */}
+      <section className="section">
+        <div className="container px-6">
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {VALUES.map(({ icon: Icon, title, text }) => (
+              <div key={title} className="rounded-2xl border border-[var(--color-line)] p-6">
+                <Icon className="h-8 w-8 text-[var(--color-blue)]" strokeWidth={1.5} />
+                <h3 className="mt-4 text-lg">{title}</h3>
+                <p className="mt-1 text-sm text-[var(--color-muted)]">{text}</p>
               </div>
-            )}
+            ))}
+          </div>
+          <div className="mt-8 text-center">
+            <Link href="/about" className="font-bold text-[var(--color-blue)]">Learn More →</Link>
+          </div>
+        </div>
+      </section>
 
-            {/* Quantity Selector */}
-            <div className="mb-6">
-              <label className="block text-sm font-medium mb-2">Quantity</label>
-              <div className="flex items-center gap-4">
-                <div className="flex items-center border-2 border-[var(--color-mist)] rounded-lg">
-                  <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="px-4 py-2 hover:bg-[var(--color-mist)] transition-colors"
-                  >
-                    <Minus className="w-4 h-4" />
-                  </button>
-                  <span className="px-6 py-2 font-semibold">{quantity}</span>
-                  <button
-                    onClick={() => setQuantity(quantity + 1)}
-                    className="px-4 py-2 hover:bg-[var(--color-mist)] transition-colors"
-                  >
-                    <Plus className="w-4 h-4" />
-                  </button>
+      <ReviewsSection />
+
+      {/* Benefits grid */}
+      <section className="section bg-[var(--color-navy)] text-white">
+        <div className="container px-6">
+          <h2 className="mb-10 text-center text-3xl text-white md:text-4xl">Why {product.name}?</h2>
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {product.benefits.map((b, i) => {
+              const Icon = [Zap, ShieldCheck, Sparkles, Leaf][i % 4];
+              return (
+                <div key={b} className="rounded-2xl bg-white/5 p-6">
+                  <Icon className="h-8 w-8 text-[#93c5fd]" strokeWidth={1.5} />
+                  <p className="mt-4 font-semibold">{b}</p>
                 </div>
-              </div>
-            </div>
-
-            {/* Add to Cart Button */}
-            <Button
-              variant="primary"
-              size="lg"
-              fullWidth
-              onClick={handleAddToCart}
-              disabled={!product.inStock}
-              icon={<ShoppingCart className="w-5 h-5" />}
-            >
-              {product.inStock ? 'Add to Cart' : 'Out of Stock'}
-            </Button>
-
-            {/* Quick Info */}
-            <div className="mt-8 grid grid-cols-3 gap-4">
-              <div className="text-center p-4 bg-white rounded-lg">
-                <Package className="w-6 h-6 text-[var(--color-primary)] mx-auto mb-2" />
-                <p className="text-xs text-[var(--color-stone)]">Free Shipping</p>
-              </div>
-              <div className="text-center p-4 bg-white rounded-lg">
-                <Shield className="w-6 h-6 text-[var(--color-primary)] mx-auto mb-2" />
-                <p className="text-xs text-[var(--color-stone)]">Third-Party Tested</p>
-              </div>
-              <div className="text-center p-4 bg-white rounded-lg">
-                <Truck className="w-6 h-6 text-[var(--color-primary)] mx-auto mb-2" />
-                <p className="text-xs text-[var(--color-stone)]">Ships in 1-2 days</p>
-              </div>
-            </div>
+              );
+            })}
           </div>
         </div>
+      </section>
 
-        {/* Product Details Tabs */}
-        <div className="bg-white rounded-2xl p-8 shadow-sm mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            {/* Description */}
-            <div>
-              <h2 className="text-2xl font-bold mb-4">About This Product</h2>
-              <p className="text-[var(--color-stone)] mb-6">{product.longDescription}</p>
-
-              <h3 className="text-xl font-semibold mb-3">Dosage</h3>
-              <p className="text-[var(--color-stone)] mb-6">{product.dosage}</p>
-
-              {product.scientificBacking && (
-                <>
-                  <h3 className="text-xl font-semibold mb-3">Scientific Backing</h3>
-                  <p className="text-[var(--color-stone)]">{product.scientificBacking}</p>
-                </>
-              )}
-            </div>
-
-            {/* Benefits & Ingredients */}
-            <div>
-              <h2 className="text-2xl font-bold mb-4">Benefits</h2>
-              <ul className="space-y-2 mb-8">
-                {product.benefits.map((benefit, index) => (
-                  <li key={index} className="flex items-start gap-2">
-                    <Check className="w-5 h-5 text-[var(--color-primary)] flex-shrink-0 mt-0.5" />
-                    <span className="text-[var(--color-stone)]">{benefit}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <h2 className="text-2xl font-bold mb-4">Ingredients</h2>
-              <div className="space-y-3">
-                {product.ingredients.map((ingredient, index) => (
-                  <div key={index} className="border-l-2 border-[var(--color-primary)] pl-4">
-                    <p className="font-semibold text-[var(--color-charcoal)]">
-                      {ingredient.name} - {ingredient.amount}
-                    </p>
-                    {ingredient.description && (
-                      <p className="text-sm text-[var(--color-stone)]">{ingredient.description}</p>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+      <FAQSection faqs={product.faqs} />
+      <SubscriptionPerks />
+      <ReviewsModule reviews={productReviews} total={product.reviewCount} rating={product.rating} />
+    </>
   );
 }

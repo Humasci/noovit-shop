@@ -1,214 +1,159 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import { Suspense, useMemo, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { SlidersHorizontal } from 'lucide-react';
 import { ProductCard } from '@/components/product/ProductCard';
-import { products, ProductType, DietaryTag, getAllProductTypes, getAllDietaryTags } from '@/data/products';
+import { TrustSection, ReviewsSection } from '@/components/sections/Sections';
+import { products, PRODUCT_TYPES, DIETARY_TAGS, asLowAs } from '@/data/products';
+import { DietaryTag, ProductType } from '@/types';
 
-type SortOption = 'default' | 'name-asc' | 'name-desc' | 'price-low' | 'price-high';
+type TypeFilter = ProductType | 'all' | 'best-sellers';
+type Sort = 'featured' | 'az' | 'za' | 'low' | 'high';
 
-export default function ShopPage() {
-  const [selectedType, setSelectedType] = useState<ProductType | 'all'>('all');
-  const [selectedDietaryTags, setSelectedDietaryTags] = useState<DietaryTag[]>([]);
-  const [sortBy, setSortBy] = useState<SortOption>('default');
+const SORTS: { value: Sort; label: string }[] = [
+  { value: 'featured', label: 'Featured' },
+  { value: 'az', label: 'Alphabetically, A–Z' },
+  { value: 'za', label: 'Alphabetically, Z–A' },
+  { value: 'low', label: 'Price, low to high' },
+  { value: 'high', label: 'Price, high to low' },
+];
 
-  const productTypes = [
-    { value: 'all' as const, label: 'All Products' },
-    { value: 'supplements' as const, label: 'Supplements' },
-    { value: 'sports' as const, label: 'Sports' },
-    { value: 'specialties' as const, label: 'Specialties' },
-  ];
+const TYPE_TABS: { value: TypeFilter; label: string }[] = [
+  { value: 'all', label: 'All Products' },
+  { value: 'best-sellers', label: 'Best Sellers' },
+  ...PRODUCT_TYPES,
+];
 
-  const dietaryOptions: Array<{ value: DietaryTag; label: string }> = [
-    { value: 'vegan', label: 'Vegan' },
-    { value: 'gluten-free', label: 'Gluten-free' },
-    { value: 'pregnancy-safe', label: 'Pregnancy-safe' },
-    { value: 'postpartum-safe', label: 'Postpartum-safe' },
-    { value: 'sugar-free', label: 'Sugar-free' },
-  ];
+function Pill({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`shrink-0 rounded-full border px-4 py-1.5 text-sm font-semibold transition-colors ${
+        active ? 'border-[var(--color-navy)] bg-[var(--color-navy)] text-white' : 'border-[var(--color-line)] hover:border-[var(--color-navy)]'
+      }`}
+    >
+      {children}
+    </button>
+  );
+}
 
-  const sortOptions: Array<{ value: SortOption; label: string }> = [
-    { value: 'default', label: 'All' },
-    { value: 'name-asc', label: 'Alphabetically, A-Z' },
-    { value: 'name-desc', label: 'Alphabetically, Z-A' },
-    { value: 'price-low', label: 'Price, Low to High' },
-    { value: 'price-high', label: 'Price, High to Low' },
-  ];
+function Shop() {
+  const params = useSearchParams();
+  const [type, setType] = useState<TypeFilter>((params.get('type') as TypeFilter) || 'all');
+  const [tags, setTags] = useState<DietaryTag[]>([]);
+  const [sort, setSort] = useState<Sort>('featured');
+  const [showDiet, setShowDiet] = useState(true);
 
-  const toggleDietaryTag = (tag: DietaryTag) => {
-    setSelectedDietaryTags(prev =>
-      prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
+  const filtered = useMemo(() => {
+    const list = products.filter(
+      (p) =>
+        (type === 'all' || (type === 'best-sellers' ? p.bestSeller : p.productType === type)) &&
+        tags.every((t) => p.dietaryTags.includes(t))
     );
-  };
-
-  const filteredAndSortedProducts = useMemo(() => {
-    let filtered = [...products];
-
-    // Filter by product type
-    if (selectedType !== 'all') {
-      filtered = filtered.filter(p => p.productType === selectedType);
-    }
-
-    // Filter by dietary tags (AND logic - must have all selected tags)
-    if (selectedDietaryTags.length > 0) {
-      filtered = filtered.filter(p =>
-        selectedDietaryTags.every(tag => p.dietaryTags.includes(tag))
-      );
-    }
-
-    // Sort
-    if (sortBy === 'name-asc') {
-      filtered.sort((a, b) => a.name.localeCompare(b.name));
-    } else if (sortBy === 'name-desc') {
-      filtered.sort((a, b) => b.name.localeCompare(a.name));
-    } else if (sortBy === 'price-low') {
-      filtered.sort((a, b) => a.price - b.price);
-    } else if (sortBy === 'price-high') {
-      filtered.sort((a, b) => b.price - a.price);
-    }
-
-    return filtered;
-  }, [selectedType, selectedDietaryTags, sortBy]);
-
-  // Group products by type for display
-  const groupedProducts = useMemo(() => {
-    const groups: Record<ProductType, typeof filteredAndSortedProducts> = {
-      supplements: [],
-      sports: [],
-      specialties: [],
+    const sorters: Record<Sort, (a: (typeof list)[0], b: (typeof list)[0]) => number> = {
+      featured: () => 0,
+      az: (a, b) => a.name.localeCompare(b.name),
+      za: (a, b) => b.name.localeCompare(a.name),
+      low: (a, b) => asLowAs(a) - asLowAs(b),
+      high: (a, b) => asLowAs(b) - asLowAs(a),
     };
+    return [...list].sort(sorters[sort]);
+  }, [type, tags, sort]);
 
-    filteredAndSortedProducts.forEach(product => {
-      groups[product.productType].push(product);
-    });
+  const groups = PRODUCT_TYPES.map((t) => ({ ...t, items: filtered.filter((p) => p.productType === t.value) })).filter(
+    (g) => g.items.length > 0
+  );
 
-    return groups;
-  }, [filteredAndSortedProducts]);
+  const toggleTag = (t: DietaryTag) => setTags((prev) => (prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]));
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero with headline */}
-      <section className="bg-[var(--color-cream)] py-10 md:py-12 border-b border-[var(--color-mist)]">
-        <div className="container mx-auto px-6 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold mb-2">
-            Reward yourself with locally-made, science-driven nutrition.{' '}
-            <span className="text-[var(--color-primary)]">You deserve better.</span>
-          </h1>
+    <>
+      <section className="bg-[var(--color-soft)] py-14">
+        <div className="container px-6 text-center">
+          <h1 className="mx-auto max-w-3xl text-balance text-3xl md:text-5xl">Clean, science-driven nutrition for every body.</h1>
+          <p className="mt-4 text-[var(--color-muted)]">Nutritionist formulated · Third-party tested · Made in the USA</p>
         </div>
       </section>
 
-      {/* Filter Bar */}
-      <div className="bg-white border-b border-[var(--color-mist)] py-4">
-        <div className="container mx-auto px-6">
-          <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
-            {/* Product Type Filter */}
-            <div className="flex flex-wrap gap-2">
-              <span className="text-sm font-medium text-[var(--color-stone)] mr-2">Product Type:</span>
-              {productTypes.map(type => (
-                <button
-                  key={type.value}
-                  onClick={() => setSelectedType(type.value)}
-                  className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                    selectedType === type.value
-                      ? 'bg-[var(--color-primary)] text-white'
-                      : 'bg-[var(--color-mist)] text-[var(--color-charcoal)] hover:bg-[var(--color-primary-light)] hover:text-white'
-                  }`}
-                >
-                  {type.label}
-                </button>
+      <div className="sticky top-[65px] z-30 border-b border-[var(--color-line)] bg-white">
+        <div className="container px-6 py-4">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div className="no-scrollbar flex items-center gap-2 overflow-x-auto">
+              <span className="mr-1 shrink-0 text-xs font-bold uppercase tracking-wider text-[var(--color-muted)]">Product Type</span>
+              {TYPE_TABS.map((t) => (
+                <Pill key={t.value} active={type === t.value} onClick={() => setType(t.value)}>
+                  {t.label}
+                </Pill>
               ))}
             </div>
-
-            {/* Sort By */}
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-[var(--color-stone)]">Sort By:</span>
+            <div className="flex items-center gap-3">
+              <button onClick={() => setShowDiet(!showDiet)} className="flex items-center gap-1 text-sm font-semibold">
+                <SlidersHorizontal className="h-4 w-4" /> {showDiet ? 'Fewer filters' : 'More filters'}
+              </button>
               <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as SortOption)}
-                className="px-3 py-1.5 border border-[var(--color-mist)] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+                value={sort}
+                onChange={(e) => setSort(e.target.value as Sort)}
+                className="rounded-full border border-[var(--color-line)] px-4 py-2 text-sm font-semibold"
+                aria-label="Sort by"
               >
-                {sortOptions.map(option => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
+                {SORTS.map((s) => (
+                  <option key={s.value} value={s.value}>
+                    Sort: {s.label}
                   </option>
                 ))}
               </select>
             </div>
           </div>
-
-          {/* Dietary Filters */}
-          <div className="flex flex-wrap gap-2 mt-4 items-center">
-            <span className="text-sm font-medium text-[var(--color-stone)] mr-2">For Every Body:</span>
-            {dietaryOptions.map(option => (
-              <button
-                key={option.value}
-                onClick={() => toggleDietaryTag(option.value)}
-                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                  selectedDietaryTags.includes(option.value)
-                    ? 'bg-[var(--color-primary)] text-white'
-                    : 'bg-[var(--color-mist)] text-[var(--color-charcoal)] hover:bg-[var(--color-primary-light)] hover:text-white'
-                }`}
-              >
-                {option.label}
-              </button>
-            ))}
-          </div>
+          {showDiet && (
+            <div className="no-scrollbar mt-3 flex items-center gap-2 overflow-x-auto">
+              <span className="mr-1 shrink-0 text-xs font-bold uppercase tracking-wider text-[var(--color-muted)]">For Every Body</span>
+              {DIETARY_TAGS.map((t) => (
+                <Pill key={t.value} active={tags.includes(t.value)} onClick={() => toggleTag(t.value)}>
+                  {t.label}
+                </Pill>
+              ))}
+              {tags.length > 0 && (
+                <button onClick={() => setTags([])} className="shrink-0 text-sm font-semibold text-[var(--color-blue)] underline">
+                  Clear
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Products */}
-      <div className="container mx-auto px-6 py-12">
-        {filteredAndSortedProducts.length === 0 ? (
-          <div className="text-center py-16">
-            <p className="text-xl text-[var(--color-stone)]">
-              No products match your search criteria.
-            </p>
-          </div>
+      <div className="container px-6 py-12">
+        {groups.length === 0 ? (
+          <p className="py-20 text-center text-[var(--color-muted)]">No products match your search criteria.</p>
         ) : (
           <div className="space-y-16">
-            {/* Supplements */}
-            {groupedProducts.supplements.length > 0 && (
-              <section>
-                <h2 className="text-2xl md:text-3xl font-bold mb-6">
-                  Supplements ({groupedProducts.supplements.length})
+            {groups.map((g) => (
+              <section key={g.value}>
+                <h2 className="mb-8 text-2xl md:text-3xl">
+                  {g.label} <span className="text-[var(--color-muted)]">({g.items.length})</span>
                 </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {groupedProducts.supplements.map(product => (
-                    <ProductCard key={product.id} product={product} />
+                <div className="grid grid-cols-2 gap-x-5 gap-y-10 lg:grid-cols-4">
+                  {g.items.map((p) => (
+                    <ProductCard key={p.id} product={p} />
                   ))}
                 </div>
               </section>
-            )}
-
-            {/* Sports */}
-            {groupedProducts.sports.length > 0 && (
-              <section>
-                <h2 className="text-2xl md:text-3xl font-bold mb-6">
-                  Sports ({groupedProducts.sports.length})
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {groupedProducts.sports.map(product => (
-                    <ProductCard key={product.id} product={product} />
-                  ))}
-                </div>
-              </section>
-            )}
-
-            {/* Specialties */}
-            {groupedProducts.specialties.length > 0 && (
-              <section>
-                <h2 className="text-2xl md:text-3xl font-bold mb-6">
-                  Specialties ({groupedProducts.specialties.length})
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {groupedProducts.specialties.map(product => (
-                    <ProductCard key={product.id} product={product} />
-                  ))}
-                </div>
-              </section>
-            )}
+            ))}
           </div>
         )}
       </div>
-    </div>
+
+      <TrustSection />
+      <ReviewsSection />
+    </>
+  );
+}
+
+export default function ShopPage() {
+  return (
+    <Suspense>
+      <Shop />
+    </Suspense>
   );
 }

@@ -1,29 +1,14 @@
-export interface Product {
-  id: string;
-  name: string;
-  slug: string;
-  tagline: string;
-  description: string;
-  longDescription: string;
-  price: number;
-  originalPrice?: number;
-  image: string;
-  images: string[];
-  category: ProductCategory;
-  benefits: string[];
-  ingredients: Ingredient[];
-  dosage: string;
-  servingSize: string;
-  servingsPerContainer: number;
-  inStock: boolean;
-  featured: boolean;
-  nutrition?: NutritionFact[];
-  scientificBacking?: string;
-  subscriptionAvailable: boolean;
-  subscriptionDiscount?: number;
-}
+export type ProductType = 'supplements' | 'sports' | 'specialties';
 
-export type ProductCategory = 'focus' | 'energy' | 'sleep' | 'recovery' | 'nutrition';
+export type DietaryTag =
+  | 'vegan'
+  | 'gluten-free'
+  | 'pregnancy-safe'
+  | 'postpartum-safe'
+  | 'low-fodmap'
+  | 'sugar-free';
+
+export type Audience = 'women' | 'men';
 
 export interface Ingredient {
   name: string;
@@ -31,76 +16,66 @@ export interface Ingredient {
   description?: string;
 }
 
-export interface NutritionFact {
+export interface FAQ {
+  q: string;
+  a: string;
+}
+
+export interface Product {
+  id: string;
   name: string;
-  amount: string;
-  dailyValue?: string;
+  slug: string;
+  shortBenefit: string;
+  description: string;
+  whoFor: string;
+  benefits: string[];
+  ingredients: Ingredient[];
+  otherIngredients: string;
+  dosage: string;
+  servings: number;
+  form: 'capsules' | 'powder' | 'softgels';
+  basePrice: number;
+  color: string;
+  productType: ProductType;
+  dietaryTags: DietaryTag[];
+  audiences: Audience[];
+  bestSeller: boolean;
+  rating: number;
+  reviewCount: number;
+  faqs: FAQ[];
+}
+
+export type PurchaseMode = 'subscribe' | 'one-time';
+export type Frequency = 30 | 60 | 90;
+
+export interface PackOption {
+  bottles: number;
+  pricePerBottle: number;
 }
 
 export interface CartItem {
+  key: string;
   product: Product;
+  mode: PurchaseMode;
+  frequency?: Frequency;
+  bottles: number;
+  pricePerBottle: number;
   quantity: number;
-  isSubscription: boolean;
 }
 
-export interface Cart {
-  items: CartItem[];
-  total: number;
-  subtotal: number;
-  discount: number;
-}
-
-export interface ShippingAddress {
-  fullName: string;
-  address1: string;
-  address2?: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  country: string;
-}
-
-export interface User {
-  id: string;
-  email: string;
-  name: string;
-  shippingAddress?: ShippingAddress;
-  subscriptions: Subscription[];
-}
-
-export interface Subscription {
-  id: string;
-  productId: string;
-  frequency: 'monthly' | 'biweekly' | 'quarterly';
-  nextDeliveryDate: Date;
-  status: 'active' | 'paused' | 'cancelled';
-}
-
-export interface FilterOptions {
-  categories: ProductCategory[];
-  benefits: string[];
-  priceRange: [number, number];
-  inStockOnly: boolean;
-}
-
-export interface Testimonial {
+export interface Review {
   id: string;
   name: string;
-  role?: string;
-  content: string;
+  productSlug: string;
   rating: number;
-  productId?: string;
+  title: string;
+  body: string;
+  date: string;
+  image?: string;
 }
 
-export interface BlogPost {
-  id: string;
-  title: string;
-  slug: string;
-  excerpt: string;
-  content: string;
-  image: string;
-  category: string;
-  publishedDate: Date;
-  author: string;
-  readTime: number;
+export interface Expert {
+  name: string;
+  credentials: string;
+  quote: string;
 }
