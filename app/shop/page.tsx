@@ -2,108 +2,212 @@
 
 import React, { useState, useMemo } from 'react';
 import { ProductCard } from '@/components/product/ProductCard';
-import { products } from '@/data/products';
-import { ProductCategory } from '@/types';
-import { Filter } from 'lucide-react';
+import { products, ProductType, DietaryTag, getAllProductTypes, getAllDietaryTags } from '@/data/products';
+
+type SortOption = 'default' | 'name-asc' | 'name-desc' | 'price-low' | 'price-high';
 
 export default function ShopPage() {
-  const [selectedCategory, setSelectedCategory] = useState<ProductCategory | 'all'>('all');
-  const [showFilters, setShowFilters] = useState(false);
+  const [selectedType, setSelectedType] = useState<ProductType | 'all'>('all');
+  const [selectedDietaryTags, setSelectedDietaryTags] = useState<DietaryTag[]>([]);
+  const [sortBy, setSortBy] = useState<SortOption>('default');
 
-  const categories: Array<{ value: ProductCategory | 'all'; label: string }> = [
-    { value: 'all', label: 'All Products' },
-    { value: 'focus', label: 'Focus & Cognition' },
-    { value: 'energy', label: 'Energy' },
-    { value: 'sleep', label: 'Sleep Support' },
-    { value: 'recovery', label: 'Recovery' },
-    { value: 'nutrition', label: 'Nutrition' },
+  const productTypes = [
+    { value: 'all' as const, label: 'All Products' },
+    { value: 'supplements' as const, label: 'Supplements' },
+    { value: 'sports' as const, label: 'Sports' },
+    { value: 'specialties' as const, label: 'Specialties' },
   ];
 
-  const filteredProducts = useMemo(() => {
-    if (selectedCategory === 'all') {
-      return products;
+  const dietaryOptions: Array<{ value: DietaryTag; label: string }> = [
+    { value: 'vegan', label: 'Vegan' },
+    { value: 'gluten-free', label: 'Gluten-free' },
+    { value: 'pregnancy-safe', label: 'Pregnancy-safe' },
+    { value: 'postpartum-safe', label: 'Postpartum-safe' },
+    { value: 'sugar-free', label: 'Sugar-free' },
+  ];
+
+  const sortOptions: Array<{ value: SortOption; label: string }> = [
+    { value: 'default', label: 'All' },
+    { value: 'name-asc', label: 'Alphabetically, A-Z' },
+    { value: 'name-desc', label: 'Alphabetically, Z-A' },
+    { value: 'price-low', label: 'Price, Low to High' },
+    { value: 'price-high', label: 'Price, High to Low' },
+  ];
+
+  const toggleDietaryTag = (tag: DietaryTag) => {
+    setSelectedDietaryTags(prev =>
+      prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
+    );
+  };
+
+  const filteredAndSortedProducts = useMemo(() => {
+    let filtered = [...products];
+
+    // Filter by product type
+    if (selectedType !== 'all') {
+      filtered = filtered.filter(p => p.productType === selectedType);
     }
-    return products.filter((product) => product.category === selectedCategory);
-  }, [selectedCategory]);
+
+    // Filter by dietary tags (AND logic - must have all selected tags)
+    if (selectedDietaryTags.length > 0) {
+      filtered = filtered.filter(p =>
+        selectedDietaryTags.every(tag => p.dietaryTags.includes(tag))
+      );
+    }
+
+    // Sort
+    if (sortBy === 'name-asc') {
+      filtered.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sortBy === 'name-desc') {
+      filtered.sort((a, b) => b.name.localeCompare(a.name));
+    } else if (sortBy === 'price-low') {
+      filtered.sort((a, b) => a.price - b.price);
+    } else if (sortBy === 'price-high') {
+      filtered.sort((a, b) => b.price - a.price);
+    }
+
+    return filtered;
+  }, [selectedType, selectedDietaryTags, sortBy]);
+
+  // Group products by type for display
+  const groupedProducts = useMemo(() => {
+    const groups: Record<ProductType, typeof filteredAndSortedProducts> = {
+      supplements: [],
+      sports: [],
+      specialties: [],
+    };
+
+    filteredAndSortedProducts.forEach(product => {
+      groups[product.productType].push(product);
+    });
+
+    return groups;
+  }, [filteredAndSortedProducts]);
 
   return (
-    <div className="min-h-screen bg-[var(--color-cream)]">
-      {/* Header */}
-      <section className="bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-dark)] text-white py-16">
-        <div className="container mx-auto px-6">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Shop All Products</h1>
-          <p className="text-xl text-white/90 max-w-2xl">
-            Premium natural supplements to support your wellness journey
-          </p>
+    <div className="min-h-screen bg-white">
+      {/* Hero with headline */}
+      <section className="bg-[var(--color-cream)] py-10 md:py-12 border-b border-[var(--color-mist)]">
+        <div className="container mx-auto px-6 text-center">
+          <h1 className="text-3xl md:text-4xl font-bold mb-2">
+            Reward yourself with locally-made, science-driven nutrition.{' '}
+            <span className="text-[var(--color-primary)]">You deserve better.</span>
+          </h1>
         </div>
       </section>
 
-      <div className="container mx-auto px-6 py-12">
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Filters Sidebar */}
-          <aside className="lg:w-64 flex-shrink-0">
-            <div className="bg-white rounded-xl p-6 shadow-sm sticky top-24">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="font-semibold text-lg flex items-center gap-2">
-                  <Filter className="w-5 h-5" />
-                  Filters
-                </h3>
+      {/* Filter Bar */}
+      <div className="bg-white border-b border-[var(--color-mist)] py-4">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
+            {/* Product Type Filter */}
+            <div className="flex flex-wrap gap-2">
+              <span className="text-sm font-medium text-[var(--color-stone)] mr-2">Product Type:</span>
+              {productTypes.map(type => (
                 <button
-                  className="lg:hidden text-[var(--color-primary)]"
-                  onClick={() => setShowFilters(!showFilters)}
+                  key={type.value}
+                  onClick={() => setSelectedType(type.value)}
+                  className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                    selectedType === type.value
+                      ? 'bg-[var(--color-primary)] text-white'
+                      : 'bg-[var(--color-mist)] text-[var(--color-charcoal)] hover:bg-[var(--color-primary-light)] hover:text-white'
+                  }`}
                 >
-                  {showFilters ? 'Hide' : 'Show'}
+                  {type.label}
                 </button>
-              </div>
-
-              <div className={`space-y-6 ${showFilters ? 'block' : 'hidden lg:block'}`}>
-                {/* Category Filter */}
-                <div>
-                  <h4 className="font-medium mb-3 text-[var(--color-charcoal)]">Category</h4>
-                  <div className="space-y-2">
-                    {categories.map((category) => (
-                      <button
-                        key={category.value}
-                        onClick={() => setSelectedCategory(category.value)}
-                        className={`w-full text-left px-4 py-2 rounded-lg transition-all ${
-                          selectedCategory === category.value
-                            ? 'bg-[var(--color-primary)] text-white'
-                            : 'bg-[var(--color-mist)] text-[var(--color-charcoal)] hover:bg-[var(--color-primary-light)] hover:text-white'
-                        }`}
-                      >
-                        {category.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Product Count */}
-                <div className="pt-4 border-t border-[var(--color-mist)]">
-                  <p className="text-sm text-[var(--color-stone)]">
-                    Showing {filteredProducts.length} {filteredProducts.length === 1 ? 'product' : 'products'}
-                  </p>
-                </div>
-              </div>
+              ))}
             </div>
-          </aside>
 
-          {/* Products Grid */}
-          <div className="flex-1">
-            {filteredProducts.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
+            {/* Sort By */}
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-medium text-[var(--color-stone)]">Sort By:</span>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as SortOption)}
+                className="px-3 py-1.5 border border-[var(--color-mist)] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+              >
+                {sortOptions.map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
                 ))}
-              </div>
-            ) : (
-              <div className="text-center py-16">
-                <p className="text-xl text-[var(--color-stone)]">
-                  No products found in this category.
-                </p>
-              </div>
-            )}
+              </select>
+            </div>
+          </div>
+
+          {/* Dietary Filters */}
+          <div className="flex flex-wrap gap-2 mt-4 items-center">
+            <span className="text-sm font-medium text-[var(--color-stone)] mr-2">For Every Body:</span>
+            {dietaryOptions.map(option => (
+              <button
+                key={option.value}
+                onClick={() => toggleDietaryTag(option.value)}
+                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                  selectedDietaryTags.includes(option.value)
+                    ? 'bg-[var(--color-primary)] text-white'
+                    : 'bg-[var(--color-mist)] text-[var(--color-charcoal)] hover:bg-[var(--color-primary-light)] hover:text-white'
+                }`}
+              >
+                {option.label}
+              </button>
+            ))}
           </div>
         </div>
+      </div>
+
+      {/* Products */}
+      <div className="container mx-auto px-6 py-12">
+        {filteredAndSortedProducts.length === 0 ? (
+          <div className="text-center py-16">
+            <p className="text-xl text-[var(--color-stone)]">
+              No products match your search criteria.
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-16">
+            {/* Supplements */}
+            {groupedProducts.supplements.length > 0 && (
+              <section>
+                <h2 className="text-2xl md:text-3xl font-bold mb-6">
+                  Supplements ({groupedProducts.supplements.length})
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {groupedProducts.supplements.map(product => (
+                    <ProductCard key={product.id} product={product} />
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Sports */}
+            {groupedProducts.sports.length > 0 && (
+              <section>
+                <h2 className="text-2xl md:text-3xl font-bold mb-6">
+                  Sports ({groupedProducts.sports.length})
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {groupedProducts.sports.map(product => (
+                    <ProductCard key={product.id} product={product} />
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Specialties */}
+            {groupedProducts.specialties.length > 0 && (
+              <section>
+                <h2 className="text-2xl md:text-3xl font-bold mb-6">
+                  Specialties ({groupedProducts.specialties.length})
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {groupedProducts.specialties.map(product => (
+                    <ProductCard key={product.id} product={product} />
+                  ))}
+                </div>
+              </section>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
