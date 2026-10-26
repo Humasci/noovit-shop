@@ -22,7 +22,7 @@ Customer ──► noovit.com ──► Stripe Checkout (payment) ──► Orde
 | Service | What it does for you | Where you log in |
 |---|---|---|
 | **noovit.com** | The shop customers see | — |
-| **Admin dashboard** | Orders, fulfilment, subscriptions, customers, reviews, discounts | `noovit.com/admin` |
+| **Admin dashboard** | Orders, fulfilment, subscriptions, customers, reviews, discounts | your secret admin address (see Signing in) |
 | **Stripe** | Takes payments, runs subscriptions, calculates tax, sends receipts, hosts the customer's "manage subscription" page | dashboard.stripe.com |
 | **Supabase** | The database where orders and reviews are stored (you rarely need to open it) | supabase.com |
 | **Resend** | Sends the store's emails | resend.com |
@@ -103,7 +103,7 @@ Any visitor can submit a review from a product page or the Reviews page. It **do
 
 ## 3. The admin dashboard
 
-Go to **noovit.com/admin** and sign in with your own email and password. You stay signed in for 7 days on that device. Your name (→ **My account**, to change your password) and **Log out** are at the bottom of the menu.
+Open your **secret admin address** (`noovit.com/<ADMIN_PATH>`, set in Vercel) and sign in with your own email and password. Each new browser or device needs the secret address once; after that `noovit.com/admin` works there for 90 days. Anyone without it sees "page not found" at `/admin`. Share the address only with staff, and change `ADMIN_PATH` in Vercel if it leaks. You stay signed in for 7 days on that device. Your name (→ **My account**, to change your password) and **Log out** are at the bottom of the menu.
 
 **First-time setup:** before any staff accounts exist, the login page asks for the setup password (`ADMIN_PASSWORD` in the hosting settings). Sign in with it, create your own **Owner** account on the Staff page, and the setup password stops working.
 

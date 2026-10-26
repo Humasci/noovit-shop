@@ -36,7 +36,7 @@ Everything degrades gracefully without keys: the store works, checkout shows "no
 Create a Resend account, verify your sending domain, set `RESEND_API_KEY` and `EMAIL_FROM`. Sends order confirmations, shipping notifications and "My Subscriptions" links.
 
 ### 4. Admin
-Set `APP_SECRET` (`openssl rand -base64 48`) and a one-time setup password `ADMIN_PASSWORD`. Sign in at `/admin` with the setup password, create the Owner account on the Staff page, and from then on everyone signs in with their own email and password (the setup password stops working once a staff account exists). Roles: Owner, Manager, Fulfilment.
+Set `APP_SECRET` (`openssl rand -base64 48`) and a one-time setup password `ADMIN_PASSWORD`. Set `ADMIN_PATH` to a hard-to-guess word (e.g. `team-k7q2x9m4`); open `/<ADMIN_PATH>` to reach the login (plain `/admin` returns 404 until a browser has used the secret address). Sign in with the setup password, create the Owner account on the Staff page, and from then on everyone signs in with their own email and password (the setup password stops working once a staff account exists). Roles: Owner, Manager, Fulfilment.
 
 ### 5. Scheduled job
 Set `CRON_SECRET` (random string). `vercel.json` runs `/api/cron/daily` at 15:00 UTC, which sends review-request emails.
