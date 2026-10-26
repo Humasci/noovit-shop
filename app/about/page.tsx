@@ -1,12 +1,13 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { IMAGES } from '@/data/content';
+import { humanProducts } from '@/data/products';
 import { TrustSection, ReviewsSection, SubscriptionPerks, SectionHeading } from '@/components/sections/Sections';
 
 export const metadata: Metadata = { title: 'About Us — Noovit' };
 
 const STATS = [
-  { value: '18', label: 'Targeted formulas' },
+  { value: String(humanProducts.length), label: 'Targeted formulas' },
   { value: '100%', label: 'Third-party tested' },
   { value: '90', label: 'Day guarantee' },
   { value: '4.8★', label: 'Average rating' },

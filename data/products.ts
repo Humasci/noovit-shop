@@ -285,23 +285,6 @@ const seeds: Seed[] = [
     audiences: ['women'], bestSeller: false, reviewCount: 1489,
   },
   {
-    name: 'NMN',
-    slug: 'nmn',
-    shortBenefit: 'Supports cellular energy and healthy ageing.',
-    description: 'High-purity NMN with resveratrol to support NAD+ levels.',
-    whoFor: 'Adults interested in supporting energy and healthy ageing.',
-    benefits: ['Supports NAD+ levels', 'Supports cellular energy', 'Antioxidant support', '99% purity'],
-    ingredients: [
-      { name: 'NMN (Nicotinamide Mononucleotide)', amount: '500mg' },
-      { name: 'Trans-Resveratrol', amount: '100mg' },
-    ],
-    otherIngredients: 'Vegetable capsule (HPMC).',
-    dosage: 'Take 2 capsules each morning.',
-    servings: 30, form: 'capsules', basePrice: 45, color: '#4F6D7A',
-    productType: 'supplements', dietaryTags: ['vegan', 'gluten-free', 'sugar-free'],
-    audiences: ['men'], bestSeller: false, reviewCount: 876,
-  },
-  {
     name: 'Creatine',
     slug: 'creatine',
     shortBenefit: 'Supports strength, power and performance.',
