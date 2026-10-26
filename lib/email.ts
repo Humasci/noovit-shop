@@ -73,7 +73,7 @@ export function sendPortalLink(to: string, url: string) {
     'Manage your Noovit subscription',
     layout(`
       <h1 style="font-size:20px">Manage your subscription</h1>
-      <p>Use the secure link below to pause, skip, change or cancel your subscription and update your payment details. The link expires shortly.</p>
+      <p>Use the secure link below to change or cancel your subscription, update your card and address, and view invoices. The link expires shortly.</p>
       <p><a href="${esc(url)}" style="display:inline-block;background:#14213d;color:#fff;padding:12px 24px;border-radius:999px;text-decoration:none;font-weight:bold">Manage my subscription</a></p>
       <p style="font-size:12px;color:#6b7280">If you didn't request this, you can ignore this email.</p>`)
   );

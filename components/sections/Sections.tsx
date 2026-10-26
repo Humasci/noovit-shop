@@ -189,7 +189,7 @@ export function SubscriptionPerks() {
   return (
     <section className="section">
       <div className="container px-6">
-        <SectionHeading eyebrow="Subscribe & Save" title="Stay consistent. Save every month." sub="Pause, skip or cancel anytime." />
+        <SectionHeading eyebrow="Subscribe & Save" title="Stay consistent. Save every month." sub="Change or cancel anytime." />
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {SUBSCRIPTION_PERKS.map((p) => (
             <div key={p.title} className="overflow-hidden rounded-2xl border border-[var(--color-line)]">

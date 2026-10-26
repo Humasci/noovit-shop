@@ -22,7 +22,7 @@ const POLICIES: Record<string, { title: string; sections: { h: string; p: string
     title: 'Terms & Conditions',
     sections: [
       { h: 'Use of this site', p: 'By using this website you agree to these terms. Content is for information only and is not medical advice.' },
-      { h: 'Subscriptions', p: 'Subscriptions renew automatically at the selected frequency until cancelled. You can pause, skip or cancel at any time before your next billing date.' },
+      { h: 'Subscriptions', p: 'Subscriptions renew automatically at the selected frequency until cancelled. You can change or cancel online at any time before your next billing date, or contact us to pause.' },
       { h: 'Pricing', p: 'Prices are in USD and may change. Subscribers keep the price they signed up at.' },
     ],
   },

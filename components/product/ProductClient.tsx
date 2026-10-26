@@ -52,7 +52,7 @@ function DeliveryEstimate() {
   ) : null;
 }
 
-const PERKS = ['Pause, skip or cancel anytime', 'Price locked in for life', '90-day money-back guarantee', 'Priority customer support'];
+const PERKS = ['Change or cancel anytime', 'Price locked in for life', '90-day money-back guarantee', 'Priority customer support'];
 
 export function PurchaseBox({ product }: { product: Product }) {
   const [mode, setMode] = useState<PurchaseMode>('subscribe');

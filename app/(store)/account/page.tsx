@@ -2,12 +2,12 @@
 
 import { Suspense, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { Mail, PauseCircle, CalendarClock, CreditCard, XCircle } from 'lucide-react';
+import { Mail, CalendarClock, CreditCard, FileText, XCircle } from 'lucide-react';
 
 const FEATURES = [
   { icon: CalendarClock, text: 'Change delivery frequency' },
-  { icon: PauseCircle, text: 'Pause or skip a delivery' },
   { icon: CreditCard, text: 'Update card and address' },
+  { icon: FileText, text: 'View invoices' },
   { icon: XCircle, text: 'Cancel anytime' },
 ];
 

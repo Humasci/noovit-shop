@@ -43,7 +43,7 @@ export const GENERAL_FAQS: FAQ[] = [
   { q: 'Where are your products made?', a: 'In GMP-certified facilities in the United States.' },
   { q: 'When will my order ship?', a: 'Orders placed before 2pm on business days ship the same day. Delivery usually takes 2–5 business days.' },
   { q: 'How do I track my order?', a: 'You will receive a tracking link by email as soon as your order ships.' },
-  { q: 'Can I pause or cancel my subscription?', a: 'Anytime, from your account. No fees, no questions.' },
+  { q: 'Can I change or cancel my subscription?', a: 'Yes — anytime from My Subscriptions, with no fees. Prefer to pause? Contact us and we will pause it for you.' },
   { q: 'How can I contact customer service?', a: 'Email hello@noovit.com or use our contact form. We reply within one business day.' },
 ];
 
