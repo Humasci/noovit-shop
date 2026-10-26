@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import Link from 'next/link';
 import { SlidersHorizontal } from 'lucide-react';
 import { ProductCard } from '@/components/product/ProductCard';
 import { TrustSection, ReviewsSection } from '@/components/sections/Sections';
@@ -37,7 +38,15 @@ function Pill({ active, onClick, children }: { active: boolean; onClick: () => v
   );
 }
 
-export function ShopBrowser({ products, initialType }: { products: Product[]; initialType: TypeFilter }) {
+export function ShopBrowser({
+  products,
+  initialType,
+  collections = [],
+}: {
+  products: Product[];
+  initialType: TypeFilter;
+  collections?: { slug: string; title: string }[];
+}) {
   const [type, setType] = useState<TypeFilter>(initialType);
   const [tags, setTags] = useState<DietaryTag[]>([]);
   const [sort, setSort] = useState<Sort>('featured');
@@ -71,6 +80,15 @@ export function ShopBrowser({ products, initialType }: { products: Product[]; in
         <div className="container px-6 text-center">
           <h1 className="mx-auto max-w-3xl text-balance text-3xl md:text-5xl">Clean, science-driven nutrition for every body.</h1>
           <p className="mt-4 text-[var(--color-muted)]">Nutritionist formulated · Third-party tested · Made in the USA</p>
+          {collections.length > 0 && (
+            <div className="mt-6 flex flex-wrap justify-center gap-2">
+              {collections.map((c) => (
+                <Link key={c.slug} href={`/collections/${c.slug}`} className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-[var(--color-navy)] shadow-sm hover:bg-[var(--color-navy)] hover:text-white">
+                  {c.title}
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

@@ -4,6 +4,7 @@ import { signToken } from '@/lib/sign';
 import { getSettings } from '@/lib/settings';
 import { SITE_URL } from '@/lib/site';
 import { MarketingFooter, sendNewsletterWelcome } from '@/lib/email';
+import { klaviyoSubscribe, klaviyoUnsubscribe } from './klaviyo';
 
 const UNSUB_TTL = 2 * 365 * 24 * 60 * 60;
 
@@ -26,6 +27,7 @@ export async function subscribe(email: string, source: 'newsletter' | 'checkout'
     .from('subscribers')
     .upsert({ email: normalized, source, status: 'subscribed', unsubscribed_at: null }, { onConflict: 'email' });
   if (error) throw error;
+  await klaviyoSubscribe(normalized, source);
   return true;
 }
 
@@ -40,4 +42,5 @@ export async function unsubscribe(email: string) {
     .update({ status: 'unsubscribed', unsubscribed_at: new Date().toISOString() })
     .eq('email', email.trim().toLowerCase());
   if (error) throw error;
+  await klaviyoUnsubscribe(email.trim().toLowerCase());
 }

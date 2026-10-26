@@ -75,5 +75,6 @@ export function toProductData(p: Product): ProductData {
     rating: p.rating,
     reviewCount: p.reviewCount,
     extraFaqs: p.extraFaqs,
+    ...(p.bundleItems?.length ? { bundleItems: p.bundleItems } : {}),
   };
 }

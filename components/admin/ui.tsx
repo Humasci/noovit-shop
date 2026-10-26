@@ -20,6 +20,7 @@ const TONES: Record<string, string> = {
   active: 'bg-green-50 text-green-700',
   approved: 'bg-green-50 text-green-700',
   pending: 'bg-amber-50 text-amber-700',
+  scheduled: 'bg-indigo-50 text-indigo-700',
   paused: 'bg-gray-100 text-gray-700',
   past_due: 'bg-red-50 text-red-700',
   failed: 'bg-red-50 text-red-700',

@@ -1,17 +1,14 @@
-import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
+import { csvCell as cell } from '@/lib/csv';
 import { db } from '@/lib/db/server';
-import { ADMIN_COOKIE, isAdminToken } from '@/lib/admin/session';
+import { currentStaff } from '@/lib/admin/auth';
+import { can } from '@/lib/admin/permissions';
 import { dbConfigured } from '@/lib/config';
 
-const cell = (v: unknown) => {
-  let s = v == null ? '' : String(v);
-  if (/^[=+\-@\t\r]/.test(s)) s = `'${s}`;
-  return `"${s.replace(/"/g, '""')}"`;
-};
 
 export async function GET() {
-  if (!isAdminToken((await cookies()).get(ADMIN_COOKIE)?.value)) return new NextResponse('Unauthorized', { status: 401 });
+  const staff = await currentStaff();
+  if (!staff || !can(staff.role, 'marketing')) return new NextResponse('Unauthorized', { status: 401 });
   if (!dbConfigured()) return new NextResponse('Database not configured', { status: 503 });
 
   const rows = ['"email","source","joined"'];

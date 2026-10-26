@@ -7,11 +7,12 @@ import { db } from '@/lib/db/server';
 import { SETTING_FIELDS, SETTING_KEYS, SETTINGS_TAG } from '@/lib/settings';
 
 export async function saveSettings(f: FormData) {
-  await requireAdmin();
+  await requireAdmin('settings');
   const rows = [];
   for (const key of SETTING_KEYS) {
     let value = String(f.get(key) ?? '').trim();
-    if (key !== 'business_address') value = value.toUpperCase().replace(/\s+/g, '');
+    if (SETTING_FIELDS[key].upper) value = value.toUpperCase().replace(/\s+/g, '');
+    else if (key !== 'business_address') value = value.replace(/\s+/g, '');
     if (value && !SETTING_FIELDS[key].pattern.test(value)) {
       redirect(`/admin/settings?msg=${encodeURIComponent(`${SETTING_FIELDS[key].label}: “${value}” doesn't look right.`)}`);
     }

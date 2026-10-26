@@ -132,6 +132,27 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             </div>
           </figure>
 
+          {product.bundleItems?.length ? (
+            <div className="mt-8 rounded-2xl border border-[var(--color-line)] p-5">
+              <h2 className="text-lg">What&apos;s in this bundle</h2>
+              <ul className="mt-3 space-y-2">
+                {product.bundleItems.map((b) => {
+                  const item = all.find((p) => p.slug === b.slug);
+                  return (
+                    <li key={b.slug} className="flex items-center justify-between text-sm">
+                      {item ? (
+                        <Link href={`/products/${item.slug}`} className="font-semibold hover:text-[var(--color-blue)]">{item.name}</Link>
+                      ) : (
+                        <span className="font-semibold">{b.slug}</span>
+                      )}
+                      <span className="text-[var(--color-muted)]">× {b.quantity}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ) : null}
+
           <div className="mt-8">
             <InfoTabs product={product} />
           </div>

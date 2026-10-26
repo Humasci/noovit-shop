@@ -1,3 +1,5 @@
+import { requireAdmin } from '@/lib/admin/auth';
+import { can } from '@/lib/admin/permissions';
 import Link from 'next/link';
 import { db } from '@/lib/db/server';
 import { dbConfigured } from '@/lib/config';
@@ -6,23 +8,25 @@ import { Badge, FilterLinks, Flash, NotConfigured, PageTitle, Table, btnSm, date
 const STATUSES = ['paid', 'fulfilling', 'shipped', 'delivered', 'refunded', 'partially_refunded', 'cancelled'];
 const PAGE_SIZE = 50;
 
-export default async function OrdersPage({ searchParams }: { searchParams: Promise<{ status?: string; q?: string; page?: string; msg?: string }> }) {
-  const { status, q, page, msg } = await searchParams;
+export default async function OrdersPage({ searchParams }: { searchParams: Promise<{ status?: string; q?: string; page?: string; msg?: string; tag?: string }> }) {
+  const me = await requireAdmin('orders');
+  const { status, q, page, msg, tag } = await searchParams;
   if (!dbConfigured()) return (<><PageTitle title="Orders" /><NotConfigured what="The database" /></>);
 
   const pageNo = Math.max(1, Number(page) || 1);
   let query = db()
     .from('orders')
-    .select('id, order_number, email, shipping_name, total_cents, status, kind, created_at, fulfilments(status)', { count: 'exact' })
+    .select('id, order_number, email, shipping_name, total_cents, status, kind, tags, created_at, fulfilments(status)', { count: 'exact' })
     .order('created_at', { ascending: false })
     .range((pageNo - 1) * PAGE_SIZE, pageNo * PAGE_SIZE - 1);
   if (status && STATUSES.includes(status)) query = query.eq('status', status);
+  if (tag) query = query.contains('tags', [tag]);
   const term = q?.trim().replace(/^#/, '');
   if (term) query = /^\d+$/.test(term) ? query.eq('order_number', Number(term)) : query.ilike('email', `%${term.replace(/[%_,()]/g, '')}%`);
 
   const { data: orders, count } = await query;
   const pages = Math.max(1, Math.ceil((count ?? 0) / PAGE_SIZE));
-  const qs = (p: number) => `/admin/orders?${new URLSearchParams({ ...(status ? { status } : {}), ...(q ? { q } : {}), page: String(p) })}`;
+  const qs = (p: number) => `/admin/orders?${new URLSearchParams({ ...(status ? { status } : {}), ...(q ? { q } : {}), ...(tag ? { tag } : {}), page: String(p) })}`;
 
   return (
     <>
@@ -32,13 +36,21 @@ export default async function OrdersPage({ searchParams }: { searchParams: Promi
           <input name="q" defaultValue={q} placeholder="Email or order #" className={inputCls} />
           <button className={btnSm}>Search</button>
         </form>
+        {can(me.role, 'orders.money') && (
+          <Link href="/admin/orders/new" className={btnSm}>New order</Link>
+        )}
       </PageTitle>
+      {tag && (
+        <p className="mb-4 text-sm">
+          Tagged <b>{tag}</b> · <Link href="/admin/orders" className="text-[var(--color-blue)]">clear</Link>
+        </p>
+      )}
       <Flash msg={msg} />
       <div className="mb-4">
         <FilterLinks base="/admin/orders" param="status" current={status} options={STATUSES} />
       </div>
 
-      <Table head={['Order', 'Customer', 'Type', 'Total', 'Status', 'Fulfilment', 'Placed']} empty={!orders?.length}>
+      <Table head={['Order', 'Customer', 'Type', 'Total', 'Status', 'Fulfilment', 'Tags', 'Placed']} empty={!orders?.length}>
         {orders?.map((o) => (
           <tr key={o.id}>
             <td className={td}>
@@ -52,6 +64,13 @@ export default async function OrdersPage({ searchParams }: { searchParams: Promi
             <td className={td}>{money(o.total_cents)}</td>
             <td className={td}><Badge status={o.status} /></td>
             <td className={td}>{(o.fulfilments as { status: string }[])?.map((f, i) => <Badge key={i} status={f.status} />)}</td>
+            <td className={td}>
+              <div className="flex flex-wrap gap-1">
+                {(o.tags as string[]).map((t) => (
+                  <Link key={t} href={`/admin/orders?tag=${encodeURIComponent(t)}`} className="rounded-full bg-[var(--color-soft)] px-2 py-0.5 text-xs font-semibold">{t}</Link>
+                ))}
+              </div>
+            </td>
             <td className={td}>{dateTime(o.created_at)}</td>
           </tr>
         ))}

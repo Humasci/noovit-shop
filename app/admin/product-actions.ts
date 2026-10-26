@@ -1,9 +1,9 @@
 'use server';
 
-import { randomUUID } from 'crypto';
 import { revalidatePath, updateTag } from 'next/cache';
 import { requireAdmin } from '@/lib/admin/auth';
 import { db } from '@/lib/db/server';
+import { deleteImage, uploadImage } from '@/lib/storage';
 import { stripe } from '@/lib/stripe/server';
 import { stripeConfigured } from '@/lib/config';
 import { syncProducts } from '@/lib/stripe/sync';
@@ -29,9 +29,6 @@ export interface ActionResult {
   images?: string[];
 }
 
-const BUCKET = 'product-images';
-const MAX_IMAGE_BYTES = 4 * 1024 * 1024;
-const IMAGE_TYPES: Record<string, string> = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' };
 
 const text = (v: unknown, max: number) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
 const list = <T,>(v: unknown, allowed: readonly T[]) => (Array.isArray(v) ? (v.filter((x) => allowed.includes(x)) as T[]) : []);
@@ -72,6 +69,10 @@ function validate(input: ProductInput): { data: ProductData; error?: string } {
       .map((f) => ({ q: text(f?.q, 200), a: text(f?.a, 1000) }))
       .filter((f) => f.q && f.a)
       .slice(0, 20),
+    bundleItems: (Array.isArray(d.bundleItems) ? d.bundleItems : [])
+      .map((b) => ({ slug: text(b?.slug, 80), quantity: Math.round(Number(b?.quantity)) }))
+      .filter((b) => b.slug && b.quantity >= 1 && b.quantity <= 10)
+      .slice(0, 10),
   };
 
   if (!data.name) return { data, error: 'Name is required.' };
@@ -96,12 +97,22 @@ async function syncToStripe(product: Product) {
 }
 
 export async function saveProduct(input: ProductInput, isNew: boolean): Promise<ActionResult> {
-  await requireAdmin();
+  await requireAdmin('products');
   const slug = text(input.slug, 80).toLowerCase();
   if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug)) return { ok: false, message: 'URL handle may only use lowercase letters, numbers and single hyphens.' };
   const status: ProductStatus = ['active', 'out_of_stock', 'hidden'].includes(input.status) ? input.status : 'hidden';
   const { data, error } = validate(input);
   if (error) return { ok: false, message: error };
+  if (data.bundleItems?.length) {
+    const catalog = await loadCatalog();
+    for (const b of data.bundleItems) {
+      const component = catalog.find((p) => p.slug === b.slug);
+      if (!component || b.slug === slug) return { ok: false, message: `Bundle item “${b.slug}” isn't a valid product.` };
+      if (component.bundleItems?.length) return { ok: false, message: `${component.name} is itself a bundle — bundles can't contain bundles.` };
+    }
+  } else {
+    delete data.bundleItems;
+  }
 
   const row = {
     data,
@@ -130,7 +141,7 @@ export async function saveProduct(input: ProductInput, isNew: boolean): Promise<
 }
 
 export async function syncAllProducts(): Promise<ActionResult> {
-  await requireAdmin();
+  await requireAdmin('products');
   if (!stripeConfigured()) return { ok: false, message: 'Stripe is not connected.' };
   try {
     const s = await syncProducts(stripe(), await loadCatalog(), { archiveMissing: true });
@@ -144,7 +155,7 @@ export async function syncAllProducts(): Promise<ActionResult> {
 }
 
 export async function importLaunchCatalog(): Promise<ActionResult> {
-  await requireAdmin();
+  await requireAdmin('products');
   const rows = SEED_PRODUCTS.map((p, i) => ({ slug: p.slug, data: toProductData(p), status: p.status, sort_order: i * 10 }));
   const { data, error } = await db().from('products').upsert(rows, { onConflict: 'slug', ignoreDuplicates: true }).select('slug');
   if (error) return { ok: false, message: error.message };
@@ -170,33 +181,24 @@ async function saveImages(slug: string, images: string[]): Promise<ActionResult>
 }
 
 export async function uploadProductImage(slug: string, form: FormData): Promise<ActionResult> {
-  await requireAdmin();
+  await requireAdmin('products');
   const images = await currentImages(slug);
   if (!images) return { ok: false, message: 'Save the product before adding images.' };
-  const file = form.get('file');
-  if (!(file instanceof File)) return { ok: false, message: 'No file received.' };
-  const ext = IMAGE_TYPES[file.type];
-  if (!ext) return { ok: false, message: `${file.name}: use JPG, PNG or WebP.` };
-  if (file.size > MAX_IMAGE_BYTES) return { ok: false, message: `${file.name} is over 4 MB.` };
-
-  const path = `${slug}/${randomUUID()}.${ext}`;
-  const { error } = await db().storage.from(BUCKET).upload(path, file, { contentType: file.type, cacheControl: '31536000' });
-  if (error) return { ok: false, message: `Upload failed: ${error.message}` };
-  const { data } = db().storage.from(BUCKET).getPublicUrl(path);
-  return saveImages(slug, [...images, data.publicUrl]);
+  const { url, error } = await uploadImage(slug, form.get('file'));
+  if (error) return { ok: false, message: error };
+  return saveImages(slug, [...images, url!]);
 }
 
 export async function removeProductImage(slug: string, url: string): Promise<ActionResult> {
-  await requireAdmin();
+  await requireAdmin('products');
   const images = await currentImages(slug);
   if (!images?.includes(url)) return { ok: false, message: 'Image not found.' };
-  const marker = `/${BUCKET}/`;
-  if (url.includes(marker)) await db().storage.from(BUCKET).remove([url.slice(url.indexOf(marker) + marker.length)]);
+  await deleteImage(url);
   return saveImages(slug, images.filter((u) => u !== url));
 }
 
 export async function moveProductImage(slug: string, index: number, direction: -1 | 1): Promise<ActionResult> {
-  await requireAdmin();
+  await requireAdmin('products');
   const images = await currentImages(slug);
   const target = index + direction;
   if (!images || index < 0 || target < 0 || index >= images.length || target >= images.length) return { ok: false, message: 'Cannot move image.' };

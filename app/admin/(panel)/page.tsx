@@ -1,12 +1,17 @@
+import { requireAdmin } from '@/lib/admin/auth';
+import { can } from '@/lib/admin/permissions';
 import Link from 'next/link';
 import { db } from '@/lib/db/server';
 import { dbConfigured } from '@/lib/config';
-import { Badge, Card, NotConfigured, PageTitle, Stat, Table, dateTime, money, td } from '@/components/admin/ui';
+import { Badge, Card, Flash, NotConfigured, PageTitle, Stat, Table, dateTime, money, td } from '@/components/admin/ui';
 
 const DAY = 86_400_000;
 const COUNTED = ['paid', 'fulfilling', 'shipped', 'delivered', 'partially_refunded'];
 
-export default async function Overview() {
+export default async function Overview({ searchParams }: { searchParams: Promise<{ msg?: string }> }) {
+  const me = await requireAdmin('overview');
+  const showMoney = can(me.role, 'reports');
+  const { msg } = await searchParams;
   if (!dbConfigured()) {
     return (
       <>
@@ -55,6 +60,7 @@ export default async function Overview() {
   return (
     <>
       <PageTitle title="Overview" />
+      <Flash msg={msg} />
 
       {stuck > 0 && (
         <Link href="/admin/fulfilment" className="mb-6 block rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-800">
@@ -62,6 +68,8 @@ export default async function Overview() {
         </Link>
       )}
 
+      {showMoney && (
+      <>
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         <Stat label="Revenue today" value={money(today.reduce((s, o) => s + o.total_cents, 0))} sub={`${today.length} orders`} />
         <Stat label="Revenue 7 days" value={money(revenueSince(7))} />
@@ -75,6 +83,8 @@ export default async function Overview() {
         <Stat label="Paused" value={String(subs.filter((s) => s.paused).length)} />
         <Stat label="Fulfilment issues" value={String(stuck)} />
       </div>
+      </>
+      )}
 
       <div className="mt-8 grid gap-6 lg:grid-cols-[2fr_1fr]">
         <div>
@@ -94,6 +104,7 @@ export default async function Overview() {
             ))}
           </Table>
         </div>
+        {showMoney && (
         <div>
           <h2 className="mb-3 text-lg">Top products (30 days)</h2>
           <Card>
@@ -113,6 +124,7 @@ export default async function Overview() {
             )}
           </Card>
         </div>
+        )}
       </div>
     </>
   );

@@ -1,3 +1,4 @@
+import { requireAdmin } from '@/lib/admin/auth';
 import { Download } from 'lucide-react';
 import { db } from '@/lib/db/server';
 import { dbConfigured } from '@/lib/config';
@@ -6,6 +7,7 @@ import { Badge, FilterLinks, NotConfigured, PageTitle, Stat, Table, btnSm, btnSm
 const STATUSES = ['subscribed', 'unsubscribed'];
 
 export default async function SubscribersPage({ searchParams }: { searchParams: Promise<{ status?: string; q?: string }> }) {
+  await requireAdmin('marketing');
   const { status, q } = await searchParams;
   if (!dbConfigured()) return (<><PageTitle title="Subscribers" /><NotConfigured what="The database" /></>);
 

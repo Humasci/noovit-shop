@@ -1,24 +1,53 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
-import { LayoutDashboard, ShoppingCart, Truck, Repeat, Users, Package, Star, Tag, LogOut, ExternalLink, Mail, ShoppingBag, Settings } from 'lucide-react';
+import {
+  LayoutDashboard, ShoppingCart, Truck, Repeat, Users, Package, Star, Tag, LogOut, ExternalLink, Mail, ShoppingBag, Settings,
+  Layers, FileText, Home, BarChart3, UserCog, UserCircle,
+} from 'lucide-react';
 import { requireAdmin, endSession } from '@/lib/admin/auth';
+import { can, Permission } from '@/lib/admin/permissions';
 import { dbConfigured, stripeConfigured } from '@/lib/config';
 
 export const metadata: Metadata = { title: 'Admin — Noovit', robots: { index: false } };
 
-const NAV = [
-  { href: '/admin', label: 'Overview', icon: LayoutDashboard },
-  { href: '/admin/orders', label: 'Orders', icon: ShoppingCart },
-  { href: '/admin/fulfilment', label: 'Fulfilment', icon: Truck },
-  { href: '/admin/subscriptions', label: 'Subscriptions', icon: Repeat },
-  { href: '/admin/customers', label: 'Customers', icon: Users },
-  { href: '/admin/products', label: 'Products', icon: Package },
-  { href: '/admin/reviews', label: 'Reviews', icon: Star },
-  { href: '/admin/discounts', label: 'Discounts', icon: Tag },
-  { href: '/admin/subscribers', label: 'Subscribers', icon: Mail },
-  { href: '/admin/abandoned', label: 'Abandoned carts', icon: ShoppingBag },
-  { href: '/admin/settings', label: 'Settings', icon: Settings },
+const NAV: { group: string; items: { href: string; label: string; icon: typeof Home; perm: Permission }[] }[] = [
+  {
+    group: 'Sales',
+    items: [
+      { href: '/admin', label: 'Overview', icon: LayoutDashboard, perm: 'overview' },
+      { href: '/admin/orders', label: 'Orders', icon: ShoppingCart, perm: 'orders' },
+      { href: '/admin/fulfilment', label: 'Fulfilment', icon: Truck, perm: 'fulfilment' },
+      { href: '/admin/subscriptions', label: 'Subscriptions', icon: Repeat, perm: 'subscriptions' },
+      { href: '/admin/customers', label: 'Customers', icon: Users, perm: 'customers' },
+      { href: '/admin/reports', label: 'Reports', icon: BarChart3, perm: 'reports' },
+    ],
+  },
+  {
+    group: 'Catalog',
+    items: [
+      { href: '/admin/products', label: 'Products', icon: Package, perm: 'products' },
+      { href: '/admin/collections', label: 'Collections', icon: Layers, perm: 'products' },
+      { href: '/admin/reviews', label: 'Reviews', icon: Star, perm: 'reviews' },
+    ],
+  },
+  {
+    group: 'Marketing',
+    items: [
+      { href: '/admin/discounts', label: 'Discounts', icon: Tag, perm: 'marketing' },
+      { href: '/admin/subscribers', label: 'Subscribers', icon: Mail, perm: 'marketing' },
+      { href: '/admin/abandoned', label: 'Abandoned carts', icon: ShoppingBag, perm: 'marketing' },
+    ],
+  },
+  {
+    group: 'Online store',
+    items: [
+      { href: '/admin/content', label: 'Homepage', icon: Home, perm: 'content' },
+      { href: '/admin/blog', label: 'Blog', icon: FileText, perm: 'content' },
+      { href: '/admin/settings', label: 'Settings', icon: Settings, perm: 'settings' },
+      { href: '/admin/staff', label: 'Staff', icon: UserCog, perm: 'staff' },
+    ],
+  },
 ];
 
 async function logout() {
@@ -28,7 +57,7 @@ async function logout() {
 }
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  await requireAdmin();
+  const me = await requireAdmin();
   const missing = [!dbConfigured() && 'database', !stripeConfigured() && 'Stripe'].filter(Boolean);
 
   return (
@@ -40,13 +69,25 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           </Link>
         </div>
         <nav className="no-scrollbar flex gap-1 overflow-x-auto px-3 pb-3 md:flex-1 md:flex-col md:overflow-y-auto">
-          {NAV.map(({ href, label, icon: Icon }) => (
-            <Link key={href} href={href} className="flex shrink-0 items-center gap-3 rounded-lg px-3 py-2 text-sm font-semibold text-[var(--color-navy)] hover:bg-[var(--color-soft)]">
-              <Icon className="h-4 w-4" /> {label}
-            </Link>
-          ))}
+          {NAV.map(({ group, items }) => {
+            const visible = items.filter((i) => can(me.role, i.perm));
+            if (!visible.length) return null;
+            return (
+              <div key={group} className="flex gap-1 md:mb-3 md:flex-col">
+                <p className="hidden px-3 pb-1 text-[10px] font-bold uppercase tracking-[0.15em] text-[var(--color-muted)] md:block">{group}</p>
+                {visible.map(({ href, label, icon: Icon }) => (
+                  <Link key={href} href={href} className="flex shrink-0 items-center gap-3 rounded-lg px-3 py-1.5 text-sm font-semibold text-[var(--color-navy)] hover:bg-[var(--color-soft)]">
+                    <Icon className="h-4 w-4" /> {label}
+                  </Link>
+                ))}
+              </div>
+            );
+          })}
         </nav>
         <div className="flex px-3 pb-3 md:block md:border-t md:border-[var(--color-line)] md:pt-3">
+          <Link href="/admin/account" className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-[var(--color-muted)] hover:bg-[var(--color-soft)]">
+            <UserCircle className="h-4 w-4" /> {me.name}
+          </Link>
           <Link href="/" target="_blank" className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-[var(--color-muted)] hover:bg-[var(--color-soft)]">
             <ExternalLink className="h-4 w-4" /> View store
           </Link>

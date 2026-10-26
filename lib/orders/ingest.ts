@@ -9,6 +9,7 @@ import { Product } from '@/types';
 import { sendOrderConfirmation } from '@/lib/email';
 import { subscribe } from '@/lib/marketing/subscribers';
 import { markRecovered } from '@/lib/marketing/abandoned';
+import { klaviyoEvent } from '@/lib/marketing/klaviyo';
 
 type Kind = 'one_time' | 'subscription_initial' | 'subscription_renewal';
 
@@ -149,6 +150,12 @@ async function createOrder(input: {
     totalCents: input.total,
     items: input.items.map((i) => ({ name: i.product_name, bottles: i.bottles, quantity: i.quantity, frequencyDays: i.frequency_days })),
   }).catch((err) => console.error(`Confirmation email for order ${order.order_number} failed`, err));
+  await klaviyoEvent('Placed Order', input.email.toLowerCase(), `order-${order.order_number}`, input.total / 100, {
+    OrderNumber: order.order_number,
+    Kind: input.kind,
+    ItemNames: input.items.map((i) => i.product_name),
+    Items: input.items.map((i) => ({ ProductID: i.product_slug, ProductName: i.product_name, Bottles: i.bottles, Quantity: i.quantity, Subscription: i.purchase_mode === 'subscribe' })),
+  });
   return order.id as string;
 }
 
@@ -202,6 +209,14 @@ export async function handleCheckoutCompleted(sessionId: string) {
   });
 
   if (session.recovered_from) await markRecovered(session.recovered_from, orderId);
+  if (orderId && session.metadata?.manual_by) {
+    await db().from('orders').update({ tags: ['manual', 'payment-link'] }).eq('id', orderId);
+    await db().from('order_notes').insert({
+      order_id: orderId,
+      author: session.metadata.manual_by,
+      body: `Paid via payment link created by ${session.metadata.manual_by}.${session.metadata.manual_note ? ` ${session.metadata.manual_note}` : ''}`,
+    });
+  }
   if (session.consent?.promotions === 'opt_in') await subscribe(email, 'checkout');
 }
 
@@ -273,8 +288,9 @@ export async function handleChargeRefunded(charge: Stripe.Charge) {
   const fullyRefunded = charge.amount_refunded >= charge.amount;
   const { data: order } = await db()
     .from('orders')
-    .update({ status: fullyRefunded ? 'refunded' : 'partially_refunded' })
+    .update({ status: fullyRefunded ? 'refunded' : 'partially_refunded', refunded_cents: charge.amount_refunded })
     .eq('stripe_payment_intent_id', pi)
+    .neq('status', 'cancelled')
     .select('id')
     .maybeSingle();
   if (order && fullyRefunded) {

@@ -25,12 +25,14 @@ _Last updated: 2026-10-26_
 - [x] Admin dashboard (`/admin`): overview, orders, fulfilment queue + CSV export, subscriptions, customers, products (supplier SKUs), reviews, discount codes.
 - [x] Tested end-to-end against a local Postgres + PostgREST and a fake Stripe: checkout rules, webhook ingestion (one-time, subscription, renewal, duplicates, refunds), portal links, reviews, every admin action.
 - [x] **Phase 1 (Shopify parity):** admin product editor (DB catalog, photos, status, SEO, supplier SKU, automatic Stripe sync); sitemap, robots, structured data, PNG product images; Google/Meta/TikTok product feeds; richer discount codes; newsletter subscribers with one-click unsubscribe; abandoned-checkout recovery; Settings page with GA4/Meta/TikTok pixels behind a cookie banner. 46/46 end-to-end checks passing.
+- [x] **Phase 2 (Shopify parity):** staff accounts with Owner/Manager/Fulfilment roles; partial refunds, cancellations, order notes & tags, manual replacement orders and payment links; customer profiles with notes, tags, segments and CSV export; collections, bundles, bulk product actions, product CSV import/export; editable homepage, announcement bar and pop-up; blog; review-request emails (daily cron), automatic spend discount, cart cross-sell, Klaviyo sync; reports with charts.
 
 ## Waiting on
 - [ ] Stripe test keys → run `npm run stripe:sync`, add webhook endpoint + customer portal settings (README §2), test a real test-mode checkout.
-- [ ] Supabase project → run `supabase/migrations/0001_init.sql` and `0002_catalog_marketing.sql`, then Admin → Products → Import launch catalog.
+- [ ] Supabase project → run migrations `0001`–`0003`, then Admin → Products → Import launch catalog.
 - [ ] Email sending (Resend API key + verified sending domain).
-- [ ] Choose `ADMIN_PASSWORD` and generate `APP_SECRET`; add all keys in Vercel.
+- [ ] Generate `APP_SECRET`, `CRON_SECRET` and a setup `ADMIN_PASSWORD`; add all keys in Vercel; sign in and create the Owner account.
+- [ ] Optional: Klaviyo private key + list ID.
 - [ ] Admin → Settings: GA4 / Meta / TikTok IDs, welcome code (create WELCOME10 first), business postal address; add feed URLs to Google Merchant Center, Meta Commerce Manager, TikTok.
 - [ ] Supplier replies → choose US supplier, map supplier SKUs, decide API vs CSV fulfilment.
 - [x] Preliminary trademark knock-out search (owner, Oct 2026) — see below.
@@ -65,7 +67,7 @@ _Owner's own search on UKIPO and USPTO. Not legal advice._
 No live identical "NOOVIT" mark found in either register. Next: check classes for Noovid and NOOXIT; search EUIPO/WIPO Global Brand Database and Amazon/Google for unregistered use; then an attorney clearance and filing in **class 5** (human and animal dietary supplements) and **class 35** (online retail), considering **30** (mushroom coffee blends) and **31** (pet treats).
 
 ## Roadmap — Shopify feature parity (dropshipping focus)
-Status: **Have** · **Phase N** = planned (Phase 1 done Oct 2026) · **Tool** = use a specialist service · **Not needed** for dropshipping
+Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool** = use a specialist service · **Not needed** for dropshipping
 
 ### Products & catalog
 | Shopify feature | Status |
@@ -75,8 +77,8 @@ Status: **Have** · **Phase N** = planned (Phase 1 done Oct 2026) · **Tool** = 
 | Product image/media uploads | Have |
 | Availability: in stock / out of stock / hidden (dropship has no own inventory) | Have |
 | SEO per product (title, description, URL), sitemap.xml, robots, Product schema for Google rich results | Have |
-| Collections / tags (editable) | Have (fixed filters) · Phase 2 editable |
-| Bulk edit, CSV product import/export | Phase 2 |
+| Collections / tags (editable) | Have (collections) |
+| Bulk edit, CSV product import/export | Have |
 | Supplier stock & price sync | Phase 3 (depends on supplier API) |
 
 ### Orders & fulfilment
@@ -86,8 +88,8 @@ Status: **Have** · **Phase N** = planned (Phase 1 done Oct 2026) · **Tool** = 
 | Fulfilment with tracking + shipping email | Have |
 | Supplier export (CSV) | Have |
 | Automatic order forwarding to supplier (DSers/Supliful-style) | Phase 3 (after supplier choice) |
-| Partial refunds from admin, cancel order, order notes/tags | Phase 2 |
-| Draft / manual orders (replacements, phone orders) | Phase 2 |
+| Partial refunds from admin, cancel order, order notes/tags | Have |
+| Draft / manual orders (replacements, phone orders) | Have |
 | Returns management | Phase 3 |
 | Packing slips, own shipping rates/labels | Not needed (supplier handles) |
 
@@ -96,7 +98,7 @@ Status: **Have** · **Phase N** = planned (Phase 1 done Oct 2026) · **Tool** = 
 |---|---|
 | Customer list, order history, lifetime spend | Have |
 | Self-service subscription management | Have (Stripe portal) |
-| Customer notes, tags, segments, CSV export | Phase 2 |
+| Customer notes, tags, segments, CSV export | Have |
 
 ### Marketing
 | Shopify feature | Status |
@@ -107,18 +109,18 @@ Status: **Have** · **Phase N** = planned (Phase 1 done Oct 2026) · **Tool** = 
 | Newsletter sign-ups stored + exported, one-click unsubscribe | Have |
 | Google Shopping & Meta/Instagram/TikTok product catalog feeds | Have |
 | Analytics & ad pixels (GA4, Meta, TikTok) with cookie consent | Have — IDs go in Admin → Settings |
-| Email campaigns & automations (Shopify Email equivalent) | Tool: Klaviyo integration, Phase 2 |
-| Review request email after delivery | Phase 2 |
-| Automatic discounts, bundles, cart upsells, newsletter pop-up | Phase 2 |
-| Blog / content pages for SEO | Phase 2 |
-| Sales reports by product/day, subscription retention, CSV export | Have (overview) · Phase 2 reports |
+| Email campaigns & automations (Shopify Email equivalent) | Have (Klaviyo sync) |
+| Review request email after delivery | Have |
+| Automatic discounts, bundles, cart upsells, newsletter pop-up | Have |
+| Blog / content pages for SEO | Have |
+| Sales reports by product/day, subscription retention, CSV export | Have (Reports) |
 | Affiliates/influencer codes, loyalty, gift cards | Tool or Phase 3 |
 
 ### Store settings
 | Shopify feature | Status |
 |---|---|
 | Payments, Apple/Google Pay, tax | Have (Stripe) |
-| Staff accounts with individual logins & permissions | Phase 2 (one shared password today) |
-| Edit homepage/announcement text without a developer | Phase 2 |
+| Staff accounts with individual logins & permissions | Have |
+| Edit homepage/announcement text without a developer | Have |
 | Markets / multi-currency (UK) | with UK launch |
 | Custom domain | at launch (noovit.com) |

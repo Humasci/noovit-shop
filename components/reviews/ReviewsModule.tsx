@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 import toast from 'react-hot-toast';
 import { Star } from 'lucide-react';
 import { Review } from '@/types';
@@ -19,6 +19,11 @@ interface ApiReview {
   created_at: string;
 }
 
+const subscribeHash = (cb: () => void) => {
+  window.addEventListener('hashchange', cb);
+  return () => window.removeEventListener('hashchange', cb);
+};
+
 const inputClass = 'w-full rounded-xl border border-[var(--color-line)] bg-white px-4 py-3';
 
 export function ReviewsModule({
@@ -36,7 +41,10 @@ export function ReviewsModule({
 }) {
   const [real, setReal] = useState<Review[]>([]);
   const [score, setScore] = useState(5);
-  const [showForm, setShowForm] = useState(false);
+  // Links from review-request emails end in #write, which opens the form straight away.
+  const fromHash = useSyncExternalStore(subscribeHash, () => window.location.hash === '#write', () => false);
+  const [toggled, setToggled] = useState<boolean | null>(null);
+  const showForm = toggled ?? fromHash;
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -81,7 +89,7 @@ export function ReviewsModule({
     setSubmitting(false);
     if (!res.ok) return toast.error(data.error || 'Could not submit your review.');
     toast.success('Thanks! Your review will appear once approved.');
-    setShowForm(false);
+    setToggled(false);
   };
 
   return (
@@ -103,7 +111,7 @@ export function ReviewsModule({
                 </div>
               ))}
             </div>
-            <button onClick={() => setShowForm(!showForm)} className="btn btn-primary mt-6 w-full">
+            <button onClick={() => setToggled(!showForm)} className="btn btn-primary mt-6 w-full">
               Write a Review
             </button>
           </div>

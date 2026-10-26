@@ -3,7 +3,7 @@ import { unstable_cache } from 'next/cache';
 import { db } from '@/lib/db/server';
 import { dbConfigured } from '@/lib/config';
 import { SEED_PRODUCTS, findProduct } from '@/data/products';
-import { Product } from '@/types';
+import { Collection, Product } from '@/types';
 import { buildProduct, ProductRow, RealRating } from './build';
 
 export const CATALOG_TAG = 'catalog';
@@ -43,4 +43,39 @@ export async function getStoreProducts() {
 export async function getStoreProduct(slug: string) {
   const p = findProduct(await getCatalog(), slug);
   return p && p.status !== 'hidden' ? p : undefined;
+}
+
+interface CollectionRow {
+  slug: string;
+  title: string;
+  description: string;
+  image: string | null;
+  product_slugs: string[];
+  status: 'active' | 'hidden';
+  seo_title: string | null;
+  seo_description: string | null;
+}
+
+export const toCollection = (r: CollectionRow): Collection => ({
+  slug: r.slug,
+  title: r.title,
+  description: r.description,
+  image: r.image,
+  productSlugs: r.product_slugs ?? [],
+  status: r.status,
+  seoTitle: r.seo_title,
+  seoDescription: r.seo_description,
+});
+
+export async function loadCollections(): Promise<Collection[]> {
+  if (!dbConfigured()) return [];
+  const { data, error } = await db().from('collections').select('*').order('sort_order').order('title');
+  if (error) throw error;
+  return (data as CollectionRow[]).map(toCollection);
+}
+
+export const getCollections = unstable_cache(loadCollections, ['collections-v1'], { tags: [CATALOG_TAG] });
+
+export async function getStoreCollections() {
+  return (await getCollections()).filter((c) => c.status === 'active');
 }

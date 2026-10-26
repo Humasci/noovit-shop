@@ -1,7 +1,10 @@
+import { requireAdmin } from '@/lib/admin/auth';
 import Link from 'next/link';
 import { Download } from 'lucide-react';
 import { db } from '@/lib/db/server';
 import { dbConfigured, fulfilmentSupplier } from '@/lib/config';
+import { loadCatalog } from '@/lib/catalog/server';
+import { shipLines } from '@/lib/orders/fulfilment';
 import { markQueuedSubmitted } from '@/app/admin/actions';
 import { FulfilmentForm, FulfilmentRow } from '@/components/admin/FulfilmentForm';
 import { Badge, Card, FilterLinks, Flash, NotConfigured, PageTitle, btnSm, btnSmOutline, dateTime } from '@/components/admin/ui';
@@ -9,6 +12,7 @@ import { Badge, Card, FilterLinks, Flash, NotConfigured, PageTitle, btnSm, btnSm
 const OPEN = ['queued', 'submitted', 'accepted', 'failed'];
 
 export default async function FulfilmentPage({ searchParams }: { searchParams: Promise<{ status?: string; msg?: string }> }) {
+  await requireAdmin('fulfilment');
   const { status, msg } = await searchParams;
   if (!dbConfigured()) return (<><PageTitle title="Fulfilment" /><NotConfigured what="The database" /></>);
 
@@ -23,6 +27,7 @@ export default async function FulfilmentPage({ searchParams }: { searchParams: P
   const queued = (data ?? []).filter((f) => f.status === 'queued').length;
   const { data: settings } = await db().from('products').select('slug, supplier_sku');
   const currentSku = new Map((settings ?? []).map((r) => [r.slug as string, r.supplier_sku as string | null]));
+  const catalog = await loadCatalog();
 
   return (
     <>
@@ -68,15 +73,13 @@ export default async function FulfilmentPage({ searchParams }: { searchParams: P
                   <span className="text-[var(--color-muted)]">· ordered {dateTime(o.created_at)}</span>
                 </div>
                 <ul className="mb-3 text-sm">
-                  {o.order_items.map((i, idx) => {
-                    const sku = i.supplier_sku ?? currentSku.get(i.product_slug);
-                    return (
-                      <li key={idx}>
-                        {i.quantity * i.bottles} × {i.product_name}
-                        <span className={sku ? 'text-[var(--color-muted)]' : 'text-red-600'}> ({sku ?? 'no SKU'})</span>
-                      </li>
-                    );
-                  })}
+                  {shipLines(o.order_items, catalog, currentSku).map((line, idx) => (
+                    <li key={idx}>
+                      {line.units} × {line.name}
+                      <span className={line.sku ? 'text-[var(--color-muted)]' : 'text-red-600'}> ({line.sku ?? 'no SKU'})</span>
+                      {line.bundle && <span className="text-xs text-[var(--color-muted)]"> · from {line.bundle}</span>}
+                    </li>
+                  ))}
                 </ul>
                 {f.error && <p className="mb-2 text-sm text-red-600">{f.error}</p>}
                 <FulfilmentForm f={f as FulfilmentRow} returnTo="/admin/fulfilment" />

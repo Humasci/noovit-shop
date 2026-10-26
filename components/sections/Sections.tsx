@@ -165,6 +165,7 @@ export function NewsletterSection() {
                 const data = await res.json().catch(() => ({}));
                 if (!res.ok) return void toast.error(data.error || 'Something went wrong. Please try again.');
                 toast.success(data.message);
+                localStorage.setItem('noovit-subscribed', '1');
                 setEmail('');
               }}
             >

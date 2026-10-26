@@ -63,11 +63,23 @@ There are no passwords. The customer goes to **My Subscriptions** (`/account`), 
 
 Stripe's page doesn't offer **pause** or **skip**. If a customer asks, pause it for them in Admin → Subscriptions.
 
+### Read the Journal
+The **Journal** (`/blog`, linked in the menu and footer) holds your articles. Each article has its own page, appears in the sitemap, and shows in Google with article details.
+
+### Collections
+Curated pages such as `/collections/sleep-support` group products for a goal or campaign. Active collections also appear as buttons at the top of the Shop page.
+
 ### Join the newsletter
 The homepage newsletter form (and the marketing tick-box at checkout) adds people to your **Subscribers** list. Newsletter sign-ups get a welcome email with your welcome discount code. Every marketing email has an **Unsubscribe** link that works in one click, including Gmail's and Apple Mail's built-in unsubscribe button.
 
+The optional **pop-up** (set its text in Admin → Homepage) appears once every 14 days — after 20 seconds, or when a desktop visitor moves to leave the page. It never shows on cart, checkout or account pages, or to someone who has already signed up.
+
 ### Cookie choice
 If you've added tracking IDs in Settings, visitors see a small cookie banner. Nothing is tracked until they click **Accept**. They can change their mind via **Cookie preferences** in the footer.
+
+### Cart extras
+- **Pairs well with:** the cart suggests two best sellers that aren't already in it, with one-tap **Add**.
+- **Automatic discount:** if you've set one (e.g. 10% off orders over $100), the cart shows a progress bar ("Spend $X more to get 10% off") and the discount applies at checkout by itself. While it applies, discount codes can't also be entered — Stripe allows one discount per checkout.
 
 ### Leave a review
 Any visitor can submit a review from a product page or the Reviews page. It **does not appear until you approve it**. If the reviewer's email matches an order for that product, it is automatically marked **Verified Buyer**.
@@ -84,12 +96,24 @@ Any visitor can submit a review from a product page or the Reviews page. It **do
 | Card fails on renewal | Payment retry / update card emails | Stripe (turn on in Stripe → Settings → Billing) |
 | Joins the newsletter | Welcome email with your welcome code | Noovit (Resend) |
 | Leaves checkout without paying (and ticked the marketing box) | "You left something in your cart" with a link back to their exact cart — at most one a week | Noovit (Resend) |
+| 14 days after their order shipped (adjustable) | "How are you finding Noovit?" with a review link for each product | Noovit (Resend) |
+| You create a payment link for them | "Your Noovit order is ready to complete" with a secure Stripe link | Noovit (Resend) |
 
 ---
 
 ## 3. The admin dashboard
 
-Go to **noovit.com/admin** and sign in with the admin password. You stay signed in for 7 days on that device. **Log out** is at the bottom of the menu.
+Go to **noovit.com/admin** and sign in with your own email and password. You stay signed in for 7 days on that device. Your name (→ **My account**, to change your password) and **Log out** are at the bottom of the menu.
+
+**First-time setup:** before any staff accounts exist, the login page asks for the setup password (`ADMIN_PASSWORD` in the hosting settings). Sign in with it, create your own **Owner** account on the Staff page, and the setup password stops working.
+
+**Roles** — each person only sees what their role allows:
+
+| Role | Can use |
+|---|---|
+| **Owner** | Everything, including Staff accounts |
+| **Manager** | Everything except Staff |
+| **Fulfilment** | Overview (without revenue), Orders (no refunds, cancellations or new orders), Fulfilment, Customers |
 
 ### Overview
 Your daily snapshot:
@@ -114,12 +138,20 @@ Your daily snapshot:
 | refunded / partially refunded | Money returned |
 | cancelled | Cancelled |
 
-**Refund an order:** open the order → *Payment* box → tick "Refund $X in full" → **Refund order**. The refund goes back to the customer's card through Stripe, and any fulfilment that hasn't been sent is cancelled. For a **partial refund**, use the "View in Stripe" link and refund there — the order updates automatically.
+**Refund an order (full or partial):** open the order → *Payment* box → enter the amount (it defaults to everything not yet refunded), pick a reason, optionally add a note → **Refund**. The money goes back to the customer's card through Stripe; a note records who refunded what. A full refund also cancels any fulfilment not yet sent. Clicking twice can't refund twice.
+
+**Cancel an order:** for orders that haven't shipped. *Payment* box → **Cancel order** → tick to confirm. It stops fulfilment and refunds whatever hasn't been refunded yet. For a first subscription order, tick **Also cancel the subscription now** if the customer wants out entirely. Shipped orders can only be refunded.
+
+**Notes and tags:** every order has internal **Notes** (signed with your name and time; customers never see them) and **Tags** (e.g. `vip`, `wholesale` — comma-separated). Click a tag in the order list to see every order with it.
+
+**Manual orders** (Owner/Manager): **Orders → New order**:
+- **Free replacement** — for lost, damaged or goodwill orders. Enter the customer's email, name and US address, choose products, add a note (e.g. "replacement for #1042"). It's created at $0, tagged `replacement`, and goes straight to the fulfilment queue.
+- **Payment link** — for phone or email orders. Choose products; a secure Stripe checkout link is created (valid 24 hours) and, if ticked, emailed to the customer. When they pay, the order appears automatically, tagged `payment-link`.
 
 ### Fulfilment (daily routine for dropshipping)
 Every paid order — including each subscription renewal — appears here as **queued**.
 
-1. Click **Export queued (CSV)**. You get one row per product line with name, address, product, **supplier SKU**, bottles per pack, number of packs and total bottles.
+1. Click **Export queued (CSV)**. You get one row per item to ship: name, address, product, **supplier SKU** and number of units. **Bundles are split into their component products**, each with its own SKU, and the `part_of_bundle` column says which bundle it came from.
 2. Upload or send that file to your supplier (or enter the orders in their portal).
 3. Click **Mark N queued as submitted**.
 4. When the supplier ships, open the order (or find it on this page), set status to **shipped**, and enter carrier, tracking number and tracking link → **Save**. The customer is emailed automatically.
@@ -137,7 +169,13 @@ Actions (they take effect in Stripe immediately):
 - **Cancel at period end** — the customer gets the deliveries they've paid for, then it stops. **Undo cancel** reverses it.
 
 ### Customers
-Every customer with number of orders, lifetime spend, active subscriptions, last order date and first-seen date. Search by name or email. Click an email to see all their orders.
+Every customer with number of orders, lifetime spend (after refunds), active subscriptions, last order date, tags and first-seen date. Search by name or email.
+
+**Segments** (buttons above the list, with counts): Active subscribers · Repeat buyers (2+ orders) · One order, no subscription · Lapsed (no order in 60 days and no subscription) · VIP ($200+ lifetime). Click a tag to filter by it.
+
+**Export** downloads the current segment/search as a CSV — e.g. export "Lapsed" to run a win-back campaign in Klaviyo.
+
+Click a customer to open their profile: orders, subscriptions, whether they're subscribed to marketing emails, and editable **tags** and **internal notes**.
 
 ### Products
 The list shows every product with photo, type, status, one-bottle price, lowest price and supplier SKU. Filter by type, click **Edit** to change a product, or **New product** to add one.
@@ -158,9 +196,18 @@ The list shows every product with photo, type, status, one-bottle price, lowest 
 | **Tags** | Dietary filters, Women's/Men's Health tabs, Dogs/Cats for pet products, Best seller, and 18+ age check. |
 | **Rating display** | Placeholder rating and count, used only until real reviews are approved (set the count to 0 to hide stars). |
 
+| **Bundle contents** | Leave empty for a normal product. For a bundle (e.g. "Sleep Stack"), add the products inside it and how many of each. Customers buy one item at the bundle's price; the bundle page lists what's inside; fulfilment ships the components. |
+
 Click **Save changes**. The store updates immediately, and prices are pushed to Stripe automatically — the message tells you how many prices changed. If Stripe was unavailable, use **Sync all to Stripe** on the product list to retry.
 
+**Bulk actions:** tick products in the list, choose an action (set active / out of stock / hidden, mark or unmark best seller, add to or remove from a collection) → **Apply**.
+
+**Spreadsheet import/export:** **Export CSV** downloads every product. Edit it in Excel or Google Sheets and upload it under **Import from spreadsheet**. Products are matched by `slug`; you can change name, status, base price, servings, supplier SKU, best seller (yes/no), short benefit and SEO fields. Blank cells are left unchanged, and rows with problems are skipped and listed. Price changes are pushed to Stripe automatically. New products must be created in the editor.
+
 > New products start **hidden** so you can add photos and check the page first. Existing subscribers keep paying the price they signed up at; price changes apply to new purchases.
+
+### Collections
+**Collections → New collection**: give it a title (the URL handle fills in automatically), a description, and pick products from the search list; reorder with the arrows. Set it **Active** to publish it at `noovit.com/collections/<handle>`. After the first save you can add a wide banner image. Collections are great landing pages for ads and emails ("Women's Health", "Gift ideas"). Deleting a collection never affects its products.
 
 ### Reviews
 - **Pending** reviews wait here. **Approve** publishes it on the product page; **Reject** hides it.
@@ -184,9 +231,36 @@ A checkout counts as abandoned if it isn't paid within **2 hours**. This page sh
 - Only shoppers who ticked the marketing box at checkout are emailed — that's required by law in many places and by Stripe.
 - Each person gets at most one reminder a week. The email links straight back to their saved cart and mentions your welcome code.
 
+### Reports
+Choose a period (last 7 / 30 / 90 days or 12 months):
+- **Headline numbers:** net revenue (after refunds), orders, average order, subscription share of revenue, new customers, refunds, discounts given.
+- **Net revenue per day:** columns split into subscription and one-time revenue. Hover (or tab) over a day for the exact figures; **Show as table** lists every day.
+- **Sales by product:** the top 12 by revenue; hover a bar for bottles, orders and share.
+- **Subscription retention:** for each month's new subscribers, how many are still active today.
+- **Export orders (CSV):** every order line in the period, for your accountant or spreadsheet.
+
+Free replacement orders don't count as revenue; cancelled orders are excluded.
+
+### Homepage
+Edit the storefront without a developer:
+- **Announcement bar** — an optional coloured strip above the header (e.g. "Free shipping on every order"), with an optional link.
+- **Trust bar** — the five short promises across the top.
+- **Hero** — badge, headline, text, button label and link, bullet points, and the background photo.
+- **Newsletter pop-up** — headline and text; leave the headline empty to switch the pop-up off.
+Links must start with `/` (a page on your site) or `https://`. **Reset all homepage text to defaults** puts the original copy back.
+
+### Blog
+**Blog → New post**: title, URL handle, a short excerpt (shown on the blog list and in Google), and the article. Format with simple markdown — `## Heading`, `**bold**`, `- bullet`, `[link text](/products/magnesium-complex)` (see *Formatting help*). Add a cover image, then choose **Draft** (private — use **Preview** to see it) or **Published**. A future publish date schedules the post. For safety, any HTML pasted into an article is removed. Keep health wording as careful as on product pages ("supports…"), and every article automatically ends with a "not medical advice" note.
+
+### Staff (Owner only)
+Add people with their name, email, role and a temporary password (12+ characters) — share it securely and ask them to change it under **My account**. You can change someone's role, **deactivate** them (they're signed out immediately) or reset their password. There must always be at least one active Owner.
+
 ### Settings
 - **Analytics & ad tracking:** paste your Google Analytics 4 measurement ID (`G-…`), Meta Pixel ID and TikTok Pixel ID. Leave blank to switch a platform off. Tracking starts only after a visitor accepts cookies, and records page views, product views, add to cart, checkout started and purchases (with order value) — enough to run and measure ad campaigns.
 - **Marketing emails:** the welcome discount code and your business postal address (US law requires it in marketing emails).
+- **Review requests:** how many days after shipping to email customers asking for a review (default 14; 0 switches it off). Sent once per order, never to people who unsubscribed or whose order was refunded or cancelled. Runs daily at 15:00 UTC.
+- **Automatic discount:** a minimum order ($) and % off, e.g. 100 and 10. Leave blank to switch off.
+- **Klaviyo:** your Klaviyo list ID. With the Klaviyo private key added to the hosting settings, new subscribers are added to that list, unsubscribes are synced, and every order is sent to Klaviyo as **Placed Order** (and **Fulfilled Order** when shipped) — use these to build welcome, post-purchase and win-back flows in Klaviyo.
 - **Sales channels:** the product-feed links for **Google Merchant Center** (Google Shopping), **Meta Commerce Manager** (Facebook & Instagram shops and catalog ads) and **TikTok**, with where to paste each one. Feeds always reflect current products, prices, photos and stock; hidden products are left out. The sitemap link for Google Search Console is here too.
 
 ---
@@ -223,6 +297,18 @@ A checkout counts as abandoned if it isn't paid within **2 hours**. This page sh
 | Turn on Google Analytics or ad pixels | Admin → Settings → paste the IDs → Save |
 | Email my subscribers | Admin → Subscribers → Export CSV → import into Klaviyo (or similar) |
 | See abandoned carts | Admin → Abandoned carts |
+| Refund part of an order | Orders → open order → enter amount → Refund |
+| Send a replacement | Orders → New order → Free replacement |
+| Take a phone order | Orders → New order → Payment link |
+| Find my best customers | Customers → VIP segment |
+| Win back lapsed customers | Customers → Lapsed → Export → import into Klaviyo |
+| Create a landing page for an ad | Collections → New collection |
+| Sell a bundle | Products → New product → Bundle contents |
+| Change many prices at once | Products → Export CSV → edit → Import CSV |
+| Change the homepage headline or add a banner | Homepage |
+| Publish an article | Blog → New post |
+| Give someone access | Staff → Add a staff member |
+| See sales trends | Reports |
 | See how the business is doing | Admin → Overview |
 
 ---
@@ -248,6 +334,9 @@ A checkout counts as abandoned if it isn't paid within **2 hours**. This page sh
 | A product edit doesn't show in the store | Hard-refresh the page. Check the product isn't set to Hidden. |
 | Photo upload fails | Use JPG, PNG or WebP under 4 MB. |
 | No cookie banner appears | No tracking IDs are set in Settings (the banner only shows when there's something to consent to). |
+| Review-request emails aren't going out | `CRON_SECRET` must be set in the hosting settings (Vercel runs the daily job with it), and "Days after shipping" must not be 0. |
+| Klaviyo isn't receiving anything | Check the Klaviyo list ID in Settings and that `KLAVIYO_PRIVATE_KEY` is set with lists, profiles, subscriptions and events write access. |
+| Someone can't see a section | Their role doesn't include it — an Owner can change roles under Staff. |
 | Feed rejected by Google/Meta | Check the product has a description and, ideally, a real photo; mockup images are accepted but real photos perform better. |
 | Order paid in Stripe but not in Admin | The Stripe webhook isn't configured or is failing — check Stripe → Developers → Webhooks for errors. Stripe retries automatically for 3 days. |
 | Customers aren't receiving emails | Resend key missing or domain not verified. |

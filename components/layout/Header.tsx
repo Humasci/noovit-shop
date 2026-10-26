@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Menu, X, ShoppingBag, Leaf, Star, FlaskConical, ShieldCheck, BadgeCheck } from 'lucide-react';
 import { useCart, cartCount } from '@/lib/store/cart';
-import { TRUST_BAR } from '@/data/content';
 import { useHydrated } from '@/lib/useHydrated';
 
 const NAV = [
@@ -12,13 +11,14 @@ const NAV = [
   { name: 'Pets', href: '/pets' },
   { name: 'About Us', href: '/about' },
   { name: 'Reviews', href: '/reviews' },
+  { name: 'Journal', href: '/blog' },
   { name: 'FAQ', href: '/faq' },
   { name: 'Contact Us', href: '/contact' },
 ];
 
 const TRUST_ICONS = [Leaf, Star, FlaskConical, ShieldCheck, BadgeCheck];
 
-export function Header() {
+export function Header({ trustBar, announcement }: { trustBar: string[]; announcement?: { text: string; href: string } }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const items = useCart((s) => s.items);
   const openCart = useCart((s) => s.open);
@@ -27,10 +27,19 @@ export function Header() {
 
   return (
     <>
+      {announcement?.text && (
+        <div className="bg-[var(--color-blue)] px-4 py-2 text-center text-sm font-semibold text-white">
+          {announcement.href ? (
+            <Link href={announcement.href} className="underline-offset-4 hover:underline">{announcement.text} →</Link>
+          ) : (
+            announcement.text
+          )}
+        </div>
+      )}
       <div className="bg-[var(--color-navy)] py-2 text-white">
         <div className="no-scrollbar flex justify-start gap-8 overflow-x-auto px-4 text-xs font-medium md:justify-center">
-          {TRUST_BAR.map((label, i) => {
-            const Icon = TRUST_ICONS[i];
+          {trustBar.map((label, i) => {
+            const Icon = TRUST_ICONS[i % TRUST_ICONS.length];
             return (
               <span key={label} className="flex shrink-0 items-center gap-1.5">
                 <Icon className="h-3.5 w-3.5" />

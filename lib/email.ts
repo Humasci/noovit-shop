@@ -136,3 +136,38 @@ export function sendAbandonedCheckout(
     unsubscribeHeaders(f)
   );
 }
+
+export function sendPaymentLink(to: string, name: string, url: string, items: { name: string; quantity: number }[]) {
+  const rows = items.map((i) => `<li>${esc(i.name)} × ${i.quantity}</li>`).join('');
+  return send(
+    to,
+    'Your Noovit order is ready to complete',
+    layout(`
+      <h1 style="font-size:20px">Hi${name ? ` ${esc(name.split(' ')[0])}` : ''}, your order is ready</h1>
+      <p>We've prepared this order for you:</p>
+      <ul>${rows}</ul>
+      <p><a href="${esc(url)}" style="display:inline-block;background:#14213d;color:#fff;padding:12px 24px;border-radius:999px;text-decoration:none;font-weight:bold">Review and pay securely</a></p>
+      <p style="font-size:12px;color:#6b7280">This secure Stripe link expires in 24 hours.</p>`)
+  );
+}
+
+export function sendReviewRequest(to: string, name: string | null, products: { name: string; url: string }[], f: MarketingFooter) {
+  const rows = products
+    .map(
+      (p) =>
+        `<li style="margin-bottom:8px">${esc(p.name)} — <a href="${esc(p.url)}" style="color:#2563eb;font-weight:bold">Write a review</a></li>`
+    )
+    .join('');
+  return send(
+    to,
+    'How are you finding Noovit?',
+    marketingLayout(
+      `<h1 style="font-size:20px">Hi${name ? ` ${esc(name.split(' ')[0])}` : ''}, how's it going?</h1>
+      <p>You've had your order for a little while now. We'd love to hear what you think — your review helps other people find what works for them.</p>
+      <ul style="padding-left:18px">${rows}</ul>
+      <p style="font-size:12px;color:#6b7280">Takes less than a minute. Honest reviews only — good or bad.</p>`,
+      f
+    ),
+    unsubscribeHeaders(f)
+  );
+}

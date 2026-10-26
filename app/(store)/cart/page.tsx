@@ -6,6 +6,7 @@ import { useCart, cartTotal, lineTotal } from '@/lib/store/cart';
 import { formatPrice } from '@/lib/utils/format';
 import { ProductImage } from '@/components/product/ProductImage';
 import { CheckoutButton } from '@/components/cart/CheckoutButton';
+import { AutoDiscountNote } from '@/components/cart/AutoDiscountNote';
 import { useHydrated } from '@/lib/useHydrated';
 
 export default function CartPage() {
@@ -74,6 +75,7 @@ export default function CartPage() {
             <dt>Total</dt><dd>{formatPrice(cartTotal(items))}</dd>
           </div>
           <p className="text-xs text-[var(--color-muted)]">Taxes and discount codes are applied at checkout.</p>
+          <AutoDiscountNote subtotal={cartTotal(items)} />
         </dl>
         <div className="mt-6">
           <CheckoutButton />

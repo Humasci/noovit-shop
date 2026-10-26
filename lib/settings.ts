@@ -5,12 +5,17 @@ import { dbConfigured } from '@/lib/config';
 
 export const SETTINGS_TAG = 'settings';
 
+// upper: normalise to uppercase before validating (IDs and codes); others are stored as typed.
 export const SETTING_FIELDS = {
-  ga4_id: { label: 'Google Analytics 4 measurement ID', placeholder: 'G-XXXXXXXXXX', pattern: /^G-[A-Z0-9]{4,16}$/, env: 'NEXT_PUBLIC_GA4_ID' },
-  meta_pixel_id: { label: 'Meta (Facebook/Instagram) Pixel ID', placeholder: '123456789012345', pattern: /^\d{10,20}$/, env: 'NEXT_PUBLIC_META_PIXEL_ID' },
-  tiktok_pixel_id: { label: 'TikTok Pixel ID', placeholder: 'C123ABC456DEF789GHI0', pattern: /^[A-Z0-9]{10,30}$/, env: 'NEXT_PUBLIC_TIKTOK_PIXEL_ID' },
-  newsletter_code: { label: 'Newsletter welcome discount code', placeholder: 'WELCOME10', pattern: /^[A-Z0-9_-]{3,30}$/, env: 'NEWSLETTER_CODE' },
-  business_address: { label: 'Business postal address (required in marketing emails)', placeholder: 'Noovit LLC, 123 Main St, Austin, TX 78701', pattern: /^.{10,200}$/, env: 'BUSINESS_ADDRESS' },
+  ga4_id: { label: 'Google Analytics 4 measurement ID', placeholder: 'G-XXXXXXXXXX', pattern: /^G-[A-Z0-9]{4,16}$/, env: 'NEXT_PUBLIC_GA4_ID', upper: true },
+  meta_pixel_id: { label: 'Meta (Facebook/Instagram) Pixel ID', placeholder: '123456789012345', pattern: /^\d{10,20}$/, env: 'NEXT_PUBLIC_META_PIXEL_ID', upper: true },
+  tiktok_pixel_id: { label: 'TikTok Pixel ID', placeholder: 'C123ABC456DEF789GHI0', pattern: /^[A-Z0-9]{10,30}$/, env: 'NEXT_PUBLIC_TIKTOK_PIXEL_ID', upper: true },
+  newsletter_code: { label: 'Newsletter welcome discount code', placeholder: 'WELCOME10', pattern: /^[A-Z0-9_-]{3,30}$/, env: 'NEWSLETTER_CODE', upper: true },
+  business_address: { label: 'Business postal address (required in marketing emails)', placeholder: 'Noovit LLC, 123 Main St, Austin, TX 78701', pattern: /^.{10,200}$/, env: 'BUSINESS_ADDRESS', upper: false },
+  review_request_days: { label: 'Days after shipping to ask for a review (0 = off)', placeholder: '14', pattern: /^\d{1,2}$/, env: 'REVIEW_REQUEST_DAYS', upper: false },
+  auto_discount_threshold: { label: 'Automatic discount: minimum order ($)', placeholder: '100', pattern: /^\d{1,4}$/, env: 'AUTO_DISCOUNT_THRESHOLD', upper: false },
+  auto_discount_percent: { label: 'Automatic discount: % off', placeholder: '10', pattern: /^([1-9]|[1-4]\d|50)$/, env: 'AUTO_DISCOUNT_PERCENT', upper: false },
+  klaviyo_list_id: { label: 'Klaviyo list ID', placeholder: 'Y6nRLr', pattern: /^[A-Za-z0-9]{4,12}$/, env: 'KLAVIYO_LIST_ID', upper: false },
 } as const;
 
 export type SettingKey = keyof typeof SETTING_FIELDS;

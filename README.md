@@ -18,7 +18,7 @@ Everything degrades gracefully without keys: the store works, checkout shows "no
 
 ### 1. Supabase
 1. Create a project at supabase.com.
-2. Run `supabase/migrations/0001_init.sql`, then `0002_catalog_marketing.sql`, in the SQL editor. The second also creates the public `product-images` storage bucket.
+2. Run the files in `supabase/migrations/` in order (`0001`, `0002`, `0003`) in the SQL editor. `0002` also creates the public `product-images` storage bucket.
 3. Set `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`. All tables have row-level security with no policies — only the server can read or write.
 
 ### 2. Stripe
@@ -36,9 +36,15 @@ Everything degrades gracefully without keys: the store works, checkout shows "no
 Create a Resend account, verify your sending domain, set `RESEND_API_KEY` and `EMAIL_FROM`. Sends order confirmations, shipping notifications and "My Subscriptions" links.
 
 ### 4. Admin
-Set `ADMIN_PASSWORD` and `APP_SECRET` (`openssl rand -base64 48`), then sign in at `/admin`.
+Set `APP_SECRET` (`openssl rand -base64 48`) and a one-time setup password `ADMIN_PASSWORD`. Sign in at `/admin` with the setup password, create the Owner account on the Staff page, and from then on everyone signs in with their own email and password (the setup password stops working once a staff account exists). Roles: Owner, Manager, Fulfilment.
 
-### 5. Marketing (Admin → Settings)
+### 5. Scheduled job
+Set `CRON_SECRET` (random string). `vercel.json` runs `/api/cron/daily` at 15:00 UTC, which sends review-request emails.
+
+### 6. Klaviyo (optional)
+Set `KLAVIYO_PRIVATE_KEY` (scopes: lists, profiles, subscriptions, events — write) and the list ID in Admin → Settings.
+
+### 7. Marketing (Admin → Settings)
 Create the `WELCOME10` discount, then in Settings add it as the newsletter code, your business postal address, and any GA4 / Meta / TikTok pixel IDs. Settings also lists the product-feed URLs for Google Merchant Center, Meta Commerce Manager and TikTok.
 
 ## How it works
@@ -50,6 +56,12 @@ Create the `WELCOME10` discount, then in Settings add it as the newsletter code,
 - **Catalog:** products live in the `products` table (seeded from `data/products.ts`) and are cached for the storefront; admin saves refresh the cache instantly and sync prices to Stripe. Hidden products disappear from the store, feeds and sitemap; out-of-stock products stay visible but can't be bought.
 - **Marketing:** newsletter sign-ups and checkout opt-ins are stored as subscribers; every marketing email has a postal address and one-click unsubscribe. Checkouts expire after 2 hours; consenting shoppers get one recovery email (max one a week) and recovered orders are linked back.
 - **SEO & channels:** sitemap, robots, canonical URLs, Product/Organization structured data (ratings only from real reviews), PNG product images at `/product-image/<slug>`, and feeds at `/feeds/google.xml`, `/feeds/meta.csv`, `/feeds/tiktok.csv`.
+- **Staff & roles:** per-person accounts (scrypt-hashed passwords) with Owner / Manager / Fulfilment roles; every admin page, action and export checks the role, and accounts are re-checked on each request so deactivation is immediate.
+- **Order tools:** partial refunds and cancellations (Stripe idempotency keys prevent double refunds), internal notes, tags, free replacement orders and Stripe payment links.
+- **Catalog tools:** collections with storefront pages, bundles (expanded into component SKUs for fulfilment), bulk actions, product CSV import/export.
+- **Content:** editable homepage/announcement/trust bar/pop-up, and a markdown blog (raw HTML and unsafe URLs stripped).
+- **Automations:** review-request emails (daily cron), automatic spend-threshold discount, cart cross-sell, newsletter pop-up, Klaviyo sync.
+- **Reports:** revenue by day, sales by product, subscription retention, order CSV export.
 - **Analytics:** GA4, Meta and TikTok pixels load only after cookie consent and track page views, product views, add to cart, checkout started and purchases.
 - **Reviews:** submitted reviews are held for approval in `/admin/reviews`; once a product has approved reviews they replace its placeholder reviews. "Verified buyer" is set when the email matches an order for that product.
 

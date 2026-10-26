@@ -4,6 +4,8 @@ import { stripe } from '@/lib/stripe/server';
 import { stripeConfigured } from '@/lib/config';
 import { validateCheckout } from '@/lib/checkout/validate';
 import { loadCatalog } from '@/lib/catalog/server';
+import { getSettings } from '@/lib/settings';
+import { autoDiscountCoupon, autoDiscountFrom } from '@/lib/marketing/auto-discount';
 
 async function resolvePriceIds(lookupKeys: string[]) {
   const ids = new Map<string, string>();
@@ -47,6 +49,19 @@ export async function POST(req: NextRequest) {
     after_expiration: { recovery: { enabled: true, allow_promotion_codes: true } },
     expires_at: Math.floor(Date.now() / 1000) + CHECKOUT_TTL_SECONDS,
   };
+
+  // Stripe allows either an applied discount or customer-entered codes, not both.
+  const auto = autoDiscountFrom(await getSettings());
+  const subtotal = lines.reduce((sum, l) => sum + l.unitAmount * l.quantity, 0);
+  if (auto && subtotal >= auto.thresholdCents) {
+    try {
+      params.discounts = [{ coupon: await autoDiscountCoupon(auto.percent) }];
+      delete params.allow_promotion_codes;
+      params.after_expiration = { recovery: { enabled: true, allow_promotion_codes: false } };
+    } catch (err) {
+      console.error('Automatic discount unavailable', err);
+    }
+  }
 
   if (frequency) {
     params.subscription_data = { metadata: { frequency_days: String(frequency) } };

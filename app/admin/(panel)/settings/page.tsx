@@ -1,3 +1,4 @@
+import { requireAdmin } from '@/lib/admin/auth';
 import { dbConfigured } from '@/lib/config';
 import { loadSettings, SETTING_FIELDS } from '@/lib/settings';
 import { saveSettings } from '@/app/admin/settings-actions';
@@ -19,11 +20,22 @@ const GROUPS: { title: string; note: string; keys: (keyof typeof SETTING_FIELDS)
   {
     title: 'Marketing emails',
     note: 'The welcome code is emailed to new newsletter subscribers and offered in abandoned-checkout emails — create it first in Discounts. US law (CAN-SPAM) requires a postal address in marketing emails.',
-    keys: ['newsletter_code', 'business_address'],
+    keys: ['newsletter_code', 'business_address', 'review_request_days'],
+  },
+  {
+    title: 'Automatic discount',
+    note: 'Applies a % discount automatically when the cart reaches the minimum — great for raising order value. While it applies, customers can’t also enter a code (Stripe allows one discount per checkout). Leave blank to switch off.',
+    keys: ['auto_discount_threshold', 'auto_discount_percent'],
+  },
+  {
+    title: 'Klaviyo',
+    note: 'Optional. With a Klaviyo private API key set as KLAVIYO_PRIVATE_KEY in the hosting environment, new subscribers are added to this list and orders are sent as “Placed Order” and “Fulfilled Order” events for your Klaviyo flows. Unsubscribes sync too.',
+    keys: ['klaviyo_list_id'],
   },
 ];
 
 export default async function SettingsPage({ searchParams }: { searchParams: Promise<{ msg?: string }> }) {
+  await requireAdmin('settings');
   const { msg } = await searchParams;
   if (!dbConfigured()) return (<><PageTitle title="Settings" /><NotConfigured what="The database" /></>);
   const settings = await loadSettings();

@@ -1,3 +1,4 @@
+import { requireAdmin } from '@/lib/admin/auth';
 import { db } from '@/lib/db/server';
 import { dbConfigured } from '@/lib/config';
 import { subscriptionAction } from '@/app/admin/actions';
@@ -16,6 +17,7 @@ function Action({ id, action, label }: { id: string; action: string; label: stri
 }
 
 export default async function SubscriptionsPage({ searchParams }: { searchParams: Promise<{ status?: string; msg?: string }> }) {
+  await requireAdmin('subscriptions');
   const { status, msg } = await searchParams;
   if (!dbConfigured()) return (<><PageTitle title="Subscriptions" /><NotConfigured what="The database" /></>);
 

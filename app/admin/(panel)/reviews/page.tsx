@@ -1,3 +1,4 @@
+import { requireAdmin } from '@/lib/admin/auth';
 import { db } from '@/lib/db/server';
 import { dbConfigured } from '@/lib/config';
 import { findProduct } from '@/data/products';
@@ -20,6 +21,7 @@ function Moderate({ id, status, label, tab, primary }: { id: string; status: str
 }
 
 export default async function ReviewsAdmin({ searchParams }: { searchParams: Promise<{ status?: string; msg?: string }> }) {
+  await requireAdmin('reviews');
   const sp = await searchParams;
   const tab = TABS.includes(sp.status ?? '') ? sp.status! : 'pending';
   if (!dbConfigured()) return (<><PageTitle title="Reviews" /><NotConfigured what="The database" /></>);

@@ -51,6 +51,24 @@ export interface ProductData {
   rating: number;
   reviewCount: number;
   extraFaqs: FAQ[];
+  // A bundle sells as one item; fulfilment ships its component products.
+  bundleItems?: BundleItem[];
+}
+
+export interface BundleItem {
+  slug: string;
+  quantity: number;
+}
+
+export interface Collection {
+  slug: string;
+  title: string;
+  description: string;
+  image: string | null;
+  productSlugs: string[];
+  status: 'active' | 'hidden';
+  seoTitle: string | null;
+  seoDescription: string | null;
 }
 
 export interface Product extends ProductData {

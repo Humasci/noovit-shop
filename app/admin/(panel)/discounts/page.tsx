@@ -1,3 +1,4 @@
+import { requireAdmin } from '@/lib/admin/auth';
 import Stripe from 'stripe';
 import { stripe } from '@/lib/stripe/server';
 import { stripeConfigured } from '@/lib/config';
@@ -14,6 +15,7 @@ function appliesTo(c: Stripe.Coupon | null) {
 }
 
 export default async function DiscountsPage({ searchParams }: { searchParams: Promise<{ msg?: string }> }) {
+  await requireAdmin('marketing');
   const { msg } = await searchParams;
   if (!stripeConfigured()) return (<><PageTitle title="Discounts" /><NotConfigured what="Stripe" /></>);
 

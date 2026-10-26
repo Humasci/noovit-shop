@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { ShopBrowser, TypeFilter } from '@/components/shop/ShopBrowser';
-import { getStoreProducts } from '@/lib/catalog/server';
+import { getStoreCollections, getStoreProducts } from '@/lib/catalog/server';
 import { PRODUCT_TYPES } from '@/data/products';
 
 export const metadata: Metadata = {
@@ -14,5 +14,13 @@ const TYPES: string[] = ['all', 'best-sellers', ...PRODUCT_TYPES.map((t) => t.va
 export default async function ShopPage({ searchParams }: { searchParams: Promise<{ type?: string }> }) {
   const { type } = await searchParams;
   const initialType = (type && TYPES.includes(type) ? type : 'all') as TypeFilter;
-  return <ShopBrowser key={initialType} products={await getStoreProducts()} initialType={initialType} />;
+  const [products, collections] = await Promise.all([getStoreProducts(), getStoreCollections()]);
+  return (
+    <ShopBrowser
+      key={initialType}
+      products={products}
+      initialType={initialType}
+      collections={collections.map((c) => ({ slug: c.slug, title: c.title }))}
+    />
+  );
 }

@@ -1,9 +1,11 @@
+import { requireAdmin } from '@/lib/admin/auth';
 import Link from 'next/link';
 import { db } from '@/lib/db/server';
 import { dbConfigured } from '@/lib/config';
 import { Badge, NotConfigured, PageTitle, Stat, Table, dateTime, money, td } from '@/components/admin/ui';
 
 export default async function AbandonedPage() {
+  await requireAdmin('marketing');
   if (!dbConfigured()) return (<><PageTitle title="Abandoned checkouts" /><NotConfigured what="The database" /></>);
 
   // eslint-disable-next-line react-hooks/purity -- server component, evaluated once per request

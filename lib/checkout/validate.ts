@@ -20,6 +20,7 @@ export interface ValidatedLine {
   product: Product;
   lookupKey: string;
   quantity: number;
+  unitAmount: number; // cents, for one pack
 }
 
 export type ValidationResult =
@@ -57,7 +58,10 @@ export function validateCheckout(body: unknown, catalog: Product[]): ValidationR
     const lookupKey = priceLookupKey(product.slug, item.mode, item.bottles, frequency);
     const existing = lines.find((l) => l.lookupKey === lookupKey);
     if (existing) existing.quantity = Math.min(existing.quantity + qty, MAX_QTY);
-    else lines.push({ product, lookupKey, quantity: qty });
+    else {
+      const pack = packOptions(product, item.mode).find((o) => o.bottles === item.bottles)!;
+      lines.push({ product, lookupKey, quantity: qty, unitAmount: Math.round(pack.pricePerBottle * pack.bottles * 100) });
+    }
   }
 
   if (frequencies.size > 1) return { ok: false, error: 'All subscription items must share one delivery frequency.' };

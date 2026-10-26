@@ -14,6 +14,7 @@ import { Stars } from '@/components/ui/Stars';
 import { ProductImage } from '@/components/product/ProductImage';
 import { findProduct } from '@/data/products';
 import { getStoreProducts } from '@/lib/catalog/server';
+import { getContent, lines, safeLink } from '@/lib/content';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { SITE_URL } from '@/lib/site';
 import { EXPERTS, GENERAL_FAQS, IMAGES, PET_IMAGES } from '@/data/content';
@@ -24,7 +25,7 @@ const MARQUEE = ['Clean Ingredients', 'Third-Party Tested', 'GMP Certified', 'Nu
 const SPOTLIGHT = ['probiotic-complex', 'glucosamine-complex', 'turmeric-complex', 'marine-collagen-complex'];
 
 export default async function HomePage() {
-  const products = await getStoreProducts();
+  const [products, content] = await Promise.all([getStoreProducts(), getContent()]);
   const spotlight = SPOTLIGHT.map((s) => findProduct(products, s)).filter((p) => p !== undefined);
 
   return (
@@ -32,23 +33,26 @@ export default async function HomePage() {
       <JsonLd data={{ '@context': 'https://schema.org', '@type': 'Organization', name: 'Noovit', url: SITE_URL }} />
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <img src={IMAGES.hero} alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <img src={content.hero_image} alt="" className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-white via-white/85 to-white/10" />
         <div className="container relative px-6 py-20 md:py-32">
           <div className="max-w-xl">
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold shadow-sm">
-              <Stars size={14} /> 4.8/5 from 25,000+ customers
-            </div>
-            <h1 className="text-balance text-4xl md:text-6xl">Feel the difference of supplements done right.</h1>
-            <p className="mt-5 text-lg text-[var(--color-ink)]/80">
-              Clean, nutritionist-formulated supplements made in the USA and third-party tested — for gut health, sleep, joints, skin and energy.
-            </p>
-            <Link href="/shop" className="btn btn-primary mt-8">
-              Shop Now
-            </Link>
+            {content.hero_badge && (
+              <div className="mb-5 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold shadow-sm">
+                <Stars size={14} /> {content.hero_badge}
+              </div>
+            )}
+            <h1 className="text-balance text-4xl md:text-6xl">{content.hero_headline}</h1>
+            {content.hero_subheadline && <p className="mt-5 text-lg text-[var(--color-ink)]/80">{content.hero_subheadline}</p>}
+            {content.hero_cta_label && (
+              <Link href={safeLink(content.hero_cta_link) || '/shop'} className="btn btn-primary mt-8">
+                {content.hero_cta_label}
+              </Link>
+            )}
             <ul className="mt-6 flex flex-col gap-2 text-sm font-semibold sm:flex-row sm:gap-6">
-              <li className="flex items-center gap-2"><Check className="h-4 w-4 text-[var(--color-green)]" /> 90-day money-back guarantee</li>
-              <li className="flex items-center gap-2"><Check className="h-4 w-4 text-[var(--color-green)]" /> Free delivery</li>
+              {lines(content.hero_bullets, 3).map((b) => (
+                <li key={b} className="flex items-center gap-2"><Check className="h-4 w-4 text-[var(--color-green)]" /> {b}</li>
+              ))}
             </ul>
           </div>
         </div>

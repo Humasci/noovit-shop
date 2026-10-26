@@ -1,8 +1,16 @@
 import { verifyToken } from '@/lib/sign';
+import { Role } from './permissions';
 
 export const ADMIN_COOKIE = 'noovit_admin';
 
-export const adminConfigured = () => Boolean(process.env.ADMIN_PASSWORD && process.env.APP_SECRET);
+export interface SessionPayload {
+  sid: string; // staff id, or 'bootstrap' for the one-off ADMIN_PASSWORD login before any staff exist
+  role: Role;
+}
 
-export const isAdminToken = (token: string | undefined) =>
-  adminConfigured() && verifyToken<{ role: string }>(token)?.role === 'admin';
+export const adminConfigured = () => Boolean(process.env.APP_SECRET);
+
+// Signature + expiry only; requireAdmin() re-checks the staff account on every request.
+export const readSession = (token: string | undefined) => (adminConfigured() ? verifyToken<SessionPayload & Record<string, unknown>>(token) : null);
+
+export const isAdminToken = (token: string | undefined) => Boolean(readSession(token)?.sid);

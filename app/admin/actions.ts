@@ -8,6 +8,7 @@ import { db } from '@/lib/db/server';
 import { stripe } from '@/lib/stripe/server';
 import { syncSubscription } from '@/lib/orders/ingest';
 import { sendShippedEmail } from '@/lib/email';
+import { klaviyoEvent } from '@/lib/marketing/klaviyo';
 
 const str = (f: FormData, k: string) => String(f.get(k) ?? '').trim();
 const back = (path: string, msg: string): never => redirect(`${path}${path.includes('?') ? '&' : '?'}msg=${encodeURIComponent(msg)}`);
@@ -20,7 +21,7 @@ const ORDER_STATUS_FOR: Record<string, string | undefined> = {
 };
 
 export async function updateFulfilment(f: FormData) {
-  await requireAdmin();
+  await requireAdmin('fulfilment');
   const id = str(f, 'id');
   const status = str(f, 'status');
   const returnTo = str(f, 'returnTo') || '/admin/fulfilment';
@@ -55,6 +56,12 @@ export async function updateFulfilment(f: FormData) {
     await sendShippedEmail(order.email, order.order_number, patch.carrier, patch.tracking_url, patch.tracking_number).catch((e) =>
       console.error('Shipped email failed', e)
     );
+    await klaviyoEvent('Fulfilled Order', order.email, `fulfilled-${order.order_number}`, 0, {
+      OrderNumber: order.order_number,
+      Carrier: patch.carrier,
+      TrackingNumber: patch.tracking_number,
+      TrackingUrl: patch.tracking_url,
+    });
   }
 
   revalidatePath('/admin', 'layout');
@@ -62,7 +69,7 @@ export async function updateFulfilment(f: FormData) {
 }
 
 export async function markQueuedSubmitted() {
-  await requireAdmin();
+  await requireAdmin('fulfilment');
   const { data, error } = await db()
     .from('fulfilments')
     .update({ status: 'submitted', submitted_at: new Date().toISOString() })
@@ -75,29 +82,8 @@ export async function markQueuedSubmitted() {
   back('/admin/fulfilment', `${orderIds.length} orders marked as submitted.`);
 }
 
-export async function refundOrder(f: FormData) {
-  await requireAdmin();
-  const id = str(f, 'id');
-  const returnTo = str(f, 'returnTo');
-  if (f.get('confirm') !== 'on') back(returnTo, 'Tick the confirmation box to refund.');
-
-  const { data: order } = await db().from('orders').select('stripe_payment_intent_id, status').eq('id', id).single();
-  if (!order?.stripe_payment_intent_id) back(returnTo, 'No Stripe payment found for this order — refund it in the Stripe dashboard.');
-  if (order!.status === 'refunded') back(returnTo, 'Order is already refunded.');
-
-  try {
-    await stripe().refunds.create({ payment_intent: order!.stripe_payment_intent_id, metadata: { order_id: id } });
-  } catch (e) {
-    back(returnTo, `Stripe refused the refund: ${e instanceof Error ? e.message : 'unknown error'}`);
-  }
-  await db().from('orders').update({ status: 'refunded' }).eq('id', id);
-  await db().from('fulfilments').update({ status: 'cancelled' }).eq('order_id', id).eq('status', 'queued');
-  revalidatePath('/admin', 'layout');
-  back(returnTo, 'Order refunded.');
-}
-
 export async function subscriptionAction(f: FormData) {
-  await requireAdmin();
+  await requireAdmin('subscriptions');
   const id = str(f, 'stripe_subscription_id');
   const action = str(f, 'action');
   const s = stripe();
@@ -123,7 +109,7 @@ export async function subscriptionAction(f: FormData) {
 }
 
 export async function moderateReview(f: FormData) {
-  await requireAdmin();
+  await requireAdmin('reviews');
   const status = str(f, 'status');
   if (!['approved', 'rejected', 'pending'].includes(status)) back('/admin/reviews', 'Invalid status.');
   const { error } = await db().from('reviews').update({ status }).eq('id', str(f, 'id'));
@@ -134,7 +120,7 @@ export async function moderateReview(f: FormData) {
 }
 
 export async function createDiscount(f: FormData) {
-  await requireAdmin();
+  await requireAdmin('marketing');
   const code = str(f, 'code').toUpperCase();
   const kind = str(f, 'kind') === 'amount' ? 'amount' : 'percent';
   const value = Number(str(f, 'value'));
@@ -183,7 +169,7 @@ export async function createDiscount(f: FormData) {
 }
 
 export async function deactivateDiscount(f: FormData) {
-  await requireAdmin();
+  await requireAdmin('marketing');
   await stripe().promotionCodes.update(str(f, 'id'), { active: false });
   revalidatePath('/admin/discounts');
   back('/admin/discounts', 'Code deactivated.');

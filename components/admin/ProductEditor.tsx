@@ -56,7 +56,17 @@ export const EMPTY_PRODUCT: ProductData = {
   extraFaqs: [],
 };
 
-export function ProductEditor({ initial, isNew, images }: { initial: ProductInput; isNew: boolean; images: string[] }) {
+export function ProductEditor({
+  initial,
+  isNew,
+  images,
+  productOptions,
+}: {
+  initial: ProductInput;
+  isNew: boolean;
+  images: string[];
+  productOptions: { slug: string; name: string }[];
+}) {
   const router = useRouter();
   const [pending, start] = useTransition();
   const [slug, setSlug] = useState(initial.slug);
@@ -221,6 +231,46 @@ export function ProductEditor({ initial, isNew, images }: { initial: ProductInpu
             <Field title="Dosage / how to take">
               <input value={d.dosage} onChange={(e) => set('dosage', e.target.value)} className={full} placeholder="Take 2 capsules daily with food." />
             </Field>
+          </div>
+        </Card>
+
+        <Card>
+          <h2 className="mb-1 text-lg">Bundle contents</h2>
+          <p className="mb-4 text-xs text-[var(--color-muted)]">
+            Leave empty for a normal product. For a bundle (e.g. a “Sleep Stack”), list the products inside it: shoppers buy one item at the bundle price, and the
+            fulfilment CSV lists each component with its own supplier SKU.
+          </p>
+          <div className="space-y-2">
+            {(d.bundleItems ?? []).map((b, i) => (
+              <div key={i} className="grid gap-2 sm:grid-cols-[3fr_1fr_auto]">
+                <select
+                  value={b.slug}
+                  onChange={(e) => set('bundleItems', (d.bundleItems ?? []).map((x, j) => (j === i ? { ...x, slug: e.target.value } : x)))}
+                  className={inputCls}
+                  aria-label="Bundle product"
+                >
+                  <option value="">Choose a product…</option>
+                  {productOptions.map((o) => (
+                    <option key={o.slug} value={o.slug}>{o.name}</option>
+                  ))}
+                </select>
+                <input
+                  type="number"
+                  min={1}
+                  max={10}
+                  value={b.quantity}
+                  onChange={(e) => set('bundleItems', (d.bundleItems ?? []).map((x, j) => (j === i ? { ...x, quantity: Number(e.target.value) } : x)))}
+                  className={inputCls}
+                  aria-label="Quantity in bundle"
+                />
+                <button type="button" onClick={() => set('bundleItems', (d.bundleItems ?? []).filter((_, j) => j !== i))} className={btnSmOutline} aria-label="Remove bundle item">
+                  <Trash2 className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            ))}
+            <button type="button" onClick={() => set('bundleItems', [...(d.bundleItems ?? []), { slug: '', quantity: 1 }])} className={`${btnSmOutline} inline-flex items-center gap-1`}>
+              <Plus className="h-3.5 w-3.5" /> Add product to bundle
+            </button>
           </div>
         </Card>
 

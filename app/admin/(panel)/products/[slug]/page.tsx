@@ -1,13 +1,16 @@
+import { requireAdmin } from '@/lib/admin/auth';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { db } from '@/lib/db/server';
 import { dbConfigured } from '@/lib/config';
+import { loadCatalog } from '@/lib/catalog/server';
 import { ProductEditor, EMPTY_PRODUCT } from '@/components/admin/ProductEditor';
 import { ProductImages } from '@/components/admin/ProductImages';
 import { NotConfigured, PageTitle } from '@/components/admin/ui';
 import { ProductData, ProductStatus } from '@/types';
 
 export default async function EditProductPage({ params }: { params: Promise<{ slug: string }> }) {
+  await requireAdmin('products');
   const { slug } = await params;
   const isNew = slug === 'new';
   if (!dbConfigured()) return (<><PageTitle title={isNew ? 'New product' : 'Edit product'} /><NotConfigured what="The database" /></>);
@@ -39,7 +42,13 @@ export default async function EditProductPage({ params }: { params: Promise<{ sl
           <ProductImages slug={slug} initial={images} />
         </div>
       )}
-      <ProductEditor key={slug} initial={initial} isNew={isNew} images={images} />
+      <ProductEditor
+        key={slug}
+        initial={initial}
+        isNew={isNew}
+        images={images}
+        productOptions={(await loadCatalog()).filter((p) => p.slug !== slug && !p.bundleItems?.length).map((p) => ({ slug: p.slug, name: p.name }))}
+      />
     </>
   );
 }

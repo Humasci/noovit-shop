@@ -1,23 +1,21 @@
-import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
+import { csvCell as cell } from '@/lib/csv';
 import { db } from '@/lib/db/server';
-import { ADMIN_COOKIE, isAdminToken } from '@/lib/admin/session';
+import { currentStaff } from '@/lib/admin/auth';
+import { can } from '@/lib/admin/permissions';
 import { dbConfigured } from '@/lib/config';
+import { loadCatalog } from '@/lib/catalog/server';
+import { shipLines } from '@/lib/orders/fulfilment';
 
-// Neutralise spreadsheet formula injection and quote every cell.
-const cell = (v: unknown) => {
-  let s = v === null || v === undefined ? '' : String(v);
-  if (/^[=+\-@\t\r]/.test(s)) s = `'${s}`;
-  return `"${s.replace(/"/g, '""')}"`;
-};
 
 const HEADERS = [
   'order_number', 'order_date', 'name', 'email', 'address_line1', 'address_line2', 'city', 'state', 'postal_code', 'country',
-  'product', 'supplier_sku', 'bottles_per_pack', 'packs', 'total_bottles',
+  'product', 'supplier_sku', 'units', 'part_of_bundle',
 ];
 
 export async function GET() {
-  if (!isAdminToken((await cookies()).get(ADMIN_COOKIE)?.value)) return new NextResponse('Unauthorized', { status: 401 });
+  const staff = await currentStaff();
+  if (!staff || !can(staff.role, 'fulfilment')) return new NextResponse('Unauthorized', { status: 401 });
   if (!dbConfigured()) return new NextResponse('Database not configured', { status: 503 });
 
   const { data, error } = await db()
@@ -31,6 +29,7 @@ export async function GET() {
   const { data: settings } = await db().from('products').select('slug, supplier_sku');
   const currentSku = new Map((settings ?? []).map((r) => [r.slug as string, r.supplier_sku as string | null]));
 
+  const catalog = await loadCatalog();
   const rows = [HEADERS.map(cell).join(',')];
   for (const f of data ?? []) {
     const o = f.orders as unknown as {
@@ -42,11 +41,11 @@ export async function GET() {
       order_items: { product_slug: string; product_name: string; supplier_sku: string | null; bottles: number; quantity: number }[];
     };
     const a = o.shipping_address ?? {};
-    for (const i of o.order_items) {
+    for (const line of shipLines(o.order_items, catalog, currentSku)) {
       rows.push(
         [
           o.order_number, o.created_at.slice(0, 10), o.shipping_name, o.email, a.line1, a.line2, a.city, a.state, a.postal_code, a.country,
-          i.product_name, i.supplier_sku ?? currentSku.get(i.product_slug), i.bottles, i.quantity, i.bottles * i.quantity,
+          line.name, line.sku, line.units, line.bundle ?? '',
         ].map(cell).join(',')
       );
     }
