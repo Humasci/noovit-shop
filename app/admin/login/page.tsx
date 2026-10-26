@@ -24,7 +24,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
   return (
     <div className="flex min-h-screen items-center justify-center bg-[var(--color-soft)] px-6">
       <form action={login} className="w-full max-w-sm rounded-3xl bg-white p-8 shadow-sm">
-        <p className="text-2xl font-extrabold text-[var(--color-navy)]">
+        <p className="font-logo text-2xl font-bold text-[var(--color-navy)]">
           noovit<span className="text-[var(--color-blue)]">.</span> <span className="text-sm font-semibold text-[var(--color-muted)]">admin</span>
         </p>
         {!adminConfigured() ? (

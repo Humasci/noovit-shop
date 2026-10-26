@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 /* Brand tokens — change these to restyle the whole site. */
@@ -30,7 +29,10 @@
   --color-sage-light: #93c5fd;
   --color-sage: var(--color-blue);
 
-  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  /* Fonts are self-hosted via next/font (app/layout.tsx): Inter for text, Manrope for headings, Kanit for the wordmark. */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-manrope), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-logo: var(--font-kanit), var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
@@ -46,6 +48,7 @@
   }
 
   h1, h2, h3, h4 {
+    font-family: var(--font-display);
     color: var(--color-navy);
     font-weight: 800;
     letter-spacing: -0.02em;

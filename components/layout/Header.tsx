@@ -51,8 +51,8 @@ export function Header({ trustBar, announcement }: { trustBar: string[]; announc
       </div>
 
       <header className="sticky top-0 z-40 border-b border-[var(--color-line)] bg-white/95 backdrop-blur">
-        <div className="container grid grid-cols-3 items-center px-4 py-4 md:px-6">
-          <nav className="hidden gap-6 text-sm font-semibold lg:flex">
+        <div className="container grid grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 py-4 md:px-6">
+          <nav className="hidden gap-5 whitespace-nowrap text-sm font-semibold xl:flex">
             {NAV.map((n) => (
               <Link
                 key={n.href}
@@ -63,11 +63,11 @@ export function Header({ trustBar, announcement }: { trustBar: string[]; announc
               </Link>
             ))}
           </nav>
-          <button className="lg:hidden" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
+          <button className="justify-self-start xl:hidden" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
             {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
 
-          <Link href="/" className="justify-self-center text-2xl font-extrabold tracking-tight text-[var(--color-navy)]">
+          <Link href="/" className="justify-self-center text-2xl font-logo font-bold tracking-tight text-[var(--color-navy)]">
             noovit<span className="text-[var(--color-blue)]">.</span>
           </Link>
 
@@ -85,7 +85,7 @@ export function Header({ trustBar, announcement }: { trustBar: string[]; announc
         </div>
 
         {menuOpen && (
-          <nav className="animate-slide-in flex flex-col gap-4 border-t border-[var(--color-line)] px-6 py-5 font-semibold lg:hidden">
+          <nav className="animate-slide-in flex flex-col gap-4 border-t border-[var(--color-line)] px-6 py-5 font-semibold xl:hidden">
             {[...NAV, { name: 'My Subscriptions', href: '/account' }].map((n) => (
               <Link key={n.href} href={n.href} onClick={() => setMenuOpen(false)}>
                 {n.name}

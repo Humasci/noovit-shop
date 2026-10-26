@@ -58,7 +58,7 @@ export function Footer() {
     <footer className="bg-[var(--color-navy)] text-white">
       <div className="container grid gap-10 px-6 py-14 md:grid-cols-4">
         <div>
-          <Link href="/" className="text-3xl font-extrabold">
+          <Link href="/" className="font-logo text-3xl font-bold">
             noovit<span className="text-[#93c5fd]">.</span>
           </Link>
           <p className="mt-3 max-w-xs text-sm text-white/70">Clean, science-driven supplements for everyday health.</p>
