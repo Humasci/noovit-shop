@@ -29,14 +29,16 @@ _Last updated: 2026-10-26_
 
 ## Waiting on
 - [ ] Stripe test keys → run `npm run stripe:sync`, add webhook endpoint + customer portal settings (README §2), test a real test-mode checkout.
-- [ ] Supabase project → run migrations `0001`–`0003`, then Admin → Products → Import launch catalog.
+- [x] Supabase project `noovit` created; migrations `0001`–`0003` applied (15 tables, RLS on all).
+- [ ] Add `SUPABASE_URL` + service-role key in Vercel, redeploy, then Admin → Products → Import launch catalog.
 - [ ] Email sending (Resend API key + verified sending domain).
-- [ ] Generate `APP_SECRET`, `CRON_SECRET` and a setup `ADMIN_PASSWORD`; add all keys in Vercel; sign in and create the Owner account.
+- [ ] `APP_SECRET`, `CRON_SECRET` and `ADMIN_PASSWORD` generated/chosen → add in Vercel; sign in and create the Owner account.
 - [ ] Optional: Klaviyo private key + list ID.
 - [ ] Admin → Settings: GA4 / Meta / TikTok IDs, welcome code (create WELCOME10 first), business postal address; add feed URLs to Google Merchant Center, Meta Commerce Manager, TikTok.
 - [ ] Supplier replies → choose US supplier, map supplier SKUs, decide API vs CSV fulfilment.
 - [x] Preliminary trademark knock-out search (owner, Oct 2026) — see below.
 - [ ] Attorney clearance + file NOOVIT in US and UK (class 5 + 35, consider 30/31) before ordering labelled samples.
+- [x] Fonts: Kanit wordmark, Manrope headings, Inter body text.
 - [ ] Logo + mockups → apply brand styling.
 
 ## Before launch
