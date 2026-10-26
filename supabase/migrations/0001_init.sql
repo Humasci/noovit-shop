@@ -105,13 +105,6 @@ create table reviews (
   created_at timestamptz not null default now()
 );
 
--- Admin overrides on top of the catalog in data/products.ts.
-create table product_settings (
-  slug text primary key,
-  supplier_sku text,
-  updated_at timestamptz not null default now()
-);
-
 -- Webhook idempotency: each Stripe event is processed once.
 create table stripe_events (
   id text primary key,
@@ -170,7 +163,6 @@ create trigger customers_updated_at before update on customers for each row exec
 create trigger subscriptions_updated_at before update on subscriptions for each row execute function set_updated_at();
 create trigger orders_updated_at before update on orders for each row execute function set_updated_at();
 create trigger fulfilments_updated_at before update on fulfilments for each row execute function set_updated_at();
-create trigger product_settings_updated_at before update on product_settings for each row execute function set_updated_at();
 
 alter table customers enable row level security;
 alter table subscriptions enable row level security;
@@ -178,5 +170,4 @@ alter table orders enable row level security;
 alter table order_items enable row level security;
 alter table fulfilments enable row level security;
 alter table reviews enable row level security;
-alter table product_settings enable row level security;
 alter table stripe_events enable row level security;

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { Check, Stethoscope, Scale, MapPin, FlaskConical, Ban, ShieldCheck, PawPrint } from 'lucide-react';
 import { PetsShop } from '@/components/pets/PetsShop';
+import { getStoreProducts } from '@/lib/catalog/server';
 import { ReviewsSection, FAQSection, CommunitySection, SectionHeading } from '@/components/sections/Sections';
 import { Stars } from '@/components/ui/Stars';
 import { PET_IMAGES, PET_REVIEWS, PET_FAQS, VETS } from '@/data/content';
@@ -20,7 +21,8 @@ const PET_TRUST = [
   { icon: ShieldCheck, label: 'Picky-Eater Guarantee' },
 ];
 
-export default function PetsPage() {
+export default async function PetsPage() {
+  const products = await getStoreProducts();
   return (
     <>
       <section className="relative overflow-hidden">
@@ -62,7 +64,7 @@ export default function PetsPage() {
         </div>
       </div>
 
-      <PetsShop />
+      <PetsShop products={products} />
 
       <section className="section">
         <div className="container grid gap-12 px-6 lg:grid-cols-[1fr_2fr]">

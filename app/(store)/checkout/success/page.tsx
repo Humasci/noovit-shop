@@ -5,13 +5,14 @@ import { stripe } from '@/lib/stripe/server';
 import { stripeConfigured } from '@/lib/config';
 import { formatPrice } from '@/lib/utils/format';
 import { ClearCart } from '@/components/cart/ClearCart';
+import { PurchaseTracker } from '@/components/analytics/PurchaseTracker';
 
 export const metadata: Metadata = { title: 'Order confirmed — Noovit', robots: { index: false } };
 
 async function loadSession(id: string | undefined) {
   if (!id || !stripeConfigured()) return null;
   try {
-    const session = await stripe().checkout.sessions.retrieve(id, { expand: ['line_items'] });
+    const session = await stripe().checkout.sessions.retrieve(id, { expand: ['line_items.data.price'] });
     return session.status === 'complete' ? session : null;
   } catch {
     return null;
@@ -36,6 +37,16 @@ export default async function SuccessPage({ searchParams }: { searchParams: Prom
   return (
     <div className="container max-w-2xl px-6 py-20">
       <ClearCart />
+      <PurchaseTracker
+        transactionId={session.id}
+        value={(session.amount_total ?? 0) / 100}
+        items={(session.line_items?.data ?? []).map((li) => ({
+          id: li.price?.metadata?.slug ?? li.id,
+          name: li.description ?? '',
+          price: (li.price?.unit_amount ?? 0) / 100,
+          quantity: li.quantity ?? 1,
+        }))}
+      />
       <div className="text-center">
         <CheckCircle2 className="mx-auto h-14 w-14 text-[var(--color-green)]" />
         <h1 className="mt-4 text-4xl">Thank you{firstName ? `, ${firstName}` : ''}!</h1>

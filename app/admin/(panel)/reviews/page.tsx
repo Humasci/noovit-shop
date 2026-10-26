@@ -1,6 +1,7 @@
 import { db } from '@/lib/db/server';
 import { dbConfigured } from '@/lib/config';
-import { getProductBySlug } from '@/data/products';
+import { findProduct } from '@/data/products';
+import { loadCatalog } from '@/lib/catalog/server';
 import { moderateReview } from '@/app/admin/actions';
 import { Stars } from '@/components/ui/Stars';
 import { Badge, Card, FilterLinks, Flash, NotConfigured, PageTitle, btnSm, btnSmOutline, dateTime } from '@/components/admin/ui';
@@ -23,6 +24,7 @@ export default async function ReviewsAdmin({ searchParams }: { searchParams: Pro
   const tab = TABS.includes(sp.status ?? '') ? sp.status! : 'pending';
   if (!dbConfigured()) return (<><PageTitle title="Reviews" /><NotConfigured what="The database" /></>);
 
+  const catalog = await loadCatalog();
   const { data } = await db().from('reviews').select('*').eq('status', tab).order('created_at', { ascending: false }).limit(100);
 
   return (
@@ -43,7 +45,7 @@ export default async function ReviewsAdmin({ searchParams }: { searchParams: Pro
             <Card key={r.id}>
               <div className="flex flex-wrap items-center gap-3 text-sm">
                 <Stars rating={r.rating} size={14} />
-                <span className="font-semibold">{getProductBySlug(r.product_slug)?.name ?? r.product_slug}</span>
+                <span className="font-semibold">{findProduct(catalog, r.product_slug)?.name ?? r.product_slug}</span>
                 <Badge status={r.status} />
                 {r.verified_buyer ? <Badge status="verified buyer" /> : <span className="text-xs text-[var(--color-muted)]">not a verified buyer</span>}
                 <span className="text-xs text-[var(--color-muted)]">{dateTime(r.created_at)}</span>

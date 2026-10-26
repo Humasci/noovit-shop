@@ -1,5 +1,5 @@
 import { Frequency, Product, PurchaseMode } from '@/types';
-import { getProductBySlug, packOptions } from '@/data/products';
+import { findProduct, packOptions } from '@/data/products';
 import { FREQUENCIES, priceLookupKey } from '@/lib/stripe/catalog';
 
 export interface CheckoutItemInput {
@@ -28,7 +28,7 @@ export type ValidationResult =
 
 export const MAX_QTY = 20;
 
-export function validateCheckout(body: unknown): ValidationResult {
+export function validateCheckout(body: unknown, catalog: Product[]): ValidationResult {
   const req = body as CheckoutRequest;
   if (!req || !Array.isArray(req.items) || req.items.length === 0) return { ok: false, error: 'Your cart is empty.' };
   if (req.items.length > 30) return { ok: false, error: 'Too many items in cart.' };
@@ -37,8 +37,9 @@ export function validateCheckout(body: unknown): ValidationResult {
   const frequencies = new Set<Frequency>();
 
   for (const item of req.items) {
-    const product = getProductBySlug(String(item?.slug));
-    if (!product) return { ok: false, error: 'A product in your cart is no longer available.' };
+    const product = findProduct(catalog, String(item?.slug));
+    if (!product || product.status === 'hidden') return { ok: false, error: 'A product in your cart is no longer available.' };
+    if (product.status === 'out_of_stock') return { ok: false, error: `${product.name} is out of stock. Please remove it to continue.` };
     if (item.mode !== 'one-time' && item.mode !== 'subscribe') return { ok: false, error: 'Invalid purchase option.' };
     if (!packOptions(product, item.mode).some((o) => o.bottles === item.bottles)) {
       return { ok: false, error: `Invalid pack size for ${product.name}.` };

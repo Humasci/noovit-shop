@@ -6,7 +6,6 @@ import { Award, FlaskConical, GraduationCap, MapPin, ShieldCheck, ChevronDown, B
 import toast from 'react-hot-toast';
 import { FAQ, Review } from '@/types';
 import { REVIEWS, IMAGES, SUBSCRIPTION_PERKS } from '@/data/content';
-import { getProductBySlug } from '@/data/products';
 import { Stars } from '@/components/ui/Stars';
 import { SocialLinks } from '@/components/layout/Footer';
 
@@ -60,7 +59,6 @@ export function ReviewsSection({ title = 'Real people, real results', reviews = 
         <SectionHeading eyebrow="Reviews" title={title} />
         <div className="no-scrollbar -mx-6 flex snap-x gap-5 overflow-x-auto px-6 pb-2">
           {reviews.map((r) => {
-            const p = getProductBySlug(r.productSlug);
             return (
               <article key={r.id} className="w-80 shrink-0 snap-start rounded-2xl border border-[var(--color-line)] p-6">
                 <Stars rating={r.rating} />
@@ -73,11 +71,9 @@ export function ReviewsSection({ title = 'Real people, real results', reviews = 
                       <BadgeCheck className="h-3.5 w-3.5" /> Verified Buyer
                     </span>
                   </span>
-                  {p && (
-                    <Link href={`/products/${p.slug}`} className="text-xs font-bold text-[var(--color-blue)]">
-                      View Product
-                    </Link>
-                  )}
+                  <Link href={`/products/${r.productSlug}`} className="text-xs font-bold text-[var(--color-blue)]">
+                    View Product
+                  </Link>
                 </div>
               </article>
             );
@@ -158,9 +154,17 @@ export function NewsletterSection() {
             <p className="mt-3 text-white/70">Sign up for nutrition tips, early access to launches, and member-only offers.</p>
             <form
               className="mt-6 flex flex-col gap-3 sm:flex-row"
-              onSubmit={(e) => {
+              onSubmit={async (e) => {
                 e.preventDefault();
-                toast.success('Thanks! Check your inbox for your code.');
+                const company = String(new FormData(e.currentTarget).get('company') ?? '');
+                const res = await fetch('/api/newsletter', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ email, company }),
+                });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok) return void toast.error(data.error || 'Something went wrong. Please try again.');
+                toast.success(data.message);
                 setEmail('');
               }}
             >
@@ -175,6 +179,7 @@ export function NewsletterSection() {
                   className="w-full bg-transparent py-3 text-[var(--color-ink)] outline-none"
                 />
               </div>
+              <input name="company" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden />
               <button className="btn bg-[var(--color-blue)] text-white hover:bg-[var(--color-blue-dark)]">Get 10% Off</button>
             </form>
           </div>

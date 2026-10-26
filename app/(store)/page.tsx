@@ -12,7 +12,10 @@ import {
 } from '@/components/sections/Sections';
 import { Stars } from '@/components/ui/Stars';
 import { ProductImage } from '@/components/product/ProductImage';
-import { getProductBySlug } from '@/data/products';
+import { findProduct } from '@/data/products';
+import { getStoreProducts } from '@/lib/catalog/server';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { SITE_URL } from '@/lib/site';
 import { EXPERTS, GENERAL_FAQS, IMAGES, PET_IMAGES } from '@/data/content';
 
 // PLACEHOLDER: swap these for press/retailer logos once you have them.
@@ -20,11 +23,13 @@ const MARQUEE = ['Clean Ingredients', 'Third-Party Tested', 'GMP Certified', 'Nu
 
 const SPOTLIGHT = ['probiotic-complex', 'glucosamine-complex', 'turmeric-complex', 'marine-collagen-complex'];
 
-export default function HomePage() {
-  const spotlight = SPOTLIGHT.map((s) => getProductBySlug(s)!);
+export default async function HomePage() {
+  const products = await getStoreProducts();
+  const spotlight = SPOTLIGHT.map((s) => findProduct(products, s)).filter((p) => p !== undefined);
 
   return (
     <>
+      <JsonLd data={{ '@context': 'https://schema.org', '@type': 'Organization', name: 'Noovit', url: SITE_URL }} />
       {/* Hero */}
       <section className="relative overflow-hidden">
         <img src={IMAGES.hero} alt="" className="absolute inset-0 h-full w-full object-cover" />
@@ -58,7 +63,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      <BestSellers />
+      <BestSellers products={products} />
 
       <TrustSection />
 

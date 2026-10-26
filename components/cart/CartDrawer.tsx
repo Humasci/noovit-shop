@@ -6,10 +6,10 @@ import { X, Minus, Plus, Truck, Trash2 } from 'lucide-react';
 import { useCart, cartTotal, cartCount, lineTotal } from '@/lib/store/cart';
 import { formatPrice } from '@/lib/utils/format';
 import { ProductImage } from '@/components/product/ProductImage';
-import { getBestSellers } from '@/data/products';
+import { Product } from '@/types';
 import { CheckoutButton } from './CheckoutButton';
 
-export function CartDrawer() {
+export function CartDrawer({ suggestions }: { suggestions: Product[] }) {
   const { items, isOpen, close, updateQuantity, removeItem } = useCart();
 
   useEffect(() => {
@@ -48,7 +48,7 @@ export function CartDrawer() {
                 Shop Best Sellers
               </Link>
               <div className="mt-10 grid grid-cols-2 gap-4 text-left">
-                {getBestSellers().slice(0, 4).map((p) => (
+                {suggestions.map((p) => (
                   <Link key={p.id} href={`/products/${p.slug}`} onClick={close} className="text-sm font-semibold">
                     <ProductImage product={p} className="mb-2 aspect-square w-full rounded-xl" />
                     {p.name}

@@ -4,6 +4,7 @@ import { stripe } from '@/lib/stripe/server';
 import { db } from '@/lib/db/server';
 import { dbConfigured, stripeConfigured } from '@/lib/config';
 import { handleCheckoutCompleted, handleInvoicePaid, handleChargeRefunded, syncSubscription } from '@/lib/orders/ingest';
+import { handleCheckoutExpired } from '@/lib/marketing/abandoned';
 
 export async function POST(req: NextRequest) {
   const secret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -26,6 +27,9 @@ export async function POST(req: NextRequest) {
       case 'checkout.session.completed':
       case 'checkout.session.async_payment_succeeded':
         await handleCheckoutCompleted(event.data.object.id);
+        break;
+      case 'checkout.session.expired':
+        await handleCheckoutExpired(event.data.object);
         break;
       case 'invoice.paid':
         await handleInvoicePaid(event.data.object);

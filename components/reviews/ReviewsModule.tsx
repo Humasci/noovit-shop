@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Star } from 'lucide-react';
 import { Review } from '@/types';
-import { products } from '@/data/products';
 import { Stars } from '@/components/ui/Stars';
 
 const PLACEHOLDER_DISTRIBUTION = [86, 10, 3, 1, 0];
@@ -27,11 +26,13 @@ export function ReviewsModule({
   total: placeholderTotal,
   rating: placeholderRating = 4.8,
   productSlug,
+  productOptions = [],
 }: {
   reviews: Review[];
   total: number;
   rating?: number;
   productSlug?: string;
+  productOptions?: { slug: string; name: string }[];
 }) {
   const [real, setReal] = useState<Review[]>([]);
   const [score, setScore] = useState(5);
@@ -120,7 +121,7 @@ export function ReviewsModule({
                 {!productSlug && (
                   <select name="slug" required defaultValue="" className={inputClass}>
                     <option value="" disabled>Which product?</option>
-                    {products.map((p) => (
+                    {productOptions.map((p) => (
                       <option key={p.slug} value={p.slug}>{p.name}</option>
                     ))}
                   </select>

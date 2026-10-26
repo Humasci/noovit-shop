@@ -3,8 +3,12 @@ import Stripe from 'stripe';
 import { db } from '@/lib/db/server';
 import { stripe } from '@/lib/stripe/server';
 import { fulfilmentSupplier } from '@/lib/config';
-import { getProductBySlug } from '@/data/products';
+import { findProduct } from '@/data/products';
+import { getCatalog } from '@/lib/catalog/server';
+import { Product } from '@/types';
 import { sendOrderConfirmation } from '@/lib/email';
+import { subscribe } from '@/lib/marketing/subscribers';
+import { markRecovered } from '@/lib/marketing/abandoned';
 
 type Kind = 'one_time' | 'subscription_initial' | 'subscription_renewal';
 
@@ -28,9 +32,9 @@ const UNIQUE_VIOLATION = '23505';
 
 const idOf = (v: string | { id: string } | null | undefined) => (typeof v === 'string' ? v : v?.id ?? null);
 
-function itemFromPrice(price: Stripe.Price, quantity: number, amountCents: number): ItemRow {
+function itemFromPrice(catalog: Product[], price: Stripe.Price, quantity: number, amountCents: number): ItemRow {
   const m = price.metadata;
-  const product = getProductBySlug(m.slug);
+  const product = findProduct(catalog, m.slug);
   return {
     product_slug: m.slug ?? 'unknown',
     product_name: product?.name ?? price.nickname ?? 'Unknown product',
@@ -79,7 +83,7 @@ export async function syncSubscription(sub: Stripe.Subscription) {
 }
 
 async function supplierSkus() {
-  const { data } = await db().from('product_settings').select('slug, supplier_sku');
+  const { data } = await db().from('products').select('slug, supplier_sku');
   return new Map((data ?? []).map((r) => [r.slug as string, r.supplier_sku as string | null]));
 }
 
@@ -173,10 +177,11 @@ export async function handleCheckoutCompleted(sessionId: string) {
   if (stripeSubId) subscriptionId = await syncSubscription(await s.subscriptions.retrieve(stripeSubId));
 
   const lineItems = await s.checkout.sessions.listLineItems(sessionId, { limit: 100, expand: ['data.price'] });
-  const items = lineItems.data.map((li) => itemFromPrice(li.price!, li.quantity ?? 1, li.price?.unit_amount ?? 0));
+  const catalog = await getCatalog();
+  const items = lineItems.data.map((li) => itemFromPrice(catalog, li.price!, li.quantity ?? 1, li.price?.unit_amount ?? 0));
 
   const invoiceId = idOf(session.invoice);
-  await createOrder({
+  const orderId = await createOrder({
     kind: stripeSubId ? 'subscription_initial' : 'one_time',
     customerId,
     subscriptionId,
@@ -195,6 +200,9 @@ export async function handleCheckoutCompleted(sessionId: string) {
     paymentIntentId: idOf(session.payment_intent) ?? (invoiceId ? await paymentIntentForInvoice(invoiceId) : null),
     items,
   });
+
+  if (session.recovered_from) await markRecovered(session.recovered_from, orderId);
+  if (session.consent?.promotions === 'opt_in') await subscribe(email, 'checkout');
 }
 
 export async function handleInvoicePaid(invoice: Stripe.Invoice) {
@@ -225,6 +233,7 @@ export async function handleInvoicePaid(invoice: Stripe.Invoice) {
     if (last) shipping = { name: last.shipping_name, address: last.shipping_address };
   }
 
+  const catalog = await getCatalog();
   const prices = new Map<string, Stripe.Price>();
   const items: ItemRow[] = [];
   for await (const line of s.invoices.listLineItems(invoice.id, { limit: 100 })) {
@@ -232,7 +241,7 @@ export async function handleInvoicePaid(invoice: Stripe.Invoice) {
     if (!priceId) continue;
     if (!prices.has(priceId)) prices.set(priceId, await s.prices.retrieve(priceId));
     const price = prices.get(priceId)!;
-    items.push(itemFromPrice(price, line.quantity ?? 1, price.unit_amount ?? 0));
+    items.push(itemFromPrice(catalog, price, line.quantity ?? 1, price.unit_amount ?? 0));
   }
 
   const email = invoice.customer_email ?? (!customer.deleted ? customer.email : null);

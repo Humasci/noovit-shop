@@ -1,13 +1,14 @@
 import type { Metadata } from 'next';
 import { REVIEWS } from '@/data/content';
-import { products } from '@/data/products';
+import { getStoreProducts } from '@/lib/catalog/server';
 import { Stars } from '@/components/ui/Stars';
 import { ReviewsModule } from '@/components/reviews/ReviewsModule';
 import { CommunitySection, TrustSection } from '@/components/sections/Sections';
 
 export const metadata: Metadata = { title: 'Reviews — Noovit' };
 
-export default function ReviewsPage() {
+export default async function ReviewsPage() {
+  const products = await getStoreProducts();
   const total = products.reduce((sum, p) => sum + p.reviewCount, 0);
   return (
     <>
@@ -18,7 +19,7 @@ export default function ReviewsPage() {
           <p className="mt-3 text-[var(--color-muted)]">Honest reviews from verified buyers.</p>
         </div>
       </section>
-      <ReviewsModule reviews={REVIEWS} total={total} />
+      <ReviewsModule reviews={REVIEWS} total={total} productOptions={products.map((p) => ({ slug: p.slug, name: p.name }))} />
       <CommunitySection />
       <TrustSection />
     </>

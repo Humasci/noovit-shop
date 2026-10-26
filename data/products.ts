@@ -1,14 +1,9 @@
-import { Product, ProductType, DietaryTag, PackOption, PurchaseMode, Species } from '@/types';
+import { Audience, DietaryTag, FAQ, PackOption, Product, ProductData, ProductForm, ProductType, PurchaseMode, Species } from '@/types';
+import { buildProduct } from '@/lib/catalog/build';
 
-const COMMON_FAQS = [
-  { q: 'Is it gluten free?', a: 'Yes. Every Noovit formula is made without gluten-containing ingredients.' },
-  { q: 'Is it dairy and lactose free?', a: 'Yes, unless the label states otherwise.' },
-  { q: 'What is your return policy?', a: 'Try it for 90 days. If you are not happy, contact us for a full refund — even on an empty bottle.' },
-  { q: 'When will my order ship?', a: 'Orders placed before 2pm on business days ship the same day.' },
-];
-
-type Seed = Omit<Product, 'id' | 'faqs' | 'rating' | 'reviewCount'> & {
-  faqs?: Product['faqs'];
+type Seed = Omit<ProductData, 'extraFaqs' | 'rating' | 'reviewCount'> & {
+  slug: string;
+  faqs?: FAQ[];
   reviewCount?: number;
 };
 
@@ -430,29 +425,21 @@ const seeds: Seed[] = [
   },
 ];
 
-const PET_FAQS = [
-  { q: 'Is it safe for puppies and kittens?', a: 'Most of our pet formulas are suitable from 12 weeks. Check with your vet first for young, pregnant or nursing pets.' },
-  { q: 'Can I give it with medication?', a: 'Please check with your veterinarian before combining supplements with any medication.' },
-  { q: 'What if my pet won’t eat it?', a: 'Our 90-day guarantee covers picky eaters too — contact us for a full refund.' },
-  { q: 'When will my order ship?', a: 'Orders placed before 2pm on business days ship the same day.' },
-];
+// The launch catalog. Seeds the database (npm run catalog:seed) and is the fallback when no database is connected.
+export const SEED_PRODUCTS: Product[] = seeds.map(({ slug, faqs, reviewCount, ...data }) =>
+  buildProduct({ slug, data: { ...data, rating: 4.8, reviewCount: reviewCount ?? 1000, extraFaqs: faqs ?? [] } })
+);
 
-export const products: Product[] = seeds.map((s, i) => ({
-  ...s,
-  id: String(i + 1),
-  rating: 4.8,
-  reviewCount: s.reviewCount ?? 1000,
-  faqs: [
-    ...(s.faqs ?? []),
-    { q: s.productType === 'pets' ? 'How much should I give?' : 'How do I take it?', a: s.dosage },
-    ...(s.productType === 'pets' ? PET_FAQS : COMMON_FAQS),
-  ],
-}));
+export const findProduct = (list: Product[], slug: string) => list.find((p) => p.slug === slug);
 
-export const humanProducts = products.filter((p) => p.productType !== 'pets');
+export const humanProducts = (list: Product[]) => list.filter((p) => p.productType !== 'pets');
 
-export const getPetProducts = (species?: Species) =>
-  products.filter((p) => p.productType === 'pets' && (!species || p.species?.includes(species)));
+export const petProducts = (list: Product[], species?: Species) =>
+  list.filter((p) => p.productType === 'pets' && (!species || p.species?.includes(species)));
+
+export const bestSellers = (list: Product[]) => humanProducts(list).filter((p) => p.bestSeller);
+
+export const byAudience = (list: Product[], audience: Audience) => list.filter((p) => p.audiences.includes(audience));
 
 export const packOptions = (product: Product, mode: PurchaseMode): PackOption[] => {
   const b = product.basePrice;
@@ -465,12 +452,6 @@ export const asLowAs = (product: Product) => product.basePrice - 10;
 
 export const maxSavingPercent = (product: Product) =>
   Math.round(((product.basePrice - asLowAs(product)) / product.basePrice) * 100);
-
-export const getProductBySlug = (slug: string) => products.find((p) => p.slug === slug);
-
-export const getBestSellers = () => humanProducts.filter((p) => p.bestSeller);
-
-export const getByAudience = (audience: 'women' | 'men') => products.filter((p) => p.audiences.includes(audience));
 
 export const PRODUCT_TYPES: { value: ProductType; label: string }[] = [
   { value: 'supplements', label: 'Supplements' },
@@ -487,3 +468,5 @@ export const DIETARY_TAGS: { value: DietaryTag; label: string }[] = [
   { value: 'low-fodmap', label: 'Low FODMAP' },
   { value: 'sugar-free', label: 'Sugar-free' },
 ];
+
+export const PRODUCT_FORMS: ProductForm[] = ['capsules', 'softgels', 'powder', 'chews'];

@@ -18,14 +18,15 @@ Everything degrades gracefully without keys: the store works, checkout shows "no
 
 ### 1. Supabase
 1. Create a project at supabase.com.
-2. Run `supabase/migrations/0001_init.sql` in the SQL editor.
+2. Run `supabase/migrations/0001_init.sql`, then `0002_catalog_marketing.sql`, in the SQL editor. The second also creates the public `product-images` storage bucket.
 3. Set `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`. All tables have row-level security with no policies — only the server can read or write.
 
 ### 2. Stripe
 1. Set `STRIPE_SECRET_KEY` (test mode first).
-2. `npm run stripe:sync -- --dry-run`, then `npm run stripe:sync` — creates 23 products × 12 prices from `data/products.ts`. Re-run whenever prices change; it refuses live keys without `--live`.
+2. Load the catalog: in **Admin → Products** click **Import launch catalog** (or run `npm run catalog:seed`).
+   Then click **Sync all to Stripe** (or `npm run stripe:sync`). Each product gets 12 prices; after that, saving a product in the admin syncs it automatically. The CLI refuses live keys without `--live`.
 3. **Webhook:** Developers → Webhooks → add endpoint `https://<your-domain>/api/stripe/webhook` with events:
-   `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `invoice.paid`,
+   `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.expired`, `invoice.paid`,
    `customer.subscription.created`, `customer.subscription.updated`, `customer.subscription.deleted`, `charge.refunded`.
    Put its signing secret in `STRIPE_WEBHOOK_SECRET`.
 4. **Customer portal:** Settings → Billing → Customer portal — enable cancellation, payment-method and shipping-address updates, invoice history, and subscription updates (add the Noovit products so customers can switch frequency or pack size). The portal has no pause/skip; pause from `/admin/subscriptions`.
@@ -37,12 +38,19 @@ Create a Resend account, verify your sending domain, set `RESEND_API_KEY` and `E
 ### 4. Admin
 Set `ADMIN_PASSWORD` and `APP_SECRET` (`openssl rand -base64 48`), then sign in at `/admin`.
 
+### 5. Marketing (Admin → Settings)
+Create the `WELCOME10` discount, then in Settings add it as the newsletter code, your business postal address, and any GA4 / Meta / TikTok pixel IDs. Settings also lists the product-feed URLs for Google Merchant Center, Meta Commerce Manager and TikTok.
+
 ## How it works
 
 - **Checkout** (`/api/checkout`): the server re-validates the cart against the catalog, resolves Stripe prices by lookup key, and creates a Stripe Checkout session. All subscription items share one delivery frequency; subscriptions require auto-renewal consent, and Creatine requires an 18+ confirmation.
 - **Webhook** (`/api/stripe/webhook`): verifies the signature, then creates orders (one-time, first subscription order, each renewal), mirrors subscriptions, and marks refunds. Order + items + fulfilment are inserted in one transaction, and duplicate deliveries are ignored.
 - **Fulfilment:** each paid order gets a queued fulfilment. In `/admin/fulfilment`, export the CSV for your supplier, mark as submitted, and add tracking when it ships — the customer is emailed.
 - **My Subscriptions** (`/account`): customers enter their email and receive a 30-minute signed link to the Stripe customer portal. No passwords.
+- **Catalog:** products live in the `products` table (seeded from `data/products.ts`) and are cached for the storefront; admin saves refresh the cache instantly and sync prices to Stripe. Hidden products disappear from the store, feeds and sitemap; out-of-stock products stay visible but can't be bought.
+- **Marketing:** newsletter sign-ups and checkout opt-ins are stored as subscribers; every marketing email has a postal address and one-click unsubscribe. Checkouts expire after 2 hours; consenting shoppers get one recovery email (max one a week) and recovered orders are linked back.
+- **SEO & channels:** sitemap, robots, canonical URLs, Product/Organization structured data (ratings only from real reviews), PNG product images at `/product-image/<slug>`, and feeds at `/feeds/google.xml`, `/feeds/meta.csv`, `/feeds/tiktok.csv`.
+- **Analytics:** GA4, Meta and TikTok pixels load only after cookie consent and track page views, product views, add to cart, checkout started and purchases.
 - **Reviews:** submitted reviews are held for approval in `/admin/reviews`; once a product has approved reviews they replace its placeholder reviews. "Verified buyer" is set when the email matches an order for that product.
 
 ## Structure
@@ -52,9 +60,11 @@ Set `ADMIN_PASSWORD` and `APP_SECRET` (`openssl rand -base64 48`), then sign in 
 | `app/(store)/` | Storefront pages |
 | `app/admin/` | Admin dashboard (password-protected) |
 | `app/api/` | Checkout, Stripe webhook, account portal links, reviews |
-| `data/products.ts` | Product catalog and pack pricing |
+| `data/products.ts` | Launch catalog (seed data) and pack pricing rules |
+| `lib/catalog/` | Catalog loading/caching and DB ↔ product mapping |
+| `lib/marketing/` | Subscribers and abandoned-checkout recovery |
 | `data/content.ts` | Site copy, placeholder reviews/advisors, images |
 | `lib/orders/ingest.ts` | Stripe event → order/subscription logic |
 | `lib/stripe/catalog.ts` | Price plan + lookup keys shared by sync and checkout |
 | `supabase/migrations/` | Database schema |
-| `scripts/sync-stripe.ts` | Catalog → Stripe sync |
+| `scripts/` | `stripe:sync` and `catalog:seed` CLI scripts |

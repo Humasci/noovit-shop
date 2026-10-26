@@ -1,13 +1,13 @@
 'use server';
 
 import { redirect, unstable_rethrow } from 'next/navigation';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, updateTag } from 'next/cache';
+import { CATALOG_TAG } from '@/lib/catalog/server';
 import { requireAdmin } from '@/lib/admin/auth';
 import { db } from '@/lib/db/server';
 import { stripe } from '@/lib/stripe/server';
 import { syncSubscription } from '@/lib/orders/ingest';
 import { sendShippedEmail } from '@/lib/email';
-import { getProductBySlug } from '@/data/products';
 
 const str = (f: FormData, k: string) => String(f.get(k) ?? '').trim();
 const back = (path: string, msg: string): never => redirect(`${path}${path.includes('?') ? '&' : '?'}msg=${encodeURIComponent(msg)}`);
@@ -122,16 +122,6 @@ export async function subscriptionAction(f: FormData) {
   back('/admin/subscriptions', 'Subscription updated.');
 }
 
-export async function setSupplierSku(f: FormData) {
-  await requireAdmin();
-  const slug = str(f, 'slug');
-  if (!getProductBySlug(slug)) back('/admin/products', 'Unknown product.');
-  const { error } = await db().from('product_settings').upsert({ slug, supplier_sku: str(f, 'supplier_sku') || null });
-  if (error) back('/admin/products', `Save failed: ${error.message}`);
-  revalidatePath('/admin/products');
-  back('/admin/products', 'Supplier SKU saved.');
-}
-
 export async function moderateReview(f: FormData) {
   await requireAdmin();
   const status = str(f, 'status');
@@ -139,29 +129,51 @@ export async function moderateReview(f: FormData) {
   const { error } = await db().from('reviews').update({ status }).eq('id', str(f, 'id'));
   if (error) back('/admin/reviews', `Update failed: ${error.message}`);
   revalidatePath('/admin/reviews');
+  updateTag(CATALOG_TAG); // approved reviews change product ratings
   back(`/admin/reviews?status=${str(f, 'tab') || 'pending'}`, `Review ${status}.`);
 }
 
 export async function createDiscount(f: FormData) {
   await requireAdmin();
   const code = str(f, 'code').toUpperCase();
-  const percent = Number(str(f, 'percent_off'));
-  const duration = str(f, 'duration') as 'once' | 'forever';
+  const kind = str(f, 'kind') === 'amount' ? 'amount' : 'percent';
+  const value = Number(str(f, 'value'));
+  const duration = str(f, 'duration') as 'once' | 'forever' | 'repeating';
+  const months = Number(str(f, 'duration_in_months'));
+  const minOrder = Number(str(f, 'minimum_amount')) || 0;
+  const firstOrderOnly = f.get('first_time_transaction') === 'on';
   const maxRedemptions = Number(str(f, 'max_redemptions')) || undefined;
   const expires = str(f, 'expires_at');
 
   if (!/^[A-Z0-9_-]{3,30}$/.test(code)) back('/admin/discounts', 'Code must be 3–30 letters, numbers, - or _.');
-  if (!(percent > 0 && percent <= 100)) back('/admin/discounts', 'Percent off must be between 1 and 100.');
-  if (!['once', 'forever'].includes(duration)) back('/admin/discounts', 'Invalid duration.');
+  if (kind === 'percent' && !(value > 0 && value <= 100)) back('/admin/discounts', 'Percent off must be between 1 and 100.');
+  if (kind === 'amount' && !(value > 0 && value <= 1000)) back('/admin/discounts', 'Amount off must be between $0.01 and $1,000.');
+  if (!['once', 'forever', 'repeating'].includes(duration)) back('/admin/discounts', 'Invalid duration.');
+  if (duration === 'repeating' && !(Number.isInteger(months) && months >= 1 && months <= 24)) back('/admin/discounts', 'Months must be between 1 and 24.');
+  if (minOrder < 0 || minOrder > 10000) back('/admin/discounts', 'Invalid minimum order.');
 
+  const label = kind === 'percent' ? `${value}% off` : `$${value.toFixed(2)} off`;
   try {
     const s = stripe();
-    const coupon = await s.coupons.create({ percent_off: percent, duration, name: `${code} — ${percent}% off` });
+    const coupon = await s.coupons.create({
+      ...(kind === 'percent' ? { percent_off: value } : { amount_off: Math.round(value * 100), currency: 'usd' }),
+      duration,
+      ...(duration === 'repeating' ? { duration_in_months: months } : {}),
+      name: `${code} — ${label}`,
+    });
     await s.promotionCodes.create({
       promotion: { type: 'coupon', coupon: coupon.id },
       code,
       ...(maxRedemptions ? { max_redemptions: maxRedemptions } : {}),
       ...(expires ? { expires_at: Math.floor(new Date(`${expires}T23:59:59`).getTime() / 1000) } : {}),
+      ...(minOrder || firstOrderOnly
+        ? {
+            restrictions: {
+              ...(minOrder ? { minimum_amount: Math.round(minOrder * 100), minimum_amount_currency: 'usd' } : {}),
+              ...(firstOrderOnly ? { first_time_transaction: true } : {}),
+            },
+          }
+        : {}),
     });
   } catch (e) {
     back('/admin/discounts', `Stripe error: ${e instanceof Error ? e.message : 'unknown'}`);

@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db/server';
 import { dbConfigured } from '@/lib/config';
-import { getProductBySlug } from '@/data/products';
+import { findProduct } from '@/data/products';
+import { getStoreProducts } from '@/lib/catalog/server';
 
 export async function GET(req: NextRequest) {
   if (!dbConfigured()) return NextResponse.json({ reviews: [] });
@@ -33,7 +34,7 @@ export async function POST(req: NextRequest) {
   const text = clean(body.body, 2000);
   const rating = Number(body.rating);
 
-  if (!getProductBySlug(slug)) return NextResponse.json({ error: 'Please choose a product.' }, { status: 400 });
+  if (!findProduct(await getStoreProducts(), slug)) return NextResponse.json({ error: 'Please choose a product.' }, { status: 400 });
   if (!name || !title || !text || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return NextResponse.json({ error: 'Please fill in all fields.' }, { status: 400 });
   }

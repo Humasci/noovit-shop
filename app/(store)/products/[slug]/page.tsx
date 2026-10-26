@@ -2,21 +2,32 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { Leaf, MapPin, FlaskConical, Sparkles, Gem, BadgeDollarSign, ShieldCheck, Zap, BadgeCheck } from 'lucide-react';
-import { products, getProductBySlug, getPetProducts } from '@/data/products';
+import { bestSellers, petProducts } from '@/data/products';
+import { getStoreProduct, getStoreProducts } from '@/lib/catalog/server';
+import { productImageUrl, productUrl } from '@/lib/site';
+import { JsonLd } from '@/components/seo/JsonLd';
 import { REVIEWS, PET_REVIEWS } from '@/data/content';
-import { Gallery, PurchaseBox, InfoTabs } from '@/components/product/ProductClient';
+import { Gallery, PurchaseBox, InfoTabs, TrackViewItem } from '@/components/product/ProductClient';
 import { ProductCard } from '@/components/product/ProductCard';
 import { Stars } from '@/components/ui/Stars';
 import { ReviewsModule } from '@/components/reviews/ReviewsModule';
 import { ReviewsSection, FAQSection, SubscriptionPerks, SectionHeading } from '@/components/sections/Sections';
 
-export function generateStaticParams() {
-  return products.map((p) => ({ slug: p.slug }));
+export async function generateStaticParams() {
+  return (await getStoreProducts()).map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const product = getProductBySlug((await params).slug);
-  return product ? { title: `${product.name} — Noovit`, description: product.description } : {};
+  const product = await getStoreProduct((await params).slug);
+  if (!product) return {};
+  const title = product.seoTitle || `${product.name} — Noovit`;
+  const description = product.seoDescription || product.description;
+  return {
+    title,
+    description,
+    alternates: { canonical: `/products/${product.slug}` },
+    openGraph: { title, description, url: `/products/${product.slug}`, images: [{ url: productImageUrl(product) }] },
+  };
 }
 
 const VALUES = [
@@ -27,14 +38,15 @@ const VALUES = [
 ];
 
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
-  const product = getProductBySlug((await params).slug);
+  const product = await getStoreProduct((await params).slug);
   if (!product) notFound();
+  const all = await getStoreProducts();
 
   const isPet = product.productType === 'pets';
   const productReviews = [...(isPet ? PET_REVIEWS : REVIEWS)].sort(
     (a, b) => Number(b.productSlug === product.slug) - Number(a.productSlug === product.slug)
   );
-  const related = (isPet ? getPetProducts() : products.filter((p) => p.bestSeller)).filter((p) => p.id !== product.id).slice(0, 4);
+  const related = (isPet ? petProducts(all) : bestSellers(all)).filter((p) => p.id !== product.id && p.status === 'active').slice(0, 4);
   const quality = [
     isPet
       ? { icon: Leaf, label: 'Vet Formulated' }
@@ -43,8 +55,32 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     { icon: FlaskConical, label: '3rd Party Tested' },
   ];
 
+  // aggregateRating only from real, approved reviews — placeholder ratings must never reach Google.
+  const structured = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.name,
+    description: product.description,
+    image: product.images.length ? product.images : [productImageUrl(product)],
+    sku: product.slug,
+    brand: { '@type': 'Brand', name: 'Noovit' },
+    offers: {
+      '@type': 'Offer',
+      url: productUrl(product),
+      priceCurrency: 'USD',
+      price: product.basePrice.toFixed(2),
+      availability: product.status === 'active' ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+      itemCondition: 'https://schema.org/NewCondition',
+    },
+    ...(product.hasRealReviews
+      ? { aggregateRating: { '@type': 'AggregateRating', ratingValue: product.rating, reviewCount: product.reviewCount } }
+      : {}),
+  };
+
   return (
     <>
+      <JsonLd data={structured} />
+      <TrackViewItem product={product} />
       <nav className="container px-6 pt-6 text-xs text-[var(--color-muted)]">
         <Link href="/">Home</Link> / {isPet ? <Link href="/pets">Noovit Pets</Link> : <Link href="/shop">Shop</Link>} / <span className="text-[var(--color-ink)]">{product.name}</span>
       </nav>
@@ -68,7 +104,13 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           </div>
           <h1 className="mt-3 text-4xl md:text-5xl">{product.name}</h1>
           <a href="#write" className="mt-3 flex items-center gap-2 text-sm">
-            <Stars rating={product.rating} /> <span className="font-semibold">{product.reviewCount.toLocaleString()} Reviews</span>
+            {product.reviewCount > 0 ? (
+              <>
+                <Stars rating={product.rating} /> <span className="font-semibold">{product.reviewCount.toLocaleString()} Reviews</span>
+              </>
+            ) : (
+              <span className="font-semibold text-[var(--color-blue)]">Be the first to review</span>
+            )}
           </a>
           <p className="mt-4 text-lg text-[var(--color-muted)]">{product.shortBenefit}</p>
 

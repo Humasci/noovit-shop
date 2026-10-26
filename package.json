@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "stripe:sync": "tsx --env-file-if-exists=.env.local scripts/sync-stripe.ts"
+    "stripe:sync": "tsx --env-file-if-exists=.env.local scripts/sync-stripe.ts",
+    "catalog:seed": "tsx --env-file-if-exists=.env.local scripts/seed-catalog.ts"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.9",

@@ -59,6 +59,9 @@ export function ProductImage({
   variant?: ImageVariant;
   className?: string;
 }) {
+  if (variant === 'front' && product.images?.length) {
+    return <img src={product.images[0]} alt={product.name} className={`object-cover ${className}`} loading="lazy" />;
+  }
   const id = `${product.slug}-${variant}`;
   return (
     <svg viewBox="0 0 400 400" className={className} role="img" aria-label={`${product.name} ${variant}`}>

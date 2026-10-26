@@ -4,7 +4,8 @@ import { useState } from 'react';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 import { Lock } from 'lucide-react';
-import { useCart, cartFrequency } from '@/lib/store/cart';
+import { useCart, cartFrequency, cartTotal } from '@/lib/store/cart';
+import { track } from '@/lib/analytics';
 import { Frequency } from '@/types';
 
 export function CheckoutButton() {
@@ -19,6 +20,11 @@ export function CheckoutButton() {
 
   const checkout = async () => {
     setLoading(true);
+    track({
+      name: 'begin_checkout',
+      value: cartTotal(items),
+      items: items.map((i) => ({ id: i.product.slug, name: i.product.name, price: i.pricePerBottle * i.bottles, quantity: i.quantity })),
+    });
     try {
       const res = await fetch('/api/checkout', {
         method: 'POST',

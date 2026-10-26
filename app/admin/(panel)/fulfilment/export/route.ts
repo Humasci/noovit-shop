@@ -28,7 +28,7 @@ export async function GET() {
   if (error) return new NextResponse(error.message, { status: 500 });
 
   // Orders placed before a SKU was mapped fall back to the current mapping.
-  const { data: settings } = await db().from('product_settings').select('slug, supplier_sku');
+  const { data: settings } = await db().from('products').select('slug, supplier_sku');
   const currentSku = new Map((settings ?? []).map((r) => [r.slug as string, r.supplier_sku as string | null]));
 
   const rows = [HEADERS.map(cell).join(',')];

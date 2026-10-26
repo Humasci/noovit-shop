@@ -23,10 +23,13 @@ export interface FAQ {
   a: string;
 }
 
-export interface Product {
-  id: string;
+export type ProductForm = 'capsules' | 'powder' | 'softgels' | 'chews';
+
+export type ProductStatus = 'active' | 'out_of_stock' | 'hidden';
+
+// The editable product fields, stored as JSON in products.data.
+export interface ProductData {
   name: string;
-  slug: string;
   shortBenefit: string;
   description: string;
   whoFor: string;
@@ -35,7 +38,7 @@ export interface Product {
   otherIngredients: string;
   dosage: string;
   servings: number;
-  form: 'capsules' | 'powder' | 'softgels' | 'chews';
+  form: ProductForm;
   basePrice: number;
   color: string;
   productType: ProductType;
@@ -44,8 +47,21 @@ export interface Product {
   species?: Species[];
   ageRestricted?: boolean;
   bestSeller: boolean;
+  // Placeholder display values, replaced by real figures once approved reviews exist.
   rating: number;
   reviewCount: number;
+  extraFaqs: FAQ[];
+}
+
+export interface Product extends ProductData {
+  id: string;
+  slug: string;
+  status: ProductStatus;
+  images: string[];
+  seoTitle?: string | null;
+  seoDescription?: string | null;
+  supplierSku?: string | null;
+  hasRealReviews: boolean;
   faqs: FAQ[];
 }
 

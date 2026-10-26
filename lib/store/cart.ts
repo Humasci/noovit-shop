@@ -70,7 +70,7 @@ export const useCart = create<CartStore>()(
       clearCart: () => set({ items: [] }),
     }),
     {
-      name: 'noovit-cart-v3',
+      name: 'noovit-cart-v4',
       partialize: (state) => ({ items: state.items }),
     }
   )

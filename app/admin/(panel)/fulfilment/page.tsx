@@ -21,7 +21,7 @@ export default async function FulfilmentPage({ searchParams }: { searchParams: P
     .limit(200);
 
   const queued = (data ?? []).filter((f) => f.status === 'queued').length;
-  const { data: settings } = await db().from('product_settings').select('slug, supplier_sku');
+  const { data: settings } = await db().from('products').select('slug, supplier_sku');
   const currentSku = new Map((settings ?? []).map((r) => [r.slug as string, r.supplier_sku as string | null]));
 
   return (

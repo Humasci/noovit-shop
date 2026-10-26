@@ -3,6 +3,7 @@ import Stripe from 'stripe';
 import { stripe } from '@/lib/stripe/server';
 import { stripeConfigured } from '@/lib/config';
 import { validateCheckout } from '@/lib/checkout/validate';
+import { loadCatalog } from '@/lib/catalog/server';
 
 async function resolvePriceIds(lookupKeys: string[]) {
   const ids = new Map<string, string>();
@@ -13,12 +14,14 @@ async function resolvePriceIds(lookupKeys: string[]) {
   return ids;
 }
 
+const CHECKOUT_TTL_SECONDS = 2 * 60 * 60;
+
 export async function POST(req: NextRequest) {
   if (!stripeConfigured()) {
     return NextResponse.json({ error: 'Checkout is not set up yet. Please try again soon.' }, { status: 503 });
   }
 
-  const result = validateCheckout(await req.json().catch(() => null));
+  const result = validateCheckout(await req.json().catch(() => null), await loadCatalog());
   if (!result.ok) return NextResponse.json({ error: result.error }, { status: 400 });
 
   const { lines, frequency, ageRestricted } = result;
@@ -39,6 +42,10 @@ export async function POST(req: NextRequest) {
     success_url: `${origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${origin}/cart`,
     metadata: { age_confirmed: String(ageRestricted), auto_renew_consent: String(Boolean(frequency)) },
+    // Abandoned-cart recovery: the session expires after 2 hours and Stripe gives us a recovery link.
+    consent_collection: { promotions: 'auto' },
+    after_expiration: { recovery: { enabled: true, allow_promotion_codes: true } },
+    expires_at: Math.floor(Date.now() / 1000) + CHECKOUT_TTL_SECONDS,
   };
 
   if (frequency) {

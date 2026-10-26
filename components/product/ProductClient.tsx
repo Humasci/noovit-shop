@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useSyncExternalStore } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 import { Check, Truck } from 'lucide-react';
 import { Frequency, Product, PurchaseMode } from '@/types';
 import { packOptions, maxSavingPercent } from '@/data/products';
 import { PAYMENT_METHODS } from '@/data/content';
 import toast from 'react-hot-toast';
+import { track } from '@/lib/analytics';
 import { useCart, cartFrequency } from '@/lib/store/cart';
 import { formatPrice } from '@/lib/utils/format';
 
@@ -13,25 +14,35 @@ import { ProductImage, ImageVariant } from './ProductImage';
 
 const VARIANTS: ImageVariant[] = ['front', 'capsules', 'duo', 'facts'];
 
+// Uploaded photos take over the gallery; until then it shows generated mockups.
 export function Gallery({ product }: { product: Product }) {
   const [active, setActive] = useState(0);
+  const photos = product.images;
+  const count = photos.length || VARIANTS.length;
+  const slide = (i: number, className: string) =>
+    photos.length ? (
+      <img src={photos[i]} alt={`${product.name} ${i + 1}`} className={`object-cover ${className}`} />
+    ) : (
+      <ProductImage product={product} variant={VARIANTS[i]} className={className} />
+    );
+
   return (
     <div>
-      <div className="overflow-hidden rounded-3xl bg-[var(--color-soft)]">
-        <ProductImage product={product} variant={VARIANTS[active]} className="aspect-square w-full" />
-      </div>
-      <div className="mt-4 grid grid-cols-4 gap-3">
-        {VARIANTS.map((v, i) => (
-          <button
-            key={v}
-            onClick={() => setActive(i)}
-            className={`overflow-hidden rounded-xl border-2 ${i === active ? 'border-[var(--color-navy)]' : 'border-transparent'}`}
-            aria-label={`Show image ${i + 1}`}
-          >
-            <ProductImage product={product} variant={v} className="aspect-square w-full" />
-          </button>
-        ))}
-      </div>
+      <div className="overflow-hidden rounded-3xl bg-[var(--color-soft)]">{slide(Math.min(active, count - 1), 'aspect-square w-full')}</div>
+      {count > 1 && (
+        <div className="mt-4 grid grid-cols-4 gap-3">
+          {Array.from({ length: count }, (_, i) => (
+            <button
+              key={i}
+              onClick={() => setActive(i)}
+              className={`overflow-hidden rounded-xl border-2 ${i === active ? 'border-[var(--color-navy)]' : 'border-transparent'}`}
+              aria-label={`Show image ${i + 1}`}
+            >
+              {slide(i, 'aspect-square w-full')}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -146,16 +157,18 @@ export function PurchaseBox({ product }: { product: Product }) {
       )}
 
       <button
+        disabled={product.status !== 'active'}
         onClick={() => {
           const current = cartFrequency(useCart.getState().items);
           if (mode === 'subscribe' && current && current !== frequency) {
             toast(`All subscription items in your cart will now arrive every ${frequency} days.`);
           }
           addItem({ product, mode, bottles: pack.bottles, pricePerBottle: pack.pricePerBottle, frequency: mode === 'subscribe' ? frequency : undefined });
+          track({ name: 'add_to_cart', item: { id: product.slug, name: product.name, price: pack.pricePerBottle * pack.bottles } });
         }}
-        className="btn btn-primary mt-5 w-full text-lg"
+        className="btn btn-primary mt-5 w-full text-lg disabled:opacity-50"
       >
-        Add to Cart — {formatPrice(pack.pricePerBottle * pack.bottles)}
+        {product.status === 'active' ? `Add to Cart — ${formatPrice(pack.pricePerBottle * pack.bottles)}` : 'Out of stock'}
       </button>
 
       <div className="mt-4 flex flex-wrap justify-center gap-1.5">
@@ -225,4 +238,9 @@ export function InfoTabs({ product }: { product: Product }) {
       <div className="pt-5 text-[var(--color-ink)]">{tabs[active].body}</div>
     </div>
   );
+}
+
+export function TrackViewItem({ product }: { product: Product }) {
+  useEffect(() => track({ name: 'view_item', item: { id: product.slug, name: product.name, price: product.basePrice } }), [product.slug, product.name, product.basePrice]);
+  return null;
 }

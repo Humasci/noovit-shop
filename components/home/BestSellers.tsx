@@ -4,17 +4,18 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { ProductCard } from '@/components/product/ProductCard';
-import { getBestSellers, getByAudience } from '@/data/products';
+import { bestSellers, byAudience } from '@/data/products';
+import { Product } from '@/types';
 
 const TABS = [
-  { label: 'Best Sellers', get: getBestSellers },
-  { label: "Women's Health", get: () => getByAudience('women') },
-  { label: "Men's Health", get: () => getByAudience('men') },
+  { label: 'Best Sellers', get: bestSellers },
+  { label: "Women's Health", get: (list: Product[]) => byAudience(list, 'women') },
+  { label: "Men's Health", get: (list: Product[]) => byAudience(list, 'men') },
 ];
 
-export function BestSellers() {
+export function BestSellers({ products }: { products: Product[] }) {
   const [tab, setTab] = useState(0);
-  const items = TABS[tab].get().slice(0, 8);
+  const items = TABS[tab].get(products).slice(0, 8);
 
   return (
     <section className="section">

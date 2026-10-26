@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import { ProductCard } from '@/components/product/ProductCard';
-import { getPetProducts } from '@/data/products';
+import { petProducts } from '@/data/products';
 import { PET_IMAGES } from '@/data/content';
-import { Species } from '@/types';
+import { Product, Species } from '@/types';
 
 const TABS: { value: Species | 'all'; label: string }[] = [
   { value: 'all', label: 'All Pets' },
@@ -12,9 +12,9 @@ const TABS: { value: Species | 'all'; label: string }[] = [
   { value: 'cat', label: 'Cats' },
 ];
 
-export function PetsShop() {
+export function PetsShop({ products }: { products: Product[] }) {
   const [species, setSpecies] = useState<Species | 'all'>('all');
-  const items = getPetProducts(species === 'all' ? undefined : species);
+  const items = petProducts(products, species === 'all' ? undefined : species);
 
   const pick = (s: Species) => {
     setSpecies(s);
@@ -38,7 +38,7 @@ export function PetsShop() {
                 <div className="absolute bottom-6 left-6 text-white">
                   <p className="text-3xl font-extrabold">{s === 'dog' ? 'Dogs' : 'Cats'}</p>
                   <p className="mt-1 text-sm font-semibold text-white/90">
-                    {getPetProducts(s).length} products · Shop now →
+                    {petProducts(products, s).length} products · Shop now →
                   </p>
                 </div>
               </button>
