@@ -13,11 +13,12 @@
   --color-soft: #eef5f2;
   --color-line: #e2ebe7;
   --color-muted: #6b7280;
-  --color-logo-plus: var(--color-opal);
+  --color-orange: #ff5f00;
+  --color-logo-plus: var(--color-orange);
 
   /* Noovit Pets accent */
-  --color-pets: #e8833a;
-  --color-pets-dark: #c96a24;
+  --color-pets: var(--color-orange);
+  --color-pets-dark: #e05300;
   --color-pets-soft: #fff4ea;
 
   /* Aliases used by older pages */

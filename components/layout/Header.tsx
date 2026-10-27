@@ -1,8 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { Menu, X, ShoppingBag, Leaf, Star, FlaskConical, ShieldCheck, BadgeCheck, ChevronDown, PawPrint } from 'lucide-react';
+import { Menu, X, ShoppingBag, Leaf, Star, FlaskConical, ShieldCheck, BadgeCheck, ChevronDown, PawPrint, User } from 'lucide-react';
 import { useCart, cartCount } from '@/lib/store/cart';
 import { useHydrated } from '@/lib/useHydrated';
 import { Logo } from '@/components/layout/Logo';
@@ -45,6 +46,7 @@ const TRUST_ICONS = [Leaf, Star, FlaskConical, ShieldCheck, BadgeCheck];
 
 export function Header({ trustBar, announcement }: { trustBar: string[]; announcement?: { text: string; href: string } }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const onPets = usePathname().startsWith('/pets');
   const items = useCart((s) => s.items);
   const openCart = useCart((s) => s.open);
 
@@ -114,13 +116,22 @@ export function Header({ trustBar, announcement }: { trustBar: string[]; announc
           </Link>
 
           <div className="flex items-center justify-self-end gap-5 text-sm font-semibold">
-            {/* Noovit Pets sits apart from the human range as its own button (in the mobile menu on small screens). */}
-            <Link
-              href="/pets"
-              className="hidden items-center gap-1.5 rounded-full bg-[var(--color-pets)] px-4 py-1.5 font-logo text-[15px] font-medium text-white transition-colors hover:bg-[var(--color-pets-dark)] lg:flex"
-            >
-              <PawPrint className="h-4 w-4" /> Pets
-            </Link>
+            {/* Noovit Pets sits apart from the human range as its own button; on the Pets pages it leads back to the human shop. */}
+            {onPets ? (
+              <Link
+                href="/shop"
+                className="hidden items-center gap-1.5 rounded-full bg-[var(--color-opal)] px-4 py-1.5 font-logo text-[15px] font-medium text-white transition-colors hover:bg-[var(--color-accent)] lg:flex"
+              >
+                <User className="h-4 w-4" /> Humans
+              </Link>
+            ) : (
+              <Link
+                href="/pets"
+                className="hidden items-center gap-1.5 rounded-full bg-[var(--color-pets)] px-4 py-1.5 font-logo text-[15px] font-medium text-white transition-colors hover:bg-[var(--color-pets-dark)] lg:flex"
+              >
+                <PawPrint className="h-4 w-4" /> Pets
+              </Link>
+            )}
             <Link href="/account" className="hidden font-logo text-[15px] font-medium hover:text-[var(--color-accent)] sm:block">
               My Subscriptions
             </Link>

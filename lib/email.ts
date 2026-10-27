@@ -21,7 +21,7 @@ async function send(to: string, subject: string, html: string, headers?: Record<
 
 const layout = (body: string) => `
 <div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;color:#1f2937">
-  <p style="font-size:24px;font-weight:600;color:#14213d">noovit<sup style="color:#5fa68d;font-size:14px">+</sup></p>
+  <p style="font-size:24px;font-weight:600;color:#14213d">noovit<sup style="color:#ff5f00;font-size:14px">+</sup></p>
   ${body}
   <p style="margin-top:32px;font-size:12px;color:#6b7280">Questions? Just reply to this email.<br/>Noovit · Clean, science-driven supplements</p>
 </div>`;

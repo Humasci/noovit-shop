@@ -9,9 +9,8 @@ import { Product } from '@/types';
 export type FontMode = 'web' | 'print';
 
 const NAVY = '#14213d';
-const INK = '#374151';
-const OPAL = '#5fa68d';
-const OPAL_DARK = '#3a8069';
+const INK = '#4b5563';
+export const ORANGE = '#ff5f00';
 
 const FONTS = {
   logo: { web: "var(--font-funnel), 'Funnel Display', sans-serif", print: "'Funnel Display'" },
@@ -68,61 +67,77 @@ export function netQuantity(p: Product) {
   return `${units} ${UNITS[p.form][units === 1 ? 0 : 1]}`;
 }
 
-const TAG_LABELS: Record<string, string> = { vegan: 'Vegan', 'gluten-free': 'Gluten-free', 'sugar-free': 'Sugar-free' };
-const tagLine = (p: Product) => p.dietaryTags.filter((t) => t in TAG_LABELS).map((t) => TAG_LABELS[t]).join('  ·  ');
 
-// ---------- Wordmark ----------
+// ---------- Brand marks ----------
 
-// "noovit" + raised plus, centred on cx with the baseline at y. Width of "noovit" in Funnel Display 500 = 2.977em.
-export function wordmark(cx: number, y: number, size: number, mode: FontMode, color = NAVY, plus = OPAL) {
-  const w = 2.977 * size;
-  const p = 0.4 * size; // plus box
-  const gap = 0.04 * size;
-  const left = cx - (w + gap + p) / 2;
-  const px = left + w + gap;
-  const top = y - 0.71 * size;
-  const bar = p * 0.215;
-  return `<g aria-label="noovit">
-    <text x="${n(left)}" y="${n(y)}" font-size="${size}" font-weight="500" letter-spacing="${n(-0.01 * size)}" fill="${color}" ${font('logo', mode)}>noovit</text>
-    <rect x="${n(px + (p - bar) / 2)}" y="${n(top)}" width="${n(bar)}" height="${n(p)}" rx="${n(bar * 0.2)}" fill="${plus}"/>
-    <rect x="${n(px)}" y="${n(top + (p - bar) / 2)}" width="${n(p)}" height="${n(bar)}" rx="${n(bar * 0.2)}" fill="${plus}"/>
-  </g>`;
+// Funnel Display Medium "n" outline at 100 units (x 3.25–57.75, baseline 0, x-height 50.9), so the icon needs no font.
+const N_PATH =
+  'M20.33 0L9.00 0L9.00-38.58L3.25-38.58L3.25-50.00L15.08-50.00L15.08-42.08L18.58-42.08Q21.25-46.33 25.71-48.63Q30.17-50.92 36.50-50.92L36.50-50.92Q46.50-50.92 52.13-45.29Q57.75-39.67 57.75-30.25L57.75-30.25L57.75 0L46.42 0L46.42-28.25Q46.42-34.42 43.13-37.67Q39.83-40.92 33.42-40.92L33.42-40.92Q27.00-40.92 23.67-37.67Q20.33-34.42 20.33-28.25L20.33-28.25L20.33 0Z';
+
+// The mosaic cross: five square tiles, the centre strongest. (x, y) = top-left of its 3×3 grid, t = tile size.
+export function mosaicCross(x: number, y: number, t: number, color = ORANGE) {
+  const g = t * 0.16;
+  return [[1, 0, 0.6], [0, 1, 0.4], [1, 1, 1], [2, 1, 0.8], [1, 2, 0.5]]
+    .map(([c, r, o]) => `<rect x="${n(x + c * (t + g))}" y="${n(y + r * (t + g))}" width="${n(t)}" height="${n(t)}" rx="${n(t * 0.12)}" fill="${color}" opacity="${o}"/>`)
+    .join('');
+}
+
+// The n⁺ icon in a 100×100 box.
+export function icon(fg = NAVY, accent = ORANGE) {
+  return `<path transform="translate(6 82)" d="${N_PATH}" fill="${fg}"/>${mosaicCross(66, 16, 7.4, accent)}`;
+}
+
+// "noovit" + mosaic cross. Width of "noovit" in Funnel Display 500 = 2.977em; "vit" can take a second tone.
+function wordmarkRaw(x: number, y: number, size: number, mode: FontMode, c1: string, c2: string, c2Opacity = 1, accent = ORANGE) {
+  return `<text x="${n(x)}" y="${n(y)}" font-size="${size}" font-weight="500" letter-spacing="${n(-0.01 * size)}" ${font('logo', mode)}><tspan fill="${c1}">noo</tspan><tspan fill="${c2}" fill-opacity="${c2Opacity}">vit</tspan></text>
+    ${mosaicCross(x + 3.02 * size, y - 0.76 * size, size * 0.125, accent)}`;
+}
+
+// Centred horizontal wordmark (baseline at y).
+export function wordmark(cx: number, y: number, size: number, mode: FontMode, color = NAVY) {
+  return `<g aria-label="noovit">${wordmarkRaw(cx - (3.02 + 0.42) * size / 2, y, size, mode, color, color)}</g>`;
 }
 
 // ---------- Front panel (220 × 225 units = 2.2" × 2.25") ----------
 
 export const FRONT = { w: 220, h: 225 };
+const BAND = 158; // colour block above, white band below; identity and net quantity sit in the bottom 30%
 
-function nameLines(name: string) {
-  // Largest size where the name fits on two lines and no single word overflows the panel.
-  for (const size of [35, 33, 31, 29, 27, 25]) {
-    const lines = wrap(name, 196, size, 0.6);
-    if (lines.length <= 2 && lines.every((l) => l.length * size * 0.58 <= 196)) return { lines, size };
-  }
-  return { lines: wrap(name, 204, 23, 0.6), size: 23 };
+// Darker shade of the product colour for small text on white.
+function shade(hex: string, k = 0.35) {
+  return '#' + (hex.match(/\w\w/g) ?? []).map((h) => Math.round(parseInt(h, 16) * (1 - k)).toString(16).padStart(2, '0')).join('');
 }
 
-const BAND = 162; // top of the colour band; statement of identity and net quantity sit in the bottom 30%
+// First word on line one, the rest on line two; sized to clear the vertical wordmark.
+function nameLines(name: string, room: number) {
+  const words = name.split(' ');
+  const lines = words.length > 1 ? [words[0], words.slice(1).join(' ')] : [name];
+  const size = Math.min(30, room / (Math.max(...lines.map((l) => l.length)) * 0.64));
+  return { lines, size };
+}
 
-// Drawn at (0,0); callers translate/scale it. `bleed` extends the colour band past the bottom edge.
-// Hierarchy: wordmark → eyebrow (proof point) → product name → benefit → colour band with identity + quantity.
+// Drawn at (0,0); callers translate/scale it. `bleed` extends both colour areas past the trim.
+// Layout: icon · product name · proof point · vertical "noovit" (right edge) / white band: benefit, identity, net quantity.
 export function frontPanel(p: Product, mode: FontMode, bleed = 0) {
-  const cx = FRONT.w / 2;
-  const { lines, size } = nameLines(p.name);
-  const nameY = 56 + size * 0.95;
-  const benefitY = nameY + (lines.length - 1) * size * 1.0 + size * 0.3 + 9;
-  const benefit = wrap(p.shortBenefit.replace(/\.$/, '') + '*', 172, 9, 0.56).slice(0, 2);
-  const tags = tagLine(p);
+  const { lines, size } = nameLines(p.name, FRONT.w - 18 - 48);
+  const dark = shade(p.color);
+  const { units } = labelCounts(p);
+  const qty = netQuantity(p);
+  const unitWord = p.form === 'powder' ? qty.replace(/^\S+\s/, '') : UNITS[p.form][units === 1 ? 0 : 1];
+  const big = p.form === 'powder' ? qty.split(' ')[0] : String(units);
+  const benefit = wrap(p.shortBenefit.replace(/\.$/, '') + '*', 118, 8, 0.5).slice(0, 3);
+  const vSize = 25;
   return `<g>
-    <rect x="0" y="0" width="${FRONT.w}" height="${FRONT.h + bleed}" fill="#fff"/>
-    ${wordmark(cx, 31, 21, mode)}
-    <text x="${cx}" y="52" text-anchor="middle" font-size="6.8" font-weight="600" letter-spacing="1.3" fill="${OPAL_DARK}" ${font('body', mode)}>${esc((p.benefits.at(-1) ?? '').toUpperCase())}</text>
-    ${textBlock(lines, cx, nameY, size, size * 1.0, `text-anchor="middle" font-weight="600" letter-spacing="${n(-0.02 * size)}" fill="${NAVY}" ${font('head', mode)}`)}
-    ${textBlock(benefit, cx, benefitY, 9, 11, `text-anchor="middle" fill="${INK}" ${font('body', mode)}`)}
-    <rect x="0" y="${BAND}" width="${FRONT.w}" height="${FRONT.h - BAND + bleed}" fill="${p.color}"/>
-    ${tags ? `<text x="${cx}" y="${BAND + 14}" text-anchor="middle" font-size="6.3" font-weight="500" letter-spacing="0.6" fill="#fff" opacity="0.92" ${font('body', mode)}>${esc(tags)}</text>` : ''}
-    <text x="${cx}" y="${BAND + 30}" text-anchor="middle" font-size="7.2" font-weight="600" letter-spacing="1.6" fill="#fff" ${font('body', mode)}>DIETARY SUPPLEMENT</text>
-    <text x="${cx}" y="${BAND + 46}" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.8" fill="#fff" ${font('body', mode)}>${esc(netQuantity(p).toUpperCase())}</text>
+    <rect x="0" y="${-bleed}" width="${FRONT.w}" height="${BAND + bleed}" fill="${p.color}"/>
+    <rect x="0" y="${BAND}" width="${FRONT.w}" height="${FRONT.h - BAND + bleed}" fill="#fff"/>
+    <g transform="translate(14 12) scale(0.36)">${icon('#fff')}</g>
+    ${textBlock(lines, 18, 86, n(size), n(size * 1.02), `font-weight="600" letter-spacing="${n(-0.015 * size)}" fill="#fff" ${font('head', mode)}`)}
+    <text x="18" y="${BAND - 14}" font-size="8.5" font-weight="500" fill="#fff" opacity="0.92" ${font('body', mode)}>${esc(p.benefits.at(-1) ?? '')}</text>
+    <g transform="translate(${FRONT.w - 16} ${BAND - 14}) rotate(-90)">${wordmarkRaw(0, 0, vSize, mode, '#fff', '#fff', 0.62)}</g>
+    ${textBlock(benefit, 18, BAND + 19, 8, 10.5, `fill="${INK}" ${font('body', mode)}`)}
+    <text x="18" y="${FRONT.h - 13}" font-size="6.6" font-weight="600" letter-spacing="1.1" fill="${dark}" ${font('body', mode)}>DIETARY SUPPLEMENT</text>
+    <text x="${FRONT.w - 18}" y="${BAND + 38}" text-anchor="end" font-size="30" font-weight="600" fill="${dark}" ${font('head', mode)}>${esc(big)}</text>
+    <text x="${FRONT.w - 18}" y="${BAND + 52}" text-anchor="end" font-size="8.5" font-weight="600" letter-spacing="0.8" fill="${dark}" ${font('body', mode)}>${esc(unitWord.toUpperCase())}</text>
   </g>`;
 }
 
@@ -246,56 +261,87 @@ export function fullLabelSvg(p: Product, opts: { mode?: FontMode; guides?: boole
 
 export type BottleVariant = 'front' | 'duo' | 'capsules' | 'facts';
 
-function bottle(p: Product, x: number, y: number, scale: number, mode: FontMode, uid: string) {
+// A white HDPE bottle (or a wide tub for powders) seen slightly from above, so every circle is an ellipse.
+// The label is the flat front panel above, clipped to the curved band and shaded like a cylinder.
+// Drawn in a 400×460 box centred on x = 200.
+function bottle(p: Product, mode: FontMode, uid: string) {
   const jar = p.form === 'powder' || p.form === 'chews';
-  const w = jar ? 190 : 156;
-  const h = jar ? 205 : 236;
-  const capW = jar ? w - 16 : w * 0.62;
-  const capH = jar ? 34 : 40;
-  const labelScale = (w - 2) / FRONT.w;
-  const labelH = FRONT.h * labelScale;
-  const labelY = (h - labelH) / 2 + (jar ? 6 : 10);
-  return `<g transform="translate(${n(x)} ${n(y)}) scale(${scale})">
-    <ellipse cx="${w / 2}" cy="${h + 8}" rx="${w / 2 + 8}" ry="11" fill="#000" opacity="0.07"/>
-    <rect x="${n((w - capW) / 2)}" y="${-capH + 4}" width="${n(capW)}" height="${capH}" rx="7" fill="#1b2232"/>
-    <rect x="${n((w - capW) / 2)}" y="${-capH + 4}" width="${n(capW)}" height="${capH}" rx="7" fill="url(#cap-${uid})"/>
-    <rect x="0" y="0" width="${w}" height="${h}" rx="${jar ? 20 : 26}" fill="#fdfdfd"/>
-    <clipPath id="clip-${uid}"><rect x="0" y="0" width="${FRONT.w}" height="${FRONT.h}"/></clipPath>
-    <g clip-path="url(#clip-${uid})" transform="translate(1 ${n(labelY)}) scale(${n(labelScale)})">${frontPanel(p, mode)}</g>
-    <rect x="0" y="0" width="${w}" height="${h}" rx="${jar ? 20 : 26}" fill="url(#shade-${uid})"/>
-    <line x1="1" x2="${w - 1}" y1="${n(labelY)}" y2="${n(labelY)}" stroke="#000" stroke-opacity="0.06"/>
-  </g>`;
-}
-
-function defs(uid: string, color: string) {
+  const cx = 200;
+  const e = 0.12; // ellipse ratio: ry = r·e
+  const R = jar ? 112 : 94;
+  const capR = jar ? 104 : 56;
+  const capTop = jar ? 112 : 64;
+  const capBot = jar ? 152 : 124;
+  const neck = jar ? 104 : 50;
+  const shoulder = jar ? 160 : 132;
+  const bodyTop = jar ? 166 : 180;
+  const base = 410;
+  const lw = R * 2 * 0.98;
+  const scale = lw / FRONT.w;
+  const LT = jar ? 176 : 192;
+  const LB = LT + FRONT.h * scale;
+  const X0 = cx - R;
+  const X1 = cx + R;
+  const arc = (y: number, r: number, sweep = 0) => `A${r} ${n(r * e)} 0 0 ${sweep} ${sweep ? cx - r : cx + r} ${y}`;
+  const body = jar
+    ? `M${X0} ${bodyTop} V${base} ${arc(base, R)} V${bodyTop} ${arc(bodyTop, R, 1)} Z`
+    : `M${cx - neck} ${shoulder - 6} C${cx - neck} ${shoulder + 18} ${X0} ${shoulder + 16} ${X0} ${bodyTop} V${base} ${arc(base, R)} V${bodyTop} C${X1} ${shoulder + 16} ${cx + neck} ${shoulder + 18} ${cx + neck} ${shoulder - 6} Z`;
+  const band = `M${X0} ${n(LT)} ${arc(n(LT), R)} V${n(LB)} ${arc(n(LB), R, 1)} Z`;
+  const ribs = Array.from({ length: Math.round((capR * 2) / 3.05) - 1 }, (_, i) =>
+    `<rect x="${n(cx - capR + 2 + i * 3.05)}" y="${capTop}" width="1.2" height="${n(capBot - capTop + capR * e)}" fill="#000" opacity="${n(0.05 + 0.05 * Math.abs(Math.sin(i / 5)))}"/>`
+  ).join('');
   return `<defs>
-    <radialGradient id="bg-${uid}" cx="50%" cy="38%" r="75%"><stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="${color}" stop-opacity="0.2"/></radialGradient>
-    <linearGradient id="shade-${uid}" x1="0" x2="1">
-      <stop offset="0%" stop-color="#000" stop-opacity="0.10"/><stop offset="18%" stop-color="#000" stop-opacity="0.02"/>
-      <stop offset="40%" stop-color="#fff" stop-opacity="0.18"/><stop offset="62%" stop-color="#fff" stop-opacity="0"/>
-      <stop offset="88%" stop-color="#000" stop-opacity="0.05"/><stop offset="100%" stop-color="#000" stop-opacity="0.14"/>
+    <linearGradient id="cyl-${uid}" x1="0" x2="1">
+      <stop offset="0" stop-color="#000" stop-opacity="0.30"/><stop offset="0.06" stop-color="#000" stop-opacity="0.12"/><stop offset="0.16" stop-color="#000" stop-opacity="0.02"/>
+      <stop offset="0.27" stop-color="#fff" stop-opacity="0.38"/><stop offset="0.34" stop-color="#fff" stop-opacity="0.10"/><stop offset="0.6" stop-color="#000" stop-opacity="0"/>
+      <stop offset="0.84" stop-color="#000" stop-opacity="0.08"/><stop offset="0.95" stop-color="#000" stop-opacity="0.22"/><stop offset="1" stop-color="#000" stop-opacity="0.34"/>
     </linearGradient>
-    <linearGradient id="cap-${uid}" x1="0" x2="1"><stop offset="0%" stop-color="#fff" stop-opacity="0"/><stop offset="35%" stop-color="#fff" stop-opacity="0.16"/><stop offset="100%" stop-color="#000" stop-opacity="0.25"/></linearGradient>
-  </defs>`;
+    <linearGradient id="sh-${uid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="0.5" stop-color="#fff" stop-opacity="0.5"/><stop offset="1" stop-color="#000" stop-opacity="0.04"/></linearGradient>
+    <linearGradient id="cap-${uid}" x1="0" x2="1"><stop offset="0" stop-color="#c8ced5"/><stop offset="0.25" stop-color="#fff"/><stop offset="0.55" stop-color="#f2f4f6"/><stop offset="1" stop-color="#b9c0c8"/></linearGradient>
+    <radialGradient id="ct-${uid}" cx="0.4" cy="0.4" r="0.7"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#e3e7eb"/></radialGradient>
+    <filter id="soft-${uid}" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9"/></filter>
+    <filter id="hl-${uid}" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>
+    <clipPath id="body-${uid}"><path d="${body}"/></clipPath>
+    <clipPath id="label-${uid}"><path d="${band}"/></clipPath>
+  </defs>
+  <ellipse cx="${cx}" cy="${base + 10}" rx="${R + 14}" ry="16" fill="#000" opacity="0.18" filter="url(#soft-${uid})"/>
+  <ellipse cx="${cx}" cy="${base + 3}" rx="${R - 6}" ry="7" fill="#000" opacity="0.18" filter="url(#hl-${uid})"/>
+  <g clip-path="url(#body-${uid})">
+    <rect x="${X0 - 10}" y="${shoulder - 20}" width="${R * 2 + 20}" height="${base - shoulder + 40}" fill="#fafafa"/>
+    <rect x="${X0 - 10}" y="${shoulder - 20}" width="${R * 2 + 20}" height="${bodyTop - shoulder + 30}" fill="url(#sh-${uid})"/>
+    <g clip-path="url(#label-${uid})"><g transform="translate(${n(cx - lw / 2)} ${n(LT)}) scale(${n(scale)})">${frontPanel(p, mode, 30)}</g></g>
+    <path d="M${X0} ${n(LT)} ${arc(n(LT), R)}" fill="none" stroke="#000" stroke-opacity="0.07"/>
+    <path d="M${X0} ${n(LB)} ${arc(n(LB), R)}" fill="none" stroke="#000" stroke-opacity="0.07"/>
+    <rect x="${X0 - 10}" y="${shoulder - 20}" width="${R * 2 + 20}" height="${base - shoulder + 40}" fill="url(#cyl-${uid})"/>
+    <rect x="${n(cx - R * 0.5)}" y="${bodyTop - 30}" width="9" height="${base - bodyTop + 10}" rx="4.5" fill="#fff" opacity="0.32" filter="url(#hl-${uid})"/>
+  </g>
+  <path d="M${cx - neck - 2} ${capBot + 4} ${arc(capBot + 4, neck + 2)} V${capBot + 14} ${arc(capBot + 14, neck + 2, 1)} Z" fill="#e9ecef"/>
+  <path d="M${cx - capR} ${capTop} V${capBot} ${arc(capBot, capR)} V${capTop} Z" fill="url(#cap-${uid})"/>
+  ${ribs}
+  <ellipse cx="${cx}" cy="${capTop}" rx="${capR}" ry="${n(capR * e)}" fill="url(#ct-${uid})" stroke="#d5dade" stroke-width="0.8"/>`;
 }
 
-// Square 400×400 scene. `uid` keeps gradient/clip ids unique when several images share a page.
+// Cream scene with a soft floor line.
+function scene(uid: string) {
+  return `<defs><linearGradient id="bg-${uid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fbf7f2"/><stop offset="0.8" stop-color="#f3ece3"/><stop offset="0.8" stop-color="#ebe2d6"/><stop offset="1" stop-color="#f2ebe2"/></linearGradient></defs><rect width="400" height="400" fill="url(#bg-${uid})"/>`;
+}
+
+// Square 400×400 image. `uid` keeps gradient/clip ids unique when several images share a page.
 export function bottleSvg(p: Product, variant: BottleVariant = 'front', opts: { mode?: FontMode; uid?: string; size?: number } = {}) {
   const mode = opts.mode ?? 'web';
   const uid = (opts.uid ?? `${p.slug}-${variant}`).replace(/[^a-z0-9-]/gi, '');
-  const jar = p.form === 'powder' || p.form === 'chews';
-  const bw = jar ? 190 : 156;
+  const place = (x: number, y: number, s: number, id: string) => `<g transform="translate(${x} ${y}) scale(${s})">${bottle(p, mode, id)}</g>`;
   let body = '';
-  if (variant === 'front') body = bottle(p, (400 - bw) / 2, jar ? 128 : 104, 1, mode, uid);
-  if (variant === 'duo') body = bottle(p, 48, 132, 0.84, mode, `${uid}a`) + bottle(p, 196, 112, 0.94, mode, `${uid}b`);
+  if (variant === 'front') body = place(26, -6, 0.87, uid);
+  if (variant === 'duo') body = place(-34, 20, 0.74, `${uid}a`) + place(104, 6, 0.8, `${uid}b`);
   if (variant === 'capsules') {
-    body = bottle(p, 52, 112, 0.92, mode, uid);
-    const pieces: [number, number, number][] = [[285, 270, 20], [325, 300, -30], [268, 322, 60], [335, 248, 80], [300, 340, -10]];
+    body = place(-20, 4, 0.82, uid);
+    const pieces: [number, number, number][] = [[290, 300, 20], [330, 330, -30], [272, 350, 60], [338, 280, 80], [305, 368, -10]];
     body += pieces
-      .map(([cx, cy, r], i) =>
+      .map(([x, y, r], i) =>
         p.form === 'powder'
-          ? `<circle cx="${cx}" cy="${cy}" r="${14 - i}" fill="${p.color}" opacity="0.5"/>`
-          : `<g transform="rotate(${r} ${cx} ${cy})"><rect x="${cx - 22}" y="${cy - 9}" width="44" height="18" rx="9" fill="#fff" stroke="${p.color}" stroke-width="2"/><rect x="${cx}" y="${cy - 9}" width="22" height="18" rx="9" fill="${p.color}" opacity="0.7"/></g>`
+          ? `<circle cx="${x}" cy="${y}" r="${14 - i}" fill="${p.color}" opacity="0.5"/>`
+          : `<g transform="rotate(${r} ${x} ${y})"><rect x="${x - 22}" y="${y - 9}" width="44" height="18" rx="9" fill="#fff" stroke="${p.color}" stroke-width="2"/><rect x="${x}" y="${y - 9}" width="22" height="18" rx="9" fill="${p.color}" opacity="0.7"/></g>`
       )
       .join('');
   }
@@ -306,5 +352,5 @@ export function bottleSvg(p: Product, variant: BottleVariant = 'front', opts: { 
       <g transform="translate(${n(200 - 130 * s)} ${n(200 - (facts.height * s) / 2)}) scale(${n(s)})">${facts.svg}</g>`;
   }
   const size = opts.size ? `width="${opts.size}" height="${opts.size}"` : '';
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" ${size}>${defs(uid, p.color)}<rect width="400" height="400" fill="#fff"/><rect width="400" height="400" fill="url(#bg-${uid})"/>${body}</svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" ${size}>${scene(uid)}${body}</svg>`;
 }

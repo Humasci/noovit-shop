@@ -32,17 +32,17 @@ The same design draws the bottle images on the website and the PNGs used in the 
 
 | Asset | Value |
 |---|---|
-| **Wordmark** | "noovit" in **Funnel Display Medium (500)**, plus a raised "+" (like an exponent) in opal. The "+" is a drawn shape, not the font's "+". Take it from `components/layout/Logo.tsx` (SVG geometry: two 86-unit bars in a 400-unit square, sitting at the top of the "t"). Supply it as outlined vector. |
-| **Symbol** | The opal "+" on its own. Use it for the cap, seal, small panels and social media. |
+| **Wordmark** | "noovit" in **Funnel Display Medium (500)** with the **mosaic cross**: five square tiles (centre strongest) raised like an exponent above the "t", in **vivid orange**. On labels it runs **vertically** up the right edge of the colour block, with "noo" in white and "vit" in 60% white. Geometry: `lib/labels/svg.ts` (`mosaicCross`, `wordmark`). Supply as outlined vector. |
+| **Icon** | The **n⁺**: the Funnel Display "n" (as an outline, no font needed) with the orange mosaic cross. Top-left of every label. The navy rounded-square version is the favicon/app icon; at very small sizes the cross becomes a solid orange "+". |
 | **Navy** (primary text, logo) | `#14213D` |
-| **Opal** (the "+", accents) | `#5FA68D` |
-| **Opal dark** (small text in opal) | `#3A8069` |
-| **Opal light** (on navy) | `#9CC9B8` |
+| **Vivid orange** (the cross, highlights, Pets) | `#FF5F00` (CMYK 0 63 100 0) |
+| **Orange dark** (small orange text) | `#C44700` |
+| **Opal** (secondary; the "Humans" button on the Pets pages) | `#5FA68D` |
 | **Soft background** | `#EEF5F2` |
 | **Fonts** | **Funnel Display** for the wordmark, product names, headings and numbers (Medium/SemiBold). **Inter** for small text, Regular and Medium (400/500). Both are free under the SIL Open Font License and fine for print. |
-| **Pets accent** (for later) | Orange `#E8833A` with the same layout. Pets launch later. |
+| **Pets accent** | Vivid orange `#FF5F00`, same layout. Pets launch later. |
 
-**Colour in print.** Convert every colour to CMYK and approve it on a printed proof. The hex values above are screen colours. Opal and the per-product colours shift most in print.
+**Colour in print.** Convert every colour to CMYK and approve it on a printed proof. The hex values above are screen colours. Vivid orange and the per-product colours shift most in print. Vivid orange sits at the edge of what CMYK can reproduce; if the printer offers a spot colour, Pantone Orange 021 C is the closest match.
 
 ---
 
@@ -54,17 +54,14 @@ From left to right as the bottle turns:
 - The supplier's facts panel, unchanged, with **Other ingredients** directly below it.
 - Allergen statement if any (e.g. "Contains: fish" for marine collagen).
 
-**② Front panel (principal display panel), centred**
-- **Top:** the noovit⁺ wordmark.
-- **Middle:**
-  - **Product name** in large Funnel Display type, e.g. "Magnesium Complex".
-  - **One benefit line** using the "supports…" wording from the website, e.g. "Supports relaxation, sleep & muscle function".
-  - **One proof point**, e.g. "3 forms of magnesium · 400 mg" or "40 billion CFU · 12 strains".
-  - **Product colour band or shape.** Each product has its own colour (see §6). Keep the layout identical for every product; only the colour and text change.
-- **Bottom 30% (legally required here):**
-  - **Statement of identity:** "Dietary Supplement".
-  - **Net quantity:** "60 Capsules", parallel to the base of the bottle.
-- **Optional icons**, small and in a row: Vegan · Gluten-free · Third-party tested · Made in USA. Use only what the supplier can certify.
+**② Front panel (principal display panel)** — built by `frontPanel()` in `lib/labels/svg.ts`; the website bottles use the same artwork.
+- **Colour block (top ~70%):** n⁺ icon top-left; **product name** large in Funnel Display (first word, then the rest); one **proof point** at the bottom-left (e.g. "Gentle on the stomach"); the **vertical noovit wordmark** with the orange mosaic cross on the right edge.
+- **White band (bottom ~30%, legally required content):**
+  - **Benefit line** with the asterisk, from the website ("Supports relaxation, sleep and muscle function*").
+  - **Statement of identity:** "DIETARY SUPPLEMENT".
+  - **Net quantity:** large number + unit, e.g. "60 CAPSULES", parallel to the base.
+- Every product uses the identical layout; only the product colour and text change (see §6).
+- No cross or print on the cap.
 
 **③ Right panel (information panel)**
 - **Directions**, from the site's "how to take".
@@ -150,7 +147,7 @@ Wording, doses and colours come from the website catalog. **Doses must be replac
 | Lion's Mane | Draft | 30 servings | Capsules | Take 2 capsules daily. | `#B89B72` | Organic lion's mane extract 1000 mg |
 | L-Theanine Calm Focus | Draft | 60 servings | Capsules | Take 1 capsule once or twice daily. | `#7FA99B` | L-theanine 200 mg |
 
-**Optional idea for the Focus line:** a navy label with an opal band, so the brain range reads as a family within Noovit.
+**Focus line:** same layout; consider a navy label for the brain range so it reads as a family within Noovit.
 
 ---
 

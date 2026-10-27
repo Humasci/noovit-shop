@@ -54,7 +54,7 @@ export default async function PetsPage({ searchParams }: { searchParams: Promise
               <a href="#pet-products" className="btn bg-[var(--color-pets)] text-white hover:bg-[var(--color-pets-dark)]">
                 {live ? 'Shop Pets' : 'Join the waitlist'}
               </a>
-              <Link href="/shop" className="btn btn-outline">Shop for Humans</Link>
+              <Link href="/shop" className="btn bg-[var(--color-opal)] text-white hover:bg-[var(--color-accent)]">Shop for Humans</Link>
             </div>
             {live && (
               <ul className="mt-6 flex flex-col gap-2 text-sm font-semibold sm:flex-row sm:gap-6">

@@ -61,7 +61,7 @@ export function Footer() {
       <div className="container grid gap-10 px-6 py-14 md:grid-cols-4">
         <div>
           <Link href="/" className="text-[2.25rem]">
-            <Logo plusColor="var(--color-accent-light)" />
+            <Logo />
           </Link>
           <p className="mt-3 max-w-xs text-sm text-white/70">Clean, science-driven supplements for everyday health.</p>
           <SocialLinks className="mt-5 text-white/80" />
