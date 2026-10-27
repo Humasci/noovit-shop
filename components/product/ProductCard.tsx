@@ -75,6 +75,7 @@ export function ProductCard({ product }: { product: Product }) {
           )}
           <span className="whitespace-nowrap text-sm text-[var(--color-muted)]">
             as low as <span className="font-bold text-[var(--color-navy)]">{formatPrice(asLowAs(product))}</span>
+            <span className="block text-xs">{product.servings}-day supply per bottle</span>
           </span>
         </div>
       </div>

@@ -117,3 +117,10 @@ export function recommend(products: Product[], a: QuizAnswers, count = 3): Recom
     .sort((x, y) => y.score - x.score || Number(y.product.bestSeller) - Number(x.product.bestSeller));
   return scored.slice(0, count);
 }
+
+// Products for a goal, strongest match first (used by the "Shop by goal" pages). Same weights as the quiz.
+export function productsForGoal(products: Product[], goal: string) {
+  return products
+    .filter((p) => p.productType !== 'pets' && p.status !== 'hidden' && (WEIGHTS[p.slug]?.goals?.[goal] ?? 0) > 0)
+    .sort((a, b) => (WEIGHTS[b.slug]?.goals?.[goal] ?? 0) - (WEIGHTS[a.slug]?.goals?.[goal] ?? 0) || Number(b.bestSeller) - Number(a.bestSeller));
+}

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Check, Microscope, Sprout, ArrowRight, PawPrint } from 'lucide-react';
+import { Check, Microscope, Sprout, ArrowRight, PawPrint, BadgeDollarSign } from 'lucide-react';
 import { BestSellers } from '@/components/home/BestSellers';
 import {
   TrustSection,
@@ -213,7 +213,14 @@ export default async function HomePage() {
                 <Sprout className="h-8 w-8 shrink-0 text-[var(--color-accent)]" />
                 <div>
                   <h3 className="text-lg">Nothing you don&apos;t need</h3>
-                  <p className="text-[var(--color-muted)]">No artificial colours, fillers or unnecessary additives.</p>
+                  <p className="text-[var(--color-muted)]">No artificial colors, fillers or unnecessary additives.</p>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <BadgeDollarSign className="h-8 w-8 shrink-0 text-[var(--color-accent)]" strokeWidth={1.5} />
+                <div>
+                  <h3 className="text-lg">Fair prices, no brand tax</h3>
+                  <p className="text-[var(--color-muted)]">We spend on the formula, not on hype or celebrity faces, and subscribers save on every delivery.</p>
                 </div>
               </div>
             </div>

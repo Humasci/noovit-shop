@@ -8,6 +8,7 @@ import { useCart, cartCount } from '@/lib/store/cart';
 import { useHydrated } from '@/lib/useHydrated';
 import { Logo } from '@/components/layout/Logo';
 import { brandify } from '@/components/brand/Brand';
+import { GOAL_PAGES } from '@/lib/goals';
 
 // Top navigation: Shop (with categories), Best Sellers, Journal and the quiz. Pets is a separate button on the right
 // (and listed in the mobile menu); About, Reviews, FAQ and Contact live in the footer.
@@ -16,7 +17,10 @@ interface NavItem {
   href: string;
   pets?: boolean;
   children?: { name: string; href: string }[];
+  goals?: boolean; // dropdown also lists the "Shop by goal" pages
 }
+
+const GOAL_LINKS = GOAL_PAGES.map((g) => ({ name: g.name, href: `/goals/${g.slug}` }));
 
 const NAV: NavItem[] = [
   {
@@ -28,6 +32,7 @@ const NAV: NavItem[] = [
       { name: 'Sports', href: '/shop?type=sports' },
       { name: 'Specialties', href: '/shop?type=specialties' },
     ],
+    goals: true,
   },
   { name: 'Best Sellers', href: '/shop?type=best-sellers' },
   { name: 'Journal', href: '/blog' },
@@ -112,18 +117,28 @@ export function Header({ trustBar, announcement }: { trustBar: string[]; announc
                     {n.name} <ChevronDown className="h-3.5 w-3.5 transition-transform group-hover:rotate-180 group-focus-within:rotate-180" />
                   </Link>
                   <div className="invisible absolute left-0 top-full z-50 pt-2 opacity-0 transition-opacity group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
-                    <ul className="min-w-48 rounded-2xl border border-[var(--color-line)] bg-white p-2 shadow-lg">
-                      {n.children.map((c) => (
-                        <li key={c.href}>
-                          <Link
-                            href={c.href}
-                            onClick={(e) => e.currentTarget.blur()} // close the focus-opened menu after choosing
-                            className={`block rounded-lg px-3 py-2 hover:bg-[var(--color-soft)] ${n.pets ? 'hover:text-[var(--color-pets-dark)]' : 'hover:text-[var(--color-accent)]'}`}>
-                            {c.name}
-                          </Link>
-                        </li>
+                    <div className="flex gap-2 rounded-2xl border border-[var(--color-line)] bg-white p-2 shadow-lg">
+                      {[
+                        { title: n.goals ? 'Categories' : '', links: n.children },
+                        ...(n.goals ? [{ title: 'Shop by goal', links: GOAL_LINKS }] : []),
+                      ].map((col) => (
+                        <div key={col.title || 'links'} className={col.links.length > 6 ? 'min-w-[25rem]' : 'min-w-44'}>
+                          {col.title && <p className="px-3 pb-1 pt-2 font-sans text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--color-muted)]">{col.title}</p>}
+                          <ul className={col.links.length > 6 ? 'grid grid-cols-2 gap-x-2 whitespace-nowrap' : ''}>
+                            {col.links.map((c) => (
+                              <li key={c.href}>
+                                <Link
+                                  href={c.href}
+                                  onClick={(e) => e.currentTarget.blur()} // close the focus-opened menu after choosing
+                                  className={`block rounded-lg px-3 py-2 hover:bg-[var(--color-soft)] ${n.pets ? 'hover:text-[var(--color-pets-dark)]' : 'hover:text-[var(--color-accent)]'}`}>
+                                  {c.name}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
                       ))}
-                    </ul>
+                    </div>
                   </div>
                 </div>
               );
@@ -189,6 +204,18 @@ export function Header({ trustBar, announcement }: { trustBar: string[]; announc
                       </Link>
                     ))}
                   </div>
+                )}
+                {n.goals && (
+                  <>
+                    <p className="mt-4 font-sans text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--color-muted)]">Shop by goal</p>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {GOAL_LINKS.map((c) => (
+                        <Link key={c.href} href={c.href} onClick={() => setMenuOpen(false)} className="rounded-full bg-[var(--color-soft)] px-3 py-1 text-sm font-medium">
+                          {c.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </>
                 )}
               </div>
             ))}

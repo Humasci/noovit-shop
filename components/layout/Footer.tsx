@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Instagram, Facebook, Lock } from 'lucide-react';
 import { PAYMENT_METHODS } from '@/data/content';
+import { GOAL_PAGES } from '@/lib/goals';
 import { CookiePreferencesLink } from '@/components/analytics/Analytics';
 import { Logo } from '@/components/layout/Logo';
 import { Brand, brandify } from '@/components/brand/Brand';
@@ -23,7 +24,12 @@ const COLUMNS = [
       { name: 'Supplements', href: '/shop?type=supplements' },
       { name: 'Sports', href: '/shop?type=sports' },
       { name: 'Noovit Pets', href: '/pets' },
+      { name: 'Take the quiz', href: '/quiz' },
     ],
+  },
+  {
+    title: 'Shop by Goal',
+    links: GOAL_PAGES.slice(0, 6).map((g) => ({ name: g.name, href: `/goals/${g.slug}` })),
   },
   {
     title: 'Info',
@@ -68,7 +74,7 @@ export function SocialLinks({ className = '' }: { className?: string }) {
 export function Footer() {
   return (
     <footer className="bg-[var(--color-navy)] text-white">
-      <div className="container grid gap-10 px-6 py-14 md:grid-cols-4">
+      <div className="container grid gap-10 px-6 py-14 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
         <div>
           <Link href="/" className="text-[2.25rem]">
             <Logo />
