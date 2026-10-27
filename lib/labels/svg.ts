@@ -38,6 +38,23 @@ export function wrap(text: string, maxWidth: number, size: number, em = 0.52) {
   return lines;
 }
 
+// Re-splits a two-line wrap at the most even point, so the second line never holds a single orphaned word.
+export function balance(lines: string[]) {
+  if (lines.length !== 2) return lines;
+  const words = lines.join(' ').split(' ');
+  let best = lines;
+  let bestDiff = Infinity;
+  for (let i = 1; i < words.length; i++) {
+    const a = words.slice(0, i).join(' ');
+    const b = words.slice(i).join(' ');
+    if (a.length > lines[0].length) break; // never make line one longer than the wrap allowed
+    if (b.length > a.length + 2) continue; // keep the second line no longer than the first (clear of the count)
+    const diff = Math.abs(a.length - b.length);
+    if (diff < bestDiff) [best, bestDiff] = [[a, b], diff];
+  }
+  return best;
+}
+
 function textBlock(lines: string[], x: number, y: number, size: number, lead: number, attrs: string) {
   return lines.map((l, i) => `<text x="${n(x)}" y="${n(y + i * lead)}" font-size="${size}" ${attrs}>${esc(l)}</text>`).join('');
 }
@@ -144,7 +161,7 @@ export const ORIGIN_CLAIM = 'Made in the USA';
 function nameLines(name: string, room: number) {
   const words = name.split(' ');
   const lines = words.length > 1 ? [words[0], words.slice(1).join(' ')] : [name];
-  const size = Math.min(22, room / (Math.max(...lines.map((l) => l.length)) * 0.6));
+  const size = Math.min(20, room / (Math.max(...lines.map((l) => l.length)) * 0.6));
   return { lines, size };
 }
 
@@ -202,24 +219,24 @@ export function frontPanel(p: Product, mode: FontMode, bleed = 0, pattern: Label
   const qty = netQuantity(p);
   const unitWord = p.form === 'powder' ? qty.replace(/^\S+\s/, '') : UNITS[p.form][units === 1 ? 0 : 1];
   const big = p.form === 'powder' ? qty.split(' ')[0] : String(units);
-  const benefit = wrap(p.shortBenefit.replace(/\.$/, '') + '*', 118, 8, 0.5).slice(0, 3);
-  const sub = wrap(labelSubtitle(p), FRONT.w - 18 - 56, 8.6, 0.52).slice(0, 2);
+  const benefit = balance(wrap(p.shortBenefit.replace(/\.$/, '') + '*', 126, 9.6, 0.5).slice(0, 3));
+  const sub = balance(wrap(labelSubtitle(p), FRONT.w - 18 - 50, 10, 0.5).slice(0, 2));
   // Name + details sit in the lower part of the colour block, balanced against the icon above.
-  const nameY = lines.length > 1 ? 98 : 110;
-  const subY = nameY + (lines.length - 1) * size * 1.06 + 15;
+  const nameY = lines.length > 1 ? 96 : 106;
+  const subY = nameY + (lines.length - 1) * size * 1.06 + 16;
   return `<g>
     <rect x="0" y="${-bleed}" width="${FRONT.w}" height="${BAND + bleed}" fill="${p.color}"/>
     <rect x="0" y="${BAND}" width="${FRONT.w}" height="${FRONT.h - BAND + bleed}" fill="#fff"/>
     ${labelMosaic(p, pattern)}
     <g transform="translate(14 14) scale(0.34)">${icon('#fff')}</g>
-    <text x="18" y="66.5" font-size="7.6" font-weight="500" fill="#fff" ${font('body', mode)}>${esc(ORIGIN_CLAIM)}</text>
+    <text x="18" y="67" font-size="9.4" font-weight="500" fill="#fff" ${font('body', mode)}>${esc(ORIGIN_CLAIM)}</text>
     ${textBlock(lines, 18, nameY, n(size), n(size * 1.06), `font-weight="600" letter-spacing="${n(-0.01 * size)}" fill="#fff" ${font('head', mode)}`)}
-    ${textBlock(sub, 18, subY, 8.6, 11, `font-weight="500" fill="#fff" opacity="0.92" ${font('body', mode)}`)}
+    ${textBlock(sub, 18, subY, 10, 12, `font-weight="500" fill="#fff" opacity="0.92" ${font('body', mode)}`)}
     <g transform="translate(${FRONT.w - 14} ${n(BAND / 2 + vLen / 2)}) rotate(-90)">${wordmarkRaw(0, 0, vSize, mode, '#fff', '#fff', 0.62)}</g>
-    ${textBlock(benefit, 18, BAND + 19 + shift, 8, 10.5, `font-weight="500" fill="${INK}" ${font('body', mode)}`)}
-    <text x="18" y="${FRONT.h - 13 + shift / 4}" font-size="6.6" font-weight="600" letter-spacing="1.1" fill="${dark}" ${font('body', mode)}>DIETARY SUPPLEMENT</text>
+    ${textBlock(benefit, 18, BAND + 20 + shift, 9.6, 11.6, `font-weight="500" fill="${INK}" ${font('body', mode)}`)}
+    <text x="18" y="${FRONT.h - 13 + shift / 4}" font-size="7.6" font-weight="600" letter-spacing="1" fill="${dark}" ${font('body', mode)}>DIETARY SUPPLEMENT</text>
     <text x="${FRONT.w - 18}" y="${BAND + 34 + shift}" text-anchor="end" font-size="21.7" font-weight="600" fill="${dark}" ${font('head', mode)}>${esc(big)}</text>
-    <text x="${FRONT.w - 18}" y="${BAND + 52 + shift * 0.6}" text-anchor="end" font-size="8.5" font-weight="600" letter-spacing="0.8" fill="${dark}" ${font('body', mode)}>${esc(unitWord.toUpperCase())}</text>
+    <text x="${FRONT.w - 18}" y="${BAND + 52 + shift * 0.6}" text-anchor="end" font-size="9.4" font-weight="600" letter-spacing="0.8" fill="${dark}" ${font('body', mode)}>${esc(unitWord.toUpperCase())}</text>
   </g>`;
 }
 
