@@ -1,10 +1,11 @@
-import { Audience, DietaryTag, FAQ, PackOption, Product, ProductData, ProductForm, ProductType, PurchaseMode, Species } from '@/types';
+import { Audience, DietaryTag, FAQ, PackOption, Product, ProductData, ProductForm, ProductStatus, ProductType, PurchaseMode, Species } from '@/types';
 import { buildProduct } from '@/lib/catalog/build';
 
 type Seed = Omit<ProductData, 'extraFaqs' | 'rating' | 'reviewCount'> & {
   slug: string;
   faqs?: FAQ[];
   reviewCount?: number;
+  status?: ProductStatus; // 'hidden' = draft, visible only in the admin
 };
 
 // PLACEHOLDER: formulas, doses and dietary tags are draft values — confirm with your manufacturer before launch.
@@ -47,14 +48,14 @@ const seeds: Seed[] = [
     audiences: ['men'], bestSeller: true, reviewCount: 2874,
   },
   {
-    name: 'Marine Collagen Complex',
-    slug: 'marine-collagen-complex',
+    name: 'Collagen Complex',
+    slug: 'collagen-complex',
     shortBenefit: 'Supports skin elasticity, hair and nails.',
-    description: 'Hydrolysed marine collagen peptides with vitamin C and hyaluronic acid for skin support from within.',
+    description: 'Hydrolysed collagen peptides with vitamin C and hyaluronic acid for skin support from within.',
     whoFor: 'Anyone who wants to support skin hydration, elasticity, and stronger hair and nails.',
     benefits: ['Supports skin elasticity', 'Supports hydration', 'Strengthens hair and nails', 'Highly absorbable peptides'],
     ingredients: [
-      { name: 'Hydrolysed Marine Collagen', amount: '1000mg', description: 'Type I peptides' },
+      { name: 'Hydrolysed Collagen Peptides', amount: '1000mg', description: 'Types I & III' },
       { name: 'Hyaluronic Acid', amount: '50mg' },
       { name: 'Vitamin C', amount: '80mg', description: 'Supports collagen formation' },
     ],
@@ -198,6 +199,7 @@ const seeds: Seed[] = [
   {
     name: 'Odorless Garlic',
     slug: 'odorless-garlic',
+    status: 'hidden',
     shortBenefit: 'Supports heart health — without the garlic breath.',
     description: 'Concentrated aged garlic extract in an odour-controlled softgel.',
     whoFor: 'Anyone wanting cardiovascular and immune support without the taste.',
@@ -246,13 +248,14 @@ const seeds: Seed[] = [
   {
     name: 'Niacinamide Complex',
     slug: 'niacinamide',
+    status: 'hidden',
     shortBenefit: 'Supports clear, hydrated skin from within.',
-    description: 'Niacinamide with marine collagen and hyaluronic acid for skin support from the inside out.',
+    description: 'Niacinamide with collagen peptides and hyaluronic acid for skin support from the inside out.',
     whoFor: 'Anyone wanting to support skin clarity, tone and hydration.',
     benefits: ['Supports normal skin', 'Supports hydration', 'Supports even tone', 'Pairs with your skincare routine'],
     ingredients: [
       { name: 'Niacinamide (Vitamin B3)', amount: '250mg' },
-      { name: 'Marine Collagen', amount: '300mg' },
+      { name: 'Collagen Peptides', amount: '300mg' },
       { name: 'Hyaluronic Acid', amount: '40mg' },
     ],
     otherIngredients: 'Vegetable capsule (HPMC).',
@@ -315,9 +318,61 @@ const seeds: Seed[] = [
   },
 
   // NOOVIT PETS — PLACEHOLDER: formulas and doses need veterinary review and pet-supplement regulatory checks (FDA CVM / state feed rules) before launch.
+  // Noovit Focus — draft line (hidden). Match each formula to the chosen supplier's Supplement Facts before publishing.
+  {
+    name: 'Focus Complex',
+    slug: 'focus-complex',
+    status: 'hidden',
+    shortBenefit: 'Supports focus, memory and calm, clear thinking.',
+    description: "Lion's mane, bacopa, L-theanine and ginkgo in one daily formula for steady focus without the jitters.",
+    whoFor: 'Anyone who wants support for concentration, memory and a calm, clear head during demanding days.',
+    benefits: ['Supports focus and concentration', 'Supports memory', 'Calm alertness, no caffeine', 'Four researched botanicals'],
+    ingredients: [
+      { name: "Lion's Mane Mushroom Extract (fruiting body)", amount: '500mg' },
+      { name: 'Bacopa Monnieri Extract (50% bacosides)', amount: '300mg' },
+      { name: 'L-Theanine', amount: '200mg' },
+      { name: 'Ginkgo Biloba Extract (24% flavone glycosides)', amount: '60mg' },
+    ],
+    otherIngredients: 'Vegetable capsule (HPMC).',
+    dosage: 'Take 2 capsules daily with food. Effects build over 4–8 weeks.',
+    servings: 30, form: 'capsules', basePrice: 45, color: '#4F6D7A',
+    productType: 'supplements', dietaryTags: ['vegan', 'gluten-free', 'sugar-free'],
+    audiences: ['women', 'men'], bestSeller: false, reviewCount: 0,
+  },
+  {
+    name: "Lion's Mane",
+    slug: 'lions-mane',
+    status: 'hidden',
+    shortBenefit: 'Supports focus, memory and nerve health.',
+    description: "Organic lion's mane mushroom fruiting-body extract, the classic mushroom for the mind.",
+    whoFor: 'Anyone looking for a simple, daily mushroom supplement for focus and memory.',
+    benefits: ['Supports focus and memory', 'Supports healthy nerve function', 'Fruiting-body extract', 'No fillers'],
+    ingredients: [{ name: "Organic Lion's Mane Extract (fruiting body, 30% beta-glucans)", amount: '1000mg' }],
+    otherIngredients: 'Vegetable capsule (HPMC).',
+    dosage: 'Take 2 capsules daily.',
+    servings: 30, form: 'capsules', basePrice: 35, color: '#B89B72',
+    productType: 'supplements', dietaryTags: ['vegan', 'gluten-free', 'sugar-free'],
+    audiences: ['women', 'men'], bestSeller: false, reviewCount: 0,
+  },
+  {
+    name: 'L-Theanine Calm Focus',
+    slug: 'l-theanine',
+    status: 'hidden',
+    shortBenefit: 'Supports calm, relaxed focus.',
+    description: 'L-theanine, the amino acid found in green tea, for relaxed alertness by day and an easier wind-down at night.',
+    whoFor: 'Anyone who wants to feel calm and focused, or who finds coffee makes them jittery.',
+    benefits: ['Supports calm alertness', 'Pairs well with coffee', 'Supports relaxation', 'Non-drowsy'],
+    ingredients: [{ name: 'L-Theanine', amount: '200mg' }],
+    otherIngredients: 'Vegetable capsule (HPMC).',
+    dosage: 'Take 1 capsule once or twice daily.',
+    servings: 60, form: 'capsules', basePrice: 30, color: '#7FA99B',
+    productType: 'supplements', dietaryTags: ['vegan', 'gluten-free', 'sugar-free', 'low-fodmap'],
+    audiences: ['women', 'men'], bestSeller: false, reviewCount: 0,
+  },
   {
     name: 'Probiotic Chews for Dogs',
     slug: 'dog-probiotic-chews',
+    status: 'hidden',
     shortBenefit: 'Supports healthy digestion and firm stools.',
     description: 'Soft chicken-flavoured chews with a dog-specific probiotic blend and pumpkin fibre.',
     whoFor: 'Dogs with sensitive tummies, diet changes, or occasional loose stools.',
@@ -336,6 +391,7 @@ const seeds: Seed[] = [
   {
     name: 'Hip & Joint Chews for Dogs',
     slug: 'dog-hip-joint-chews',
+    status: 'hidden',
     shortBenefit: 'Supports mobility, hips and joints.',
     description: 'Glucosamine, chondroitin, MSM and green-lipped mussel in a duck-flavoured soft chew.',
     whoFor: 'Senior dogs, large breeds, and active dogs who love to run and jump.',
@@ -355,6 +411,7 @@ const seeds: Seed[] = [
   {
     name: 'Calming Chews for Dogs',
     slug: 'dog-calming-chews',
+    status: 'hidden',
     shortBenefit: 'Supports calm during storms, travel and alone time.',
     description: 'L-theanine, chamomile and thiamine in a turkey-flavoured chew for calmer moments.',
     whoFor: 'Dogs who get anxious with fireworks, car rides, vet visits or separation.',
@@ -373,6 +430,7 @@ const seeds: Seed[] = [
   {
     name: 'Skin & Coat Chews',
     slug: 'skin-coat-chews',
+    status: 'hidden',
     shortBenefit: 'Supports a shiny coat and less itchy skin.',
     description: 'Wild salmon oil omega-3s with biotin and vitamin E for a soft, glossy coat.',
     whoFor: 'Dogs with dry, itchy skin, dull coats, or seasonal shedding.',
@@ -391,6 +449,7 @@ const seeds: Seed[] = [
   {
     name: 'Probiotic Powder for Cats',
     slug: 'cat-probiotic-powder',
+    status: 'hidden',
     shortBenefit: 'Supports digestion and litter-box regularity.',
     description: 'An unflavoured probiotic powder that sprinkles over wet or dry food — even picky cats eat it.',
     whoFor: 'Cats with sensitive stomachs, hairballs, or recent food changes.',
@@ -408,6 +467,7 @@ const seeds: Seed[] = [
   {
     name: 'Hairball & Digestive Chews for Cats',
     slug: 'cat-hairball-chews',
+    status: 'hidden',
     shortBenefit: 'Supports hairball control and healthy digestion.',
     description: 'Salmon-flavoured soft chews with psyllium, pumpkin and digestive enzymes.',
     whoFor: 'Long-haired cats, frequent groomers, and cats prone to hairballs.',
@@ -426,8 +486,8 @@ const seeds: Seed[] = [
 ];
 
 // The launch catalog. Seeds the database (npm run catalog:seed) and is the fallback when no database is connected.
-export const SEED_PRODUCTS: Product[] = seeds.map(({ slug, faqs, reviewCount, ...data }) =>
-  buildProduct({ slug, data: { ...data, rating: 4.8, reviewCount: reviewCount ?? 1000, extraFaqs: faqs ?? [] } })
+export const SEED_PRODUCTS: Product[] = seeds.map(({ slug, faqs, reviewCount, status, ...data }) =>
+  buildProduct({ slug, status, data: { ...data, rating: 4.8, reviewCount: reviewCount ?? 1000, extraFaqs: faqs ?? [] } })
 );
 
 export const findProduct = (list: Product[], slug: string) => list.find((p) => p.slug === slug);

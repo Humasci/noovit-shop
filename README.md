@@ -18,7 +18,7 @@ Everything degrades gracefully without keys: the store works, checkout shows "no
 
 ### 1. Supabase
 1. Create a project at supabase.com.
-2. Run the files in `supabase/migrations/` in order (`0001` to `0004`) in the SQL editor. `0002` also creates the public `product-images` storage bucket.
+2. Run the files in `supabase/migrations/` in order (`0001` to `0005`) in the SQL editor. `0002` also creates the public `product-images` storage bucket.
 3. Set `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`. All tables have row-level security with no policies — only the server can read or write.
 
 ### 2. Stripe

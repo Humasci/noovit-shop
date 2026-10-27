@@ -12,7 +12,7 @@ import {
 } from '@/components/sections/Sections';
 import { Stars } from '@/components/ui/Stars';
 import { ProductImage } from '@/components/product/ProductImage';
-import { findProduct } from '@/data/products';
+import { findProduct, petProducts } from '@/data/products';
 import { getStoreProducts } from '@/lib/catalog/server';
 import { getContent, lines, safeLink } from '@/lib/content';
 import { JsonLd } from '@/components/seo/JsonLd';
@@ -22,11 +22,12 @@ import { EXPERTS, GENERAL_FAQS, IMAGES, PET_IMAGES } from '@/data/content';
 // PLACEHOLDER: swap these for press/retailer logos once you have them.
 const MARQUEE = ['Clean Ingredients', 'Third-Party Tested', 'GMP Certified', 'Nutritionist Formulated', 'Made in the USA', 'Vegan Options', '90-Day Guarantee'];
 
-const SPOTLIGHT = ['probiotic-complex', 'glucosamine-complex', 'turmeric-complex', 'marine-collagen-complex'];
+const SPOTLIGHT = ['probiotic-complex', 'glucosamine-complex', 'turmeric-complex', 'collagen-complex'];
 
 export default async function HomePage() {
   const [products, content] = await Promise.all([getStoreProducts(), getContent()]);
   const spotlight = SPOTLIGHT.map((s) => findProduct(products, s)).filter((p) => p !== undefined);
+  const petsLive = petProducts(products).length > 0;
 
   return (
     <>
@@ -106,11 +107,11 @@ export default async function HomePage() {
           <Link href="/pets" className="group grid overflow-hidden rounded-3xl bg-[var(--color-pets-soft)] md:grid-cols-2">
             <div className="p-10 md:p-14">
               <p className="mb-3 inline-flex items-center gap-2 rounded-full bg-[var(--color-pets)] px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-white">
-                <PawPrint className="h-4 w-4" /> New · Noovit Pets
+                <PawPrint className="h-4 w-4" /> {petsLive ? 'New' : 'Coming soon'} · Noovit Pets
               </p>
               <h2 className="text-3xl md:text-4xl">Clean supplements for dogs and cats</h2>
-              <p className="mt-3 text-[var(--color-muted)]">Vet-formulated chews and powders for digestion, joints, calm and coat — in the same cart as yours.</p>
-              <span className="btn mt-6 bg-[var(--color-pets)] text-white group-hover:bg-[var(--color-pets-dark)]">Shop Pets</span>
+              <p className="mt-3 text-[var(--color-muted)]">Vet-formulated chews for digestion, joints, calm and coat — in the same cart as yours.</p>
+              <span className="btn mt-6 bg-[var(--color-pets)] text-white group-hover:bg-[var(--color-pets-dark)]">{petsLive ? 'Shop Pets' : 'Join the waitlist'}</span>
             </div>
             <img src={PET_IMAGES.hero} alt="A cat and dog cuddling" className="h-full min-h-64 w-full object-cover" loading="lazy" />
           </Link>

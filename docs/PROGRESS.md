@@ -37,9 +37,9 @@ _Last updated: 2026-10-26_
 - [ ] `APP_SECRET`, `CRON_SECRET` and `ADMIN_PASSWORD` generated/chosen → add in Vercel; sign in and create the Owner account.
 - [ ] Optional: Klaviyo private key + list ID.
 - [ ] Admin → Settings: GA4 / Meta / TikTok IDs, welcome code (create WELCOME10 first), business postal address; add feed URLs to Google Merchant Center, Meta Commerce Manager, TikTok.
-- [ ] Run migration `0004_affiliates.sql` in Supabase (SQL editor).
 - [ ] Suppliers (see `docs/SUPPLIER_RESEARCH.md`): HoneyComm appears defunct; request samples from On Demand Fulfillment, Supliful, Professional Nutritionals, Vitalabs and pet makers (Pet Tech Labs / Natural Pet Innovations); then choose, map supplier SKUs, build order forwarding.
-- [ ] Catalog changes implied by research: drop/replace Niacinamide and odorless garlic softgels, drop "marine" unless confirmed, defer the two cat products, pets as a later inventory line.
+- [x] Catalog changes from research (applied to the live database too): Niacinamide and Odorless Garlic hidden; Marine Collagen → Collagen Complex (`/products/collagen-complex`); all pet products hidden and /pets is a "coming soon" waitlist (sign-ups saved as subscribers, source `pets-waitlist`); Noovit Focus drafts added (Focus Complex, Lion's Mane, L-Theanine Calm Focus — hidden until formulas match a supplier).
+- [x] Migrations `0004_affiliates` and `0005_hardening` applied to the live Supabase project; security advisor shows only the expected "RLS enabled, no policy" notices.
 - [x] Preliminary trademark knock-out search (owner, Oct 2026) — see below.
 - [ ] Attorney clearance + file NOOVIT in US and UK (class 5 + 35, consider 30/31) before ordering labelled samples.
 - [x] Brand: noovit⁺ wordmark in Funnel Display (raised opal + mark, also the favicon), Manrope headings, Inter body text, lighter weights; navy + opal green accent (tokens in `app/globals.css`).

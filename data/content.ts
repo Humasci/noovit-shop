@@ -25,7 +25,7 @@ export const REVIEWS: Review[] = [
   { id: 'r3', name: 'Priya S.', productSlug: 'probiotic-complex', rating: 5, title: 'Bloating finally under control', body: 'Within two weeks my stomach felt calmer. I have tried a lot of probiotics and this is the one I am sticking with.', date: '2026-08-27' },
   { id: 'r4', name: 'Claire D.', productSlug: 'menopause-complex', rating: 5, title: 'Fewer night sweats', body: 'Noticeably fewer hot flushes after the first month and my mood feels steadier.', date: '2026-08-19' },
   { id: 'r5', name: 'James R.', productSlug: 'glucosamine-complex', rating: 5, title: 'Back to running', body: 'Knees feel much better on long runs. Easy subscription too.', date: '2026-08-08' },
-  { id: 'r6', name: 'Sofia L.', productSlug: 'marine-collagen-complex', rating: 5, title: 'Nails stopped breaking', body: 'My nails are stronger and my skin looks more hydrated. Capsules are small and easy to take.', date: '2026-07-30' },
+  { id: 'r6', name: 'Sofia L.', productSlug: 'collagen-complex', rating: 5, title: 'Nails stopped breaking', body: 'My nails are stronger and my skin looks more hydrated. Capsules are small and easy to take.', date: '2026-07-30' },
 ];
 
 // PLACEHOLDER: replace with your actual advisory panel (names, credentials, consent to be featured).

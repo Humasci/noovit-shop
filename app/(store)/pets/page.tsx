@@ -2,6 +2,8 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { Check, Stethoscope, Scale, MapPin, FlaskConical, Ban, ShieldCheck, PawPrint } from 'lucide-react';
 import { PetsShop } from '@/components/pets/PetsShop';
+import { PetsWaitlist } from '@/components/pets/PetsWaitlist';
+import { petProducts } from '@/data/products';
 import { getStoreProducts } from '@/lib/catalog/server';
 import { ReviewsSection, FAQSection, CommunitySection, SectionHeading } from '@/components/sections/Sections';
 import { Stars } from '@/components/ui/Stars';
@@ -23,6 +25,8 @@ const PET_TRUST = [
 
 export default async function PetsPage() {
   const products = await getStoreProducts();
+  // Until a pet product is published, the page is a "coming soon" waitlist without reviews or vet quotes.
+  const live = petProducts(products).length > 0;
   return (
     <>
       <section className="relative overflow-hidden">
@@ -35,21 +39,29 @@ export default async function PetsPage() {
             </p>
             <h1 className="text-balance text-4xl md:text-6xl">Because they&apos;re family too.</h1>
             <p className="mt-5 text-lg text-[var(--color-ink)]/80">
-              Vet-formulated supplements for dogs and cats — same clean standards as our human range, in chews they actually look forward to.
+              {live
+                ? 'Vet-formulated supplements for dogs and cats — same clean standards as our human range, in chews they actually look forward to.'
+                : 'Vet-formulated soft chews for dogs, made to the same clean standards as our human range. Launching soon.'}
             </p>
-            <div className="mt-6 flex items-center gap-2 text-sm font-semibold">
-              <Stars size={14} /> Loved by pet parents
-            </div>
+            {live ? (
+              <div className="mt-6 flex items-center gap-2 text-sm font-semibold">
+                <Stars size={14} /> Loved by pet parents
+              </div>
+            ) : (
+              <p className="mt-6 text-sm font-semibold text-[var(--color-pets-dark)]">Coming soon</p>
+            )}
             <div className="mt-8 flex flex-wrap gap-3">
               <a href="#pet-products" className="btn bg-[var(--color-pets)] text-white hover:bg-[var(--color-pets-dark)]">
-                Shop Pets
+                {live ? 'Shop Pets' : 'Join the waitlist'}
               </a>
               <Link href="/shop" className="btn btn-outline">Shop for Humans</Link>
             </div>
-            <ul className="mt-6 flex flex-col gap-2 text-sm font-semibold sm:flex-row sm:gap-6">
-              <li className="flex items-center gap-2"><Check className="h-4 w-4 text-[var(--color-pets)]" /> 90-day guarantee</li>
-              <li className="flex items-center gap-2"><Check className="h-4 w-4 text-[var(--color-pets)]" /> One cart for the whole family</li>
-            </ul>
+            {live && (
+              <ul className="mt-6 flex flex-col gap-2 text-sm font-semibold sm:flex-row sm:gap-6">
+                <li className="flex items-center gap-2"><Check className="h-4 w-4 text-[var(--color-pets)]" /> 90-day guarantee</li>
+                <li className="flex items-center gap-2"><Check className="h-4 w-4 text-[var(--color-pets)]" /> One cart for the whole family</li>
+              </ul>
+            )}
           </div>
         </div>
       </section>
@@ -64,34 +76,40 @@ export default async function PetsPage() {
         </div>
       </div>
 
-      <PetsShop products={products} />
+      {live ? <PetsShop products={products} /> : <PetsWaitlist />}
 
-      <section className="section">
-        <div className="container grid gap-12 px-6 lg:grid-cols-[1fr_2fr]">
-          <div>
-            <SectionHeading eyebrow="Vet formulated" title="Developed with veterinarians" center={false} />
-            <p className="-mt-6 text-[var(--color-muted)]">
-              Every Noovit Pets formula is designed with veterinary professionals and dosed by body weight — never a scaled-down human product.
-            </p>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-3">
-            {VETS.map((v, i) => (
-              <div key={i} className="rounded-2xl bg-[var(--color-pets-soft)] p-5">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-pets)] text-white">
-                  <Stethoscope className="h-5 w-5" />
+      {live && (
+        <section className="section">
+          <div className="container grid gap-12 px-6 lg:grid-cols-[1fr_2fr]">
+            <div>
+              <SectionHeading eyebrow="Vet formulated" title="Developed with veterinarians" center={false} />
+              <p className="-mt-6 text-[var(--color-muted)]">
+                Every Noovit Pets formula is designed with veterinary professionals and dosed by body weight — never a scaled-down human product.
+              </p>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-3">
+              {VETS.map((v, i) => (
+                <div key={i} className="rounded-2xl bg-[var(--color-pets-soft)] p-5">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--color-pets)] text-white">
+                    <Stethoscope className="h-5 w-5" />
+                  </div>
+                  <p className="mt-4 font-bold">{v.name}</p>
+                  <p className="text-xs font-semibold text-[var(--color-pets-dark)]">{v.credentials}</p>
+                  <p className="mt-2 text-sm text-[var(--color-muted)]">&ldquo;{v.quote}&rdquo;</p>
                 </div>
-                <p className="mt-4 font-bold">{v.name}</p>
-                <p className="text-xs font-semibold text-[var(--color-pets-dark)]">{v.credentials}</p>
-                <p className="mt-2 text-sm text-[var(--color-muted)]">&ldquo;{v.quote}&rdquo;</p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      <ReviewsSection title="Happy pets, happy parents" reviews={PET_REVIEWS} />
-      <FAQSection faqs={PET_FAQS} title="Noovit Pets FAQ" />
-      <CommunitySection images={PET_IMAGES.community} handle="@noovitpets" title="Meet the Noovit Pets pack" />
+      {live && (
+        <>
+          <ReviewsSection title="Happy pets, happy parents" reviews={PET_REVIEWS} />
+          <FAQSection faqs={PET_FAQS} title="Noovit Pets FAQ" />
+          <CommunitySection images={PET_IMAGES.community} handle="@noovitpets" title="Meet the Noovit Pets pack" />
+        </>
+      )}
 
       <section className="section">
         <div className="container px-6">

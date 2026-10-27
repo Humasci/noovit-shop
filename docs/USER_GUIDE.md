@@ -262,7 +262,7 @@ Give creators, coaches and ambassadors their own code and link, and pay them a s
 **Good practice:** ask partners to disclose the relationship in every post (#ad / "paid partnership"), as the FTC requires, and to use only the health wording on the product pages. Keep a simple written agreement with the rate, hold period and payout schedule.
 
 ### Subscribers
-Everyone who joined the newsletter or ticked the marketing box at checkout. See totals (subscribed, new in 30 days, unsubscribed), search, filter, and **Export subscribed (CSV)** to import into an email tool such as Klaviyo. Unsubscribes are recorded automatically.
+Everyone who joined the newsletter, ticked the marketing box at checkout, or joined the **Noovit Pets waitlist** (source *pets-waitlist* — email them when pets launch). See totals (subscribed, new in 30 days, unsubscribed), search, filter, and **Export subscribed (CSV)** to import into an email tool such as Klaviyo. Unsubscribes are recorded automatically.
 
 ### Abandoned carts
 A checkout counts as abandoned if it isn't paid within **2 hours**. This page shows the last 30 days: how many carts were abandoned and their value, how many reminder emails were sent, how many were **recovered** (with a link to the resulting order) and the recovered revenue.
@@ -323,6 +323,7 @@ Add people with their name, email, role and a temporary password (12+ characters
 |---|---|
 | Add an influencer | Admin → Affiliates → Add a partner → open them → Email them their code & links |
 | Pay partners | Admin → Affiliates → open partner → pay them by PayPal/bank → Record payout |
+| Launch Noovit Pets | Admin → Products → open each pet product → Status *Active*. The Pets page switches from the waitlist to the shop automatically. Then email the *pets-waitlist* subscribers |
 | Ship today's orders | Admin → Fulfilment → Export CSV → send to supplier → Mark as submitted |
 | Add tracking | Admin → Orders → open order → status *shipped* + tracking → Save |
 | Cancel a customer's subscription for them | Admin → Subscriptions → Cancel at period end |
