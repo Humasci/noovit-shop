@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { Leaf, MapPin, FlaskConical, Sparkles, Gem, BadgeDollarSign, ShieldCheck, Zap } from 'lucide-react';
+import { Leaf, MapPin, FlaskConical, Sparkles, Gem, BadgeDollarSign, CircleCheck } from 'lucide-react';
 import { bestSellers, petProducts } from '@/data/products';
 import { getStoreProduct, getStoreProducts } from '@/lib/catalog/server';
 import { productImageUrl, productUrl } from '@/lib/site';
@@ -209,7 +209,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {VALUES.map(({ icon: Icon, title, text }) => (
               <div key={title} className="rounded-2xl border border-[var(--color-line)] p-6">
-                <Icon className="h-8 w-8 text-[var(--color-accent)]" strokeWidth={1.5} />
+                <Icon className="h-8 w-8 text-[var(--color-accent)]" strokeWidth={1} />
                 <h3 className="mt-4 text-lg">{title}</h3>
                 <p className="mt-1 text-sm text-[var(--color-muted)]">{text}</p>
               </div>
@@ -226,11 +226,10 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         <div className="container px-6">
           <h2 className="mb-10 text-center text-3xl text-white md:text-4xl">Why {product.name}?</h2>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {product.benefits.map((b, i) => {
-              const Icon = [Zap, ShieldCheck, Sparkles, Leaf][i % 4];
+            {product.benefits.map((b) => {
               return (
                 <div key={b} className="rounded-2xl bg-white/5 p-6">
-                  <Icon className="h-8 w-8 text-[var(--color-accent-light)]" strokeWidth={1.5} />
+                  <CircleCheck className="h-8 w-8 text-[var(--color-accent-light)]" strokeWidth={1.25} />
                   <p className="mt-4 font-semibold">{b}*</p>
                 </div>
               );

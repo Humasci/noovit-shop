@@ -41,7 +41,7 @@ export function TrustSection() {
         <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
           {TRUST_ITEMS.map(({ icon: Icon, label }) => (
             <div key={label} className="flex flex-col items-center rounded-2xl bg-white p-6 text-center">
-              <Icon className="mb-3 h-9 w-9 text-[var(--color-accent)]" strokeWidth={1.5} />
+              <Icon className="mb-3 h-9 w-9 text-[var(--color-accent)]" strokeWidth={1} />
               <p className="text-sm font-bold text-[var(--color-navy)]">{label}</p>
             </div>
           ))}

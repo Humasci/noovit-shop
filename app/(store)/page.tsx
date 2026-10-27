@@ -130,11 +130,11 @@ export default async function HomePage() {
         <div className="container px-6">
           <Link href="/pets" className="group grid overflow-hidden rounded-3xl bg-[var(--color-pets-soft)] md:grid-cols-2">
             <div className="p-10 md:p-14">
-              <p className="mb-3 inline-flex items-center gap-2 rounded-full bg-[var(--color-pets)] px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-navy)]">
+              <p className="mb-3 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-pets-dark)]">
                 <PawPrint className="h-4 w-4" /> {petsLive ? 'New' : 'Coming soon'} · <Brand /> Pets
               </p>
               <h2 className="text-3xl md:text-4xl">Clean supplements for dogs and cats</h2>
-              <p className="mt-3 text-[var(--color-muted)]">Vet-formulated chews for digestion, joints, calm and coat — in the same cart as yours.</p>
+              <p className="mt-3 text-[var(--color-muted)]">Soft chews for digestion, joints, calm and coat, in the same cart as yours.</p>
               <span className="btn mt-6 bg-[var(--color-pets)] text-[var(--color-navy)] group-hover:brightness-95">{petsLive ? 'Shop Pets' : 'Join the waitlist'}</span>
             </div>
             <img src={PET_IMAGES.hero} srcSet={unsplashSrcSet(PET_IMAGES.hero)} sizes="(min-width: 768px) 50vw, 100vw" alt="A cat and dog cuddling" className="h-full min-h-64 w-full object-cover" loading="lazy" />

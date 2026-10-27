@@ -205,3 +205,6 @@
 }
 
 .sr-only-focusable:not(:focus) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* The brand name inside uppercase, letter-spaced eyebrows: set like the logo, not spaced out letter by letter. */
+.uppercase .brand-word { font-family: var(--font-logo); font-weight: 500; letter-spacing: -0.01em; font-size: 1.3em; line-height: 1; }
