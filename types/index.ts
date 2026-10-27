@@ -53,6 +53,8 @@ export interface ProductData {
   extraFaqs: FAQ[];
   // A bundle sells as one item; fulfilment ships its component products.
   bundleItems?: BundleItem[];
+  // Resolved component products of a bundle (no nesting), so its image can show the real bottles.
+  bundleComponents?: Product[];
 }
 
 export interface BundleItem {

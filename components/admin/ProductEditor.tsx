@@ -114,7 +114,7 @@ export function ProductEditor({
                   if (!slugTouched) setSlug(slugify(e.target.value));
                 }}
                 className={full}
-                placeholder="e.g. Magnesium Complex"
+                placeholder="e.g. Magnesium Sleep+"
               />
             </Field>
             <Field title="URL handle" hint={isNew ? `noovit.com/products/${slug || '…'}` : "Can't be changed after creation (orders and Stripe refer to it)."}>

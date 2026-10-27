@@ -4,7 +4,7 @@ import { db } from '@/lib/db/server';
 import { dbConfigured } from '@/lib/config';
 import { SEED_PRODUCTS, findProduct } from '@/data/products';
 import { Collection, Product } from '@/types';
-import { buildProduct, ProductRow, RealRating } from './build';
+import { buildProduct, ProductRow, RealRating, withBundleComponents } from './build';
 
 export const CATALOG_TAG = 'catalog';
 
@@ -29,7 +29,7 @@ export async function loadCatalog(): Promise<Product[]> {
     return SEED_PRODUCTS;
   }
   const ratings = await realRatings();
-  return (data as ProductRow[]).map((row) => buildProduct(row, ratings.get(row.slug)));
+  return withBundleComponents((data as ProductRow[]).map((row) => buildProduct(row, ratings.get(row.slug))));
 }
 
 // Cached for the storefront; admin saves call updateTag(CATALOG_TAG).

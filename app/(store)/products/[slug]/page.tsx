@@ -10,6 +10,7 @@ import { Gallery, PurchaseBox, InfoTabs, TrackViewItem } from '@/components/prod
 import { ProductCard } from '@/components/product/ProductCard';
 import { Stars } from '@/components/ui/Stars';
 import { PlaceholderNote } from '@/components/ui/Placeholder';
+import { guidesForProduct } from '@/lib/guides';
 import { getSettings, placeholdersOn } from '@/lib/settings';
 import { ReviewsModule } from '@/components/reviews/ReviewsModule';
 import { FAQSection, SubscriptionPerks, SectionHeading } from '@/components/sections/Sections';
@@ -165,6 +166,11 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           <div className="mt-8">
             <InfoTabs product={product} />
           </div>
+          {guidesForProduct(product.slug).map((g) => (
+            <Link key={g.slug} href={`/guides/${g.slug}`} className="mt-4 block rounded-2xl border border-[var(--color-line)] p-4 text-sm hover:border-[var(--color-navy)]">
+              <span className="font-bold">{g.ingredient} guide:</span> benefits, dosage, side effects and research →
+            </Link>
+          ))}
         </div>
       </section>
 

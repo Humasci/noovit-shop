@@ -316,6 +316,17 @@ Links must start with `/` (a page on your site) or `https://`. **Reset all homep
 ### Blog
 **Blog → New post**: title, URL handle, a short excerpt (shown on the blog list and in Google), and the article. Format with simple markdown — `## Heading`, `**bold**`, `- bullet`, `[link text](/products/magnesium-complex)` (see *Formatting help*). Add a cover image, then choose **Draft** (private — use **Preview** to see it) or **Published**. A future publish date schedules the post. For safety, any HTML pasted into an article is removed. Keep health wording as careful as on product pages ("supports…"), and every article automatically ends with a "not medical advice" note.
 
+### Supplement guides (SEO)
+Evidence-based ingredient pages live at `noovit.com/guides/<ingredient>`, for example `/guides/nattokinase`, with an index at `/guides`. They're written in `lib/guides.ts`: a short answer, quick facts, graded benefits, dosage, side effects, interactions, who should avoid it, FAQ and numbered sources. To link a guide to a product, add the product's URL handle to `relatedProducts`; the product page then shows "Read the guide". Once a dietitian or doctor reviews a guide, add them as `reviewer` and the page and Google data show "Reviewed by…". The plan is in `docs/SEO_PLAN.md`.
+
+### Bundles
+Three bundles are in the catalog:
+- **Sleep & Calm Stack**, $59
+- **Gut & Immunity Reset**, $79
+- **Joint Support Trio**, $95
+
+Each is bought as one item, with $5 off on subscription, and its picture shows the real bottles. In Fulfilment, each bundle expands into its component products with their supplier SKUs. To add them to the live store: Admin → Products → **Import launch catalog**.
+
 ### Staff (Owner only)
 Add people with their name, email, role and a temporary password (12+ characters) — share it securely and ask them to change it under **My account**. You can change someone's role, **deactivate** them (they're signed out immediately) or reset their password. There must always be at least one active Owner.
 

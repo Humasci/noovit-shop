@@ -38,7 +38,7 @@ export default function CartPage() {
                   <div>
                     <Link href={`/products/${item.product.slug}`} className="text-lg font-bold">{item.product.name}</Link>
                     <p className="text-sm text-[var(--color-muted)]">
-                      {item.bottles} {item.bottles === 1 ? 'bottle' : 'bottles'} × {formatPrice(item.pricePerBottle)}
+                      {item.product.bundleItems?.length ? `Bundle (${item.product.bundleItems.length} bottles)` : `${item.bottles} ${item.bottles === 1 ? 'bottle' : 'bottles'}`} × {formatPrice(item.pricePerBottle)}
                     </p>
                     <p className="text-sm text-[var(--color-muted)]">
                       {item.mode === 'subscribe' ? `Subscription · every ${item.frequency} days` : 'One-time purchase'}

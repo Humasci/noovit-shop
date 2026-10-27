@@ -74,7 +74,7 @@ export function CartDrawer({ suggestions }: { suggestions: Product[] }) {
                       </button>
                     </div>
                     <p className="text-xs text-[var(--color-muted)]">
-                      {item.bottles} {item.bottles === 1 ? 'bottle' : 'bottles'} ·{' '}
+                      {item.product.bundleItems?.length ? `Bundle (${item.product.bundleItems.length} bottles)` : `${item.bottles} ${item.bottles === 1 ? 'bottle' : 'bottles'}`} ·{' '}
                       {item.mode === 'subscribe' ? `Delivered every ${item.frequency} days` : 'One-time purchase'}
                     </p>
                     <div className="mt-2 flex items-center justify-between">

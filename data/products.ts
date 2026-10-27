@@ -1,5 +1,5 @@
 import { Audience, DietaryTag, FAQ, PackOption, Product, ProductData, ProductForm, ProductStatus, ProductType, PurchaseMode, Species } from '@/types';
-import { buildProduct } from '@/lib/catalog/build';
+import { buildProduct, withBundleComponents } from '@/lib/catalog/build';
 
 type Seed = Omit<ProductData, 'extraFaqs' | 'rating' | 'reviewCount'> & {
   slug: string;
@@ -11,7 +11,7 @@ type Seed = Omit<ProductData, 'extraFaqs' | 'rating' | 'reviewCount'> & {
 // PLACEHOLDER: formulas, doses and dietary tags are draft values — confirm with your manufacturer before launch.
 const seeds: Seed[] = [
   {
-    name: 'Probiotic Complex',
+    name: 'Probiotic Gut+',
     slug: 'probiotic-complex',
     shortBenefit: 'Supports gut balance and healthy digestion.',
     description: 'A multi-strain probiotic paired with a prebiotic fibre, in delayed-release capsules built to reach the gut intact.',
@@ -29,7 +29,7 @@ const seeds: Seed[] = [
     faqs: [{ q: 'How many strains does it contain?', a: 'Twelve clinically studied strains plus an inulin prebiotic.' }],
   },
   {
-    name: 'Glucosamine Complex',
+    name: 'Glucosamine Joint+',
     slug: 'glucosamine-complex',
     shortBenefit: 'Supports joint comfort and mobility.',
     description: 'Glucosamine, chondroitin and MSM with a touch of curcumin for joints that keep up with you.',
@@ -48,7 +48,7 @@ const seeds: Seed[] = [
     audiences: ['men'], bestSeller: true, reviewCount: 2874,
   },
   {
-    name: 'Collagen Complex',
+    name: 'Collagen Glow+',
     slug: 'collagen-complex',
     shortBenefit: 'Supports skin elasticity, hair and nails.',
     description: 'Hydrolysed collagen peptides with vitamin C and hyaluronic acid for skin support from within.',
@@ -66,7 +66,7 @@ const seeds: Seed[] = [
     audiences: ['women'], bestSeller: true, reviewCount: 3390,
   },
   {
-    name: 'Menopause Complex',
+    name: 'Menopause Balance+',
     slug: 'menopause-complex',
     shortBenefit: 'Supports balance through menopause.',
     description: 'Botanicals and key nutrients chosen to support women through perimenopause and menopause.',
@@ -85,7 +85,7 @@ const seeds: Seed[] = [
     audiences: ['women'], bestSeller: true, reviewCount: 1958,
   },
   {
-    name: 'Magnesium Complex',
+    name: 'Magnesium Sleep+',
     slug: 'magnesium-complex',
     shortBenefit: 'Supports relaxation, sleep and muscle function.',
     description: 'Three forms of magnesium — glycinate, malate and citrate — with zinc and vitamin D3.',
@@ -212,7 +212,7 @@ const seeds: Seed[] = [
     audiences: ['men'], bestSeller: false, reviewCount: 964,
   },
   {
-    name: 'Ashwagandha',
+    name: 'Ashwagandha Calm+',
     slug: 'ashwagandha',
     shortBenefit: 'Supports calm, stress balance and sleep.',
     description: 'Full-spectrum ashwagandha root extract, an adaptogen for steadier days and calmer nights.',
@@ -226,7 +226,7 @@ const seeds: Seed[] = [
     audiences: ['women', 'men'], bestSeller: false, reviewCount: 2550,
   },
   {
-    name: 'Multivitamin',
+    name: 'Daily Multi+',
     slug: 'multivitamin',
     shortBenefit: 'Daily foundation of essential vitamins and minerals.',
     description: '23 vitamins and minerals in active, bioavailable forms to fill the gaps in a busy diet.',
@@ -298,7 +298,7 @@ const seeds: Seed[] = [
     faqs: [{ q: 'How many servings are in a jar?', a: '60 servings of 5g.' }],
   },
   {
-    name: 'Mushroom Blend Powder',
+    name: 'Mushroom Clarity+',
     slug: 'mushroom-blend-powder',
     shortBenefit: 'Supports focus, energy and immunity.',
     description: "A functional mushroom blend — lion's mane, cordyceps, reishi and chaga — to stir into coffee or smoothies.",
@@ -368,6 +368,66 @@ const seeds: Seed[] = [
     servings: 60, form: 'capsules', basePrice: 30, color: '#7FA99B',
     productType: 'supplements', dietaryTags: ['vegan', 'gluten-free', 'sugar-free', 'low-fodmap'],
     audiences: ['women', 'men'], bestSeller: false, reviewCount: 0,
+  },
+  // Bundles: one item at a bundle price; fulfilment ships the component products (bundleItems).
+  {
+    name: 'Sleep & Calm Stack',
+    slug: 'sleep-calm-stack',
+    status: 'active',
+    shortBenefit: 'Magnesium Sleep+ and Ashwagandha Calm+ for restful nights and calmer days.',
+    description: 'Two formulas for winding down, together for less: Magnesium Sleep+ (three forms of magnesium with zinc and D3) and Ashwagandha Calm+ (ashwagandha root extract, 5% withanolides).',
+    whoFor: 'Anyone who wants to sleep more soundly and feel calmer through busy days.',
+    benefits: ['Supports restful sleep', 'Supports a calm mood and stress resilience', 'Supports muscle relaxation', 'Save vs. buying separately'],
+    ingredients: [
+      { name: 'Magnesium Sleep+ (1 bottle)', amount: '1 × 60 capsules' },
+      { name: 'Ashwagandha Calm+ (1 bottle)', amount: '1 × 60 capsules' },
+    ],
+    otherIngredients: 'See each product page for full Supplement Facts.',
+    dosage: 'Follow the directions on each bottle. Many people take Ashwagandha Calm+ in the morning and Magnesium Sleep+ in the evening.',
+    servings: 30, form: 'capsules', basePrice: 59, color: '#4F6FA8',
+    productType: 'supplements', dietaryTags: ['vegan', 'gluten-free', 'sugar-free', 'low-fodmap'],
+    audiences: ['women', 'men'], bestSeller: false, reviewCount: 0,
+    bundleItems: [{ slug: 'magnesium-complex', quantity: 1 }, { slug: 'ashwagandha', quantity: 1 }],
+  },
+  {
+    name: 'Gut & Immunity Reset',
+    slug: 'gut-immunity-reset',
+    status: 'active',
+    shortBenefit: 'Probiotic Gut+, Vitamin D3 & K2 and Zinc for digestion and immune support.',
+    description: 'Three everyday essentials for a healthy gut and a normal immune system, together for less: Probiotic Gut+, Vitamin D3 & K2 and Zinc.',
+    whoFor: 'Anyone who wants year-round support for digestion and immunity.',
+    benefits: ['Supports digestive balance', 'Supports normal immune function', 'Supports bone health (D3 & K2)', 'Save vs. buying separately'],
+    ingredients: [
+      { name: 'Probiotic Gut+ (1 bottle)', amount: '1 × 60 capsules' },
+      { name: 'Vitamin D3 & K2 (1 bottle)', amount: '1 × 60 capsules' },
+      { name: 'Zinc (1 bottle)', amount: '1 × 90 capsules' },
+    ],
+    otherIngredients: 'See each product page for full Supplement Facts.',
+    dosage: 'Follow the directions on each bottle.',
+    servings: 30, form: 'capsules', basePrice: 79, color: '#3F8F84',
+    productType: 'supplements', dietaryTags: ['gluten-free', 'sugar-free'],
+    audiences: ['women', 'men'], bestSeller: false, reviewCount: 0,
+    bundleItems: [{ slug: 'probiotic-complex', quantity: 1 }, { slug: 'vitamin-d3-k2', quantity: 1 }, { slug: 'zinc', quantity: 1 }],
+  },
+  {
+    name: 'Joint Support Trio',
+    slug: 'joint-support-trio',
+    status: 'active',
+    shortBenefit: 'Glucosamine Joint+, Turmeric Complex and Collagen Glow+ for comfortable movement.',
+    description: 'A complete joint routine, together for less: Glucosamine Joint+ (with chondroitin and MSM), Turmeric Complex and Collagen Glow+.',
+    whoFor: 'Active people, runners and anyone who wants to keep moving comfortably.',
+    benefits: ['Supports joint comfort and flexibility', 'Supports cartilage and connective tissue', 'Supports a healthy inflammatory response', 'Save vs. buying separately'],
+    ingredients: [
+      { name: 'Glucosamine Joint+ (1 bottle)', amount: '1 × 90 capsules' },
+      { name: 'Turmeric Complex (1 bottle)', amount: '1 × 60 capsules' },
+      { name: 'Collagen Glow+ (1 bottle)', amount: '1 × 60 capsules' },
+    ],
+    otherIngredients: 'See each product page for full Supplement Facts and allergen information.',
+    dosage: 'Follow the directions on each bottle.',
+    servings: 30, form: 'capsules', basePrice: 95, color: '#2E8B7A',
+    productType: 'supplements', dietaryTags: ['gluten-free', 'sugar-free'],
+    audiences: ['women', 'men'], bestSeller: false, reviewCount: 0,
+    bundleItems: [{ slug: 'glucosamine-complex', quantity: 1 }, { slug: 'turmeric-complex', quantity: 1 }, { slug: 'collagen-complex', quantity: 1 }],
   },
   {
     // DRAFT, kept hidden. FDA treats NAC as excluded from the supplement definition (approved as a drug in 1963) but
@@ -509,8 +569,8 @@ const seeds: Seed[] = [
 ];
 
 // The launch catalog. Seeds the database (npm run catalog:seed) and is the fallback when no database is connected.
-export const SEED_PRODUCTS: Product[] = seeds.map(({ slug, faqs, status, ...data }) =>
-  buildProduct({ slug, status, data: { ...data, rating: 0, reviewCount: 0, extraFaqs: faqs ?? [] } })
+export const SEED_PRODUCTS: Product[] = withBundleComponents(
+  seeds.map(({ slug, faqs, status, ...data }) => buildProduct({ slug, status, data: { ...data, rating: 0, reviewCount: 0, extraFaqs: faqs ?? [] } }))
 );
 
 export const findProduct = (list: Product[], slug: string) => list.find((p) => p.slug === slug);
@@ -526,12 +586,14 @@ export const byAudience = (list: Product[], audience: Audience) => list.filter((
 
 export const packOptions = (product: Product, mode: PurchaseMode): PackOption[] => {
   const b = product.basePrice;
+  // Bundles are already discounted: one bundle per line, with the usual $5 off on subscription.
+  if (product.bundleItems?.length) return [{ bottles: 1, pricePerBottle: mode === 'subscribe' ? b - 5 : b }];
   return mode === 'subscribe'
     ? [{ bottles: 1, pricePerBottle: b - 5 }, { bottles: 2, pricePerBottle: b - 7.5 }, { bottles: 3, pricePerBottle: b - 10 }]
     : [{ bottles: 1, pricePerBottle: b }, { bottles: 3, pricePerBottle: b - 5 }, { bottles: 6, pricePerBottle: b - 10 }];
 };
 
-export const asLowAs = (product: Product) => product.basePrice - 10;
+export const asLowAs = (product: Product) => product.basePrice - (product.bundleItems?.length ? 5 : 10);
 
 export const maxSavingPercent = (product: Product) =>
   Math.round(((product.basePrice - asLowAs(product)) / product.basePrice) * 100);

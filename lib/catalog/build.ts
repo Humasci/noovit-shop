@@ -79,3 +79,13 @@ export function toProductData(p: Product): ProductData {
     ...(p.bundleItems?.length ? { bundleItems: p.bundleItems } : {}),
   };
 }
+
+// Attaches each bundle's component products so mockups can draw the actual bottles.
+export function withBundleComponents(products: Product[]): Product[] {
+  const bySlug = new Map(products.map((p) => [p.slug, p]));
+  return products.map((p) => {
+    if (!p.bundleItems?.length) return p;
+    const parts = p.bundleItems.map((b) => bySlug.get(b.slug)).filter((x): x is Product => Boolean(x) && !x!.bundleItems?.length);
+    return parts.length ? { ...p, bundleComponents: parts } : p;
+  });
+}

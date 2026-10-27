@@ -141,7 +141,7 @@ export function PurchaseBox({ product }: { product: Product }) {
                 <input type="radio" name="pack" checked={selected} onChange={() => setBottles(o.bottles)} className="accent-[var(--color-navy)]" />
                 <span>
                   <span className="block font-bold">
-                    {o.bottles} {o.bottles === 1 ? 'Bottle' : 'Bottles'}
+                    {product.bundleItems?.length ? `Bundle of ${product.bundleItems.length} bottles` : `${o.bottles} ${o.bottles === 1 ? 'Bottle' : 'Bottles'}`}
                     {saving > 0 && (
                       <span className="ml-2 rounded-full bg-[var(--color-green)] px-2 py-0.5 text-[10px] font-bold uppercase text-white">
                         Save {saving}%
@@ -160,7 +160,7 @@ export function PurchaseBox({ product }: { product: Product }) {
                   )}
                   {formatPrice(o.pricePerBottle)}
                 </span>
-                <span className="text-xs text-[var(--color-muted)]">per bottle</span>
+                <span className="text-xs text-[var(--color-muted)]">{product.bundleItems?.length ? "per bundle" : "per bottle"}</span>
               </span>
             </label>
           );

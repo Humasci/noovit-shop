@@ -36,6 +36,7 @@ const COLUMNS = [
     links: [
       { name: 'Reviews', href: '/reviews' },
       { name: 'Journal', href: '/blog' },
+      { name: 'Supplement Guides', href: '/guides' },
       { name: 'About Us', href: '/about' },
       { name: 'Privacy Policy', href: '/policies/privacy' },
       { name: 'Terms & Conditions', href: '/policies/terms' },

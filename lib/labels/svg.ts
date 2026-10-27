@@ -433,8 +433,18 @@ export function bottleSvg(p: Product, variant: BottleVariant = 'front', opts: { 
   const uid = (opts.uid ?? `${p.slug}-${variant}`).replace(/[^a-z0-9-]/gi, '');
   const place = (x: number, y: number, s: number, id: string) => `<g transform="translate(${x} ${y}) scale(${s})">${bottle(p, mode, id, opts.pattern)}</g>`;
   let body = '';
-  if (variant === 'front') body = place(26, -6, 0.87, uid);
-  if (variant === 'duo') body = place(-34, 20, 0.74, `${uid}a`) + place(104, 6, 0.8, `${uid}b`);
+  const parts = p.bundleComponents ?? [];
+  const placePart = (q: Product, x: number, y: number, s: number, id: string) => `<g transform="translate(${x} ${y}) scale(${s})">${bottle(q, mode, id, opts.pattern)}</g>`;
+  if (parts.length >= 2 && variant !== 'facts') {
+    // Bundles show their real bottles: two side by side, or three with the middle one in front.
+    body =
+      parts.length === 2
+        ? placePart(parts[0], -34, 20, 0.74, `${uid}a`) + placePart(parts[1], 104, 6, 0.8, `${uid}b`)
+        : placePart(parts[0], -62, 58, 0.62, `${uid}a`) + placePart(parts[2], 158, 58, 0.62, `${uid}c`) + placePart(parts[1], 40, 22, 0.72, `${uid}b`);
+  } else {
+    if (variant === 'front') body = place(26, -6, 0.87, uid);
+    if (variant === 'duo') body = place(-34, 20, 0.74, `${uid}a`) + place(104, 6, 0.8, `${uid}b`);
+  }
   if (variant === 'facts') {
     const facts = factsPanel(p, mode, 260);
     const s = Math.min(1.2, 330 / facts.height);
