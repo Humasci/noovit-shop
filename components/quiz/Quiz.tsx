@@ -24,7 +24,7 @@ function Option({ selected, onClick, children }: { selected: boolean; onClick: (
       onClick={onClick}
       aria-pressed={selected}
       className={`flex items-center justify-between gap-3 rounded-2xl border-2 px-5 py-4 text-left font-semibold transition-colors ${
-        selected ? 'border-[var(--color-navy)] bg-[var(--color-navy)] text-white' : 'border-[var(--color-line)] bg-white hover:border-[var(--color-navy)]'
+        selected ? 'border-[var(--color-opal)] bg-[var(--color-opal)] text-white' : 'border-[var(--color-line)] bg-white hover:border-[var(--color-opal)]'
       }`}
     >
       {children}

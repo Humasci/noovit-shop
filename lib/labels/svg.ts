@@ -148,10 +148,6 @@ function nameLines(name: string, room: number) {
   return { lines, size };
 }
 
-// Small globe for the origin line (12×12 box).
-const globe = (x: number, y: number, c: string) =>
-  `<g transform="translate(${x} ${y})" fill="none" stroke="${c}" stroke-width="1"><circle cx="5" cy="5" r="4.5"/><ellipse cx="5" cy="5" rx="2" ry="4.5"/><line x1="0.5" y1="5" x2="9.5" y2="5"/></g>`;
-
 // Mosaic pattern on the label (exploration): square tiles that dissolve one area into another.
 export type LabelPattern = 'none' | 'band' | 'top' | 'sides';
 function hash(str: string) {
@@ -172,12 +168,15 @@ function labelMosaic(p: Product, pattern: LabelPattern) {
     });
   }
   if (pattern === 'top') {
-    // Small white tiles fading in from the top-right corner (a radial gradient made of squares), clear of the icon.
-    const ts = 3.5, st = 4.2, cx0 = FRONT.w, cy0 = 0, radius = 135;
+    // Small white tiles falling from the top edge (strongest towards the top-right), kept clear of the icon.
+    const ts = 3.5, st = 4.2, radius = 135, depth = 46;
     for (let y = 0.6; y < BAND - 20; y += st)
-      for (let x = 56; x < FRONT.w; x += st) {
-        const r = Math.hypot(x - cx0, y - cy0) / radius;
-        if (r < 1 && rnd() < (1 - r) ** 1.8 * 0.85) out.push(`<rect x="${n(x)}" y="${n(y)}" width="${ts}" height="${ts}" rx="0.4" fill="#fff" opacity="${n((0.1 + 0.55 * rnd()) * (1 - r))}"/>`);
+      for (let x = 0.6; x < FRONT.w; x += st) {
+        if (x < 52 && y < 50) continue; // the n⁺ icon
+        const corner = Math.max(0, 1 - Math.hypot(x - FRONT.w, y) / radius);
+        const edge = Math.max(0, 1 - y / depth) * 0.75;
+        const w = Math.max(corner, edge);
+        if (w > 0 && rnd() < w ** 1.8 * 0.85) out.push(`<rect x="${n(x)}" y="${n(y)}" width="${ts}" height="${ts}" rx="0.4" fill="#fff" opacity="${n((0.1 + 0.55 * rnd()) * w)}"/>`);
       }
   }
   if (pattern === 'sides') {
@@ -213,12 +212,11 @@ export function frontPanel(p: Product, mode: FontMode, bleed = 0, pattern: Label
     <rect x="0" y="${BAND}" width="${FRONT.w}" height="${FRONT.h - BAND + bleed}" fill="#fff"/>
     ${labelMosaic(p, pattern)}
     <g transform="translate(14 14) scale(0.34)">${icon('#fff')}</g>
-    ${globe(18, 58, '#fff')}
-    <text x="33" y="66.5" font-size="7.6" font-weight="500" fill="#fff" ${font('body', mode)}>${esc(ORIGIN_CLAIM)}</text>
+    <text x="18" y="66.5" font-size="7.6" font-weight="500" fill="#fff" ${font('body', mode)}>${esc(ORIGIN_CLAIM)}</text>
     ${textBlock(lines, 18, nameY, n(size), n(size * 1.06), `font-weight="600" letter-spacing="${n(-0.01 * size)}" fill="#fff" ${font('head', mode)}`)}
     ${textBlock(sub, 18, subY, 8.6, 11, `font-weight="500" fill="#fff" opacity="0.92" ${font('body', mode)}`)}
     <g transform="translate(${FRONT.w - 14} ${n(BAND / 2 + vLen / 2)}) rotate(-90)">${wordmarkRaw(0, 0, vSize, mode, '#fff', '#fff', 0.62)}</g>
-    ${textBlock(benefit, 18, BAND + 19 + shift, 8, 10.5, `fill="${INK}" ${font('body', mode)}`)}
+    ${textBlock(benefit, 18, BAND + 19 + shift, 8, 10.5, `font-weight="500" fill="${INK}" ${font('body', mode)}`)}
     <text x="18" y="${FRONT.h - 13 + shift / 4}" font-size="6.6" font-weight="600" letter-spacing="1.1" fill="${dark}" ${font('body', mode)}>DIETARY SUPPLEMENT</text>
     <text x="${FRONT.w - 18}" y="${BAND + 38 + shift}" text-anchor="end" font-size="30" font-weight="600" fill="${dark}" ${font('head', mode)}>${esc(big)}</text>
     <text x="${FRONT.w - 18}" y="${BAND + 52 + shift * 0.6}" text-anchor="end" font-size="8.5" font-weight="600" letter-spacing="0.8" fill="${dark}" ${font('body', mode)}>${esc(unitWord.toUpperCase())}</text>

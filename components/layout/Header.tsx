@@ -9,7 +9,7 @@ import { useHydrated } from '@/lib/useHydrated';
 import { Logo } from '@/components/layout/Logo';
 import { brandify } from '@/components/brand/Brand';
 
-// Top navigation: Shop (with categories), Best Sellers, the quiz and Journal. Pets is a separate button on the right
+// Top navigation: Shop (with categories), Best Sellers, Journal and the quiz. Pets is a separate button on the right
 // (and listed in the mobile menu); About, Reviews, FAQ and Contact live in the footer.
 interface NavItem {
   name: string;
@@ -30,8 +30,8 @@ const NAV: NavItem[] = [
     ],
   },
   { name: 'Best Sellers', href: '/shop?type=best-sellers' },
-  { name: 'Take the quiz', href: '/quiz' },
   { name: 'Journal', href: '/blog' },
+  { name: 'Take the quiz', href: '/quiz' },
   {
     name: 'Pets',
     href: '/pets',
