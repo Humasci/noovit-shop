@@ -39,7 +39,7 @@ The same design draws the bottle images on the website and the PNGs used in the 
 | **Orange dark** (small orange text) | `#C44700` |
 | **Opal** (secondary; the "Humans" button on the Pets pages) | `#5FA68D` |
 | **Soft background** | `#EEF5F2` |
-| **Fonts** | **Funnel Display** for the wordmark, product names, headings and numbers (Medium/SemiBold). **Inter** for small text, Regular and Medium (400/500). Both are free under the SIL Open Font License and fine for print. |
+| **Fonts** | **Funnel Display** for the noovit wordmark only. **Manrope** SemiBold for product names and numbers. **Inter** for small text, Regular and Medium (400/500). All three are free under the SIL Open Font License and fine for print. |
 | **Pets accent** | Vivid orange `#FF5F00`, same layout. Pets launch later. |
 
 **Colour in print.** Convert every colour to CMYK and approve it on a printed proof. The hex values above are screen colours. Vivid orange and the per-product colours shift most in print. Vivid orange sits at the edge of what CMYK can reproduce; if the printer offers a spot colour, Pantone Orange 021 C is the closest match.
@@ -55,7 +55,8 @@ From left to right as the bottle turns:
 - Allergen statement if any (e.g. "Contains: fish" for marine collagen).
 
 **② Front panel (principal display panel)** — built by `frontPanel()` in `lib/labels/svg.ts`; the website bottles use the same artwork.
-- **Colour block (top ~70%):** n⁺ icon top-left; **product name** large in Funnel Display (first word, then the rest); one **proof point** at the bottom-left (e.g. "Gentle on the stomach"); the **vertical noovit wordmark** with the orange mosaic cross on the right edge.
+- **Colour block (top ~70%):** n⁺ icon top-left; "Made in the USA" with a small globe (see the note below); **product name** large in Funnel Display (first word, then the rest); the **complex details** line under the name (e.g. "3 Forms of Magnesium + Zinc & D3"); the **vertical noovit wordmark** with the orange mosaic cross, centred on the right edge.
+- **"Made in USA" rule (FTC):** the unqualified claim requires all or virtually all ingredients to be made and sourced in the US. Most supplements use imported raw materials, so the safe wording is usually "Made in the USA with domestic and imported ingredients" or "Manufactured in the USA". Confirm with the supplier before printing.
 - **White band (bottom ~30%, legally required content):**
   - **Benefit line** with the asterisk, from the website ("Supports relaxation, sleep and muscle function*").
   - **Statement of identity:** "DIETARY SUPPLEMENT".
