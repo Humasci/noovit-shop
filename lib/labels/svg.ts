@@ -168,14 +168,14 @@ function labelMosaic(p: Product, pattern: LabelPattern) {
     });
   }
   if (pattern === 'top') {
-    // Small white tiles falling from the top edge across the full width (densest right at the edge, a little
-    // stronger towards the right), kept clear of the n⁺ icon and light over the vertical wordmark.
+    // Small white tiles falling evenly from the top edge across the full width; only the n⁺ icon and the
+    // "vit" end of the vertical wordmark are kept clear.
     const ts = 3.5, st = 4.2, depth = 52;
     for (let y = 0; y < depth; y += st)
       for (let x = 0.6; x < FRONT.w; x += st) {
-        if (x < 52 && y > 6 && y < 50) continue; // the n⁺ icon (the top rows still run above it)
-        let w = (1 - y / depth) * (0.8 + 0.2 * (x / FRONT.w));
-        if (x > FRONT.w - 50 && y > 16) w *= 0.3; // keep "vit" readable
+        if (x > 11 && x < 51 && y > 11 && y < 51) continue; // the n⁺ icon
+        let w = 1 - y / depth;
+        if (x > FRONT.w - 44 && y > 18) w *= 0.35; // "vit" and the cross
         if (rnd() < w ** 1.5 * 0.95) out.push(`<rect x="${n(x)}" y="${n(y)}" width="${ts}" height="${ts}" rx="0.4" fill="#fff" opacity="${n((0.12 + 0.55 * rnd()) * w)}"/>`);
       }
   }
@@ -194,7 +194,7 @@ function labelMosaic(p: Product, pattern: LabelPattern) {
 // White band (bottom 30%): benefit, "Dietary Supplement", net quantity.
 export function frontPanel(p: Product, mode: FontMode, bleed = 0, pattern: LabelPattern = 'top') {
   const shift = pattern === 'band' ? 10 : 0; // white-band content moves down to make room for the dissolve
-  const vSize = 31;
+  const vSize = 28;
   const vLen = (3.02 + 0.44) * vSize; // wordmark length incl. the cross
   const { lines, size } = nameLines(p.name, FRONT.w - 18 - 54);
   const dark = shade(p.color);
@@ -218,7 +218,7 @@ export function frontPanel(p: Product, mode: FontMode, bleed = 0, pattern: Label
     <g transform="translate(${FRONT.w - 14} ${n(BAND / 2 + vLen / 2)}) rotate(-90)">${wordmarkRaw(0, 0, vSize, mode, '#fff', '#fff', 0.62)}</g>
     ${textBlock(benefit, 18, BAND + 19 + shift, 8, 10.5, `font-weight="500" fill="${INK}" ${font('body', mode)}`)}
     <text x="18" y="${FRONT.h - 13 + shift / 4}" font-size="6.6" font-weight="600" letter-spacing="1.1" fill="${dark}" ${font('body', mode)}>DIETARY SUPPLEMENT</text>
-    <text x="${FRONT.w - 18}" y="${BAND + 36 + shift}" text-anchor="end" font-size="25.5" font-weight="600" fill="${dark}" ${font('head', mode)}>${esc(big)}</text>
+    <text x="${FRONT.w - 18}" y="${BAND + 34 + shift}" text-anchor="end" font-size="21.7" font-weight="600" fill="${dark}" ${font('head', mode)}>${esc(big)}</text>
     <text x="${FRONT.w - 18}" y="${BAND + 52 + shift * 0.6}" text-anchor="end" font-size="8.5" font-weight="600" letter-spacing="0.8" fill="${dark}" ${font('body', mode)}>${esc(unitWord.toUpperCase())}</text>
   </g>`;
 }
