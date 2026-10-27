@@ -4,6 +4,13 @@
 
 > **Not final until a supplier is chosen.** The label size and template (the "dieline"), the bottle, and every Supplement Facts panel come from the supplier. Build the brand system and master layout now. Produce final files only once you have the supplier's dieline and facts panels.
 
+**Working files.** The label is generated from the product data by `lib/labels/svg.ts`:
+- `npm run labels` writes a print draft for every product to `design/labels/<slug>.svg`. Each has a `.guides.svg` twin showing trim (red), safe zone (blue dashed) and panel folds.
+- `npm run labels -- magnesium-complex` writes just one product.
+- Open the files in Affinity or Illustrator with the three fonts installed, then outline the text and export a CMYK PDF/X.
+
+The same design draws the bottle images on the website and the PNGs used in the product feeds, so a change to the template updates everything.
+
 ---
 
 ## 1. The brand in one line

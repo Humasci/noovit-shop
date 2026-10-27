@@ -8,10 +8,12 @@
     "start": "next start",
     "lint": "eslint",
     "stripe:sync": "tsx --env-file-if-exists=.env.local scripts/sync-stripe.ts",
-    "catalog:seed": "tsx --env-file-if-exists=.env.local scripts/seed-catalog.ts"
+    "catalog:seed": "tsx --env-file-if-exists=.env.local scripts/seed-catalog.ts",
+    "labels": "tsx scripts/render-labels.ts"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.9",
+    "@resvg/resvg-js": "^2.6.2",
     "@stripe/stripe-js": "^8.5.2",
     "@supabase/supabase-js": "^2.118.0",
     "lucide-react": "^0.554.0",
