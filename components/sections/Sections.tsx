@@ -9,6 +9,7 @@ import { IMAGES, SUBSCRIPTION_PERKS } from '@/data/content';
 import { Stars } from '@/components/ui/Stars';
 import { SocialLinks } from '@/components/layout/Footer';
 import { brandify } from '@/components/brand/Brand';
+import { PlaceholderNote } from '@/components/ui/Placeholder';
 
 export function SectionHeading({ eyebrow, title, sub, center = true }: { eyebrow?: string; title: string; sub?: string; center?: boolean }) {
   return (
@@ -54,12 +55,17 @@ export function TrustSection() {
 }
 
 // Real, approved reviews only (see lib/reviews.ts); renders nothing until there are some.
-export function ReviewsSection({ title = 'What customers say', reviews }: { title?: string; reviews: Review[] }) {
+export function ReviewsSection({ title = 'What customers say', reviews, placeholder = false }: { title?: string; reviews: Review[]; placeholder?: boolean }) {
   if (!reviews.length) return null;
   return (
     <section className="section">
       <div className="container px-6">
         <SectionHeading eyebrow="Reviews" title={title} />
+        {placeholder && (
+          <PlaceholderNote className="mb-6">
+            Example reviews showing where real ones will go. Collect them from customers (Admin → Reviews approves them); they replace these automatically.
+          </PlaceholderNote>
+        )}
         <div className="no-scrollbar -mx-6 flex snap-x gap-5 overflow-x-auto px-6 pb-2">
           {reviews.map((r) => {
             return (

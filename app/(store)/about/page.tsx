@@ -5,6 +5,8 @@ import { humanProducts } from '@/data/products';
 import { getStoreProducts } from '@/lib/catalog/server';
 import { TrustSection, ReviewsSection, SubscriptionPerks, SectionHeading } from '@/components/sections/Sections';
 import { latestReviews } from '@/lib/reviews';
+import { getSettings, placeholdersOn } from '@/lib/settings';
+import { PLACEHOLDER_REVIEWS } from '@/data/placeholders';
 
 export const metadata: Metadata = {
   title: 'About Noovit — Clean, Evidence-Based Supplements',
@@ -21,6 +23,9 @@ const stats = (formulas: number) => [
 
 export default async function AboutPage() {
   const STATS = stats(humanProducts(await getStoreProducts()).length);
+  const real = await latestReviews(12);
+  const placeholder = !real.length && placeholdersOn(await getSettings());
+  const reviewProps = { reviews: placeholder ? PLACEHOLDER_REVIEWS : real, placeholder };
   return (
     <>
       <section className="relative overflow-hidden">
@@ -61,7 +66,7 @@ export default async function AboutPage() {
       </section>
 
       <TrustSection />
-      <ReviewsSection reviews={await latestReviews(12)} />
+      <ReviewsSection {...reviewProps} />
       <SubscriptionPerks />
 
       <section className="section text-center">

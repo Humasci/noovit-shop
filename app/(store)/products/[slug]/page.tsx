@@ -9,6 +9,8 @@ import { JsonLd } from '@/components/seo/JsonLd';
 import { Gallery, PurchaseBox, InfoTabs, TrackViewItem } from '@/components/product/ProductClient';
 import { ProductCard } from '@/components/product/ProductCard';
 import { Stars } from '@/components/ui/Stars';
+import { PlaceholderNote } from '@/components/ui/Placeholder';
+import { getSettings, placeholdersOn } from '@/lib/settings';
 import { ReviewsModule } from '@/components/reviews/ReviewsModule';
 import { FAQSection, SubscriptionPerks, SectionHeading } from '@/components/sections/Sections';
 
@@ -40,6 +42,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const product = await getStoreProduct((await params).slug);
   if (!product) notFound();
   const all = await getStoreProducts();
+  const placeholders = placeholdersOn(await getSettings());
 
   const isPet = product.productType === 'pets';
   const related = (isPet ? petProducts(all) : bestSellers(all)).filter((p) => p.id !== product.id && p.status === 'active').slice(0, 4);
@@ -104,6 +107,11 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               <>
                 <Stars rating={product.rating} /> <span className="font-semibold">{product.reviewCount.toLocaleString()} Reviews</span>
               </>
+            ) : placeholders ? (
+              <span className="flex flex-wrap items-center gap-2">
+                <Stars rating={5} /> <span className="font-semibold">4.8 · 1,234 Reviews</span>
+                <PlaceholderNote className="py-1">Your real average and review count show here automatically</PlaceholderNote>
+              </span>
             ) : (
               <span className="font-semibold text-[var(--color-accent)]">Be the first to review</span>
             )}
@@ -113,6 +121,25 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           <div className="mt-6">
             <PurchaseBox product={product} />
           </div>
+
+          {/* Expert note: a real advisor's quote about this product, or a labelled placeholder before launch */}
+          {placeholders && (
+            <div className="mt-8">
+              <PlaceholderNote className="mb-2">
+                A named {isPet ? 'veterinarian' : 'nutritionist'}&apos;s own words about this product goes here, with their credential, photo and consent.
+              </PlaceholderNote>
+              <figure className="flex gap-4 rounded-2xl border border-dashed border-[var(--color-orange)] p-5">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[var(--color-navy)] font-bold text-white">{isPet ? 'V' : 'N'}</div>
+                <div>
+                  <blockquote className="text-sm italic">&ldquo;{product.name} is one I recommend often for…&rdquo;</blockquote>
+                  <figcaption className="mt-2 text-xs font-bold">
+                    {isPet ? 'Vet Advisor Name' : 'Advisor Name'}{' '}
+                    <span className="font-semibold text-[var(--color-accent)]">· {isPet ? 'DVM' : 'Registered Nutritionist'}</span>
+                  </figcaption>
+                </div>
+              </figure>
+            </div>
+          )}
 
           {product.bundleItems?.length ? (
             <div className="mt-8 rounded-2xl border border-[var(--color-line)] p-5">
@@ -218,7 +245,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
       <FAQSection faqs={product.faqs} />
       <SubscriptionPerks />
-      <ReviewsModule productSlug={product.slug} />
+      <ReviewsModule productSlug={product.slug} pet={isPet} />
     </>
   );
 }

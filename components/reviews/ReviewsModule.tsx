@@ -5,6 +5,9 @@ import toast from 'react-hot-toast';
 import { Star } from 'lucide-react';
 import { Review } from '@/types';
 import { Stars } from '@/components/ui/Stars';
+import { PlaceholderNote } from '@/components/ui/Placeholder';
+import { useStoreConfig } from '@/components/store/StoreConfig';
+import { PLACEHOLDER_PET_REVIEWS, PLACEHOLDER_REVIEWS } from '@/data/placeholders';
 
 interface ApiReview {
   id: string;
@@ -28,8 +31,10 @@ const inputClass = 'w-full rounded-xl border border-[var(--color-line)] bg-white
 export function ReviewsModule({
   productSlug,
   productOptions = [],
+  pet = false,
 }: {
   productSlug?: string;
+  pet?: boolean;
   productOptions?: { slug: string; name: string }[];
 }) {
   const [reviews, setReviews] = useState<Review[] | null>(null);
@@ -60,6 +65,9 @@ export function ReviewsModule({
       .catch(() => setReviews([]));
   }, [productSlug]);
 
+  // Before launch (Settings), an empty list shows labelled example reviews as a guide; they are never counted.
+  const { placeholders } = useStoreConfig();
+  const showExamples = placeholders && reviews !== null && reviews.length === 0;
   const list = reviews ?? [];
   const total = list.length;
   const rating = total ? list.reduce((s, r) => s + r.rating, 0) / total : 0;
@@ -146,7 +154,12 @@ export function ReviewsModule({
             )}
 
             <div className="divide-y divide-[var(--color-line)]">
-              {list.map((r) => (
+              {showExamples && (
+                <PlaceholderNote className="mb-4">
+                  Example reviews. Real customer reviews (approved in Admin → Reviews) replace these automatically, with the average and count on the left.
+                </PlaceholderNote>
+              )}
+              {(showExamples ? (pet ? PLACEHOLDER_PET_REVIEWS : PLACEHOLDER_REVIEWS) : list).map((r) => (
                 <article key={r.id} className="py-6 first:pt-0">
                   <div className="flex items-center justify-between">
                     <Stars rating={r.rating} size={14} />

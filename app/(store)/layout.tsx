@@ -3,7 +3,7 @@ import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/cart/CartDrawer';
 import { getStoreProducts } from '@/lib/catalog/server';
 import { bestSellers } from '@/data/products';
-import { getSettings } from '@/lib/settings';
+import { getSettings, placeholdersOn } from '@/lib/settings';
 import { Analytics } from '@/components/analytics/Analytics';
 import { getContent, lines, safeLink } from '@/lib/content';
 import { autoDiscountFrom } from '@/lib/marketing/auto-discount';
@@ -17,6 +17,7 @@ export default async function StoreLayout({ children }: Readonly<{ children: Rea
   const config = {
     autoDiscount: autoDiscountFrom(settings),
     popup: content.popup_headline ? { headline: content.popup_headline, text: content.popup_text } : null,
+    placeholders: placeholdersOn(settings),
   };
   return (
     <StoreConfigProvider value={config}>

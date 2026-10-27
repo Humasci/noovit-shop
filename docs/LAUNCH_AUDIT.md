@@ -133,6 +133,7 @@ _27 October 2026. Three independent reviews of the whole store, followed by a ro
 - [ ] Prop 65 check (heavy metals in botanicals and powders); product liability insurance; an "Adults 18+" notice for creatine (New York).
 
 **Settings and accounts:**
+- [ ] Collect real reviews and recruit real nutritionists (or a vet panel for Pets). The orange **PLACEHOLDER** sections on the site show exactly what's needed. Then Admin → Settings → **Show placeholder trust content** → `off`.
 - [ ] Admin → Settings: **support email**, **business postal address**, **welcome code** (create `WELCOME10` in Stripe first).
 - [ ] Vercel: `RESEND_API_KEY` + `EMAIL_FROM`, with a verified domain. **Without it the contact form tells customers to email you, and order emails are not sent.**
 - [ ] Vercel: `NEXT_PUBLIC_SITE_URL=https://noovit.com` (or `www`, whichever you use), and social profile URLs (`NEXT_PUBLIC_INSTAGRAM_URL`, `NEXT_PUBLIC_TIKTOK_URL`, `NEXT_PUBLIC_FACEBOOK_URL`).
@@ -140,6 +141,7 @@ _27 October 2026. Three independent reviews of the whole store, followed by a ro
 - [ ] Choose the supplier, map supplier SKUs, and align formulas and doses on the site with what they actually make.
 
 ## 5. Decisions I made that you may want to reverse
+- **Trust content as a guide:** the example reviews, rating, nutritionist panel and product-page expert quote are back, but each is clearly labelled **PLACEHOLDER** and they only appear while the Settings switch is on. They must be switched off, or replaced by real ones, before launch.
 - **Product pages default to one-time purchase** (for Google Shopping price matching and subscription law). Many brands default to subscribe; doing that safely means submitting subscription pricing differently to Google. It's one line in `components/product/ProductClient.tsx`.
 - **Orange and opal buttons now have navy text** instead of white, because white on vivid orange is only 3:1 contrast. The alternative is a darker orange fill (about `#C2410C`) with white text.
 - **Hero badge** now reads "Skip, change or cancel anytime" (editable in Admin → Homepage).

@@ -11,6 +11,7 @@ export const SETTING_FIELDS = {
   meta_pixel_id: { label: 'Meta (Facebook/Instagram) Pixel ID', placeholder: '123456789012345', pattern: /^\d{10,20}$/, env: 'NEXT_PUBLIC_META_PIXEL_ID', upper: true },
   tiktok_pixel_id: { label: 'TikTok Pixel ID', placeholder: 'C123ABC456DEF789GHI0', pattern: /^[A-Z0-9]{10,30}$/, env: 'NEXT_PUBLIC_TIKTOK_PIXEL_ID', upper: true },
   newsletter_code: { label: 'Newsletter welcome discount code', placeholder: 'WELCOME10', pattern: /^[A-Z0-9_-]{3,30}$/, env: 'NEWSLETTER_CODE', upper: true },
+  show_placeholders: { label: 'Show placeholder trust content (on / off)', placeholder: 'on', pattern: /^(on|off)$/, env: 'SHOW_PLACEHOLDERS', upper: false },
   support_email: { label: 'Customer support email (shown on the site; contact form messages go here)', placeholder: 'hello@noovit.com', pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, env: 'SUPPORT_EMAIL', upper: false },
   business_address: { label: 'Business postal address (required in marketing emails)', placeholder: 'Noovit LLC, 123 Main St, Austin, TX 78701', pattern: /^.{10,200}$/, env: 'BUSINESS_ADDRESS', upper: false },
   review_request_days: { label: 'Days after shipping to ask for a review (0 = off)', placeholder: '14', pattern: /^\d{1,2}$/, env: 'REVIEW_REQUEST_DAYS', upper: false },
@@ -35,7 +36,7 @@ async function load(): Promise<Settings> {
   return settings;
 }
 
-export const getSettings = unstable_cache(load, ['settings-v1'], { tags: [SETTINGS_TAG] });
+export const getSettings = unstable_cache(load, ['settings-v2'], { tags: [SETTINGS_TAG] });
 
 export const loadSettings = load;
 
@@ -43,3 +44,6 @@ export const loadSettings = load;
 export async function supportEmail() {
   return (await getSettings()).support_email || 'hello@noovit.com';
 }
+
+// Pre-launch guide: labelled placeholder reviews/ratings/advisors show until this is switched "off".
+export const placeholdersOn = (settings: Settings) => (settings.show_placeholders ?? '').trim().toLowerCase() !== 'off';

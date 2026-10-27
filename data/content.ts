@@ -53,7 +53,9 @@ export const PET_IMAGES = {
 };
 
 
-// Real, consenting veterinary advisors only. Empty hides the panel.
+// Real, consenting advisors only (name, credentials, photo, any paid relationship disclosed).
+// While empty, the panels show labelled placeholders (data/placeholders.ts) if Settings allows, else hide.
+export const ADVISORS: Expert[] = [];
 export const VETS: Expert[] = [];
 
 export const PET_FAQS: FAQ[] = [

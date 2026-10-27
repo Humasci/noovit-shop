@@ -17,7 +17,10 @@ import { getStoreProducts } from '@/lib/catalog/server';
 import { getContent, lines, safeLink } from '@/lib/content';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { SITE_URL } from '@/lib/site';
-import { GENERAL_FAQS, IMAGES, PET_IMAGES } from '@/data/content';
+import { ADVISORS, GENERAL_FAQS, IMAGES, PET_IMAGES } from '@/data/content';
+import { PLACEHOLDER_EXPERTS, PLACEHOLDER_REVIEWS } from '@/data/placeholders';
+import { PlaceholderNote } from '@/components/ui/Placeholder';
+import { getSettings, placeholdersOn } from '@/lib/settings';
 import { latestReviews } from '@/lib/reviews';
 import { unsplashSrcSet } from '@/lib/utils/format';
 import { Brand, brandify } from '@/components/brand/Brand';
@@ -31,7 +34,12 @@ const SPOTLIGHT = ['probiotic-complex', 'glucosamine-complex', 'turmeric-complex
 export const metadata: Metadata = { alternates: { canonical: '/' } };
 
 export default async function HomePage() {
-  const [products, content, reviews] = await Promise.all([getStoreProducts(), getContent(), latestReviews(12)]);
+  const [products, content, realReviews, settings] = await Promise.all([getStoreProducts(), getContent(), latestReviews(12), getSettings()]);
+  const placeholders = placeholdersOn(settings);
+  const reviewPlaceholder = !realReviews.length && placeholders;
+  const reviews = reviewPlaceholder ? PLACEHOLDER_REVIEWS : realReviews;
+  const advisorPlaceholder = !ADVISORS.length && placeholders;
+  const advisors = advisorPlaceholder ? PLACEHOLDER_EXPERTS : ADVISORS;
   const spotlight = SPOTLIGHT.map((s) => findProduct(products, s)).filter((p) => p !== undefined);
   const petsLive = petProducts(products).length > 0;
 
@@ -152,6 +160,41 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Nutritionists: real advisors, or labelled placeholders before launch */}
+      {advisors.length > 0 && (
+        <section className="section bg-[var(--color-soft)]">
+          <div className="container grid gap-12 px-6 lg:grid-cols-[1fr_2fr]">
+            <div>
+              <SectionHeading eyebrow="Expert formulated" title="Build your routine with our nutritionists" center={false} />
+              <p className="-mt-6 text-[var(--color-muted)]">Every formula is reviewed by our panel of qualified nutrition professionals.</p>
+              <Link href="/shop" className="btn btn-primary mt-6">Shop Now</Link>
+            </div>
+            <div>
+              {advisorPlaceholder && (
+                <PlaceholderNote className="mb-4">
+                  Your advisory panel goes here: real name, credential (RD, RDN, MSc, PhD), photo, a short quote, written consent, and disclosure if paid.
+                  Add them in data/content.ts (ADVISORS). Until then, the panel and the claim beside it should not go live.
+                </PlaceholderNote>
+              )}
+              <div className="grid gap-4 sm:grid-cols-2">
+                {advisors.map((e, i) => (
+                  <div key={i} className="flex gap-4 rounded-2xl bg-white p-5">
+                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[var(--color-navy)] text-lg font-bold text-white">
+                      {e.credentials[0]}
+                    </div>
+                    <div>
+                      <p className="font-bold">{e.name}</p>
+                      <p className="text-xs font-semibold text-[var(--color-accent)]">{e.credentials}</p>
+                      <p className="mt-2 text-sm text-[var(--color-muted)]">&ldquo;{e.quote}&rdquo;</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Approach */}
       <section className="section">
         <div className="container grid items-center gap-12 px-6 md:grid-cols-2">
@@ -181,7 +224,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <ReviewsSection reviews={reviews} />
+      <ReviewsSection reviews={reviews} placeholder={reviewPlaceholder} />
       <FAQSection faqs={GENERAL_FAQS.slice(0, 5)} />
       <CommunitySection />
       <NewsletterSection />

@@ -18,9 +18,14 @@ const GROUPS: { title: string; note: string; keys: (keyof typeof SETTING_FIELDS)
     keys: ['ga4_id', 'meta_pixel_id', 'tiktok_pixel_id'],
   },
   {
-    title: 'Marketing emails',
-    note: 'The welcome code is emailed to new newsletter subscribers and offered in abandoned-checkout emails — create it first in Discounts. US law (CAN-SPAM) requires a postal address in marketing emails.',
-    keys: ['newsletter_code', 'business_address', 'review_request_days'],
+    title: 'Pre-launch',
+    note: 'While "on", the storefront shows clearly labelled placeholder reviews, ratings and nutritionist quotes wherever real ones are still missing, as a guide to what you need to collect. Type "off" before launch: placeholders disappear and only real content shows. Real reviews (approved in Reviews) and real advisors always replace placeholders automatically.',
+    keys: ['show_placeholders'],
+  },
+  {
+    title: 'Contact & marketing emails',
+    note: 'The support email is shown on the Contact page and receives contact-form messages. The welcome code is emailed to new newsletter subscribers and offered in abandoned-checkout emails — create it first in Discounts. US law (CAN-SPAM) requires a postal address in marketing emails.',
+    keys: ['support_email', 'newsletter_code', 'business_address', 'review_request_days'],
   },
   {
     title: 'Automatic discount',

@@ -305,6 +305,7 @@ Add people with their name, email, role and a temporary password (12+ characters
 
 ### Settings
 - **Analytics & ad tracking:** paste your Google Analytics 4 measurement ID (`G-…`), Meta Pixel ID and TikTok Pixel ID. Leave blank to switch a platform off. Tracking starts only after a visitor accepts cookies, and records page views, product views, add to cart, checkout started and purchases (with order value) — enough to run and measure ad campaigns.
+- **Pre-launch → Show placeholder trust content:** while `on` (the default), the site shows example reviews, a star rating, a nutritionist panel and an expert quote wherever real ones are missing, each marked with an orange **PLACEHOLDER** note saying what to collect. Use them as a checklist. Type `off` **before launch**: placeholders vanish and only real content shows. Real reviews you approve and real advisors (added in `data/content.ts` → `ADVISORS`) always replace the placeholders automatically.
 - **Customer support email:** shown on the Contact page; contact-form messages are sent here (needs Resend). Replying to one answers the customer directly. Defaults to hello@noovit.com.
 - **Marketing emails:** the welcome discount code and your business postal address (US law requires it in marketing emails; it also appears on the Contact page).
 - **Review requests:** how many days after shipping to email customers asking for a review (default 14; 0 switches it off). Sent once per order, never to people who unsubscribed or whose order was refunded or cancelled. Runs daily at 15:00 UTC.
