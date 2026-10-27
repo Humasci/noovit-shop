@@ -1,5 +1,5 @@
 import { Product } from '@/types';
-import { CROSS_GAP, CROSS_TILES, crossTile } from '@/lib/brand/cross';
+import { CROSS_GAP, MARK_CROSS, crossTile } from '@/lib/brand/cross';
 
 // Noovit label system, drawn as SVG strings so one design feeds three places:
 //  - the print draft of the full wrap-around label (fullLabelSvg, real units: 1 = 0.01 inch),
@@ -92,11 +92,11 @@ export function netQuantity(p: Product) {
 const N_PATH =
   'M20.33 0L9.00 0L9.00-38.58L3.25-38.58L3.25-50.00L15.08-50.00L15.08-42.08L18.58-42.08Q21.25-46.33 25.71-48.63Q30.17-50.92 36.50-50.92L36.50-50.92Q46.50-50.92 52.13-45.29Q57.75-39.67 57.75-30.25L57.75-30.25L57.75 0L46.42 0L46.42-28.25Q46.42-34.42 43.13-37.67Q39.83-40.92 33.42-40.92L33.42-40.92Q27.00-40.92 23.67-37.67Q20.33-34.42 20.33-28.25L20.33-28.25L20.33 0Z';
 
-// The mosaic cross (lib/brand/cross.ts). (x, y) = top-left, `size` = overall width of the cross.
+// The logo mark's mosaic cross (five tiles, lib/brand/cross.ts). (x, y) = top-left, `size` = overall width.
 export function mosaicCross(x: number, y: number, size: number, color = ORANGE) {
-  const t = crossTile(size);
+  const t = crossTile(MARK_CROSS, size);
   const step = t * (1 + CROSS_GAP);
-  return CROSS_TILES.map(({ c, r, o }) => `<rect x="${n(x + c * step)}" y="${n(y + r * step)}" width="${n(t)}" height="${n(t)}" rx="${n(t * 0.12)}" fill="${color}" opacity="${o}"/>`).join('');
+  return MARK_CROSS.tiles.map(({ c, r, o }) => `<rect x="${n(x + c * step)}" y="${n(y + r * step)}" width="${n(t)}" height="${n(t)}" rx="${n(t * 0.12)}" fill="${color}" opacity="${o}"/>`).join('');
 }
 
 // The n⁺ icon in a 100×100 box.

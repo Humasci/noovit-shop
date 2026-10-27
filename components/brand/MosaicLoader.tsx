@@ -1,16 +1,16 @@
-import { CROSS_GAP, CROSS_TILES, crossTile } from '@/lib/brand/cross';
+import { CROSS_GAP, LARGE_CROSS, crossTile } from '@/lib/brand/cross';
 
-// The mosaic cross "breathing": the arms light up in turn, clockwise (top → right → bottom → left), each from
+// The large (nine-tile) mosaic cross "breathing": the arms light up in turn, clockwise (top → right → bottom → left), each from
 // the centre outwards, while the centre tile breathes slowly. Pure CSS (keyframes in globals.css); static for
 // reduced-motion users.
 const ARM_DELAY = { core: 0, top: 0, right: 0.45, bottom: 0.9, left: 1.35 } as const;
 
 export function MosaicLoader({ size = 40, color = 'var(--color-orange)', label = 'Loading' }: { size?: number; color?: string; label?: string }) {
-  const t = crossTile(size);
+  const t = crossTile(LARGE_CROSS, size);
   const step = t * (1 + CROSS_GAP);
   return (
     <span role="status" aria-label={label} className="relative inline-block shrink-0" style={{ width: size, height: size }}>
-      {CROSS_TILES.map(({ c, r, arm, ring }) => (
+      {LARGE_CROSS.tiles.map(({ c, r, arm, ring }) => (
         <span
           key={`${c}${r}`}
           className={`absolute ${arm === 'core' ? 'mosaic-core' : 'mosaic-breathe'}`}
