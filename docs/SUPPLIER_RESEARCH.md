@@ -24,6 +24,9 @@ Coverage counts are for our 23 launch products: **Y** = yes, **~** = close subst
 | **Professional Nutritionals**, Tampa FL (est. 1999) | No-MOQ private label ("minimum is one bottle") plus dropship | 1 bottle on 170+ stock formulas. $250 label template | 9 / 7 / 7 (no pets) | Unknown (practitioner pricing is behind login) | Not documented. Likely email or portal. Dropships with no packing slip | cGMP labs, all facilities FDA-registered for supplements, raw-material and heavy-metal testing | **Strong candidate,** especially for brain/focus and gap SKUs (zinc, iron, menopause) |
 | **Vitalabs**, Atlanta GA area (est. 1977) | Low-MOQ private label plus fulfilment (dropship to consumers) | **144 bottles/SKU** (NASC profile). 240+ stock formulas | 9 / 6 / 8 (no pets yet) | Est. ~$7–12 (unit cost unverified, plus 3PL-style pick and ship) | Not documented. Amazon FBA integration. Ask about CSV/SFTP/API | **NSF/ANSI 455-2 GMP**, SQF (to 07/2027), FDA-registered, USDA Organic, Halal, NASC Preferred Supplier | **Best Phase 2 (low-MOQ) partner** for human SKUs |
 | **SMP Nutra**, Largo FL | Private label/contract manufacturer plus fulfilment (no dropship) | **2,500–5,000 bottles/SKU**. Stock $4–20/unit | 800+ stock SKUs (not enumerated). 4 pet chews | $4–20 product plus 3PL | n/a (their fulfilment or your 3PL) | cGMP, FDA-registered, NSF 455-2 | **Phase 3 scale-up only** |
+| **OK Capsule** | Personalised daily packs (sachets), per-customer dropship | No inventory. Per-order fee; "as low as $14" fulfilment (unverified) | 60+ stock supplements or own formula (packs, not bottles) | Unknown (quote) | **REST API + MCP + Shopify** | cGMP/FDA-registered, US-made, skip-lot ISO 17025 testing | **Second line:** quiz → personalised daily pack |
+| **Makers Nutrition**, NY | Contract manufacturer + in-house fulfilment | 500–1,500 bottles; ~$2,000/mo fulfilment minimum (reported) | Large stock range | Low per unit, high fixed cost | Amazon/eBay | Not checked | **Phase 2–3 only** |
+| **ViaCore Nutrition** | Private-label protein/custom + dropship (reported) | Unknown | Protein focus | Unknown | Unknown | Unknown | **Unverified.** Ask if a protein line is planned |
 | **Pet Tech Labs** (FoodScience), Syracuse NE (pet) | Low-MOQ pet private label | **504 units** for soft chews, no setup fees | Dog: 3 Y / 1 ~. Cat: ~ | Unknown (quote) | Ships to your distribution centre/3PL. No dropship | **NASC Preferred Supplier**, US-made, NSF/SQF/cGMP logos ("vary per facility") | **Primary pet candidate** (Phase 1b/2, via 3PL) |
 | **Natural Pet Innovations**, Earth City MO (pet) | Low-MOQ pet private label | "Low minimums" (number not stated). Free label design. 30-day lead time | Dog: 4 Y. Cat: ? | Unknown (quote) | Ships to Amazon, warehouse or 3PL. Offers product storage | "Made in USA". NASC and cGMP not stated | **Secondary pet candidate.** Best stock dog-chew match |
 
@@ -340,6 +343,44 @@ The site (`nutragroupusa.com`) returned TLS handshake failures and HTTP 503 to e
 
 ---
 
+### 2.11 OK Capsule (added 27 Oct 2026, verified on their site)
+Personalised **daily-pack** fulfilment: one sachet per day holding all of a customer's capsules, printed per customer under your brand, shipped direct.
+
+- **Model:** formulates, packs and ships per customer ("per-patient, per-protocol packing at scale"). No inventory. You can bring your own formula or use theirs.
+- **Range:** "60+ bioavailable, clinically-backed supplements", plus custom formulas. No pets.
+- **Integration:** **REST API, an MCP server, or Shopify**. They say "Every capability — formulation, ordering, fulfillment, tracking — is API-exposed". **No Shopify needed.**
+- **Fees (unverified, sources conflict):**
+  - The pricing page is behind a login and only says "a simple per-order fee".
+  - The Shopify app lists fulfilment "as low as $14".
+  - A directory lists a $100/mo Starter tier plus $15.95 shipping & handling plus the supplements.
+- **Compliance (claimed):**
+  - cGMP, FDA-registered facilities, "100% US-manufactured".
+  - Third-party potency and purity testing on a **skip-lot** basis (spot checks, not every lot) at ISO 17025 labs.
+  - Non-GMO, USDA Organic and Vegan logos. No NSF.
+- **Company:** raised $9.5M in 2022 (Mucker Capital, Next Ventures). The Shopify app has 0–1 reviews.
+- **Verdict:** **best fit for a quiz-driven "personalised daily pack" line** (see `docs/DAILY_PACK_CONCEPT.md`). It doesn't replace a bottle supplier.
+- **Ask:**
+  - Per-supplement and per-order prices, plus shipping.
+  - Their equivalents of our 15 products, and whether they can use our product names.
+  - API docs and how tracking is returned.
+  - Ingredient origin (Made in USA?) and COAs.
+  - A branded sample pack.
+  - Whether they can also ship bottles.
+
+### 2.12 Makers Nutrition, New York (added from owner research, partly verified)
+A traditional contract manufacturer with in-house fulfilment: you buy a production run, and they store it and ship orders.
+
+- **MOQ:** conflicting. Their own pages say "as low as 500 bottles" in one place and 1,500 in another.
+- **Fees:** owner research reports a **~$2,000/month minimum fulfilment fee** (unverified).
+- **Integration:** Amazon and eBay are mentioned.
+- **Lead time:** 2–3 weeks for stock formulas, 6–8 weeks for custom.
+- **Verdict:** **Phase 2–3 only.** The minimum fee alone rules it out before sales are proven.
+
+### 2.13 ViaCore Nutrition (added from owner research, not verified)
+Described as private-label protein powders and custom formulas, made in-house, with dropshipping to US customers. **Nothing could be verified online.** Possibly relevant later for a protein or creatine line. Ask for MOQ, dropship fees and certificates.
+
+---
+
 ### 2.10 Screened out
 
 | Supplier | Reason |
@@ -404,9 +445,12 @@ The site (`nutragroupusa.com`) returned TLS handshake failures and HTTP 503 to e
 
 ### Supplier pairing
 
-**Human, primary (Phase 1 dropship):**
-- **On Demand Fulfillment**, *if* samples, certificates and API docs check out. It has the best match to our list (Menopause, Mg Complex, D3+K2, mushroom powder), no MOQ, and a stated API, so Shopify isn't needed.
-- **Fallback: Supliful**, using manual orders at low volume, or the Shopify-headless route. It has the most proven operations but costs more and depends on Shopify.
+**Human, primary (Phase 1 dropship): Supliful (owner's decision, 27 Oct 2026).**
+- Supliful has the most proven operations and no MOQ.
+- How it connects without Shopify as the storefront:
+  - **(a) At launch: manual orders.** Use the Supliful dashboard, working from Admin → Fulfilment → Export.
+  - **(b) Later: a headless Shopify backend.** A $29–39/mo Shopify store with the Supliful app, plus Supliful Pro ($69/mo). Our server calls `orderCreate` after each paid order, and tracking returns via Shopify webhooks. Customers never see Shopify.
+- **Alternative:** On Demand Fulfillment, *if* samples, certificates and API docs check out. It has a similar range, no MOQ, and a stated direct API.
 
 **Human, secondary / gap-filler:**
 - **Professional Nutritionals** (1-bottle MOQ) for Zinc, Iron, and a Noovit "Focus" sub-line (Cognitive Support, Theanine, Choline/ALCAR).
@@ -611,6 +655,13 @@ The site (`nutragroupusa.com`) returned TLS handshake failures and HTTP 503 to e
 - https://privatelabelpartners.com/services/dropshipping-fulfillment/
 - https://www.fulfillment-nutra.com/en
 - https://www.nutribl.com/c-52-pet-nutrition.aspx
+
+**OK Capsule / Makers Nutrition**
+- https://okcapsule.com/
+- https://apps.shopify.com/ok-capsule-pack-builder
+- https://nutraingredients-usa.com/Article/2022/03/24/personalized-vitamin-company-scores-9.5m-investment
+- https://makersnutrition.com/news/the-truth-about-private-label-vitamin-manufacturing
+- https://europeanbusinessmagazine.com/best-private-label-supplement-companies-complete-guide/
 
 **Industry benchmark (generic, not supplier-specific)**
 - Fulfilment cost ranges ($5–12 shipping, $2–5 pick/pack): https://opensend.com/post/fulfillment-cost-per-order-ecommerce
