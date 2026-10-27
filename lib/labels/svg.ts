@@ -94,11 +94,12 @@ export function wordmark(cx: number, y: number, size: number, mode: FontMode, co
 export const FRONT = { w: 220, h: 225 };
 
 function nameLines(name: string) {
-  for (const size of [27, 25, 23, 21]) {
-    const lines = wrap(name, 190, size, 0.6);
-    if (lines.length <= 2) return { lines, size };
+  // Largest size where the name fits on two lines and no single word overflows the panel.
+  for (const size of [35, 33, 31, 29, 27, 25]) {
+    const lines = wrap(name, 196, size, 0.6);
+    if (lines.length <= 2 && lines.every((l) => l.length * size * 0.58 <= 196)) return { lines, size };
   }
-  return { lines: wrap(name, 190, 20, 0.6), size: 20 };
+  return { lines: wrap(name, 204, 23, 0.6), size: 23 };
 }
 
 const BAND = 162; // top of the colour band; statement of identity and net quantity sit in the bottom 30%
@@ -108,16 +109,16 @@ const BAND = 162; // top of the colour band; statement of identity and net quant
 export function frontPanel(p: Product, mode: FontMode, bleed = 0) {
   const cx = FRONT.w / 2;
   const { lines, size } = nameLines(p.name);
-  const nameY = 62 + size;
-  const benefitY = nameY + (lines.length - 1) * size * 1.04 + 17;
+  const nameY = 56 + size * 0.95;
+  const benefitY = nameY + (lines.length - 1) * size * 1.0 + size * 0.3 + 9;
   const benefit = wrap(p.shortBenefit.replace(/\.$/, '') + '*', 172, 9, 0.56).slice(0, 2);
   const tags = tagLine(p);
   return `<g>
     <rect x="0" y="0" width="${FRONT.w}" height="${FRONT.h + bleed}" fill="#fff"/>
-    ${wordmark(cx, 34, 22, mode)}
-    <text x="${cx}" y="58" text-anchor="middle" font-size="6.8" font-weight="600" letter-spacing="1.3" fill="${OPAL_DARK}" ${font('body', mode)}>${esc((p.benefits.at(-1) ?? '').toUpperCase())}</text>
-    ${textBlock(lines, cx, nameY, size, size * 1.04, `text-anchor="middle" font-weight="600" letter-spacing="${n(-0.02 * size)}" fill="${NAVY}" ${font('head', mode)}`)}
-    ${textBlock(benefit, cx, benefitY, 9, 11.5, `text-anchor="middle" fill="${INK}" ${font('body', mode)}`)}
+    ${wordmark(cx, 31, 21, mode)}
+    <text x="${cx}" y="52" text-anchor="middle" font-size="6.8" font-weight="600" letter-spacing="1.3" fill="${OPAL_DARK}" ${font('body', mode)}>${esc((p.benefits.at(-1) ?? '').toUpperCase())}</text>
+    ${textBlock(lines, cx, nameY, size, size * 1.0, `text-anchor="middle" font-weight="600" letter-spacing="${n(-0.02 * size)}" fill="${NAVY}" ${font('head', mode)}`)}
+    ${textBlock(benefit, cx, benefitY, 9, 11, `text-anchor="middle" fill="${INK}" ${font('body', mode)}`)}
     <rect x="0" y="${BAND}" width="${FRONT.w}" height="${FRONT.h - BAND + bleed}" fill="${p.color}"/>
     ${tags ? `<text x="${cx}" y="${BAND + 14}" text-anchor="middle" font-size="6.3" font-weight="500" letter-spacing="0.6" fill="#fff" opacity="0.92" ${font('body', mode)}>${esc(tags)}</text>` : ''}
     <text x="${cx}" y="${BAND + 30}" text-anchor="middle" font-size="7.2" font-weight="600" letter-spacing="1.6" fill="#fff" ${font('body', mode)}>DIETARY SUPPLEMENT</text>

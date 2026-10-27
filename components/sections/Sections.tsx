@@ -8,13 +8,14 @@ import { FAQ, Review } from '@/types';
 import { REVIEWS, IMAGES, SUBSCRIPTION_PERKS } from '@/data/content';
 import { Stars } from '@/components/ui/Stars';
 import { SocialLinks } from '@/components/layout/Footer';
+import { Brand, brandify } from '@/components/brand/Brand';
 
 export function SectionHeading({ eyebrow, title, sub, center = true }: { eyebrow?: string; title: string; sub?: string; center?: boolean }) {
   return (
     <div className={`mb-10 ${center ? 'mx-auto max-w-2xl text-center' : ''}`}>
-      {eyebrow && <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-accent)]">{eyebrow}</p>}
-      <h2 className="text-balance text-3xl md:text-4xl">{title}</h2>
-      {sub && <p className="mt-3 text-[var(--color-muted)]">{sub}</p>}
+      {eyebrow && <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-accent)]">{brandify(eyebrow)}</p>}
+      <h2 className="text-balance text-3xl md:text-4xl">{brandify(title)}</h2>
+      {sub && <p className="mt-3 text-[var(--color-muted)]">{brandify(sub)}</p>}
     </div>
   );
 }
@@ -62,8 +63,8 @@ export function ReviewsSection({ title = 'Real people, real results', reviews = 
             return (
               <article key={r.id} className="w-80 shrink-0 snap-start rounded-2xl border border-[var(--color-line)] p-6">
                 <Stars rating={r.rating} />
-                <h3 className="mt-3 text-base">{r.title}</h3>
-                <p className="mt-2 text-sm text-[var(--color-muted)]">{r.body}</p>
+                <h3 className="mt-3 text-base">{brandify(r.title)}</h3>
+                <p className="mt-2 text-sm text-[var(--color-muted)]">{brandify(r.body)}</p>
                 <div className="mt-5 flex items-center justify-between text-sm">
                   <span>
                     <span className="font-bold">{r.name}</span>
@@ -98,10 +99,10 @@ export function FAQSection({ faqs, title = 'Frequently asked questions', showBut
           {faqs.map((f, i) => (
             <div key={f.q}>
               <button className="flex w-full items-center justify-between gap-4 py-5 text-left font-bold" onClick={() => setOpen(open === i ? null : i)}>
-                {f.q}
+                {brandify(f.q)}
                 <ChevronDown className={`h-5 w-5 shrink-0 transition-transform ${open === i ? 'rotate-180' : ''}`} />
               </button>
-              {open === i && <p className="animate-slide-in pb-5 text-[var(--color-muted)]">{f.a}</p>}
+              {open === i && <p className="animate-slide-in pb-5 text-[var(--color-muted)]">{brandify(f.a)}</p>}
             </div>
           ))}
         </div>

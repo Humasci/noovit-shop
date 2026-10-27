@@ -6,6 +6,7 @@ import { Menu, X, ShoppingBag, Leaf, Star, FlaskConical, ShieldCheck, BadgeCheck
 import { useCart, cartCount } from '@/lib/store/cart';
 import { useHydrated } from '@/lib/useHydrated';
 import { Logo } from '@/components/layout/Logo';
+import { brandify } from '@/components/brand/Brand';
 
 // Top navigation: Shop and Pets open a dropdown of subcategories; About, Reviews, FAQ and Contact live in the footer.
 interface NavItem {
@@ -54,9 +55,9 @@ export function Header({ trustBar, announcement }: { trustBar: string[]; announc
       {announcement?.text && (
         <div className="bg-[var(--color-accent)] px-4 py-2 text-center text-sm font-semibold text-white">
           {announcement.href ? (
-            <Link href={announcement.href} className="underline-offset-4 hover:underline">{announcement.text} →</Link>
+            <Link href={announcement.href} className="underline-offset-4 hover:underline">{brandify(announcement.text)} →</Link>
           ) : (
-            announcement.text
+            brandify(announcement.text)
           )}
         </div>
       )}
@@ -67,7 +68,7 @@ export function Header({ trustBar, announcement }: { trustBar: string[]; announc
             return (
               <span key={label} className="flex shrink-0 items-center gap-1.5">
                 <Icon className="h-3.5 w-3.5" />
-                {label}
+                {brandify(label)}
               </span>
             );
           })}
@@ -76,7 +77,7 @@ export function Header({ trustBar, announcement }: { trustBar: string[]; announc
 
       <header className="sticky top-0 z-40 border-b border-[var(--color-line)] bg-white/95 backdrop-blur">
         <div className="container grid grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 py-4 md:px-6">
-          <nav className="hidden items-center gap-7 whitespace-nowrap text-sm font-semibold lg:flex">
+          <nav className="hidden items-center gap-7 whitespace-nowrap font-logo text-[15px] font-medium lg:flex">
             {NAV.map((n) => {
               const tone = n.pets ? 'text-[var(--color-pets)] hover:text-[var(--color-pets-dark)]' : 'hover:text-[var(--color-accent)]';
               if (!n.children) return <Link key={n.href} href={n.href} className={tone}>{n.name}</Link>;
@@ -113,7 +114,7 @@ export function Header({ trustBar, announcement }: { trustBar: string[]; announc
           </Link>
 
           <div className="flex items-center justify-self-end gap-5 text-sm font-semibold">
-            <Link href="/account" className="hidden hover:text-[var(--color-accent)] sm:block">
+            <Link href="/account" className="hidden font-logo text-[15px] font-medium hover:text-[var(--color-accent)] sm:block">
               My Subscriptions
             </Link>
             <button onClick={openCart} className="relative" aria-label="Open cart">
@@ -126,7 +127,7 @@ export function Header({ trustBar, announcement }: { trustBar: string[]; announc
         </div>
 
         {menuOpen && (
-          <nav className="animate-slide-in flex flex-col gap-4 border-t border-[var(--color-line)] px-6 py-5 font-semibold lg:hidden">
+          <nav className="animate-slide-in flex flex-col gap-4 border-t border-[var(--color-line)] px-6 py-5 font-logo text-lg font-medium lg:hidden">
             {NAV.map((n) => (
               <div key={n.href}>
                 <Link href={n.href} onClick={() => setMenuOpen(false)} className={n.pets ? 'text-[var(--color-pets)]' : ''}>

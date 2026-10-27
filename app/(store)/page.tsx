@@ -18,6 +18,7 @@ import { getContent, lines, safeLink } from '@/lib/content';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { SITE_URL } from '@/lib/site';
 import { EXPERTS, GENERAL_FAQS, IMAGES, PET_IMAGES } from '@/data/content';
+import { Brand, brandify } from '@/components/brand/Brand';
 
 // PLACEHOLDER: swap these for press/retailer logos once you have them.
 const MARQUEE = ['Clean Ingredients', 'Third-Party Tested', 'GMP Certified', 'Nutritionist Formulated', 'Made in the USA', 'Vegan Options', '90-Day Guarantee'];
@@ -40,11 +41,11 @@ export default async function HomePage() {
           <div className="max-w-xl">
             {content.hero_badge && (
               <div className="mb-5 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold shadow-sm">
-                <Stars size={14} /> {content.hero_badge}
+                <Stars size={14} /> {brandify(content.hero_badge)}
               </div>
             )}
-            <h1 className="text-balance text-4xl md:text-6xl">{content.hero_headline}</h1>
-            {content.hero_subheadline && <p className="mt-5 text-lg text-[var(--color-ink)]/80">{content.hero_subheadline}</p>}
+            <h1 className="text-balance text-4xl md:text-6xl">{brandify(content.hero_headline)}</h1>
+            {content.hero_subheadline && <p className="mt-5 text-lg text-[var(--color-ink)]/80">{brandify(content.hero_subheadline)}</p>}
             {content.hero_cta_label && (
               <Link href={safeLink(content.hero_cta_link) || '/shop'} className="btn btn-primary mt-8">
                 {content.hero_cta_label}
@@ -52,7 +53,7 @@ export default async function HomePage() {
             )}
             <ul className="mt-6 flex flex-col gap-2 text-sm font-semibold sm:flex-row sm:gap-6">
               {lines(content.hero_bullets, 3).map((b) => (
-                <li key={b} className="flex items-center gap-2"><Check className="h-4 w-4 text-[var(--color-green)]" /> {b}</li>
+                <li key={b} className="flex items-center gap-2"><Check className="h-4 w-4 text-[var(--color-green)]" /> {brandify(b)}</li>
               ))}
             </ul>
           </div>
@@ -107,7 +108,7 @@ export default async function HomePage() {
           <Link href="/pets" className="group grid overflow-hidden rounded-3xl bg-[var(--color-pets-soft)] md:grid-cols-2">
             <div className="p-10 md:p-14">
               <p className="mb-3 inline-flex items-center gap-2 rounded-full bg-[var(--color-pets)] px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-white">
-                <PawPrint className="h-4 w-4" /> {petsLive ? 'New' : 'Coming soon'} · Noovit Pets
+                <PawPrint className="h-4 w-4" /> {petsLive ? 'New' : 'Coming soon'} · <Brand /> Pets
               </p>
               <h2 className="text-3xl md:text-4xl">Clean supplements for dogs and cats</h2>
               <p className="mt-3 text-[var(--color-muted)]">Vet-formulated chews for digestion, joints, calm and coat — in the same cart as yours.</p>

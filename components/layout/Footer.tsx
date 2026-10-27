@@ -3,6 +3,7 @@ import { Instagram, Facebook, Lock } from 'lucide-react';
 import { PAYMENT_METHODS } from '@/data/content';
 import { CookiePreferencesLink } from '@/components/analytics/Analytics';
 import { Logo } from '@/components/layout/Logo';
+import { Brand, brandify } from '@/components/brand/Brand';
 
 const COLUMNS = [
   {
@@ -72,7 +73,7 @@ export function Footer() {
               {col.links.map((l) => (
                 <li key={l.name}>
                   <Link href={l.href} className="hover:text-white">
-                    {l.name}
+                    {brandify(l.name)}
                   </Link>
                 </li>
               ))}
@@ -84,7 +85,7 @@ export function Footer() {
       <div className="border-t border-white/10">
         <div className="container flex flex-col items-center justify-between gap-4 px-6 py-6 text-xs text-white/60 md:flex-row">
           <p>
-            © {new Date().getFullYear()} Noovit. All rights reserved. · <CookiePreferencesLink />
+            © {new Date().getFullYear()} <Brand />. All rights reserved. · <CookiePreferencesLink />
           </p>
           <div className="flex flex-wrap items-center justify-center gap-2">
             <span className="mr-2 flex items-center gap-1"><Lock className="h-3 w-3" /> Secure checkout</span>
