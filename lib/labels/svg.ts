@@ -358,7 +358,7 @@ export function fullLabelSvg(p: Product, opts: { mode?: FontMode; guides?: boole
 
 // ---------- Bottle mockups for the website ----------
 
-export type BottleVariant = 'front' | 'duo' | 'capsules' | 'facts';
+export type BottleVariant = 'front' | 'duo' | 'facts';
 
 // A white HDPE bottle (or a wide tub for powders) seen slightly from above, so every circle is an ellipse.
 // The label is the flat front panel above, clipped to the curved band and shaded like a cylinder.
@@ -434,17 +434,6 @@ export function bottleSvg(p: Product, variant: BottleVariant = 'front', opts: { 
   let body = '';
   if (variant === 'front') body = place(26, -6, 0.87, uid);
   if (variant === 'duo') body = place(-34, 20, 0.74, `${uid}a`) + place(104, 6, 0.8, `${uid}b`);
-  if (variant === 'capsules') {
-    body = place(-20, 4, 0.82, uid);
-    const pieces: [number, number, number][] = [[290, 300, 20], [330, 330, -30], [272, 350, 60], [338, 280, 80], [305, 368, -10]];
-    body += pieces
-      .map(([x, y, r], i) =>
-        p.form === 'powder'
-          ? `<circle cx="${x}" cy="${y}" r="${14 - i}" fill="${p.color}" opacity="0.5"/>`
-          : `<g transform="rotate(${r} ${x} ${y})"><rect x="${x - 22}" y="${y - 9}" width="44" height="18" rx="9" fill="#fff" stroke="${p.color}" stroke-width="2"/><rect x="${x}" y="${y - 9}" width="22" height="18" rx="9" fill="${p.color}" opacity="0.7"/></g>`
-      )
-      .join('');
-  }
   if (variant === 'facts') {
     const facts = factsPanel(p, mode, 260);
     const s = Math.min(1.2, 330 / facts.height);

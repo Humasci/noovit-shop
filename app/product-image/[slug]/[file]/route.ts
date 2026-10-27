@@ -2,7 +2,7 @@ import { getStoreProduct } from '@/lib/catalog/server';
 import { BottleVariant } from '@/lib/labels/svg';
 import { renderBottlePng } from '@/lib/labels/png';
 
-const VARIANTS: BottleVariant[] = ['front', 'duo', 'capsules', 'facts'];
+const VARIANTS: BottleVariant[] = ['front', 'duo', 'facts'];
 
 // Storefront mockups: /product-image/<slug>/<variant>-<hash>.png. The hash comes from the label content
 // (see productImageSrc), so a changed label gets a new URL and the image can be cached forever.

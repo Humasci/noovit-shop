@@ -12,7 +12,7 @@ import { formatPrice } from '@/lib/utils/format';
 
 import { ProductImage, ImageVariant } from './ProductImage';
 
-const VARIANTS: ImageVariant[] = ['front', 'capsules', 'duo', 'facts'];
+const VARIANTS: ImageVariant[] = ['front', 'duo', 'facts'];
 
 // Uploaded photos take over the gallery; until then it shows generated mockups.
 export function Gallery({ product }: { product: Product }) {

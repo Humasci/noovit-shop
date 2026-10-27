@@ -14,7 +14,7 @@ function hash(s: string) {
 export const productImageSrc = (product: Product, variant: ImageVariant = 'front') =>
   `/product-image/${product.slug}/${variant}-${hash(bottleSvg(product, variant))}.png`;
 
-const LABELS: Record<ImageVariant, string> = { front: 'bottle', duo: 'two bottles', capsules: 'bottle and capsules', facts: 'supplement facts' };
+const LABELS: Record<ImageVariant, string> = { front: 'bottle', duo: 'two bottles', facts: 'supplement facts' };
 
 // Uploaded photos win for the main image; otherwise a branded bottle drawn from the label design (lib/labels/svg.ts),
 // served as a resized, cached image. `inline` draws the SVG in place instead (the admin editor's live preview).
