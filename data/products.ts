@@ -370,6 +370,29 @@ const seeds: Seed[] = [
     audiences: ['women', 'men'], bestSeller: false, reviewCount: 0,
   },
   {
+    // DRAFT, kept hidden. FDA treats NAC as excluded from the supplement definition (approved as a drug in 1963) but
+    // has used enforcement discretion since Aug 2022 while it considers a rule. Recheck status, supplier availability
+    // and Amazon/TikTok listing rules before publishing. Antioxidant/glutathione claims only; no respiratory,
+    // liver, addiction or mental-health claims.
+    name: 'NAC',
+    slug: 'nac',
+    status: 'hidden',
+    shortBenefit: 'Supports antioxidant defenses.',
+    description: 'N-acetyl cysteine (NAC), a stable form of the amino acid cysteine, which the body uses to make glutathione, one of its main antioxidants.',
+    whoFor: 'Adults looking for everyday antioxidant support.',
+    benefits: ['Supports glutathione production', 'Supports antioxidant defenses', 'Supports cellular health', 'Vegan capsule'],
+    ingredients: [{ name: 'N-Acetyl-L-Cysteine (NAC)', amount: '600mg' }],
+    otherIngredients: 'Vegetable capsule (HPMC), rice flour.',
+    dosage: 'Take 1 capsule daily with water, or as directed by your healthcare provider.',
+    servings: 60, form: 'capsules', basePrice: 30, color: '#8C7BB5',
+    productType: 'supplements', dietaryTags: ['vegan', 'gluten-free', 'sugar-free'],
+    audiences: ['women', 'men'], bestSeller: false, reviewCount: 0,
+    faqs: [
+      { q: 'Who should not take NAC?', a: 'Talk to your healthcare provider first if you are pregnant or breastfeeding, have asthma, take nitroglycerin or other medication, or have a medical condition. Stop use and seek advice if you have a reaction.' },
+      { q: 'Does it smell?', a: 'NAC naturally has a slight sulphur smell. That is normal and does not mean the product has gone off.' },
+    ],
+  },
+  {
     name: 'Probiotic Chews for Dogs',
     slug: 'dog-probiotic-chews',
     status: 'hidden',

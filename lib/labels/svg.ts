@@ -145,6 +145,7 @@ const SUBTITLES: Record<string, string> = {
   'focus-complex': "Lion's Mane, Bacopa & L-Theanine",
   'lions-mane': '1000mg Fruiting Body Extract',
   'l-theanine': '200mg Pure L-Theanine',
+  nac: 'N-Acetyl Cysteine 600mg',
 };
 const shortName = (s: string) => s.replace(/\s*\(.*?\)/g, '').replace(/ Extract| Sulfate| Citrate| Glycinate| Bisglycinate| Picolinate| Malate/g, '');
 export function labelSubtitle(p: Product) {
