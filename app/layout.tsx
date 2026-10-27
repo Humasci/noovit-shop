@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Funnel_Display, Inter } from 'next/font/google';
+import { Funnel_Display, Inter, Manrope } from 'next/font/google';
 import './globals.css';
 import { Toaster } from 'react-hot-toast';
 import { SITE_URL } from '@/lib/site';
@@ -15,11 +15,12 @@ export const metadata: Metadata = {
 };
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
+const manrope = Manrope({ subsets: ['latin'], variable: '--font-manrope', display: 'swap' });
 const funnel = Funnel_Display({ subsets: ['latin'], variable: '--font-funnel', display: 'swap' });
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${funnel.variable}`}>
+    <html lang="en" className={`${inter.variable} ${manrope.variable} ${funnel.variable}`}>
       <body className="antialiased">
         {children}
         <Toaster position="bottom-center" />

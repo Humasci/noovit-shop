@@ -14,7 +14,7 @@ export const ORANGE = '#ff5f00';
 
 const FONTS = {
   logo: { web: "var(--font-funnel), 'Funnel Display', sans-serif", print: "'Funnel Display'" },
-  head: { web: "var(--font-funnel), 'Funnel Display', sans-serif", print: "'Funnel Display'" },
+  head: { web: "var(--font-manrope), 'Manrope', sans-serif", print: "'Manrope'" },
   body: { web: "var(--font-inter), 'Inter', sans-serif", print: "'Inter'" },
 };
 
@@ -108,32 +108,76 @@ function shade(hex: string, k = 0.35) {
   return '#' + (hex.match(/\w\w/g) ?? []).map((h) => Math.round(parseInt(h, 16) * (1 - k)).toString(16).padStart(2, '0')).join('');
 }
 
+// The "complex details" line under the product name (draft copy; match it to the supplier's formula).
+const SUBTITLES: Record<string, string> = {
+  'probiotic-complex': '12 Strains, 40B CFU + Prebiotic',
+  'glucosamine-complex': 'With Chondroitin, MSM & Curcumin',
+  'collagen-complex': 'With Hyaluronic Acid & Vitamin C',
+  'menopause-complex': 'Black Cohosh, Sage, D3 & B6',
+  'magnesium-complex': '3 Forms of Magnesium + Zinc & D3',
+  zinc: 'Zinc Picolinate 25mg + Copper',
+  'iron-complex': 'Gentle Bisglycinate + Vitamin C',
+  'vitamin-d3-k2': '2000 IU D3 + 75mcg K2 (MK-7)',
+  'turmeric-complex': '95% Curcuminoids + Black Pepper',
+  'berberine-complex': '500mg Berberine HCl + Chromium',
+  ashwagandha: '600mg Root Extract, 5% Withanolides',
+  multivitamin: '23 Active Vitamins & Minerals',
+  'biotin-complex': 'With Zinc & Selenium',
+  creatine: 'Micronised Monohydrate, 5g Serving',
+  'mushroom-blend-powder': "Lion's Mane, Cordyceps, Reishi & Chaga",
+  'focus-complex': "Lion's Mane, Bacopa & L-Theanine",
+  'lions-mane': '1000mg Fruiting Body Extract',
+  'l-theanine': '200mg Pure L-Theanine',
+};
+const shortName = (s: string) => s.replace(/\s*\(.*?\)/g, '').replace(/ Extract| Sulfate| Citrate| Glycinate| Bisglycinate| Picolinate| Malate/g, '');
+export function labelSubtitle(p: Product) {
+  if (SUBTITLES[p.slug]) return SUBTITLES[p.slug];
+  const extras = p.ingredients.slice(1, 3).map((i) => shortName(i.name));
+  return extras.length ? `With ${extras.join(' & ')}` : `${p.ingredients[0]?.amount ?? ''} ${shortName(p.ingredients[0]?.name ?? '')}`.trim();
+}
+
+// Origin claim. FTC rule: an unqualified "Made in USA" needs all or virtually all ingredients to be domestic too;
+// with imported ingredients use e.g. "Made in the USA with imported ingredients". Confirm with the supplier.
+export const ORIGIN_CLAIM = 'Made in the USA';
+
 // First word on line one, the rest on line two; sized to clear the vertical wordmark.
 function nameLines(name: string, room: number) {
   const words = name.split(' ');
   const lines = words.length > 1 ? [words[0], words.slice(1).join(' ')] : [name];
-  const size = Math.min(30, room / (Math.max(...lines.map((l) => l.length)) * 0.64));
+  const size = Math.min(22, room / (Math.max(...lines.map((l) => l.length)) * 0.6));
   return { lines, size };
 }
 
+// Small globe for the origin line (12×12 box).
+const globe = (x: number, y: number, c: string) =>
+  `<g transform="translate(${x} ${y})" fill="none" stroke="${c}" stroke-width="1"><circle cx="5" cy="5" r="4.5"/><ellipse cx="5" cy="5" rx="2" ry="4.5"/><line x1="0.5" y1="5" x2="9.5" y2="5"/></g>`;
+
 // Drawn at (0,0); callers translate/scale it. `bleed` extends both colour areas past the trim.
-// Layout: icon · product name · proof point · vertical "noovit" (right edge) / white band: benefit, identity, net quantity.
+// Colour block: icon, origin, product name, complex details; the vertical "noovit" wordmark is centred on the right edge.
+// White band (bottom 30%): benefit, "Dietary Supplement", net quantity.
 export function frontPanel(p: Product, mode: FontMode, bleed = 0) {
-  const { lines, size } = nameLines(p.name, FRONT.w - 18 - 48);
+  const vSize = 31;
+  const vLen = (3.02 + 0.42) * vSize; // wordmark length incl. the cross
+  const { lines, size } = nameLines(p.name, FRONT.w - 18 - 54);
   const dark = shade(p.color);
   const { units } = labelCounts(p);
   const qty = netQuantity(p);
   const unitWord = p.form === 'powder' ? qty.replace(/^\S+\s/, '') : UNITS[p.form][units === 1 ? 0 : 1];
   const big = p.form === 'powder' ? qty.split(' ')[0] : String(units);
   const benefit = wrap(p.shortBenefit.replace(/\.$/, '') + '*', 118, 8, 0.5).slice(0, 3);
-  const vSize = 25;
+  const sub = wrap(labelSubtitle(p), FRONT.w - 18 - 56, 8.6, 0.52).slice(0, 2);
+  // Name + details sit in the lower part of the colour block, balanced against the icon above.
+  const nameY = lines.length > 1 ? 98 : 110;
+  const subY = nameY + (lines.length - 1) * size * 1.06 + 15;
   return `<g>
     <rect x="0" y="${-bleed}" width="${FRONT.w}" height="${BAND + bleed}" fill="${p.color}"/>
     <rect x="0" y="${BAND}" width="${FRONT.w}" height="${FRONT.h - BAND + bleed}" fill="#fff"/>
-    <g transform="translate(14 12) scale(0.36)">${icon('#fff')}</g>
-    ${textBlock(lines, 18, 86, n(size), n(size * 1.02), `font-weight="600" letter-spacing="${n(-0.015 * size)}" fill="#fff" ${font('head', mode)}`)}
-    <text x="18" y="${BAND - 14}" font-size="8.5" font-weight="500" fill="#fff" opacity="0.92" ${font('body', mode)}>${esc(p.benefits.at(-1) ?? '')}</text>
-    <g transform="translate(${FRONT.w - 16} ${BAND - 14}) rotate(-90)">${wordmarkRaw(0, 0, vSize, mode, '#fff', '#fff', 0.62)}</g>
+    <g transform="translate(14 14) scale(0.34)">${icon('#fff')}</g>
+    ${globe(18, 58, '#fff')}
+    <text x="33" y="66.5" font-size="7.6" font-weight="500" fill="#fff" ${font('body', mode)}>${esc(ORIGIN_CLAIM)}</text>
+    ${textBlock(lines, 18, nameY, n(size), n(size * 1.06), `font-weight="600" letter-spacing="${n(-0.01 * size)}" fill="#fff" ${font('head', mode)}`)}
+    ${textBlock(sub, 18, subY, 8.6, 11, `font-weight="500" fill="#fff" opacity="0.92" ${font('body', mode)}`)}
+    <g transform="translate(${FRONT.w - 14} ${n(BAND / 2 + vLen / 2)}) rotate(-90)">${wordmarkRaw(0, 0, vSize, mode, '#fff', '#fff', 0.62)}</g>
     ${textBlock(benefit, 18, BAND + 19, 8, 10.5, `fill="${INK}" ${font('body', mode)}`)}
     <text x="18" y="${FRONT.h - 13}" font-size="6.6" font-weight="600" letter-spacing="1.1" fill="${dark}" ${font('body', mode)}>DIETARY SUPPLEMENT</text>
     <text x="${FRONT.w - 18}" y="${BAND + 38}" text-anchor="end" font-size="30" font-weight="600" fill="${dark}" ${font('head', mode)}>${esc(big)}</text>
@@ -276,7 +320,7 @@ function bottle(p: Product, mode: FontMode, uid: string) {
   const shoulder = jar ? 160 : 132;
   const bodyTop = jar ? 166 : 180;
   const base = 410;
-  const lw = R * 2 * 0.98;
+  const lw = R * 2 + 4; // a touch wider than the body so no bare bottle shows at the edges
   const scale = lw / FRONT.w;
   const LT = jar ? 176 : 192;
   const LB = LT + FRONT.h * scale;

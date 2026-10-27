@@ -33,9 +33,9 @@
   --color-sage-light: var(--color-accent-light);
   --color-sage: var(--color-accent);
 
-  /* Fonts are self-hosted via next/font (app/layout.tsx): Inter for text, Funnel Display for headings and the wordmark. */
+  /* Fonts are self-hosted via next/font (app/layout.tsx): Inter for text, Manrope for headings, Funnel Display for the wordmark and menu. */
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-funnel), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-manrope), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-logo: var(--font-funnel), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 
   /* Lighter type scale: every font-semibold/bold/extrabold class on the site renders a step lighter. */
