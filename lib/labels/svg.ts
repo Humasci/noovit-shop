@@ -185,14 +185,14 @@ function labelMosaic(p: Product, pattern: LabelPattern) {
     });
   }
   if (pattern === 'top') {
-    // Small white tiles falling evenly from the top edge across the full width; only the n⁺ icon and the
-    // "vit" end of the vertical wordmark are kept clear.
+    // Small white tiles falling evenly from the top edge across the full width, thinner (not absent) behind
+    // the n⁺ icon and the "vit" end of the vertical wordmark.
     const ts = 3.5, st = 4.2, depth = 52;
     for (let y = 0; y < depth; y += st)
       for (let x = 0.6; x < FRONT.w; x += st) {
-        if (x > 11 && x < 51 && y > 11 && y < 51) continue; // the n⁺ icon
         let w = 1 - y / depth;
-        if (x > FRONT.w - 44 && y > 18) w *= 0.35; // "vit" and the cross
+        if (x > 11 && x < 51 && y > 11 && y < 51) w *= 0.4; // lighter behind the n⁺ icon (drawn on top)
+        if (x > FRONT.w - 44 && y > 18) w *= 0.55; // lighter over "vit" and the cross
         if (rnd() < w ** 1.5 * 0.95) out.push(`<rect x="${n(x)}" y="${n(y)}" width="${ts}" height="${ts}" rx="0.4" fill="#fff" opacity="${n((0.12 + 0.55 * rnd()) * w)}"/>`);
       }
   }
