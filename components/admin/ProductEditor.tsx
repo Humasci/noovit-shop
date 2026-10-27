@@ -12,6 +12,7 @@ import { Audience, DietaryTag, ProductData, ProductStatus, Species } from '@/typ
 import { formatPrice } from '@/lib/utils/format';
 import { ProductImage } from '@/components/product/ProductImage';
 import { Card, btnSm, btnSmOutline, inputCls } from './ui';
+import { MosaicLoader } from '@/components/brand/MosaicLoader';
 
 const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 
@@ -325,7 +326,7 @@ export function ProductEditor({
             <option value="hidden">Hidden — not shown in the store</option>
           </select>
           <button onClick={save} disabled={pending} className={`${btnSm} mt-4 w-full py-3 text-sm`}>
-            {pending ? 'Saving…' : isNew ? 'Create product' : 'Save changes'}
+            {pending ? <span className="inline-flex items-center gap-2"><MosaicLoader size={14} color="#fff" label="Saving" /> Saving…</span> : isNew ? 'Create product' : 'Save changes'}
           </button>
           {!isNew && (
             <Link href={`/products/${slug}`} target="_blank" className="mt-3 flex items-center justify-center gap-1 text-sm text-[var(--color-accent)]">

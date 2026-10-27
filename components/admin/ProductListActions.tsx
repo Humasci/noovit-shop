@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { importLaunchCatalog, syncAllProducts, ActionResult } from '@/app/admin/product-actions';
 import { btnSmOutline } from './ui';
+import { MosaicLoader } from '@/components/brand/MosaicLoader';
 
 export function ProductListActions({ empty }: { empty: boolean }) {
   const [pending, start] = useTransition();
@@ -20,11 +21,11 @@ export function ProductListActions({ empty }: { empty: boolean }) {
 
   return empty ? (
     <button disabled={pending} onClick={() => run(importLaunchCatalog)} className={btnSmOutline}>
-      {pending ? 'Importing…' : 'Import launch catalog'}
+      {pending ? <span className="inline-flex items-center gap-2"><MosaicLoader size={14} label="Working" /> Working…</span> : 'Import launch catalog'}
     </button>
   ) : (
     <button disabled={pending} onClick={() => run(syncAllProducts)} className={btnSmOutline}>
-      {pending ? 'Syncing…' : 'Sync all to Stripe'}
+      {pending ? <span className="inline-flex items-center gap-2"><MosaicLoader size={14} label="Working" /> Working…</span> : 'Sync all to Stripe'}
     </button>
   );
 }

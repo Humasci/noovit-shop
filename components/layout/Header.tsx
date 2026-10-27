@@ -9,7 +9,8 @@ import { useHydrated } from '@/lib/useHydrated';
 import { Logo } from '@/components/layout/Logo';
 import { brandify } from '@/components/brand/Brand';
 
-// Top navigation: Shop and Pets open a dropdown of subcategories; About, Reviews, FAQ and Contact live in the footer.
+// Top navigation: Shop (with categories), Best Sellers, the quiz and Journal. Pets is a separate button on the right
+// (and listed in the mobile menu); About, Reviews, FAQ and Contact live in the footer.
 interface NavItem {
   name: string;
   href: string;
@@ -23,12 +24,14 @@ const NAV: NavItem[] = [
     href: '/shop',
     children: [
       { name: 'Shop all', href: '/shop' },
-      { name: 'Best Sellers', href: '/shop?type=best-sellers' },
       { name: 'Supplements', href: '/shop?type=supplements' },
       { name: 'Sports', href: '/shop?type=sports' },
       { name: 'Specialties', href: '/shop?type=specialties' },
     ],
   },
+  { name: 'Best Sellers', href: '/shop?type=best-sellers' },
+  { name: 'Take the quiz', href: '/quiz' },
+  { name: 'Journal', href: '/blog' },
   {
     name: 'Pets',
     href: '/pets',
@@ -39,7 +42,6 @@ const NAV: NavItem[] = [
       { name: 'Cats', href: '/pets?species=cat#pet-products' },
     ],
   },
-  { name: 'Journal', href: '/blog' },
 ];
 
 const TRUST_ICONS = [Leaf, Star, FlaskConical, ShieldCheck, BadgeCheck];
@@ -79,7 +81,7 @@ export function Header({ trustBar, announcement }: { trustBar: string[]; announc
 
       <header className="sticky top-0 z-40 border-b border-[var(--color-line)] bg-white/95 backdrop-blur">
         <div className="container grid grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 py-4 md:px-6">
-          <nav className="hidden items-center gap-7 whitespace-nowrap font-logo text-[15px] font-medium lg:flex">
+          <nav className="hidden items-center gap-6 whitespace-nowrap font-logo text-[15px] font-medium lg:flex">
             {NAV.filter((n) => !n.pets).map((n) => {
               const tone = n.pets ? 'text-[var(--color-pets)] hover:text-[var(--color-pets-dark)]' : 'hover:text-[var(--color-accent)]';
               if (!n.children) return <Link key={n.href} href={n.href} className={tone}>{n.name}</Link>;

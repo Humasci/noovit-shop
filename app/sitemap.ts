@@ -3,7 +3,7 @@ import { getStoreCollections, getStoreProducts } from '@/lib/catalog/server';
 import { SITE_URL } from '@/lib/site';
 import { getPublishedPosts } from '@/lib/blog';
 
-const PAGES = ['', '/shop', '/pets', '/blog', '/about', '/reviews', '/faq', '/contact', '/policies/delivery-returns', '/policies/privacy', '/policies/terms'];
+const PAGES = ['', '/shop', '/quiz', '/pets', '/blog', '/about', '/reviews', '/faq', '/contact', '/policies/delivery-returns', '/policies/privacy', '/policies/terms'];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [products, collections, posts] = await Promise.all([getStoreProducts(), getStoreCollections(), getPublishedPosts()]);

@@ -33,7 +33,8 @@ Customer ──► noovit.com ──► Stripe Checkout (payment) ──► Orde
 ## 2. What customers can do
 
 ### Browse
-- **Top menu** — **Shop** (dropdown: Shop all, Best Sellers, Supplements, Sports, Specialties), **Pets** (dropdown: All pets, Dogs, Cats) and **Journal**, plus My Subscriptions and the cart. On phones the same links open from the ☰ button. About Us, Reviews, FAQ and Contact are in the footer.
+- **Top menu** — **Shop** (dropdown: Shop all, Supplements, Sports, Specialties), **Best Sellers**, **Take the quiz** and **Journal**; on the right an orange **Pets** button (on the Pets pages it becomes an opal **Humans** button back to the shop), My Subscriptions and the cart. On phones the same links open from the ☰ button. About Us, Reviews, FAQ and Contact are in the footer.
+- **Supplement quiz** (`/quiz`) — nine quick questions (sex, age, up to three goals, everyday symptoms, activity, diet, pregnancy/breastfeeding, medication) and an optional email step. It recommends the three best-matching products on sale, explains why ("For: Sleep & stress"), respects diet and pregnancy filters, warns people on medication to check with their doctor, and offers **Add my plan to cart** (all three on a 30-day subscription). If someone joins the list they're saved as a subscriber with source *quiz* and get the welcome code.
 - **Home page** — best sellers (with Women's / Men's Health tabs), trust badges, reviews, FAQ, newsletter sign-up, subscription benefits.
 - **Shop** (`/shop`) — every product, grouped into Supplements, Sports, Specialties and Noovit Pets. Filters: product type, dietary needs (vegan, gluten-free, pregnancy-safe, postpartum-safe, low FODMAP, sugar-free) and sorting by name or price.
 - **Noovit Pets** (`/pets`) — the pet range, filterable by Dogs / Cats (`/pets?species=dog`). While no pet product is active, it shows a "coming soon" waitlist instead. Shop filters only show product types that have products on sale.

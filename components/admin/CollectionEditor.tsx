@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 import { ArrowDown, ArrowUp, ExternalLink, Trash2, Upload, X } from 'lucide-react';
 import { CollectionInput, deleteCollection, removeCollectionImage, saveCollection, setCollectionImage } from '@/app/admin/collection-actions';
 import { Card, btnSm, btnSmOutline, inputCls } from './ui';
+import { MosaicLoader } from '@/components/brand/MosaicLoader';
 
 const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 const label = 'mb-1 block text-xs font-semibold uppercase tracking-wider text-[var(--color-muted)]';
@@ -126,7 +127,7 @@ export function CollectionEditor({ initial, isNew, image, products }: { initial:
             <option value="hidden">Hidden</option>
           </select>
           <button onClick={save} disabled={pending} className={`${btnSm} mt-4 w-full py-3 text-sm`}>
-            {pending ? 'Saving…' : isNew ? 'Create collection' : 'Save changes'}
+            {pending ? <span className="inline-flex items-center gap-2"><MosaicLoader size={14} color="#fff" label="Saving" /> Saving…</span> : isNew ? 'Create collection' : 'Save changes'}
           </button>
           {!isNew && (
             <>

@@ -19,6 +19,7 @@ import { JsonLd } from '@/components/seo/JsonLd';
 import { SITE_URL } from '@/lib/site';
 import { EXPERTS, GENERAL_FAQS, IMAGES, PET_IMAGES } from '@/data/content';
 import { Brand, brandify } from '@/components/brand/Brand';
+import { MosaicField } from '@/components/brand/MosaicField';
 
 // PLACEHOLDER: swap these for press/retailer logos once you have them.
 const MARQUEE = ['Clean Ingredients', 'Third-Party Tested', 'GMP Certified', 'Nutritionist Formulated', 'Made in the USA', 'Vegan Options', '90-Day Guarantee'];
@@ -37,6 +38,9 @@ export default async function HomePage() {
       <section className="relative overflow-hidden">
         <img src={content.hero_image} alt="" className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-white via-white/85 to-white/10" />
+        {/* Brand mosaic: small orange tiles breaking in from the top-right, and the hero dissolving into the strip below */}
+        <MosaicField cols={30} rows={18} anchor="top-right" seed={3} className="right-0 top-0 hidden md:block" />
+        <MosaicField cols={140} rows={3} anchor="bottom" color="var(--color-soft)" density={1} maxOpacity={1} animate={false} seed={5} className="bottom-0 left-0" />
         <div className="container relative px-6 py-20 md:py-32">
           <div className="max-w-xl">
             {content.hero_badge && (

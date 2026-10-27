@@ -7,6 +7,7 @@ import { Lock } from 'lucide-react';
 import { useCart, cartFrequency, cartTotal } from '@/lib/store/cart';
 import { track } from '@/lib/analytics';
 import { Frequency } from '@/types';
+import { MosaicLoader } from '@/components/brand/MosaicLoader';
 
 export function CheckoutButton() {
   const { items, setFrequency } = useCart();
@@ -77,8 +78,15 @@ export function CheckoutButton() {
         </label>
       )}
       <button onClick={checkout} disabled={loading || Boolean(blocked) || items.length === 0} className="btn btn-primary w-full disabled:opacity-50">
-        <Lock className="h-4 w-4" /> {loading ? 'Redirecting…' : 'Secure Checkout'}
+        {loading ? <MosaicLoader size={18} color="#fff" label="Starting checkout" /> : <Lock className="h-4 w-4" />} {loading ? 'Redirecting…' : 'Secure Checkout'}
       </button>
+      {loading && (
+        // Stripe can take a second or two to open; keep the wait on-brand.
+        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center gap-4 bg-white/90 backdrop-blur-sm">
+          <MosaicLoader size={56} label="Opening secure checkout" />
+          <p className="text-sm font-semibold text-[var(--color-navy)]">Taking you to secure checkout…</p>
+        </div>
+      )}
     </div>
   );
 }

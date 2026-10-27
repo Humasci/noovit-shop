@@ -3,6 +3,7 @@
 import { Suspense, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Mail, CalendarClock, CreditCard, FileText, XCircle } from 'lucide-react';
+import { MosaicLoader } from '@/components/brand/MosaicLoader';
 
 const FEATURES = [
   { icon: CalendarClock, text: 'Change delivery frequency' },
@@ -53,7 +54,7 @@ function Account() {
             className="w-full py-3 outline-none"
           />
         </div>
-        <button disabled={loading} className="btn btn-primary disabled:opacity-50">{loading ? 'Sending…' : 'Email me a link'}</button>
+        <button disabled={loading} className="btn btn-primary disabled:opacity-50">{loading ? <><MosaicLoader size={18} color="#fff" label="Sending" /> Sending…</> : 'Email me a link'}</button>
       </form>
 
       {status && (

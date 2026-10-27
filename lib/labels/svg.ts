@@ -1,4 +1,5 @@
 import { Product } from '@/types';
+import { CROSS_GAP, CROSS_TILES, crossTile } from '@/lib/brand/cross';
 
 // Noovit label system, drawn as SVG strings so one design feeds three places:
 //  - the print draft of the full wrap-around label (fullLabelSvg, real units: 1 = 0.01 inch),
@@ -74,28 +75,27 @@ export function netQuantity(p: Product) {
 const N_PATH =
   'M20.33 0L9.00 0L9.00-38.58L3.25-38.58L3.25-50.00L15.08-50.00L15.08-42.08L18.58-42.08Q21.25-46.33 25.71-48.63Q30.17-50.92 36.50-50.92L36.50-50.92Q46.50-50.92 52.13-45.29Q57.75-39.67 57.75-30.25L57.75-30.25L57.75 0L46.42 0L46.42-28.25Q46.42-34.42 43.13-37.67Q39.83-40.92 33.42-40.92L33.42-40.92Q27.00-40.92 23.67-37.67Q20.33-34.42 20.33-28.25L20.33-28.25L20.33 0Z';
 
-// The mosaic cross: five square tiles, the centre strongest. (x, y) = top-left of its 3×3 grid, t = tile size.
-export function mosaicCross(x: number, y: number, t: number, color = ORANGE) {
-  const g = t * 0.16;
-  return [[1, 0, 0.6], [0, 1, 0.4], [1, 1, 1], [2, 1, 0.8], [1, 2, 0.5]]
-    .map(([c, r, o]) => `<rect x="${n(x + c * (t + g))}" y="${n(y + r * (t + g))}" width="${n(t)}" height="${n(t)}" rx="${n(t * 0.12)}" fill="${color}" opacity="${o}"/>`)
-    .join('');
+// The mosaic cross (lib/brand/cross.ts). (x, y) = top-left, `size` = overall width of the cross.
+export function mosaicCross(x: number, y: number, size: number, color = ORANGE) {
+  const t = crossTile(size);
+  const step = t * (1 + CROSS_GAP);
+  return CROSS_TILES.map(({ c, r, o }) => `<rect x="${n(x + c * step)}" y="${n(y + r * step)}" width="${n(t)}" height="${n(t)}" rx="${n(t * 0.12)}" fill="${color}" opacity="${o}"/>`).join('');
 }
 
 // The n⁺ icon in a 100×100 box.
 export function icon(fg = NAVY, accent = ORANGE) {
-  return `<path transform="translate(6 82)" d="${N_PATH}" fill="${fg}"/>${mosaicCross(66, 16, 7.4, accent)}`;
+  return `<path transform="translate(6 82)" d="${N_PATH}" fill="${fg}"/>${mosaicCross(66, 14, 26, accent)}`;
 }
 
 // "noovit" + mosaic cross. Width of "noovit" in Funnel Display 500 = 2.977em; "vit" can take a second tone.
 function wordmarkRaw(x: number, y: number, size: number, mode: FontMode, c1: string, c2: string, c2Opacity = 1, accent = ORANGE) {
   return `<text x="${n(x)}" y="${n(y)}" font-size="${size}" font-weight="500" letter-spacing="${n(-0.01 * size)}" ${font('logo', mode)}><tspan fill="${c1}">noo</tspan><tspan fill="${c2}" fill-opacity="${c2Opacity}">vit</tspan></text>
-    ${mosaicCross(x + 3.02 * size, y - 0.76 * size, size * 0.125, accent)}`;
+    ${mosaicCross(x + 3.02 * size, y - 0.8 * size, size * 0.44, accent)}`;
 }
 
 // Centred horizontal wordmark (baseline at y).
 export function wordmark(cx: number, y: number, size: number, mode: FontMode, color = NAVY) {
-  return `<g aria-label="noovit">${wordmarkRaw(cx - (3.02 + 0.42) * size / 2, y, size, mode, color, color)}</g>`;
+  return `<g aria-label="noovit">${wordmarkRaw(cx - (3.02 + 0.44) * size / 2, y, size, mode, color, color)}</g>`;
 }
 
 // ---------- Front panel (220 × 225 units = 2.2" × 2.25") ----------
@@ -172,10 +172,13 @@ function labelMosaic(p: Product, pattern: LabelPattern) {
     });
   }
   if (pattern === 'top') {
-    // white tiles stepping in from the top edge, kept clear of the icon
-    [0.75, 0.4, 0.15].forEach((d, row) => {
-      for (let x = 60; x < FRONT.w; x += step) if (rnd() < d * ((x - 60) / (FRONT.w - 60)) * 1.8) out.push(tile(x, 0.7 + row * step, '#fff', 0.18 + 0.45 * rnd()));
-    });
+    // Small white tiles fading in from the top-right corner (a radial gradient made of squares), clear of the icon.
+    const ts = 3.5, st = 4.2, cx0 = FRONT.w, cy0 = 0, radius = 135;
+    for (let y = 0.6; y < BAND - 20; y += st)
+      for (let x = 56; x < FRONT.w; x += st) {
+        const r = Math.hypot(x - cx0, y - cy0) / radius;
+        if (r < 1 && rnd() < (1 - r) ** 1.8 * 0.85) out.push(`<rect x="${n(x)}" y="${n(y)}" width="${ts}" height="${ts}" rx="0.4" fill="#fff" opacity="${n((0.1 + 0.55 * rnd()) * (1 - r))}"/>`);
+      }
   }
   if (pattern === 'sides') {
     // white tiles along both side edges of the colour block
@@ -190,10 +193,10 @@ function labelMosaic(p: Product, pattern: LabelPattern) {
 // Drawn at (0,0); callers translate/scale it. `bleed` extends both colour areas past the trim.
 // Colour block: icon, origin, product name, complex details; the vertical "noovit" wordmark is centred on the right edge.
 // White band (bottom 30%): benefit, "Dietary Supplement", net quantity.
-export function frontPanel(p: Product, mode: FontMode, bleed = 0, pattern: LabelPattern = 'none') {
+export function frontPanel(p: Product, mode: FontMode, bleed = 0, pattern: LabelPattern = 'top') {
   const shift = pattern === 'band' ? 10 : 0; // white-band content moves down to make room for the dissolve
   const vSize = 31;
-  const vLen = (3.02 + 0.42) * vSize; // wordmark length incl. the cross
+  const vLen = (3.02 + 0.44) * vSize; // wordmark length incl. the cross
   const { lines, size } = nameLines(p.name, FRONT.w - 18 - 54);
   const dark = shade(p.color);
   const { units } = labelCounts(p);
@@ -345,10 +348,11 @@ export type BottleVariant = 'front' | 'duo' | 'capsules' | 'facts';
 // A white HDPE bottle (or a wide tub for powders) seen slightly from above, so every circle is an ellipse.
 // The label is the flat front panel above, clipped to the curved band and shaded like a cylinder.
 // Drawn in a 400×460 box centred on x = 200.
-function bottle(p: Product, mode: FontMode, uid: string, pattern: LabelPattern = 'none') {
+function bottle(p: Product, mode: FontMode, uid: string, pattern: LabelPattern = 'top') {
   const jar = p.form === 'powder' || p.form === 'chews';
   const cx = 200;
-  const e = 0.12; // ellipse ratio: ry = r·e
+  const e = 0.07; // ellipse ratio for cap and base: ry = r·e (a near-front view)
+  const eLabel = 0.022; // label edges read almost straight, like a product photo
   const R = jar ? 112 : 94;
   const capR = jar ? 104 : 56;
   const capTop = jar ? 112 : 64;
@@ -367,7 +371,8 @@ function bottle(p: Product, mode: FontMode, uid: string, pattern: LabelPattern =
   const body = jar
     ? `M${X0} ${bodyTop} V${base} ${arc(base, R)} V${bodyTop} ${arc(bodyTop, R, 1)} Z`
     : `M${cx - neck} ${shoulder - 6} C${cx - neck} ${shoulder + 18} ${X0} ${shoulder + 16} ${X0} ${bodyTop} V${base} ${arc(base, R)} V${bodyTop} C${X1} ${shoulder + 16} ${cx + neck} ${shoulder + 18} ${cx + neck} ${shoulder - 6} Z`;
-  const band = `M${X0} ${n(LT)} ${arc(n(LT), R)} V${n(LB)} ${arc(n(LB), R, 1)} Z`;
+  const arcL = (y: number, r: number, sweep = 0) => `A${r} ${n(r * eLabel)} 0 0 ${sweep} ${sweep ? cx - r : cx + r} ${y}`;
+  const band = `M${X0} ${n(LT)} ${arcL(n(LT), R)} V${n(LB)} ${arcL(n(LB), R, 1)} Z`;
   const ribs = Array.from({ length: Math.round((capR * 2) / 3.05) - 1 }, (_, i) =>
     `<rect x="${n(cx - capR + 2 + i * 3.05)}" y="${capTop}" width="1.2" height="${n(capBot - capTop + capR * e)}" fill="#000" opacity="${n(0.05 + 0.05 * Math.abs(Math.sin(i / 5)))}"/>`
   ).join('');
@@ -391,8 +396,8 @@ function bottle(p: Product, mode: FontMode, uid: string, pattern: LabelPattern =
     <rect x="${X0 - 10}" y="${shoulder - 20}" width="${R * 2 + 20}" height="${base - shoulder + 40}" fill="#fafafa"/>
     <rect x="${X0 - 10}" y="${shoulder - 20}" width="${R * 2 + 20}" height="${bodyTop - shoulder + 30}" fill="url(#sh-${uid})"/>
     <g clip-path="url(#label-${uid})"><g transform="translate(${n(cx - lw / 2)} ${n(LT)}) scale(${n(scale)})">${frontPanel(p, mode, 30, pattern)}</g></g>
-    <path d="M${X0} ${n(LT)} ${arc(n(LT), R)}" fill="none" stroke="#000" stroke-opacity="0.07"/>
-    <path d="M${X0} ${n(LB)} ${arc(n(LB), R)}" fill="none" stroke="#000" stroke-opacity="0.07"/>
+    <path d="M${X0} ${n(LT)} ${arcL(n(LT), R)}" fill="none" stroke="#000" stroke-opacity="0.07"/>
+    <path d="M${X0} ${n(LB)} ${arcL(n(LB), R)}" fill="none" stroke="#000" stroke-opacity="0.07"/>
     <rect x="${X0 - 10}" y="${shoulder - 20}" width="${R * 2 + 20}" height="${base - shoulder + 40}" fill="url(#cyl-${uid})"/>
   </g>
   <path d="M${cx - neck - 2} ${capBot + 4} ${arc(capBot + 4, neck + 2)} V${capBot + 14} ${arc(capBot + 14, neck + 2, 1)} Z" fill="#e9ecef"/>

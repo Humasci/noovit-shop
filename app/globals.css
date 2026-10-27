@@ -169,3 +169,30 @@
 .prose-noovit code { background: var(--color-soft); padding: 0.1em 0.35em; border-radius: 0.3em; font-size: 0.9em; }
 .prose-noovit table { width: 100%; border-collapse: collapse; font-size: 0.95em; }
 .prose-noovit th, .prose-noovit td { border-bottom: 1px solid var(--color-line); padding: 0.5em; text-align: left; }
+
+/* Breathing mosaic cross (components/brand/MosaicLoader.tsx): 1.8s cycle, eased, clockwise via staggered delays. */
+@keyframes mosaic-breathe {
+  0%, 100% { opacity: 0.22; transform: scale(0.8); }
+  30% { opacity: 1; transform: scale(1); }
+  60% { opacity: 0.4; transform: scale(0.88); }
+}
+@keyframes mosaic-core {
+  0%, 100% { opacity: 0.75; transform: scale(0.94); }
+  50% { opacity: 1; transform: scale(1); }
+}
+.mosaic-breathe { animation: mosaic-breathe 1.8s cubic-bezier(0.45, 0, 0.55, 1) infinite both; }
+.mosaic-core { animation: mosaic-core 1.8s cubic-bezier(0.45, 0, 0.55, 1) infinite both; }
+@media (prefers-reduced-motion: reduce) {
+  .mosaic-breathe, .mosaic-core { animation: none; opacity: 1; transform: none; }
+}
+
+
+/* Mosaic field tiles fading slowly down and back (components/brand/MosaicField.tsx). */
+@keyframes mosaic-twinkle {
+  0%, 100% { opacity: var(--o); }
+  50% { opacity: calc(var(--o) * 0.2); }
+}
+.mosaic-twinkle { animation: mosaic-twinkle 6s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .mosaic-twinkle { animation: none; }
+}
