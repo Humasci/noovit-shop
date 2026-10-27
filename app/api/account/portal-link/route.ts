@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe/server';
-import { stripeConfigured } from '@/lib/config';
+import { dbConfigured, stripeConfigured } from '@/lib/config';
+import { db } from '@/lib/db/server';
 import { signToken } from '@/lib/sign';
 import { sendPortalLink } from '@/lib/email';
 
@@ -15,10 +16,21 @@ export async function POST(req: NextRequest) {
   }
 
   // Same response whether or not the customer exists, so emails can't be enumerated.
-  const { data } = await stripe().customers.list({ email: email.trim().toLowerCase(), limit: 1 });
-  if (data[0]) {
+  // Prefer the Stripe customer we recorded for this email (the one holding subscriptions); Stripe's email
+  // search is case-sensitive and can return a stale duplicate, so it is only the fallback.
+  const normalized = email.trim().toLowerCase();
+  let cid: string | null = null;
+  if (dbConfigured()) {
+    const { data: row } = await db().from('customers').select('stripe_customer_id').eq('email', normalized).maybeSingle();
+    cid = row?.stripe_customer_id ?? null;
+  }
+  if (!cid) {
+    const { data } = await stripe().customers.list({ email: normalized, limit: 1 });
+    cid = data[0]?.id ?? null;
+  }
+  if (cid) {
     const origin = process.env.NEXT_PUBLIC_SITE_URL || req.nextUrl.origin;
-    const token = signToken({ cid: data[0].id }, 30 * 60);
+    const token = signToken({ cid }, 30 * 60);
     await sendPortalLink(email, `${origin}/api/account/portal?token=${encodeURIComponent(token)}`).catch((err) =>
       console.error('Portal link email failed', err)
     );

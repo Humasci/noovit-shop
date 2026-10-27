@@ -4,14 +4,14 @@ const COMMON_FAQS: FAQ[] = [
   { q: 'Is it gluten free?', a: 'Yes. Every Noovit formula is made without gluten-containing ingredients.' },
   { q: 'Is it dairy and lactose free?', a: 'Yes, unless the label states otherwise.' },
   { q: 'What is your return policy?', a: 'Try it for 90 days. If you are not happy, contact us for a full refund — even on an empty bottle.' },
-  { q: 'When will my order ship?', a: 'Orders placed before 2pm on business days ship the same day.' },
+  { q: 'When will my order ship?', a: 'Orders usually ship within 1–2 business days, with tracking by email.' },
 ];
 
 const PET_FAQS: FAQ[] = [
   { q: 'Is it safe for puppies and kittens?', a: 'Most of our pet formulas are suitable from 12 weeks. Check with your vet first for young, pregnant or nursing pets.' },
   { q: 'Can I give it with medication?', a: 'Please check with your veterinarian before combining supplements with any medication.' },
   { q: 'What if my pet won’t eat it?', a: 'Our 90-day guarantee covers picky eaters too — contact us for a full refund.' },
-  { q: 'When will my order ship?', a: 'Orders placed before 2pm on business days ship the same day.' },
+  { q: 'When will my order ship?', a: 'Orders usually ship within 1–2 business days, with tracking by email.' },
 ];
 
 export interface ProductRow {
@@ -40,8 +40,9 @@ export function buildProduct(row: ProductRow, real?: RealRating): Product {
     seoTitle: row.seo_title ?? null,
     seoDescription: row.seo_description ?? null,
     supplierSku: row.supplier_sku ?? null,
-    rating: real ? Math.round(real.rating * 10) / 10 : row.data.rating,
-    reviewCount: real ? real.count : row.data.reviewCount,
+    // Ratings come only from approved reviews, never from stored or seed values.
+    rating: real ? Math.round(real.rating * 10) / 10 : 0,
+    reviewCount: real ? real.count : 0,
     hasRealReviews: Boolean(real),
     faqs: [
       ...(row.data.extraFaqs ?? []),

@@ -1,3 +1,4 @@
+import { createHash } from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
 import { ADMIN_COOKIE, adminConfigured, isAdminToken } from '@/lib/admin/session';
 import { signToken, verifyToken } from '@/lib/sign';
@@ -9,7 +10,9 @@ const GATE_COOKIE = 'noovit_gate';
 const GATE_TTL = 90 * 86_400;
 const adminPath = () => process.env.ADMIN_PATH?.replace(/^\/+|\/+$/g, '') || null;
 
-const hasGate = (req: NextRequest) => Boolean(verifyToken<{ gate?: number }>(req.cookies.get(GATE_COOKIE)?.value)?.gate);
+// The gate is tied to the current ADMIN_PATH, so changing the address revokes every gate already issued.
+const gateId = (path: string) => createHash('sha256').update(path).digest('base64url').slice(0, 16);
+const hasGate = (req: NextRequest, path: string) => verifyToken<{ gate?: string }>(req.cookies.get(GATE_COOKIE)?.value)?.gate === gateId(path);
 const notFound = (req: NextRequest) => NextResponse.rewrite(new URL('/__not-found', req.url));
 
 export function proxy(req: NextRequest) {
@@ -20,7 +23,7 @@ export function proxy(req: NextRequest) {
   if (secret && pathname === `/${secret}`) {
     if (!adminConfigured()) return notFound(req);
     const res = NextResponse.redirect(new URL(signedIn ? '/admin' : '/admin/login', req.url));
-    res.cookies.set(GATE_COOKIE, signToken({ gate: 1 }, GATE_TTL), {
+    res.cookies.set(GATE_COOKIE, signToken({ gate: gateId(secret) }, GATE_TTL), {
       httpOnly: true,
       secure: req.nextUrl.protocol === 'https:',
       sameSite: 'lax',
@@ -31,7 +34,7 @@ export function proxy(req: NextRequest) {
   }
 
   if (pathname !== '/admin' && !pathname.startsWith('/admin/')) return NextResponse.next();
-  if (secret && !signedIn && !(adminConfigured() && hasGate(req))) return notFound(req);
+  if (secret && !signedIn && !(adminConfigured() && hasGate(req, secret))) return notFound(req);
   if (pathname === '/admin/login' || signedIn) return NextResponse.next();
   return NextResponse.redirect(new URL('/admin/login', req.url));
 }

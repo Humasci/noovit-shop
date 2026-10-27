@@ -6,6 +6,7 @@ import { Quiz } from '@/components/quiz/Quiz';
 export const metadata: Metadata = {
   title: 'Supplement Quiz — Find Your Daily Plus | Noovit',
   description: 'Answer a few quick questions about your goals and routine and get three supplement suggestions that fit you.',
+  alternates: { canonical: '/quiz' },
 };
 
 export default async function QuizPage() {

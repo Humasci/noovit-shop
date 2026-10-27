@@ -21,6 +21,7 @@ async function call(path: string, body: unknown) {
         Accept: 'application/vnd.api+json',
       },
       body: JSON.stringify(body),
+      signal: AbortSignal.timeout(5000), // never let a slow Klaviyo stall a webhook
     });
     if (!res.ok) console.error(`Klaviyo ${path} failed: ${res.status} ${(await res.text()).slice(0, 300)}`);
   } catch (err) {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { Menu, X, ShoppingBag, Leaf, Star, FlaskConical, ShieldCheck, BadgeCheck, ChevronDown, PawPrint, User } from 'lucide-react';
@@ -48,7 +48,20 @@ const TRUST_ICONS = [Leaf, Star, FlaskConical, ShieldCheck, BadgeCheck];
 
 export function Header({ trustBar, announcement }: { trustBar: string[]; announcement?: { text: string; href: string } }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const onPets = usePathname().startsWith('/pets');
+  const pathname = usePathname();
+  const onPets = pathname.startsWith('/pets');
+  const [menuPath, setMenuPath] = useState(pathname);
+  // Close the mobile menu on navigation and on Escape.
+  if (menuPath !== pathname) {
+    setMenuPath(pathname);
+    setMenuOpen(false);
+  }
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setMenuOpen(false);
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [menuOpen]);
   const items = useCart((s) => s.items);
   const openCart = useCart((s) => s.open);
 
@@ -65,13 +78,13 @@ export function Header({ trustBar, announcement }: { trustBar: string[]; announc
           )}
         </div>
       )}
-      <div className="bg-[var(--color-navy)] py-2 text-white">
-        <div className="no-scrollbar flex justify-start gap-8 overflow-x-auto px-4 text-xs font-medium md:justify-center">
+      <div className="bg-[var(--color-navy)] py-2 text-white" role="region" aria-label="Why shop with Noovit">
+        <div tabIndex={0} className="no-scrollbar flex justify-start gap-8 overflow-x-auto px-4 text-xs font-medium md:justify-center">
           {trustBar.map((label, i) => {
             const Icon = TRUST_ICONS[i % TRUST_ICONS.length];
             return (
               <span key={label} className="flex shrink-0 items-center gap-1.5">
-                <Icon className="h-3.5 w-3.5" />
+                <Icon className="h-3.5 w-3.5" aria-hidden />
                 {brandify(label)}
               </span>
             );
@@ -81,14 +94,21 @@ export function Header({ trustBar, announcement }: { trustBar: string[]; announc
 
       <header className="sticky top-0 z-40 border-b border-[var(--color-line)] bg-white/95 backdrop-blur">
         <div className="container grid grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 py-4 md:px-6">
-          <nav className="hidden items-center gap-6 whitespace-nowrap font-logo text-[15px] font-medium lg:flex">
+          <nav aria-label="Main" className="hidden items-center gap-6 whitespace-nowrap font-logo text-[15px] font-medium lg:flex">
             {NAV.filter((n) => !n.pets).map((n) => {
               const tone = n.pets ? 'text-[var(--color-pets)] hover:text-[var(--color-pets-dark)]' : 'hover:text-[var(--color-accent)]';
               if (!n.children) return <Link key={n.href} href={n.href} className={tone}>{n.name}</Link>;
               return (
                 // Opens on hover and on keyboard focus (focus-within), no JavaScript needed.
-                <div key={n.href} className="group relative">
-                  <Link href={n.href} className={`flex items-center gap-1 py-2 ${tone}`} aria-haspopup="true">
+                // Escape closes it (WCAG 1.4.13) by moving focus back to the top-level link.
+                <div
+                  key={n.href}
+                  className="group relative"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Escape') (e.currentTarget.querySelector('a') as HTMLElement | null)?.blur();
+                  }}
+                >
+                  <Link href={n.href} className={`flex items-center gap-1 py-2 ${tone}`}>
                     {n.name} <ChevronDown className="h-3.5 w-3.5 transition-transform group-hover:rotate-180 group-focus-within:rotate-180" />
                   </Link>
                   <div className="invisible absolute left-0 top-full z-50 pt-2 opacity-0 transition-opacity group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
@@ -109,7 +129,13 @@ export function Header({ trustBar, announcement }: { trustBar: string[]; announc
               );
             })}
           </nav>
-          <button className="justify-self-start lg:hidden" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
+          <button
+            className="-m-2.5 justify-self-start p-2.5 lg:hidden"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
+          >
             {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
 
@@ -122,14 +148,14 @@ export function Header({ trustBar, announcement }: { trustBar: string[]; announc
             {onPets ? (
               <Link
                 href="/shop"
-                className="hidden items-center gap-1.5 rounded-full bg-[var(--color-opal)] px-4 py-1.5 font-logo text-[15px] font-medium text-white transition-colors hover:bg-[var(--color-accent)] lg:flex"
+                className="hidden items-center gap-1.5 rounded-full bg-[var(--color-opal)] px-4 py-1.5 font-logo text-[15px] font-medium text-[var(--color-navy)] transition-colors hover:bg-[var(--color-accent-light)] lg:flex"
               >
                 <User className="h-4 w-4" /> Humans
               </Link>
             ) : (
               <Link
                 href="/pets"
-                className="hidden items-center gap-1.5 rounded-full bg-[var(--color-pets)] px-4 py-1.5 font-logo text-[15px] font-medium text-white transition-colors hover:bg-[var(--color-pets-dark)] lg:flex"
+                className="hidden items-center gap-1.5 rounded-full bg-[var(--color-pets)] px-4 py-1.5 font-logo text-[15px] font-medium text-[var(--color-navy)] transition-colors hover:brightness-95 lg:flex"
               >
                 <PawPrint className="h-4 w-4" /> Pets
               </Link>
@@ -137,17 +163,19 @@ export function Header({ trustBar, announcement }: { trustBar: string[]; announc
             <Link href="/account" className="hidden font-logo text-[15px] font-medium hover:text-[var(--color-accent)] sm:block">
               My Subscriptions
             </Link>
-            <button onClick={openCart} className="relative" aria-label="Open cart">
-              <ShoppingBag className="h-6 w-6" />
-              <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-[var(--color-accent)] text-[10px] font-bold text-white">
-                {count}
-              </span>
+            <button onClick={openCart} className="relative -m-2 p-2" aria-label={`Cart, ${count} ${count === 1 ? 'item' : 'items'}`}>
+              <ShoppingBag className="h-6 w-6" aria-hidden />
+              {count > 0 && (
+                <span aria-hidden className="absolute right-0 top-0 flex h-5 w-5 items-center justify-center rounded-full bg-[var(--color-accent)] text-[10px] font-bold text-white">
+                  {count}
+                </span>
+              )}
             </button>
           </div>
         </div>
 
         {menuOpen && (
-          <nav className="animate-slide-in flex flex-col gap-4 border-t border-[var(--color-line)] px-6 py-5 font-logo text-lg font-medium lg:hidden">
+          <nav id="mobile-menu" aria-label="Main" className="animate-slide-in flex flex-col gap-4 border-t border-[var(--color-line)] px-6 py-5 font-logo text-lg font-medium lg:hidden">
             {NAV.map((n) => (
               <div key={n.href}>
                 <Link href={n.href} onClick={() => setMenuOpen(false)} className={n.pets ? 'text-[var(--color-pets)]' : ''}>

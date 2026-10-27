@@ -1,6 +1,6 @@
 # Noovit — Progress Log
 
-_Last updated: 2026-10-26_
+_Last updated: 2026-10-27_
 
 ## Decisions
 - **Model:** dropship / white-label first, then own contract manufacturer + 3PL per country.
@@ -30,6 +30,7 @@ _Last updated: 2026-10-26_
 - [x] Supplement quiz at `/quiz` (lib/quiz.ts scoring; diet/pregnancy filters; plan to cart; email capture as source `quiz`).
 - [x] Brand mosaic on the site: two mosaic crosses (lib/brand/cross.ts): the five-tile mark in the logo, icon and labels, the nine-tile version in the loader and large graphics; breathing cross loader for checkout, route loading and pending buttons; small fading tile field in the hero with a dissolve into the strip below; product-card hover tiles; tile-fill Add to Cart. Bottle label edges near-straight with a small-tile gradient from the top-right.
 - [x] Supplier research (Oct 2026) → `docs/SUPPLIER_RESEARCH.md`.
+- [x] **Launch audit (Oct 27)** — code, SEO/content/compliance/performance and UX/accessibility reviews; report and remaining owner actions in [`LAUNCH_AUDIT.md`](LAUNCH_AUDIT.md). Fixed: all placeholder reviews, ratings, counts and advisor quotes removed (only real approved reviews show); working contact form; page titles, canonicals, noindex for cart/account/empty pages, branded 404 and error pages; bottle images served as cached, resized images (home page HTML ~1 MB → a fraction); cart drawer and pop-up are proper dialogs; WCAG contrast, focus and labels; sticky mobile Add to Cart; checkout explains missing consent; security headers; admin login rate limit; webhook re-fetches Stripe objects; fulfilment marks only exported orders; subscription terms in the confirmation email; product pages default to one-time. Migration `0006_launch_audit` applied live.
 - [x] **Phase 2 (Shopify parity):** staff accounts with Owner/Manager/Fulfilment roles; partial refunds, cancellations, order notes & tags, manual replacement orders and payment links; customer profiles with notes, tags, segments and CSV export; collections, bundles, bulk product actions, product CSV import/export; editable homepage, announcement bar and pop-up; blog; review-request emails (daily cron), automatic spend discount, cart cross-sell, Klaviyo sync; reports with charts.
 
 ## Waiting on
@@ -49,7 +50,8 @@ _Last updated: 2026-10-26_
 - [ ] Logo + mockups → apply brand styling.
 
 ## Before launch
-- [ ] Replace placeholder reviews, review counts, advisor/vet panel and "25,000+ customers" claim.
+- [x] Placeholder reviews, review counts, advisor/vet panel and "25,000+ customers" claim removed (Oct 27 audit).
+- [ ] Owner actions from [`LAUNCH_AUDIT.md`](LAUNCH_AUDIT.md) (claims evidence, Made in USA wording, legal pages, contact details, social URLs).
 - [ ] Align formulas/doses on the site with the chosen supplier's actual products.
 - [ ] Claims review by a regulatory lawyer; Prop 65 check; FDA structure/function notification within 30 days of first sale.
 - [ ] Product liability insurance; legal review of policy pages.

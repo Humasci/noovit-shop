@@ -4,8 +4,8 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { SlidersHorizontal } from 'lucide-react';
 import { ProductCard } from '@/components/product/ProductCard';
-import { TrustSection, ReviewsSection } from '@/components/sections/Sections';
-import { PRODUCT_TYPES, DIETARY_TAGS, asLowAs } from '@/data/products';
+import { TrustSection } from '@/components/sections/Sections';
+import { PRODUCT_TYPES, PUBLIC_DIETARY_TAGS, asLowAs } from '@/data/products';
 import { DietaryTag, Product, ProductType } from '@/types';
 
 export type TypeFilter = ProductType | 'all' | 'best-sellers';
@@ -79,7 +79,7 @@ export function ShopBrowser({
       <section className="bg-[var(--color-soft)] py-14">
         <div className="container px-6 text-center">
           <h1 className="mx-auto max-w-3xl text-balance text-3xl md:text-5xl">Clean, science-driven nutrition for every body.</h1>
-          <p className="mt-4 text-[var(--color-muted)]">Nutritionist formulated · Third-party tested · Made in the USA</p>
+          <p className="mt-4 text-[var(--color-muted)]">Evidence-based doses · Third-party tested · Made in the USA</p>
           {collections.length > 0 && (
             <div className="mt-6 flex flex-wrap justify-center gap-2">
               {collections.map((c) => (
@@ -92,7 +92,7 @@ export function ShopBrowser({
         </div>
       </section>
 
-      <div className="sticky top-[65px] z-30 border-b border-[var(--color-line)] bg-white">
+      <div className="sticky top-[75px] z-30 md:top-[82px] border-b border-[var(--color-line)] bg-white">
         <div className="container px-6 py-4">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div className="no-scrollbar flex items-center gap-2 overflow-x-auto">
@@ -124,7 +124,7 @@ export function ShopBrowser({
           {showDiet && (
             <div className="no-scrollbar mt-3 flex items-center gap-2 overflow-x-auto">
               <span className="mr-1 shrink-0 text-xs font-bold uppercase tracking-wider text-[var(--color-muted)]">For Every Body</span>
-              {DIETARY_TAGS.map((t) => (
+              {PUBLIC_DIETARY_TAGS.map((t) => (
                 <Pill key={t.value} active={tags.includes(t.value)} onClick={() => toggleTag(t.value)}>
                   {t.label}
                 </Pill>
@@ -161,7 +161,6 @@ export function ShopBrowser({
       </div>
 
       <TrustSection />
-      <ReviewsSection />
     </>
   );
 }

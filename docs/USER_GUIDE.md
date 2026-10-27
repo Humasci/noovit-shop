@@ -83,6 +83,12 @@ If you've added tracking IDs in Settings, visitors see a small cookie banner. No
 - **Pairs well with:** the cart suggests two best sellers that aren't already in it, with one-tap **Add**.
 - **Automatic discount:** if you've set one (e.g. 10% off orders over $100), the cart shows a progress bar ("Spend $X more to get 10% off") and the discount applies at checkout by itself. While it applies, discount codes can't also be entered — Stripe allows one discount per checkout.
 
+### Contact us
+The Contact page has a form (name, email, topic, message). Messages are emailed to the **Customer support email** in Settings, with the customer's address as reply-to. Without Resend set up, the form tells the customer to email you directly instead of pretending it was sent.
+
+### Social links
+Instagram, TikTok and Facebook icons appear in the footer only once their profile URLs are set in Vercel: `NEXT_PUBLIC_INSTAGRAM_URL`, `NEXT_PUBLIC_TIKTOK_URL`, `NEXT_PUBLIC_FACEBOOK_URL` (redeploy after adding).
+
 ### Leave a review
 Any visitor can submit a review from a product page or the Reviews page. It **does not appear until you approve it**. If the reviewer's email matches an order for that product, it is automatically marked **Verified Buyer**.
 
@@ -120,9 +126,11 @@ After that, that browser remembers it for 90 days, and plain `noovit.com/admin` 
 
 **Giving staff access:** create their account on the **Staff** page, then send them the secret address and their temporary password separately (for example the address by email and the password by text). Ask them to change the password under **My account** after signing in.
 
-**If the address leaks:** change `ADMIN_PATH` in Vercel (Project → Settings → Environment Variables) and redeploy. The old address stops working at once. Anyone already signed in stays signed in until they log out, so also deactivate any staff account you no longer trust. Then send the new address to your team.
+**If the address leaks:** change `ADMIN_PATH` in Vercel (Project → Settings → Environment Variables) and redeploy. The old address stops working at once, and every browser that used it loses access until it opens the new address. Anyone already signed in stays signed in until they log out, so also deactivate any staff account you no longer trust. Then send the new address to your team.
 
 The secret address is an extra layer of protection. Passwords and staff roles still protect everything behind it.
+
+**Too many wrong passwords:** after 10 failed sign-ins in 15 minutes from the same network or for the same email, sign-in is paused for 15 minutes. This stops password guessing; just wait and try again.
 
 You stay signed in for 7 days on that device. Your name (→ **My account**, to change your password) and **Log out** are at the bottom of the menu.
 
@@ -172,9 +180,9 @@ Your daily snapshot:
 ### Fulfilment (daily routine for dropshipping)
 Every paid order — including each subscription renewal — appears here as **queued**.
 
-1. Click **Export queued (CSV)**. You get one row per item to ship: name, address, product, **supplier SKU** and number of units. **Bundles are split into their component products**, each with its own SKU, and the `part_of_bundle` column says which bundle it came from.
+1. Click **Export queued (CSV)**. Every queued order is included and marked as *exported*. You get one row per item to ship: name, address, product, **supplier SKU** and number of units. **Bundles are split into their component products**, each with its own SKU, and the `part_of_bundle` column says which bundle it came from.
 2. Upload or send that file to your supplier (or enter the orders in their portal).
-3. Click **Mark N queued as submitted**.
+3. Click **Mark N exported as submitted**. Only orders that were in your export are marked; orders that arrived after you exported stay queued for the next batch, so nothing is marked as sent to the supplier by mistake.
 4. When the supplier ships, open the order (or find it on this page), set status to **shipped**, and enter carrier, tracking number and tracking link → **Save**. The customer is emailed automatically.
 5. Optionally mark **delivered** later.
 
@@ -297,7 +305,8 @@ Add people with their name, email, role and a temporary password (12+ characters
 
 ### Settings
 - **Analytics & ad tracking:** paste your Google Analytics 4 measurement ID (`G-…`), Meta Pixel ID and TikTok Pixel ID. Leave blank to switch a platform off. Tracking starts only after a visitor accepts cookies, and records page views, product views, add to cart, checkout started and purchases (with order value) — enough to run and measure ad campaigns.
-- **Marketing emails:** the welcome discount code and your business postal address (US law requires it in marketing emails).
+- **Customer support email:** shown on the Contact page; contact-form messages are sent here (needs Resend). Replying to one answers the customer directly. Defaults to hello@noovit.com.
+- **Marketing emails:** the welcome discount code and your business postal address (US law requires it in marketing emails; it also appears on the Contact page).
 - **Review requests:** how many days after shipping to email customers asking for a review (default 14; 0 switches it off). Sent once per order, never to people who unsubscribed or whose order was refunded or cancelled. Runs daily at 15:00 UTC.
 - **Automatic discount:** a minimum order ($) and % off, e.g. 100 and 10. Leave blank to switch off.
 - **Affiliates:** how many days a commission stays pending before it is approved for payout (default 30). Approval runs with the daily job.

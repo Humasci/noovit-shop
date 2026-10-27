@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: 'Noovit — Clean, Science-Driven Supplements',
   description:
-    'Nutritionist-formulated, third-party tested supplements for gut health, sleep, joints, skin, energy and performance. Subscribe & save, 90-day guarantee.',
+    'Clean, evidence-based supplements for gut health, sleep, joints, skin, energy and performance. Subscribe & save, free US shipping, 90-day guarantee.',
   keywords: ['supplements', 'magnesium', 'probiotic', 'collagen', 'creatine', 'vitamin d3 k2', 'menopause supplement'],
   openGraph: { siteName: 'Noovit', type: 'website', locale: 'en_US' },
   twitter: { card: 'summary_large_image' },
@@ -20,10 +20,10 @@ const funnel = Funnel_Display({ subsets: ['latin'], variable: '--font-funnel', d
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${manrope.variable} ${funnel.variable}`}>
+    <html lang="en-US" className={`${inter.variable} ${manrope.variable} ${funnel.variable}`}>
       <body className="antialiased">
         {children}
-        <Toaster position="bottom-center" />
+        <Toaster position="top-center" containerStyle={{ zIndex: 70 }} />
       </body>
     </html>
   );

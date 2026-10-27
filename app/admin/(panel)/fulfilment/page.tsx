@@ -24,7 +24,8 @@ export default async function FulfilmentPage({ searchParams }: { searchParams: P
     .order('created_at', { ascending: true })
     .limit(200);
 
-  const queued = (data ?? []).filter((f) => f.status === 'queued').length;
+  const queued = (data ?? []).filter((f) => f.status === 'queued');
+  const exported = queued.filter((f) => f.exported_at).length;
   const { data: settings } = await db().from('products').select('slug, supplier_sku');
   const currentSku = new Map((settings ?? []).map((r) => [r.slug as string, r.supplier_sku as string | null]));
   const catalog = await loadCatalog();
@@ -35,15 +36,15 @@ export default async function FulfilmentPage({ searchParams }: { searchParams: P
         <a href="/admin/fulfilment/export" className={`${btnSmOutline} inline-flex items-center gap-1`}>
           <Download className="h-3.5 w-3.5" /> Export queued (CSV)
         </a>
-        {queued > 0 && (
+        {exported > 0 && (
           <form action={markQueuedSubmitted}>
-            <button className={btnSm}>Mark {queued} queued as submitted</button>
+            <button className={btnSm}>Mark {exported} exported as submitted</button>
           </form>
         )}
       </PageTitle>
       <Flash msg={msg} />
       <p className="mb-4 text-sm text-[var(--color-muted)]">
-        Supplier: <b>{fulfilmentSupplier()}</b>. Export the queued orders, upload them to your supplier, then mark them as submitted. Add tracking when the
+        Supplier: <b>{fulfilmentSupplier()}</b>. Export the queued orders, upload them to your supplier, then mark the exported ones as submitted (orders that arrive after your export stay queued for the next batch). Add tracking when the
         supplier ships — the customer is emailed automatically.
       </p>
       <div className="mb-4">

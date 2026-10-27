@@ -6,8 +6,6 @@ import { Star } from 'lucide-react';
 import { Review } from '@/types';
 import { Stars } from '@/components/ui/Stars';
 
-const PLACEHOLDER_DISTRIBUTION = [86, 10, 3, 1, 0];
-
 interface ApiReview {
   id: string;
   product_slug: string;
@@ -26,20 +24,15 @@ const subscribeHash = (cb: () => void) => {
 
 const inputClass = 'w-full rounded-xl border border-[var(--color-line)] bg-white px-4 py-3';
 
+// Only real, approved reviews are ever shown: no placeholder reviews, ratings or counts (FTC 16 CFR 465).
 export function ReviewsModule({
-  reviews: placeholders,
-  total: placeholderTotal,
-  rating: placeholderRating = 4.8,
   productSlug,
   productOptions = [],
 }: {
-  reviews: Review[];
-  total: number;
-  rating?: number;
   productSlug?: string;
   productOptions?: { slug: string; name: string }[];
 }) {
-  const [real, setReal] = useState<Review[]>([]);
+  const [reviews, setReviews] = useState<Review[] | null>(null);
   const [score, setScore] = useState(5);
   // Links from review-request emails end in #write, which opens the form straight away.
   const fromHash = useSyncExternalStore(subscribeHash, () => window.location.hash === '#write', () => false);
@@ -51,7 +44,7 @@ export function ReviewsModule({
     fetch(`/api/reviews${productSlug ? `?slug=${productSlug}` : ''}`)
       .then((r) => r.json())
       .then((d: { reviews: ApiReview[] }) =>
-        setReal(
+        setReviews(
           d.reviews.map((r) => ({
             id: r.id,
             name: r.name,
@@ -64,17 +57,13 @@ export function ReviewsModule({
           }))
         )
       )
-      .catch(() => {});
+      .catch(() => setReviews([]));
   }, [productSlug]);
 
-  // Once real, approved reviews exist they replace the placeholders entirely.
-  const usingReal = real.length > 0;
-  const reviews = usingReal ? real : placeholders;
-  const total = usingReal ? real.length : placeholderTotal;
-  const rating = usingReal ? real.reduce((s, r) => s + r.rating, 0) / real.length : placeholderRating;
-  const distribution = usingReal
-    ? [5, 4, 3, 2, 1].map((n) => Math.round((real.filter((r) => r.rating === n).length / real.length) * 100))
-    : PLACEHOLDER_DISTRIBUTION;
+  const list = reviews ?? [];
+  const total = list.length;
+  const rating = total ? list.reduce((s, r) => s + r.rating, 0) / total : 0;
+  const distribution = [5, 4, 3, 2, 1].map((n) => (total ? Math.round((list.filter((r) => r.rating === n).length / total) * 100) : 0));
 
   const submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -97,10 +86,19 @@ export function ReviewsModule({
       <div className="container px-6">
         <div className="grid gap-10 md:grid-cols-[280px_1fr]">
           <div>
-            <p className="text-5xl font-extrabold text-[var(--color-navy)]">{rating.toFixed(1)}</p>
-            <Stars rating={rating} size={20} className="mt-2" />
-            <p className="mt-1 text-sm text-[var(--color-muted)]">Based on {total.toLocaleString()} reviews</p>
-            <div className="mt-5 space-y-1.5">
+            {total > 0 ? (
+              <>
+                <p className="text-5xl font-extrabold text-[var(--color-navy)]">{rating.toFixed(1)}</p>
+                <Stars rating={rating} size={20} className="mt-2" />
+                <p className="mt-1 text-sm text-[var(--color-muted)]">Based on {total.toLocaleString()} {total === 1 ? 'review' : 'reviews'}</p>
+              </>
+            ) : (
+              <>
+                <h2 className="text-2xl">Reviews</h2>
+                <p className="mt-1 text-sm text-[var(--color-muted)]">{reviews ? 'No reviews yet. Tried it? Be the first to share your experience.' : 'Loading reviews…'}</p>
+              </>
+            )}
+            <div className={`mt-5 space-y-1.5 ${total ? '' : 'hidden'}`}>
               {distribution.map((pct, i) => (
                 <div key={i} className="flex items-center gap-2 text-xs">
                   <span className="w-3">{5 - i}</span>
@@ -148,7 +146,7 @@ export function ReviewsModule({
             )}
 
             <div className="divide-y divide-[var(--color-line)]">
-              {reviews.map((r) => (
+              {list.map((r) => (
                 <article key={r.id} className="py-6 first:pt-0">
                   <div className="flex items-center justify-between">
                     <Stars rating={r.rating} size={14} />
@@ -158,7 +156,7 @@ export function ReviewsModule({
                   <p className="mt-1 text-sm text-[var(--color-muted)]">{r.body}</p>
                   <p className="mt-2 text-xs font-bold">
                     {r.name}
-                    {r.verified !== false && <span className="ml-1 font-semibold text-[var(--color-green)]">Verified Buyer</span>}
+                    {r.verified === true && <span className="ml-1 font-semibold text-[var(--color-green)]">Verified Buyer</span>}
                   </p>
                 </article>
               ))}

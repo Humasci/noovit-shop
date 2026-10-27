@@ -1,17 +1,16 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { Leaf, MapPin, FlaskConical, Sparkles, Gem, BadgeDollarSign, ShieldCheck, Zap, BadgeCheck } from 'lucide-react';
+import { Leaf, MapPin, FlaskConical, Sparkles, Gem, BadgeDollarSign, ShieldCheck, Zap } from 'lucide-react';
 import { bestSellers, petProducts } from '@/data/products';
 import { getStoreProduct, getStoreProducts } from '@/lib/catalog/server';
 import { productImageUrl, productUrl } from '@/lib/site';
 import { JsonLd } from '@/components/seo/JsonLd';
-import { REVIEWS, PET_REVIEWS } from '@/data/content';
 import { Gallery, PurchaseBox, InfoTabs, TrackViewItem } from '@/components/product/ProductClient';
 import { ProductCard } from '@/components/product/ProductCard';
 import { Stars } from '@/components/ui/Stars';
 import { ReviewsModule } from '@/components/reviews/ReviewsModule';
-import { ReviewsSection, FAQSection, SubscriptionPerks, SectionHeading } from '@/components/sections/Sections';
+import { FAQSection, SubscriptionPerks, SectionHeading } from '@/components/sections/Sections';
 
 export async function generateStaticParams() {
   return (await getStoreProducts()).map((p) => ({ slug: p.slug }));
@@ -43,9 +42,6 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const all = await getStoreProducts();
 
   const isPet = product.productType === 'pets';
-  const productReviews = [...(isPet ? PET_REVIEWS : REVIEWS)].sort(
-    (a, b) => Number(b.productSlug === product.slug) - Number(a.productSlug === product.slug)
-  );
   const related = (isPet ? petProducts(all) : bestSellers(all)).filter((p) => p.id !== product.id && p.status === 'active').slice(0, 4);
   const quality = [
     isPet
@@ -92,7 +88,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         <div>
           <div className="flex gap-2">
             {isPet && (
-              <span className="rounded-full bg-[var(--color-pets)] px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white">
+              <span className="rounded-full bg-[var(--color-pets)] px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-[var(--color-navy)]">
                 Noovit Pets · {product.species?.map((s) => (s === 'dog' ? 'Dogs' : 'Cats')).join(' & ')}
               </span>
             )}
@@ -112,25 +108,11 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               <span className="font-semibold text-[var(--color-accent)]">Be the first to review</span>
             )}
           </a>
-          <p className="mt-4 text-lg text-[var(--color-muted)]">{product.shortBenefit}</p>
+          <p className="mt-4 text-lg text-[var(--color-muted)]">{product.shortBenefit}*</p>
 
           <div className="mt-6">
             <PurchaseBox product={product} />
           </div>
-
-          {/* PLACEHOLDER: replace with a real nutritionist's note, photo and signature. */}
-          <figure className="mt-8 flex gap-4 rounded-2xl border border-[var(--color-line)] p-5">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[var(--color-navy)] font-bold text-white">{isPet ? 'V' : 'N'}</div>
-            <div>
-              <blockquote className="text-sm italic">
-                &ldquo;{product.name} is one I recommend often — it {product.shortBenefit.charAt(0).toLowerCase() + product.shortBenefit.slice(1)}&rdquo;
-              </blockquote>
-              <figcaption className="mt-2 text-xs font-bold">
-                {isPet ? 'Vet Advisor Name' : 'Advisor Name'}{' '}
-                <span className="font-semibold text-[var(--color-accent)]">· {isPet ? 'DVM' : 'Registered Nutritionist'}</span>
-              </figcaption>
-            </div>
-          </figure>
 
           {product.bundleItems?.length ? (
             <div className="mt-8 rounded-2xl border border-[var(--color-line)] p-5">
@@ -155,25 +137,6 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
           <div className="mt-8">
             <InfoTabs product={product} />
-          </div>
-        </div>
-      </section>
-
-      {/* Review snippets */}
-      <section className="section bg-[var(--color-soft)]">
-        <div className="container px-6">
-          <SectionHeading title="See what people think" />
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {productReviews.slice(0, 4).map((r) => (
-              <article key={r.id} className="rounded-2xl bg-white p-5">
-                <Stars rating={r.rating} size={14} />
-                <p className="mt-3 text-sm">{r.body}</p>
-                <p className="mt-3 flex items-center gap-1 text-xs font-bold">
-                  {r.name} <BadgeCheck className="h-3.5 w-3.5 text-[var(--color-green)]" />
-                  <span className="font-semibold text-[var(--color-green)]">Verified Buyer</span>
-                </p>
-              </article>
-            ))}
           </div>
         </div>
       </section>
@@ -231,8 +194,6 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         </div>
       </section>
 
-      <ReviewsSection reviews={isPet ? PET_REVIEWS : undefined} title={isPet ? 'Happy pets, happy parents' : undefined} />
-
       {/* Benefits grid */}
       <section className="section bg-[var(--color-navy)] text-white">
         <div className="container px-6">
@@ -243,17 +204,21 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               return (
                 <div key={b} className="rounded-2xl bg-white/5 p-6">
                   <Icon className="h-8 w-8 text-[var(--color-accent-light)]" strokeWidth={1.5} />
-                  <p className="mt-4 font-semibold">{b}</p>
+                  <p className="mt-4 font-semibold">{b}*</p>
                 </div>
               );
             })}
           </div>
+          <p className="mx-auto mt-8 max-w-3xl text-center text-xs text-white/60">
+            *These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or
+            prevent any disease.
+          </p>
         </div>
       </section>
 
       <FAQSection faqs={product.faqs} />
       <SubscriptionPerks />
-      <ReviewsModule reviews={productReviews} total={product.reviewCount} rating={product.rating} productSlug={product.slug} />
+      <ReviewsModule productSlug={product.slug} />
     </>
   );
 }

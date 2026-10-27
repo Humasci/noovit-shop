@@ -1,14 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import Link from 'next/link';
 import { Award, FlaskConical, GraduationCap, MapPin, ShieldCheck, ChevronDown, BadgeCheck, Mail } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { FAQ, Review } from '@/types';
-import { REVIEWS, IMAGES, SUBSCRIPTION_PERKS } from '@/data/content';
+import { IMAGES, SUBSCRIPTION_PERKS } from '@/data/content';
 import { Stars } from '@/components/ui/Stars';
 import { SocialLinks } from '@/components/layout/Footer';
-import { Brand, brandify } from '@/components/brand/Brand';
+import { brandify } from '@/components/brand/Brand';
 
 export function SectionHeading({ eyebrow, title, sub, center = true }: { eyebrow?: string; title: string; sub?: string; center?: boolean }) {
   return (
@@ -23,7 +23,7 @@ export function SectionHeading({ eyebrow, title, sub, center = true }: { eyebrow
 export const TRUST_ITEMS = [
   { icon: Award, label: 'GMP Certified' },
   { icon: FlaskConical, label: 'Third Party Tested' },
-  { icon: GraduationCap, label: 'Nutritionist Formulated' },
+  { icon: GraduationCap, label: 'Evidence-Based Doses' },
   { icon: MapPin, label: 'Made in the USA' },
   { icon: ShieldCheck, label: '90-Day Money-Back Guarantee' },
 ];
@@ -35,7 +35,7 @@ export function TrustSection() {
         <SectionHeading
           eyebrow="Why Noovit"
           title="Quality you can check, not just trust"
-          sub="Every batch is made in certified facilities, tested by independent labs, and formulated with qualified nutritionists."
+          sub="Made in certified facilities and tested by independent labs, with forms and doses chosen from published research."
         />
         <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
           {TRUST_ITEMS.map(({ icon: Icon, label }) => (
@@ -53,7 +53,9 @@ export function TrustSection() {
   );
 }
 
-export function ReviewsSection({ title = 'Real people, real results', reviews = REVIEWS }: { title?: string; reviews?: Review[] }) {
+// Real, approved reviews only (see lib/reviews.ts); renders nothing until there are some.
+export function ReviewsSection({ title = 'What customers say', reviews }: { title?: string; reviews: Review[] }) {
+  if (!reviews.length) return null;
   return (
     <section className="section">
       <div className="container px-6">
@@ -68,9 +70,11 @@ export function ReviewsSection({ title = 'Real people, real results', reviews = 
                 <div className="mt-5 flex items-center justify-between text-sm">
                   <span>
                     <span className="font-bold">{r.name}</span>
-                    <span className="ml-2 inline-flex items-center gap-1 text-xs text-[var(--color-green)]">
-                      <BadgeCheck className="h-3.5 w-3.5" /> Verified Buyer
-                    </span>
+                    {r.verified && (
+                      <span className="ml-2 inline-flex items-center gap-1 text-xs text-[var(--color-green)]">
+                        <BadgeCheck className="h-3.5 w-3.5" /> Verified Buyer
+                      </span>
+                    )}
                   </span>
                   <Link href={`/products/${r.productSlug}`} className="text-xs font-bold text-[var(--color-accent)]">
                     View Product
@@ -91,6 +95,7 @@ export function ReviewsSection({ title = 'Real people, real results', reviews = 
 
 export function FAQSection({ faqs, title = 'Frequently asked questions', showButtons = true }: { faqs: FAQ[]; title?: string; showButtons?: boolean }) {
   const [open, setOpen] = useState<number | null>(0);
+  const id = useId();
   return (
     <section className="section">
       <div className="container max-w-3xl px-6">
@@ -98,11 +103,16 @@ export function FAQSection({ faqs, title = 'Frequently asked questions', showBut
         <div className="divide-y divide-[var(--color-line)] border-y border-[var(--color-line)]">
           {faqs.map((f, i) => (
             <div key={f.q}>
-              <button className="flex w-full items-center justify-between gap-4 py-5 text-left font-bold" onClick={() => setOpen(open === i ? null : i)}>
-                {brandify(f.q)}
-                <ChevronDown className={`h-5 w-5 shrink-0 transition-transform ${open === i ? 'rotate-180' : ''}`} />
+              <button
+                className="flex w-full items-center justify-between gap-4 py-5 text-left font-bold"
+                onClick={() => setOpen(open === i ? null : i)}
+                aria-expanded={open === i}
+                aria-controls={`${id}-${i}`}
+              >
+                <span>{brandify(f.q)}</span>
+                <ChevronDown aria-hidden className={`h-5 w-5 shrink-0 transition-transform ${open === i ? 'rotate-180' : ''}`} />
               </button>
-              {open === i && <p className="animate-slide-in pb-5 text-[var(--color-muted)]">{brandify(f.a)}</p>}
+              <p id={`${id}-${i}`} hidden={open !== i} className="animate-slide-in pb-5 text-[var(--color-muted)]">{brandify(f.a)}</p>
             </div>
           ))}
         </div>
@@ -170,7 +180,7 @@ export function NewsletterSection() {
                 setEmail('');
               }}
             >
-              <div className="flex flex-1 items-center gap-2 rounded-full bg-white px-4">
+              <div className="flex flex-1 items-center gap-2 rounded-full bg-white px-4 focus-within:ring-2 focus-within:ring-[var(--color-accent)]">
                 <Mail className="h-4 w-4 text-[var(--color-muted)]" />
                 <input
                   type="email"
@@ -178,7 +188,9 @@ export function NewsletterSection() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Your email"
-                  className="w-full bg-transparent py-3 text-[var(--color-ink)] outline-none"
+                  aria-label="Email address"
+                  autoComplete="email"
+                  className="w-full bg-transparent py-3 text-[var(--color-ink)] focus:outline-none"
                 />
               </div>
               <input name="company" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden />

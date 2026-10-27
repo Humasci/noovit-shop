@@ -37,10 +37,14 @@ export async function welcome(email: string) {
 }
 
 export async function unsubscribe(email: string) {
-  const { error } = await db()
-    .from('subscribers')
-    .update({ status: 'unsubscribed', unsubscribed_at: new Date().toISOString() })
-    .eq('email', email.trim().toLowerCase());
+  // Upsert, so an address that was never on the list (e.g. a checkout-only customer clicking the
+  // footer link) is still recorded as opted out.
+  const normalized = email.trim().toLowerCase();
+  const { data: existing } = await db().from('subscribers').select('email').eq('email', normalized).maybeSingle();
+  const now = new Date().toISOString();
+  const { error } = existing
+    ? await db().from('subscribers').update({ status: 'unsubscribed', unsubscribed_at: now }).eq('email', normalized)
+    : await db().from('subscribers').insert({ email: normalized, source: 'unsubscribe', status: 'unsubscribed', unsubscribed_at: now });
   if (error) throw error;
-  await klaviyoUnsubscribe(email.trim().toLowerCase());
+  await klaviyoUnsubscribe(normalized);
 }

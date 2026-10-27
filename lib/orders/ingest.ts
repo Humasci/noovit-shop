@@ -149,7 +149,7 @@ async function createOrder(input: {
     email: input.email,
     name: input.name,
     totalCents: input.total,
-    items: input.items.map((i) => ({ name: i.product_name, bottles: i.bottles, quantity: i.quantity, frequencyDays: i.frequency_days })),
+    items: input.items.map((i) => ({ name: i.product_name, bottles: i.bottles, quantity: i.quantity, frequencyDays: i.frequency_days, unitCents: i.unit_amount_cents })),
   }).catch((err) => console.error(`Confirmation email for order ${order.order_number} failed`, err));
   await klaviyoEvent('Placed Order', input.email.toLowerCase(), `order-${order.order_number}`, input.total / 100, {
     OrderNumber: order.order_number,
@@ -232,7 +232,10 @@ export async function handleInvoicePaid(invoice: Stripe.Invoice) {
 
   const s = stripe();
   const stripeSubId = idOf(invoice.parent?.subscription_details?.subscription);
-  if (!stripeSubId) return;
+  if (!stripeSubId) {
+    console.error(`Renewal invoice ${invoice.id} has no subscription; no order created`);
+    return;
+  }
   const subscriptionId = await syncSubscription(await s.subscriptions.retrieve(stripeSubId));
   const customerId = await customerIdForStripeCustomer(idOf(invoice.customer)!);
 

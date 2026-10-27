@@ -8,7 +8,8 @@ export interface SessionPayload {
   role: Role;
 }
 
-export const adminConfigured = () => Boolean(process.env.APP_SECRET);
+// A short secret would make every signed token throw, so it counts as not configured.
+export const adminConfigured = () => (process.env.APP_SECRET?.length ?? 0) >= 32;
 
 // Signature + expiry only; requireAdmin() re-checks the staff account on every request.
 export const readSession = (token: string | undefined) => (adminConfigured() ? verifyToken<SessionPayload & Record<string, unknown>>(token) : null);

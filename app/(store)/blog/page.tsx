@@ -3,11 +3,16 @@ import type { Metadata } from 'next';
 import { getPublishedPosts } from '@/lib/blog';
 import { postDate } from '@/components/blog/Article';
 
-export const metadata: Metadata = {
-  title: 'Journal — Noovit',
-  description: 'Science-backed guides on supplements, sleep, gut health, nutrition and pet wellness from the Noovit team.',
-  alternates: { canonical: '/blog' },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const posts = await getPublishedPosts();
+  return {
+    title: 'Journal — Supplement & Wellness Guides | Noovit',
+    description: 'Science-backed guides on supplements, sleep, gut health, nutrition and pet wellness from the Noovit team.',
+    alternates: { canonical: '/blog' },
+    // An empty journal is thin content: keep it out of search until the first article is published.
+    ...(posts.length ? {} : { robots: { index: false } }),
+  };
+}
 
 export default async function BlogIndex() {
   const posts = await getPublishedPosts();

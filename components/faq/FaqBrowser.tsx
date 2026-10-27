@@ -33,13 +33,15 @@ export function FaqBrowser({ products }: { products: Product[] }) {
 
       <section className="container max-w-3xl px-6">
         <h2 className="mb-4 text-3xl">Product questions</h2>
-        <div className="flex items-center gap-2 rounded-full border border-[var(--color-line)] px-5">
+        <div className="flex items-center gap-2 rounded-full border border-[var(--color-line)] px-5 focus-within:ring-2 focus-within:ring-[var(--color-accent)]">
           <Search className="h-4 w-4 text-[var(--color-muted)]" />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search products"
-            className="w-full py-3 outline-none"
+            aria-label="Search product questions"
+            type="search"
+            className="w-full py-3 focus:outline-none"
           />
         </div>
         {matches.length === 0 && <p className="py-10 text-center text-[var(--color-muted)]">No products match your search criteria.</p>}

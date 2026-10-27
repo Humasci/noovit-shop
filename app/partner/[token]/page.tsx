@@ -45,7 +45,7 @@ export default async function PartnerDashboard({ params }: { params: Promise<{ t
         <h1 className="mt-6 text-3xl">Hi {a.name.split(' ')[0]}</h1>
         {a.status === 'paused' && <p className="mt-2 rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-800">Your partnership is paused, so your code and link aren&apos;t active right now.</p>}
         <p className="mt-2 text-[var(--color-muted)]">
-          {a.customer_discount_pct > 0 && <>Your audience gets {a.customer_discount_pct}% off their first order. </>}
+          {a.customer_discount_pct > 0 && <>Your audience gets {a.customer_discount_pct}% off their order with your code. </>}
           You earn {Number(a.commission_pct)}% of each order you refer{a.recurring ? ', including subscription renewals' : ''}.
         </p>
 

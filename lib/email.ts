@@ -1,22 +1,27 @@
 import 'server-only';
 import { formatPrice } from '@/lib/utils/format';
+import { SITE_URL } from '@/lib/site';
 
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 
-async function send(to: string, subject: string, html: string, headers?: Record<string, string>) {
+async function send(to: string, subject: string, html: string, headers?: Record<string, string>, replyTo?: string) {
   const key = process.env.RESEND_API_KEY;
   const from = process.env.EMAIL_FROM || 'Noovit <orders@noovit.com>';
   if (!key) {
+    // Bodies hold sign-in links, so they are only printed outside production.
     const text = html.replace(/<a [^>]*href="([^"]+)"[^>]*>/g, ' [$1] ').replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&');
-    console.log(`[email not configured] to=${to} subject="${subject}"\n${text.replace(/\s+/g, ' ').trim()}`);
-    return;
+    const body = process.env.NODE_ENV === 'production' && !process.env.STRIPE_MOCK_PORT ? '' : `\n${text.replace(/\s+/g, ' ').trim()}`;
+    console.log(`[email not configured] to=${to} subject="${subject}"${body}`);
+    return process.env.NODE_ENV !== 'production' || Boolean(process.env.STRIPE_MOCK_PORT); // nothing was delivered in production
   }
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ from, to, subject, html, ...(headers ? { headers } : {}) }),
+    body: JSON.stringify({ from, to, subject, html, ...(headers ? { headers } : {}), ...(replyTo ? { reply_to: replyTo } : {}) }),
+    signal: AbortSignal.timeout(8000),
   });
   if (!res.ok) console.error(`Email to ${to} failed: ${res.status} ${await res.text()}`);
+  return res.ok;
 }
 
 const layout = (body: string) => `
@@ -31,7 +36,22 @@ export interface EmailOrder {
   email: string;
   name?: string | null;
   totalCents: number;
-  items: { name: string; bottles: number; quantity: number; frequencyDays?: number | null }[];
+  items: { name: string; bottles: number; quantity: number; frequencyDays?: number | null; unitCents?: number }[];
+}
+
+// Auto-renewal acknowledgment (ROSCA / California ARL): what renews, how often, for how much, and how to cancel.
+function subscriptionTerms(items: EmailOrder['items']) {
+  const subs = items.filter((i) => i.frequencyDays);
+  if (!subs.length) return '';
+  const lines = subs
+    .map((i) => `<li>${esc(i.name)}: ${i.unitCents !== undefined ? `${formatPrice((i.unitCents * i.quantity) / 100)} ` : ''}every ${i.frequencyDays} days</li>`)
+    .join('');
+  return `<div style="margin:20px 0;padding:14px 16px;background:#f5f7f6;border-radius:12px;font-size:14px">
+    <p style="margin:0 0 6px"><b>Your subscription</b></p>
+    <ul style="margin:0 0 8px;padding-left:18px">${lines}</ul>
+    <p style="margin:0">It renews automatically at these prices (plus any applicable tax) until you cancel. Your card is charged on each renewal date.
+    You can change or cancel anytime before your next renewal at <a href="${SITE_URL}/account" style="color:#3a8069">${SITE_URL.replace(/^https?:\/\//, '')}/account</a>.</p>
+  </div>`;
 }
 
 export function sendOrderConfirmation(order: EmailOrder) {
@@ -51,6 +71,7 @@ export function sendOrderConfirmation(order: EmailOrder) {
       <p>Order <b>#${order.orderNumber}</b></p>
       <ul>${rows}</ul>
       <p><b>Total: ${formatPrice(order.totalCents / 100)}</b></p>
+      ${subscriptionTerms(order.items)}
       <p>We'll email you tracking details as soon as it ships.</p>`)
   );
 }
@@ -125,7 +146,7 @@ export function sendNewsletterWelcome(to: string, code: string, f: MarketingFoot
       `<h1 style="font-size:20px">Welcome to Noovit</h1>
       <p>Thanks for joining. Expect nutrition tips, early access to new formulas and member-only offers — never spam.</p>
       ${code ? `<p>As promised, here's your welcome code for your first order:</p><p style="font-size:24px;font-weight:800;letter-spacing:2px;color:#14213d">${esc(code)}</p><p>Enter it at checkout.</p>` : ''}
-      <p><a href="https://noovit.com/shop" style="display:inline-block;background:#14213d;color:#fff;padding:12px 24px;border-radius:999px;text-decoration:none;font-weight:bold">Shop Noovit</a></p>`,
+      <p><a href="${SITE_URL}/shop" style="display:inline-block;background:#14213d;color:#fff;padding:12px 24px;border-radius:999px;text-decoration:none;font-weight:bold">Shop Noovit</a></p>`,
       f
     ),
     unsubscribeHeaders(f)
@@ -190,5 +211,17 @@ export function sendReviewRequest(to: string, name: string | null, products: { n
       f
     ),
     unsubscribeHeaders(f)
+  );
+}
+
+export function sendContactMessage(to: string, m: { name: string; email: string; topic: string; message: string }) {
+  return send(
+    to,
+    `Contact form: ${m.topic} — ${m.name}`,
+    layout(`<p><b>From:</b> ${esc(m.name)} &lt;${esc(m.email)}&gt;<br/><b>Topic:</b> ${esc(m.topic)}</p>
+  <p style="white-space:pre-wrap">${esc(m.message)}</p>
+  <p style="font-size:12px;color:#6b7280">Reply to this email to answer the customer directly.</p>`),
+    undefined,
+    m.email
   );
 }

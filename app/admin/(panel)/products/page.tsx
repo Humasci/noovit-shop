@@ -88,7 +88,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: Pro
                 {count ? <input type="checkbox" name="slugs" value={p.slug} aria-label={`Select ${p.name}`} /> : null}
               </td>
               <td className={`${td} w-16`}>
-                <ProductImage product={p} className="h-12 w-12 rounded-lg" />
+                <ProductImage product={p} inline className="h-12 w-12 rounded-lg" />
               </td>
               <td className={td}>
                 <Link href={`/admin/products/${p.slug}`} className="font-semibold hover:text-[var(--color-accent)]">{p.name}</Link>

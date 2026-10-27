@@ -7,7 +7,7 @@ import { dbConfigured } from '@/lib/config';
 import { loadCatalog } from '@/lib/catalog/server';
 import { shipLines } from '@/lib/orders/fulfilment';
 
-
+const PAGE = 500;
 const HEADERS = [
   'order_number', 'order_date', 'name', 'email', 'address_line1', 'address_line2', 'city', 'state', 'postal_code', 'country',
   'product', 'supplier_sku', 'units', 'part_of_bundle',
@@ -18,12 +18,25 @@ export async function GET() {
   if (!staff || !can(staff.role, 'fulfilment')) return new NextResponse('Unauthorized', { status: 401 });
   if (!dbConfigured()) return new NextResponse('Database not configured', { status: 503 });
 
-  const { data, error } = await db()
-    .from('fulfilments')
-    .select('orders(order_number, created_at, email, shipping_name, shipping_address, order_items(product_slug, product_name, supplier_sku, bottles, quantity))')
-    .eq('status', 'queued')
-    .order('created_at', { ascending: true });
-  if (error) return new NextResponse(error.message, { status: 500 });
+  // Page through every queued order (PostgREST caps a single response), then stamp them as exported so
+  // "Mark as submitted" only touches orders the supplier actually received.
+  const data: { id: string; orders: unknown }[] = [];
+  for (let from = 0; ; from += PAGE) {
+    const { data: page, error } = await db()
+      .from('fulfilments')
+      .select('id, orders(order_number, created_at, email, shipping_name, shipping_address, order_items(product_slug, product_name, supplier_sku, bottles, quantity))')
+      .eq('status', 'queued')
+      .order('created_at', { ascending: true })
+      .range(from, from + PAGE - 1);
+    if (error) return new NextResponse(error.message, { status: 500 });
+    data.push(...(page ?? []));
+    if (!page || page.length < PAGE) break;
+  }
+  const ids = data.map((f) => f.id);
+  for (let i = 0; i < ids.length; i += PAGE) {
+    const { error } = await db().from('fulfilments').update({ exported_at: new Date().toISOString() }).in('id', ids.slice(i, i + PAGE));
+    if (error) return new NextResponse(error.message, { status: 500 });
+  }
 
   // Orders placed before a SKU was mapped fall back to the current mapping.
   const { data: settings } = await db().from('products').select('slug, supplier_sku');

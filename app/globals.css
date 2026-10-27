@@ -6,19 +6,19 @@
   --color-ink: #1f2937;
   /* Opal green accent: links, icons, highlights. -dark for hover, -light on navy backgrounds. */
   --color-opal: #5fa68d;
-  --color-accent: #3a8069;
+  --color-accent: #337a63;
   --color-accent-dark: #2f6f5b;
   --color-accent-light: #9cc9b8;
-  --color-green: #3a8069;
+  --color-green: #337a63;
   --color-soft: #eef5f2;
   --color-line: #e2ebe7;
-  --color-muted: #6b7280;
+  --color-muted: #5b6472;
   --color-orange: #ff5f00;
   --color-logo-plus: var(--color-orange);
 
   /* Noovit Pets accent */
   --color-pets: var(--color-orange);
-  --color-pets-dark: #e05300;
+  --color-pets-dark: #b84400; /* text on light backgrounds; orange fills carry navy text (WCAG AA) */
   --color-pets-soft: #fff4ea;
 
   /* Aliases used by older pages */
@@ -45,8 +45,10 @@
 }
 
 @layer base {
-  html {
-    scroll-behavior: smooth;
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
   }
 
   body {
@@ -196,3 +198,10 @@
 @media (prefers-reduced-motion: reduce) {
   .mosaic-twinkle { animation: none; }
 }
+
+/* Respect reduced motion for the remaining movement: marquee, drawer and menu slide-ins. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee, .animate-drawer, .animate-slide-in { animation: none; }
+}
+
+.sr-only-focusable:not(:focus) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }

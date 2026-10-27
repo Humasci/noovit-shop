@@ -29,6 +29,7 @@ Everything degrades gracefully without keys: the store works, checkout shows "no
    `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.expired`, `invoice.paid`,
    `customer.subscription.created`, `customer.subscription.updated`, `customer.subscription.deleted`, `charge.refunded`.
    Put its signing secret in `STRIPE_WEBHOOK_SECRET`.
+   Checkout sessions, invoices and subscriptions are re-fetched through the SDK, so their shape doesn't depend on the endpoint's API version.
 4. **Customer portal:** Settings → Billing → Customer portal — enable cancellation, payment-method and shipping-address updates, invoice history, and subscription updates (add the Noovit products so customers can switch frequency or pack size). The portal has no pause/skip; pause from `/admin/subscriptions`.
 5. **Tax (before live):** set up Stripe Tax registrations, then `STRIPE_TAX_ENABLED=true`.
 

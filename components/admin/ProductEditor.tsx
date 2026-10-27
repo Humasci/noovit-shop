@@ -337,7 +337,7 @@ export function ProductEditor({
 
         <Card>
           <p className={label}>Preview</p>
-          <ProductImage product={preview} className="aspect-square w-full rounded-xl" />
+          <ProductImage product={preview} inline className="aspect-square w-full rounded-xl" />
           <p className="mt-2 font-bold">{d.name || 'Product name'}</p>
           <p className="text-sm text-[var(--color-muted)]">{d.shortBenefit}</p>
         </Card>
@@ -391,18 +391,6 @@ export function ProductEditor({
           </label>
         </Card>
 
-        <Card>
-          <h2 className="mb-1 text-lg">Rating display</h2>
-          <p className="mb-3 text-xs text-[var(--color-muted)]">Used only until the product has approved reviews — then the real average and count are shown automatically. Set to 0 to hide.</p>
-          <div className="grid grid-cols-2 gap-3">
-            <Field title="Rating">
-              <input type="number" min={0} max={5} step="0.1" value={d.rating} onChange={(e) => set('rating', Number(e.target.value))} className={full} />
-            </Field>
-            <Field title="Review count">
-              <input type="number" min={0} value={d.reviewCount} onChange={(e) => set('reviewCount', Number(e.target.value))} className={full} />
-            </Field>
-          </div>
-        </Card>
       </div>
     </div>
   );

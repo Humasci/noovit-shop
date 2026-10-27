@@ -49,7 +49,7 @@ export const useCart = create<CartStore>()(
           const key = itemKey(product.id, mode, bottles);
           const existing = state.items.find((i) => i.key === key);
           let items = existing
-            ? state.items.map((i) => (i.key === key ? { ...i, quantity: i.quantity + 1 } : i))
+            ? state.items.map((i) => (i.key === key ? { ...i, quantity: Math.min(i.quantity + 1, 20) } : i))
             : [...state.items, { key, product, mode, bottles, pricePerBottle, frequency, quantity: 1 }];
           if (mode === 'subscribe' && frequency) items = withFrequency(items, frequency);
           return { items, isOpen: true };

@@ -20,11 +20,14 @@ export default async function StoreLayout({ children }: Readonly<{ children: Rea
   };
   return (
     <StoreConfigProvider value={config}>
+      <a href="#main" className="sr-only-focusable fixed left-4 top-4 z-[70] rounded-full bg-[var(--color-navy)] px-5 py-3 font-semibold text-white">
+        Skip to content
+      </a>
       <Header
         trustBar={lines(content.trust_bar, 5)}
         announcement={{ text: content.announcement_text, href: safeLink(content.announcement_link) }}
       />
-      <main className="min-h-screen">{children}</main>
+      <main id="main" tabIndex={-1} className="min-h-screen outline-none">{children}</main>
       <Footer />
       <CartDrawer suggestions={suggestions} />
       <Analytics ids={{ ga4: settings.ga4_id, meta: settings.meta_pixel_id, tiktok: settings.tiktok_pixel_id }} />

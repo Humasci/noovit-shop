@@ -45,12 +45,22 @@ function TikTok({ className }: { className?: string }) {
   );
 }
 
+// Profile URLs come from NEXT_PUBLIC_INSTAGRAM_URL / _TIKTOK_URL / _FACEBOOK_URL; icons without a URL are hidden.
+const SOCIALS = [
+  { name: 'Instagram', url: process.env.NEXT_PUBLIC_INSTAGRAM_URL, Icon: Instagram },
+  { name: 'TikTok', url: process.env.NEXT_PUBLIC_TIKTOK_URL, Icon: TikTok },
+  { name: 'Facebook', url: process.env.NEXT_PUBLIC_FACEBOOK_URL, Icon: Facebook },
+].filter((s) => s.url);
+
 export function SocialLinks({ className = '' }: { className?: string }) {
+  if (!SOCIALS.length) return null;
   return (
-    <div className={`flex gap-4 ${className}`}>
-      <a href="#" aria-label="Instagram"><Instagram className="h-5 w-5" /></a>
-      <a href="#" aria-label="TikTok"><TikTok className="h-5 w-5" /></a>
-      <a href="#" aria-label="Facebook"><Facebook className="h-5 w-5" /></a>
+    <div className={`flex gap-2 ${className}`}>
+      {SOCIALS.map(({ name, url, Icon }) => (
+        <a key={name} href={url} target="_blank" rel="noopener noreferrer" aria-label={`Noovit on ${name}`} className="p-2 first:-ml-2">
+          <Icon className="h-5 w-5" />
+        </a>
+      ))}
     </div>
   );
 }
@@ -68,11 +78,11 @@ export function Footer() {
         </div>
         {COLUMNS.map((col) => (
           <div key={col.title}>
-            <h4 className="mb-4 text-sm font-bold uppercase tracking-wider text-white">{col.title}</h4>
-            <ul className="space-y-2 text-sm text-white/70">
+            <h2 className="mb-4 text-sm font-bold uppercase tracking-wider text-white">{col.title}</h2>
+            <ul className="space-y-1 text-sm text-white/70">
               {col.links.map((l) => (
                 <li key={l.name}>
-                  <Link href={l.href} className="hover:text-white">
+                  <Link href={l.href} className="inline-block py-1 hover:text-white">
                     {brandify(l.name)}
                   </Link>
                 </li>
@@ -96,7 +106,7 @@ export function Footer() {
             ))}
           </div>
         </div>
-        <p className="container px-6 pb-6 text-[11px] leading-relaxed text-white/40">
+        <p className="container px-6 pb-6 text-[11px] leading-relaxed text-white/60">
           These statements have not been evaluated by the Food and Drug Administration. These products are not intended to diagnose,
           treat, cure, or prevent any disease. Consult your healthcare provider before use if you are pregnant, nursing, taking
           medication, or have a medical condition.

@@ -4,14 +4,19 @@ import { IMAGES } from '@/data/content';
 import { humanProducts } from '@/data/products';
 import { getStoreProducts } from '@/lib/catalog/server';
 import { TrustSection, ReviewsSection, SubscriptionPerks, SectionHeading } from '@/components/sections/Sections';
+import { latestReviews } from '@/lib/reviews';
 
-export const metadata: Metadata = { title: 'About Us — Noovit' };
+export const metadata: Metadata = {
+  title: 'About Noovit — Clean, Evidence-Based Supplements',
+  description: 'Why we started Noovit: simple, well-dosed supplements with clear labels, free US shipping and subscriptions you can cancel anytime.',
+  alternates: { canonical: '/about' },
+};
 
 const stats = (formulas: number) => [
   { value: String(formulas), label: 'Targeted formulas' },
-  { value: '100%', label: 'Third-party tested' },
+  { value: 'Free', label: 'US shipping' },
   { value: '90', label: 'Day guarantee' },
-  { value: '4.8★', label: 'Average rating' },
+  { value: '0', label: 'Fees to cancel' },
 ];
 
 export default async function AboutPage() {
@@ -33,7 +38,7 @@ export default async function AboutPage() {
       <section className="section">
         <div className="container grid items-center gap-12 px-6 md:grid-cols-2">
           <div>
-            <SectionHeading eyebrow="Our story" title="Built with nutritionists, not marketers" center={false} />
+            <SectionHeading eyebrow="Our story" title="Built on evidence, not marketing" center={false} />
             <div className="space-y-4 text-[var(--color-muted)]">
               <p>Every Noovit formula starts with the research: which forms absorb best, which doses were actually studied, and what can be left out.</p>
               <p>We work with qualified nutrition professionals to design each product, manufacture in GMP-certified US facilities, and send every batch to independent labs for purity and potency testing.</p>
@@ -56,7 +61,7 @@ export default async function AboutPage() {
       </section>
 
       <TrustSection />
-      <ReviewsSection />
+      <ReviewsSection reviews={await latestReviews(12)} />
       <SubscriptionPerks />
 
       <section className="section text-center">

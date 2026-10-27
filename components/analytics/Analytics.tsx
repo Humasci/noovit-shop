@@ -54,7 +54,7 @@ export function Analytics({ ids }: { ids: PixelIds }) {
 
   if (consent === 'unset') {
     return (
-      <div className="fixed inset-x-0 bottom-0 z-50 border-t border-[var(--color-line)] bg-white p-4 shadow-2xl md:inset-x-auto md:bottom-4 md:left-4 md:max-w-md md:rounded-2xl md:border">
+      <div role="region" aria-label="Cookie consent" className="fixed inset-x-0 bottom-0 z-40 border-t border-[var(--color-line)] bg-white p-4 shadow-2xl md:inset-x-auto md:bottom-4 md:left-4 md:max-w-md md:rounded-2xl md:border">
         <p className="text-sm">
           We use cookies to measure site traffic and show you relevant ads. You can change your choice anytime from &ldquo;Cookie preferences&rdquo; in the footer.
         </p>

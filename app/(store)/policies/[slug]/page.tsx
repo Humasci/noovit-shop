@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 // PLACEHOLDER: have these reviewed by a lawyer before launch.
@@ -5,7 +6,7 @@ const POLICIES: Record<string, { title: string; sections: { h: string; p: string
   'delivery-returns': {
     title: 'Delivery & Returns',
     sections: [
-      { h: 'Shipping', p: 'Free standard shipping on all US orders. Orders placed before 2pm EST on business days ship the same day and usually arrive in 2–5 business days.' },
+      { h: 'Shipping', p: 'Free standard shipping on all US orders. Orders usually ship within 1–2 business days and arrive 2–5 business days after dispatch. You get a tracking link by email as soon as your order ships.' },
       { h: '90-day money-back guarantee', p: 'If you are not happy with your purchase, contact us within 90 days of delivery for a full refund of the product price — even if the bottle is empty.' },
       { h: 'Damaged or missing items', p: 'Let us know within 14 days of delivery and we will send a replacement at no cost.' },
     ],
@@ -27,6 +28,13 @@ const POLICIES: Record<string, { title: string; sections: { h: string; p: string
     ],
   },
 };
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const policy = POLICIES[slug];
+  if (!policy) return {};
+  return { title: `${policy.title} — Noovit`, description: `Noovit ${policy.title.toLowerCase()}.`, alternates: { canonical: `/policies/${slug}` } };
+}
 
 export function generateStaticParams() {
   return Object.keys(POLICIES).map((slug) => ({ slug }));

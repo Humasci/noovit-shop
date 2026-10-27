@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 import { ArrowLeft, Check } from 'lucide-react';
@@ -24,7 +24,7 @@ function Option({ selected, onClick, children }: { selected: boolean; onClick: (
       onClick={onClick}
       aria-pressed={selected}
       className={`flex items-center justify-between gap-3 rounded-2xl border-2 px-5 py-4 text-left font-semibold transition-colors ${
-        selected ? 'border-[var(--color-opal)] bg-[var(--color-opal)] text-white' : 'border-[var(--color-line)] bg-white hover:border-[var(--color-opal)]'
+        selected ? 'border-[var(--color-accent-dark)] bg-[var(--color-accent-dark)] text-white' : 'border-[var(--color-line)] bg-white hover:border-[var(--color-opal)]'
       }`}
     >
       {children}
@@ -35,11 +35,21 @@ function Option({ selected, onClick, children }: { selected: boolean; onClick: (
 
 export function Quiz({ products, code }: { products: Product[]; code: string }) {
   const [step, setStep] = useState<Step>('intro');
+  // Each new question moves focus to its heading, so screen readers announce it.
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const firstStep = useRef(true);
+  useEffect(() => {
+    if (firstStep.current) {
+      firstStep.current = false;
+      return;
+    }
+    headingRef.current?.focus();
+  }, [step]);
   const [history, setHistory] = useState<Step[]>([]);
   const [a, setA] = useState<QuizAnswers>({ goals: [], symptoms: [], diet: [] });
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [consent, setConsent] = useState(true);
+  const [consent, setConsent] = useState(false); // marketing consent is opt-in, never pre-ticked
   const [joined, setJoined] = useState(false);
   const addItem = useCart((s) => s.addItem);
   const openCart = useCart((s) => s.open);
@@ -88,17 +98,22 @@ export function Quiz({ products, code }: { products: Product[]; code: string }) 
     setTimeout(() => setStep('results'), 1800);
   };
 
+  // Adds each recommendation once; clicking again just reopens the cart instead of doubling the plan.
+  const [planAdded, setPlanAdded] = useState(false);
   const addPlan = () => {
+    const inCart = new Set(useCart.getState().items.filter((i) => i.mode === 'subscribe').map((i) => i.product.slug));
     for (const { product } of recs) {
+      if (inCart.has(product.slug)) continue;
       const [sub] = packOptions(product, 'subscribe');
       addItem({ product, mode: 'subscribe', ...sub, frequency: 30 });
     }
+    setPlanAdded(true);
     openCart();
   };
 
   const heading = (t: string, sub?: string) => (
     <div className="mb-8 text-center">
-      <h1 className="text-balance text-3xl md:text-4xl">{t}</h1>
+      <h1 ref={headingRef} tabIndex={-1} className="text-balance text-3xl outline-none md:text-4xl">{t}</h1>
       {sub && <p className="mt-3 text-[var(--color-muted)]">{sub}</p>}
     </div>
   );
@@ -154,7 +169,7 @@ export function Quiz({ products, code }: { products: Product[]; code: string }) 
               return (
                 <div key={product.slug} className="flex flex-col rounded-3xl border border-[var(--color-line)] bg-white p-4">
                   <Link href={`/products/${product.slug}`} className="relative block overflow-hidden rounded-2xl">
-                    <ProductImage product={product} className="aspect-square w-full" />
+                    <ProductImage product={product} sizes="(min-width: 768px) 30vw, 90vw" className="aspect-square w-full" />
                     {i === 0 && <span className="absolute left-3 top-3 rounded-full bg-[var(--color-navy)] px-3 py-1 text-xs font-bold text-white">Best match</span>}
                   </Link>
                   <h2 className="mt-4 text-xl">{product.name}</h2>
@@ -175,7 +190,7 @@ export function Quiz({ products, code }: { products: Product[]; code: string }) 
                       }}
                       className="rounded-full border-2 border-[var(--color-accent)] px-4 py-1.5 text-sm font-bold text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-white"
                     >
-                      Add to Cart
+                      Add one bottle
                     </button>
                     <span className="text-sm text-[var(--color-muted)]">as low as <b className="text-[var(--color-navy)]">{formatPrice(asLowAs(product))}</b></span>
                   </div>
@@ -188,7 +203,9 @@ export function Quiz({ products, code }: { products: Product[]; code: string }) 
           <div className="mx-auto mt-10 max-w-xl rounded-3xl bg-[var(--color-navy)] p-8 text-center text-white">
             <h2 className="text-2xl text-white">Start your plan</h2>
             <p className="mt-2 text-white/75">All {recs.length} on subscription, delivered every 30 days — {formatPrice(total)} a month. Change or cancel anytime.</p>
-            <button onClick={addPlan} className="btn mt-5 bg-white text-[var(--color-navy)] hover:bg-[var(--color-accent-light)]">Add my plan to cart</button>
+            <button onClick={addPlan} className="btn mt-5 bg-white text-[var(--color-navy)] hover:bg-[var(--color-accent-light)]">
+              {planAdded ? '✓ In your cart — view cart' : 'Add my plan to cart'}
+            </button>
             {code && (joined ? (
               <p className="mt-4 text-sm text-white/85">Your {code} code is on its way to your inbox — or use <b className="text-white">{code}</b> at checkout.</p>
             ) : (
@@ -212,7 +229,7 @@ export function Quiz({ products, code }: { products: Product[]; code: string }) 
       {/* Progress: one tile per question, filled in orange as you go */}
       <div className="mb-8 flex items-center gap-3">
         <button onClick={back} aria-label="Back" className="rounded-full p-2 hover:bg-[var(--color-soft)]"><ArrowLeft className="h-5 w-5" /></button>
-        <div className="flex flex-1 gap-1.5" aria-label={`Question ${index + 1} of ${flow.length}`}>
+        <div className="flex flex-1 gap-1.5" role="progressbar" aria-valuemin={1} aria-valuemax={flow.length} aria-valuenow={index + 1} aria-label={`Question ${index + 1} of ${flow.length}`}>
           {flow.map((s, i) => (
             <span key={s} className={`h-2.5 flex-1 rounded-[3px] transition-colors duration-500 ${i <= index ? 'bg-[var(--color-orange)]' : 'bg-[var(--color-line)]'}`} style={{ opacity: i <= index ? 0.45 + (0.55 * (i + 1)) / flow.length : 1 }} />
           ))}
@@ -294,7 +311,7 @@ export function Quiz({ products, code }: { products: Product[]; code: string }) 
 
       {step === 'pregnant' && (
         <>
-          {heading('Are you pregnant or breastfeeding?', 'We will only suggest products suitable for you.')}
+          {heading('Are you pregnant or breastfeeding?', 'We’ll narrow our suggestions. Please check with your doctor or midwife before taking any supplement.')}
           <div className="grid gap-3 sm:grid-cols-3">
             {([['pregnant', 'Pregnant'], ['breastfeeding', 'Breastfeeding'], ['no', 'Neither']] as const).map(([v, l]) => (
               <Option key={v} selected={a.pregnant === v} onClick={() => single('pregnant', v)}>{l}</Option>
@@ -324,8 +341,8 @@ export function Quiz({ products, code }: { products: Product[]; code: string }) 
               finish(consent);
             }}
           >
-            <input value={name} onChange={(e) => setName(e.target.value)} placeholder="First name" className="rounded-full border border-[var(--color-line)] px-5 py-3" />
-            <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" className="rounded-full border border-[var(--color-line)] px-5 py-3" />
+            <input value={name} onChange={(e) => setName(e.target.value)} placeholder="First name" aria-label="First name" autoComplete="given-name" className="rounded-full border border-[var(--color-line)] px-5 py-3" />
+            <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" aria-label="Email address" autoComplete="email" className="rounded-full border border-[var(--color-line)] px-5 py-3" />
             <label className="flex items-start gap-2 text-xs text-[var(--color-muted)]">
               <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-0.5" />
               Email me my welcome code, tips and offers from Noovit. Unsubscribe anytime.

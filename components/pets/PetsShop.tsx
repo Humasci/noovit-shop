@@ -57,7 +57,7 @@ export function PetsShop({ products, initialSpecies = 'all' }: { products: Produ
                   key={t.value}
                   onClick={() => setSpecies(t.value)}
                   className={`rounded-full px-5 py-2 text-sm font-bold transition-colors ${
-                    species === t.value ? 'bg-[var(--color-pets)] text-white' : 'bg-white text-[var(--color-navy)] hover:bg-white/70'
+                    species === t.value ? 'bg-[var(--color-pets)] text-[var(--color-navy)]' : 'bg-white text-[var(--color-navy)] hover:bg-white/70'
                   }`}
                 >
                   {t.label}

@@ -486,8 +486,8 @@ const seeds: Seed[] = [
 ];
 
 // The launch catalog. Seeds the database (npm run catalog:seed) and is the fallback when no database is connected.
-export const SEED_PRODUCTS: Product[] = seeds.map(({ slug, faqs, reviewCount, status, ...data }) =>
-  buildProduct({ slug, status, data: { ...data, rating: 4.8, reviewCount: reviewCount ?? 1000, extraFaqs: faqs ?? [] } })
+export const SEED_PRODUCTS: Product[] = seeds.map(({ slug, faqs, status, ...data }) =>
+  buildProduct({ slug, status, data: { ...data, rating: 0, reviewCount: 0, extraFaqs: faqs ?? [] } })
 );
 
 export const findProduct = (list: Product[], slug: string) => list.find((p) => p.slug === slug);
@@ -528,5 +528,9 @@ export const DIETARY_TAGS: { value: DietaryTag; label: string }[] = [
   { value: 'low-fodmap', label: 'Low FODMAP' },
   { value: 'sugar-free', label: 'Sugar-free' },
 ];
+
+// Pregnancy/postpartum tags are a safety judgement: used internally by the quiz to narrow suggestions,
+// never shown to shoppers as a filter or badge until confirmed with the manufacturer and a clinician.
+export const PUBLIC_DIETARY_TAGS = DIETARY_TAGS.filter((t) => t.value !== 'pregnancy-safe' && t.value !== 'postpartum-safe');
 
 export const PRODUCT_FORMS: ProductForm[] = ['capsules', 'softgels', 'powder', 'chews'];

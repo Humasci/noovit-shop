@@ -24,7 +24,8 @@ export async function updateFulfilment(f: FormData) {
   await requireAdmin('fulfilment');
   const id = str(f, 'id');
   const status = str(f, 'status');
-  const returnTo = str(f, 'returnTo') || '/admin/fulfilment';
+  const given = str(f, 'returnTo');
+  const returnTo = given.startsWith('/admin/') ? given : '/admin/fulfilment';
 
   const { data: current, error: readError } = await db()
     .from('fulfilments')
@@ -74,6 +75,7 @@ export async function markQueuedSubmitted() {
     .from('fulfilments')
     .update({ status: 'submitted', submitted_at: new Date().toISOString() })
     .eq('status', 'queued')
+    .not('exported_at', 'is', null)
     .select('order_id');
   if (error) back('/admin/fulfilment', `Update failed: ${error.message}`);
   const orderIds = (data ?? []).map((r) => r.order_id);
@@ -170,7 +172,11 @@ export async function createDiscount(f: FormData) {
 
 export async function deactivateDiscount(f: FormData) {
   await requireAdmin('marketing');
-  await stripe().promotionCodes.update(str(f, 'id'), { active: false });
+  try {
+    await stripe().promotionCodes.update(str(f, 'id'), { active: false });
+  } catch (err) {
+    back('/admin/discounts', `Could not deactivate: ${err instanceof Error ? err.message : 'Stripe error'}`);
+  }
   revalidatePath('/admin/discounts');
   back('/admin/discounts', 'Code deactivated.');
 }

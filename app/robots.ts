@@ -3,7 +3,8 @@ import { SITE_URL } from '@/lib/site';
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: { userAgent: '*', allow: '/', disallow: ['/api/', '/cart', '/checkout', '/account', '/partner/', '/r/'] },
+    // /cart and /account stay crawlable so Google can see their noindex tags.
+    rules: { userAgent: '*', allow: '/', disallow: ['/api/', '/checkout', '/partner/', '/r/'] },
     sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }

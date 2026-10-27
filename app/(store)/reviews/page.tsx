@@ -1,26 +1,25 @@
 import type { Metadata } from 'next';
-import { REVIEWS } from '@/data/content';
 import { getStoreProducts } from '@/lib/catalog/server';
-import { Stars } from '@/components/ui/Stars';
 import { ReviewsModule } from '@/components/reviews/ReviewsModule';
-import { CommunitySection, TrustSection } from '@/components/sections/Sections';
+import { TrustSection } from '@/components/sections/Sections';
 
-export const metadata: Metadata = { title: 'Reviews — Noovit' };
+export const metadata: Metadata = {
+  title: 'Customer Reviews — Noovit',
+  description: 'Read honest reviews of Noovit supplements, or share your own experience. Every review is checked before it is published.',
+  alternates: { canonical: '/reviews' },
+};
 
 export default async function ReviewsPage() {
   const products = await getStoreProducts();
-  const total = products.reduce((sum, p) => sum + p.reviewCount, 0);
   return (
     <>
       <section className="bg-[var(--color-soft)] py-16 text-center">
         <div className="container px-6">
-          <Stars size={24} className="justify-center" />
-          <h1 className="mt-4 text-4xl md:text-5xl">Loved by {total.toLocaleString()}+ customers</h1>
-          <p className="mt-3 text-[var(--color-muted)]">Honest reviews from verified buyers.</p>
+          <h1 className="text-4xl md:text-5xl">Customer reviews</h1>
+          <p className="mt-3 text-[var(--color-muted)]">Honest reviews from our customers. Buyers we can match to an order are marked as verified.</p>
         </div>
       </section>
-      <ReviewsModule reviews={REVIEWS} total={total} productOptions={products.map((p) => ({ slug: p.slug, name: p.name }))} />
-      <CommunitySection />
+      <ReviewsModule productOptions={products.map((p) => ({ slug: p.slug, name: p.name }))} />
       <TrustSection />
     </>
   );

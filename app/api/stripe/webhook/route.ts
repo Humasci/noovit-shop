@@ -22,6 +22,8 @@ export async function POST(req: NextRequest) {
   const { data: seen } = await db().from('stripe_events').select('id').eq('id', event.id).maybeSingle();
   if (seen) return NextResponse.json({ received: true, duplicate: true });
 
+  // Objects are re-fetched through the SDK, so they always match the API version this code is written
+  // against (the webhook endpoint's own version may differ), and out-of-order events can't apply stale state.
   try {
     switch (event.type) {
       case 'checkout.session.completed':
@@ -32,12 +34,12 @@ export async function POST(req: NextRequest) {
         await handleCheckoutExpired(event.data.object);
         break;
       case 'invoice.paid':
-        await handleInvoicePaid(event.data.object);
+        await handleInvoicePaid(await stripe().invoices.retrieve(event.data.object.id!));
         break;
       case 'customer.subscription.created':
       case 'customer.subscription.updated':
       case 'customer.subscription.deleted':
-        await syncSubscription(event.data.object);
+        await syncSubscription(await stripe().subscriptions.retrieve(event.data.object.id));
         break;
       case 'charge.refunded':
         await handleChargeRefunded(event.data.object);

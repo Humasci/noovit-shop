@@ -31,7 +31,7 @@ export default function CartPage() {
           {items.map((item) => (
             <li key={item.key} className="flex gap-5 py-6">
               <Link href={`/products/${item.product.slug}`}>
-                <ProductImage product={item.product} className="h-28 w-28 rounded-2xl" />
+                <ProductImage product={item.product} sizes="112px" className="h-28 w-28 rounded-2xl" />
               </Link>
               <div className="flex flex-1 flex-col">
                 <div className="flex justify-between gap-4">
@@ -74,9 +74,11 @@ export default function CartPage() {
           <div className="flex justify-between border-t border-[var(--color-line)] pt-3 text-lg font-bold">
             <dt>Total</dt><dd>{formatPrice(cartTotal(items))}</dd>
           </div>
+        </dl>
+        <div className="mt-3 space-y-3 text-sm">
           <p className="text-xs text-[var(--color-muted)]">Taxes and discount codes are applied at checkout.</p>
           <AutoDiscountNote subtotal={cartTotal(items)} />
-        </dl>
+        </div>
         <div className="mt-6">
           <CheckoutButton />
         </div>
