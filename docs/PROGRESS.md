@@ -43,7 +43,7 @@ _Last updated: 2026-10-26_
 - [x] Migrations `0004_affiliates` and `0005_hardening` applied to the live Supabase project; security advisor shows only the expected "RLS enabled, no policy" notices.
 - [x] Preliminary trademark knock-out search (owner, Oct 2026) — see below.
 - [ ] Attorney clearance + file NOOVIT in US and UK (class 5 + 35, consider 30/31) before ordering labelled samples.
-- [x] Brand: noovit⁺ wordmark in Funnel Display (raised opal + mark, also the favicon), Manrope headings, Inter body text, lighter weights; navy + opal green accent (tokens in `app/globals.css`).
+- [x] Brand: noovit⁺ wordmark and all headings in Funnel Display, Inter body text, lighter weights; n⁺ icon (tile version is the favicon); navy + opal green accent (tokens in `app/globals.css`). Pets is a separate button next to My Subscriptions.
 - [ ] Logo + mockups → apply brand styling.
 
 ## Before launch

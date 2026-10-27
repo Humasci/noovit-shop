@@ -15,7 +15,7 @@ const OPAL_DARK = '#3a8069';
 
 const FONTS = {
   logo: { web: "var(--font-funnel), 'Funnel Display', sans-serif", print: "'Funnel Display'" },
-  head: { web: "var(--font-manrope), 'Manrope', sans-serif", print: "'Manrope'" },
+  head: { web: "var(--font-funnel), 'Funnel Display', sans-serif", print: "'Funnel Display'" },
   body: { web: "var(--font-inter), 'Inter', sans-serif", print: "'Inter'" },
 };
 

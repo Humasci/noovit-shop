@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Menu, X, ShoppingBag, Leaf, Star, FlaskConical, ShieldCheck, BadgeCheck, ChevronDown } from 'lucide-react';
+import { Menu, X, ShoppingBag, Leaf, Star, FlaskConical, ShieldCheck, BadgeCheck, ChevronDown, PawPrint } from 'lucide-react';
 import { useCart, cartCount } from '@/lib/store/cart';
 import { useHydrated } from '@/lib/useHydrated';
 import { Logo } from '@/components/layout/Logo';
@@ -78,7 +78,7 @@ export function Header({ trustBar, announcement }: { trustBar: string[]; announc
       <header className="sticky top-0 z-40 border-b border-[var(--color-line)] bg-white/95 backdrop-blur">
         <div className="container grid grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 py-4 md:px-6">
           <nav className="hidden items-center gap-7 whitespace-nowrap font-logo text-[15px] font-medium lg:flex">
-            {NAV.map((n) => {
+            {NAV.filter((n) => !n.pets).map((n) => {
               const tone = n.pets ? 'text-[var(--color-pets)] hover:text-[var(--color-pets-dark)]' : 'hover:text-[var(--color-accent)]';
               if (!n.children) return <Link key={n.href} href={n.href} className={tone}>{n.name}</Link>;
               return (
@@ -114,6 +114,13 @@ export function Header({ trustBar, announcement }: { trustBar: string[]; announc
           </Link>
 
           <div className="flex items-center justify-self-end gap-5 text-sm font-semibold">
+            {/* Noovit Pets sits apart from the human range as its own button (in the mobile menu on small screens). */}
+            <Link
+              href="/pets"
+              className="hidden items-center gap-1.5 rounded-full bg-[var(--color-pets)] px-4 py-1.5 font-logo text-[15px] font-medium text-white transition-colors hover:bg-[var(--color-pets-dark)] lg:flex"
+            >
+              <PawPrint className="h-4 w-4" /> Pets
+            </Link>
             <Link href="/account" className="hidden font-logo text-[15px] font-medium hover:text-[var(--color-accent)] sm:block">
               My Subscriptions
             </Link>

@@ -1,5 +1,5 @@
 // Writes print drafts of the full wrap-around labels to design/labels/:
-//   <slug>.svg         artwork (fonts as names: open in Affinity/Illustrator with Funnel Display, Manrope and Inter
+//   <slug>.svg         artwork (fonts as names: open in Affinity/Illustrator with Funnel Display and Inter
 //                      installed, outline the text and export a CMYK PDF/X)
 //   <slug>.guides.svg  the same with trim (red), safe zone (blue) and panel folds
 //   <slug>.png         preview with guides

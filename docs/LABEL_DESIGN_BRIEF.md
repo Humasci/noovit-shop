@@ -39,7 +39,7 @@ The same design draws the bottle images on the website and the PNGs used in the 
 | **Opal dark** (small text in opal) | `#3A8069` |
 | **Opal light** (on navy) | `#9CC9B8` |
 | **Soft background** | `#EEF5F2` |
-| **Fonts** | **Funnel Display** for the wordmark only. **Manrope** SemiBold (600) for product names and headings. **Inter** for everything else, Regular and Medium (400/500). All three are free under the SIL Open Font License and fine for print. |
+| **Fonts** | **Funnel Display** for the wordmark, product names, headings and numbers (Medium/SemiBold). **Inter** for small text, Regular and Medium (400/500). Both are free under the SIL Open Font License and fine for print. |
 | **Pets accent** (for later) | Orange `#E8833A` with the same layout. Pets launch later. |
 
 **Colour in print.** Convert every colour to CMYK and approve it on a printed proof. The hex values above are screen colours. Opal and the per-product colours shift most in print.
@@ -57,7 +57,7 @@ From left to right as the bottle turns:
 **② Front panel (principal display panel), centred**
 - **Top:** the noovit⁺ wordmark.
 - **Middle:**
-  - **Product name** in large Manrope type, e.g. "Magnesium Complex".
+  - **Product name** in large Funnel Display type, e.g. "Magnesium Complex".
   - **One benefit line** using the "supports…" wording from the website, e.g. "Supports relaxation, sleep & muscle function".
   - **One proof point**, e.g. "3 forms of magnesium · 400 mg" or "40 billion CFU · 12 strains".
   - **Product colour band or shape.** Each product has its own colour (see §6). Keep the layout identical for every product; only the colour and text change.
