@@ -40,6 +40,8 @@ export async function POST(req: NextRequest) {
     mode: frequency ? 'subscription' : 'payment',
     line_items: lines.map((l) => ({ price: priceIds.get(l.lookupKey)!, quantity: l.quantity })),
     shipping_address_collection: { allowed_countries: ['US'] },
+    // Suppliers (e.g. Supliful) may reject orders without a phone number for the carrier.
+    phone_number_collection: { enabled: true },
     allow_promotion_codes: true,
     automatic_tax: { enabled: process.env.STRIPE_TAX_ENABLED === 'true' },
     success_url: `${origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,

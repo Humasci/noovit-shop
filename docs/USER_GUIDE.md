@@ -186,6 +186,22 @@ Every paid order — including each subscription renewal — appears here as **q
 4. When the supplier ships, open the order (or find it on this page), set status to **shipped**, and enter carrier, tracking number and tracking link → **Save**. The customer is emailed automatically.
 5. Optionally mark **delivered** later.
 
+#### Placing orders by hand in Supliful (the launch setup)
+Until orders are sent to Supliful automatically, do this once or twice a day:
+
+1. **Admin → Fulfilment.** Each queued order shows its products (with the **supplier SKU**, which is the Supliful product it maps to) and a grey address box.
+2. In Supliful: **Orders → Order products → Manual order**, choose **United States**, and add the products and quantities shown.
+3. Back in Noovit, click **Copy address** and paste the name, street, city, state/ZIP and phone into Supliful's address step. Checkout now asks customers for a phone number because Supliful can refuse orders without one.
+4. Pay with your card or Supliful credits and complete the order.
+5. In Noovit, set that order's status to **submitted**, and paste Supliful's order number into the supplier reference field → **Save**.
+6. When Supliful shows tracking, set the order to **shipped** with carrier, tracking number and link → **Save**. The customer gets the shipping email automatically.
+
+Tips:
+- Map every product's **Supplier SKU** (Admin → Products) to the matching Supliful product name or SKU first, so you never have to guess.
+- Subscription renewals also appear here as new queued orders each cycle. Place them the same way.
+- Your Supliful card is charged per order, so keep enough balance or credits.
+- When this gets busy (around 10–15 orders a day), ask me to connect Supliful automatically through a hidden Shopify store.
+
 If a supplier rejects an order, set it to **failed** — it will show up in the Overview's red banner until you resolve it.
 
 > Each row shows the supplier SKU. Anything shown in **red "no SKU"** needs a SKU mapped in **Products** first.

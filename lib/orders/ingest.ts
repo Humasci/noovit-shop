@@ -27,7 +27,7 @@ interface ItemRow {
 
 interface Shipping {
   name: string | null;
-  address: Stripe.Address | null;
+  address: (Stripe.Address & { phone?: string | null }) | null;
 }
 
 const UNIQUE_VIOLATION = '23505';
@@ -173,10 +173,14 @@ export async function handleCheckoutCompleted(sessionId: string) {
   const name = session.customer_details?.name ?? null;
   const stripeCustomerId = idOf(session.customer);
   const ship = session.collected_information?.shipping_details;
-  const shipping: Shipping = { name: ship?.name ?? name, address: ship?.address ?? null };
+  const phone = session.customer_details?.phone ?? null;
+  // The phone travels with the address (shipping_address is JSON), so fulfilment can pass it to the supplier.
+  const shipping: Shipping = { name: ship?.name ?? name, address: ship?.address ? { ...ship.address, phone } : null };
 
   // Saved on the Stripe customer so renewals ship to the latest address (editable in the portal).
-  if (stripeCustomerId && ship) await s.customers.update(stripeCustomerId, { shipping: { name: ship.name, address: ship.address as Stripe.AddressParam } });
+  if (stripeCustomerId && ship) {
+    await s.customers.update(stripeCustomerId, { shipping: { name: ship.name, phone: phone ?? undefined, address: ship.address as Stripe.AddressParam } });
+  }
 
   const customerId = await upsertCustomer(email, name, stripeCustomerId);
 
@@ -242,7 +246,8 @@ export async function handleInvoicePaid(invoice: Stripe.Invoice) {
   const customer = await s.customers.retrieve(idOf(invoice.customer)!);
   let shipping: Shipping = { name: null, address: null };
   if (!customer.deleted && customer.shipping) {
-    shipping = { name: customer.shipping.name ?? null, address: customer.shipping.address ?? null };
+    const phone = customer.shipping.phone ?? customer.phone ?? null;
+    shipping = { name: customer.shipping.name ?? null, address: customer.shipping.address ? { ...customer.shipping.address, phone } : null };
   } else {
     const { data: last } = await db()
       .from('orders')

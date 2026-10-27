@@ -10,7 +10,7 @@ import { shipLines } from '@/lib/orders/fulfilment';
 const PAGE = 500;
 const HEADERS = [
   'order_number', 'order_date', 'name', 'email', 'address_line1', 'address_line2', 'city', 'state', 'postal_code', 'country',
-  'product', 'supplier_sku', 'units', 'part_of_bundle',
+  'product', 'supplier_sku', 'units', 'part_of_bundle', 'phone',
 ];
 
 export async function GET() {
@@ -58,7 +58,7 @@ export async function GET() {
       rows.push(
         [
           o.order_number, o.created_at.slice(0, 10), o.shipping_name, o.email, a.line1, a.line2, a.city, a.state, a.postal_code, a.country,
-          line.name, line.sku, line.units, line.bundle ?? '',
+          line.name, line.sku, line.units, line.bundle ?? '', a.phone,
         ].map(cell).join(',')
       );
     }

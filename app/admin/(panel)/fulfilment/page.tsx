@@ -5,11 +5,25 @@ import { db } from '@/lib/db/server';
 import { dbConfigured, fulfilmentSupplier } from '@/lib/config';
 import { loadCatalog } from '@/lib/catalog/server';
 import { shipLines } from '@/lib/orders/fulfilment';
+import { CopyBlock } from '@/components/admin/CopyBlock';
 import { markQueuedSubmitted } from '@/app/admin/actions';
 import { FulfilmentForm, FulfilmentRow } from '@/components/admin/FulfilmentForm';
 import { Badge, Card, FilterLinks, Flash, NotConfigured, PageTitle, btnSm, btnSmOutline, dateTime } from '@/components/admin/ui';
 
 const OPEN = ['queued', 'submitted', 'accepted', 'failed'];
+
+const addressText = (name: string | null, a: Record<string, string | null> | null, email: string) =>
+  [
+    name,
+    a?.line1,
+    a?.line2,
+    [a?.city, [a?.state, a?.postal_code].filter(Boolean).join(' ')].filter(Boolean).join(', '),
+    a?.country,
+    a?.phone ? `Phone: ${a.phone}` : null,
+    `Email: ${email}`,
+  ]
+    .filter(Boolean)
+    .join('\n');
 
 export default async function FulfilmentPage({ searchParams }: { searchParams: Promise<{ status?: string; msg?: string }> }) {
   await requireAdmin('fulfilment');
@@ -60,7 +74,7 @@ export default async function FulfilmentPage({ searchParams }: { searchParams: P
               order_number: number;
               email: string;
               shipping_name: string | null;
-              shipping_address: { city?: string; state?: string } | null;
+              shipping_address: Record<string, string | null> | null;
               created_at: string;
               order_items: { product_slug: string; product_name: string; bottles: number; quantity: number; supplier_sku: string | null }[];
             };
@@ -82,6 +96,12 @@ export default async function FulfilmentPage({ searchParams }: { searchParams: P
                     </li>
                   ))}
                 </ul>
+                {f.status === 'queued' && (
+                  // Everything needed to place this order by hand in the supplier's dashboard.
+                  <div className="mb-3">
+                    <CopyBlock label="Copy address" text={addressText(o.shipping_name, o.shipping_address, o.email)} />
+                  </div>
+                )}
                 {f.error && <p className="mb-2 text-sm text-red-600">{f.error}</p>}
                 <FulfilmentForm f={f as FulfilmentRow} returnTo="/admin/fulfilment" />
               </Card>
