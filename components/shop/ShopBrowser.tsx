@@ -97,7 +97,7 @@ export function ShopBrowser({
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div className="no-scrollbar flex items-center gap-2 overflow-x-auto">
               <span className="mr-1 shrink-0 text-xs font-bold uppercase tracking-wider text-[var(--color-muted)]">Product Type</span>
-              {TYPE_TABS.map((t) => (
+              {TYPE_TABS.filter((t) => t.value === 'all' || t.value === 'best-sellers' || products.some((p) => p.productType === t.value)).map((t) => (
                 <Pill key={t.value} active={type === t.value} onClick={() => setType(t.value)}>
                   {t.label}
                 </Pill>

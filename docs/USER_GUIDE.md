@@ -33,9 +33,10 @@ Customer ──► noovit.com ──► Stripe Checkout (payment) ──► Orde
 ## 2. What customers can do
 
 ### Browse
+- **Top menu** — **Shop** (dropdown: Shop all, Best Sellers, Supplements, Sports, Specialties), **Pets** (dropdown: All pets, Dogs, Cats) and **Journal**, plus My Subscriptions and the cart. On phones the same links open from the ☰ button. About Us, Reviews, FAQ and Contact are in the footer.
 - **Home page** — best sellers (with Women's / Men's Health tabs), trust badges, reviews, FAQ, newsletter sign-up, subscription benefits.
 - **Shop** (`/shop`) — every product, grouped into Supplements, Sports, Specialties and Noovit Pets. Filters: product type, dietary needs (vegan, gluten-free, pregnancy-safe, postpartum-safe, low FODMAP, sugar-free) and sorting by name or price.
-- **Noovit Pets** (`/pets`) — the pet range, filterable by Dogs / Cats.
+- **Noovit Pets** (`/pets`) — the pet range, filterable by Dogs / Cats (`/pets?species=dog`). While no pet product is active, it shows a "coming soon" waitlist instead. Shop filters only show product types that have products on sale.
 - **Product pages** — image gallery, benefits, description, who it's for, ingredients, FAQs, reviews and related products.
 - **Info pages** — About Us, Reviews, FAQ, Contact, Delivery & Returns, Privacy Policy, Terms.
 

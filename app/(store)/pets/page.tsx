@@ -23,8 +23,8 @@ const PET_TRUST = [
   { icon: ShieldCheck, label: 'Picky-Eater Guarantee' },
 ];
 
-export default async function PetsPage() {
-  const products = await getStoreProducts();
+export default async function PetsPage({ searchParams }: { searchParams: Promise<{ species?: string }> }) {
+  const [products, { species }] = await Promise.all([getStoreProducts(), searchParams]);
   // Until a pet product is published, the page is a "coming soon" waitlist without reviews or vet quotes.
   const live = petProducts(products).length > 0;
   return (
@@ -76,7 +76,7 @@ export default async function PetsPage() {
         </div>
       </div>
 
-      {live ? <PetsShop products={products} /> : <PetsWaitlist />}
+      {live ? <PetsShop key={species} products={products} initialSpecies={species === 'dog' || species === 'cat' ? species : 'all'} /> : <PetsWaitlist />}
 
       {live && (
         <section className="section">

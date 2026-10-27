@@ -42,7 +42,7 @@ export function ProductCard({ product }: { product: Product }) {
         <p className="mt-2 flex-1 text-sm text-[var(--color-muted)]">{product.shortBenefit}</p>
         <div className="mt-4 flex flex-col-reverse items-start gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-2">
           {product.status === 'active' ? (
-            <button onClick={add} className="whitespace-nowrap text-sm font-bold text-[var(--color-accent)] underline-offset-4 hover:underline">
+            <button onClick={add} className="whitespace-nowrap rounded-full border-2 border-[var(--color-accent)] px-4 py-1.5 text-sm font-bold text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-white">
               Add to Cart
             </button>
           ) : (

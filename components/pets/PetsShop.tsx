@@ -12,8 +12,8 @@ const TABS: { value: Species | 'all'; label: string }[] = [
   { value: 'cat', label: 'Cats' },
 ];
 
-export function PetsShop({ products }: { products: Product[] }) {
-  const [species, setSpecies] = useState<Species | 'all'>('all');
+export function PetsShop({ products, initialSpecies = 'all' }: { products: Product[]; initialSpecies?: Species | 'all' }) {
+  const [species, setSpecies] = useState<Species | 'all'>(initialSpecies);
   const items = petProducts(products, species === 'all' ? undefined : species);
 
   const pick = (s: Species) => {

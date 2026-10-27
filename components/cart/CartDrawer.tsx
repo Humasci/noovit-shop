@@ -135,9 +135,9 @@ function PairsWellWith({ suggestions }: { suggestions: Product[] }) {
               </div>
               <button
                 onClick={() => addItem({ product: p, mode: 'one-time', ...single })}
-                className="rounded-full border border-[var(--color-navy)] px-3 py-1 text-xs font-bold hover:bg-[var(--color-navy)] hover:text-white"
+                className="rounded-full border-2 border-[var(--color-accent)] px-3 py-1 text-xs font-bold text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-white"
               >
-                Add
+                Add to Cart
               </button>
             </li>
           );
