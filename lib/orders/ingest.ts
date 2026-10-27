@@ -10,6 +10,7 @@ import { sendOrderConfirmation } from '@/lib/email';
 import { subscribe } from '@/lib/marketing/subscribers';
 import { markRecovered } from '@/lib/marketing/abandoned';
 import { klaviyoEvent } from '@/lib/marketing/klaviyo';
+import { attributeCheckout, attributeRenewal, syncCommission } from '@/lib/affiliates';
 
 type Kind = 'one_time' | 'subscription_initial' | 'subscription_renewal';
 
@@ -208,6 +209,8 @@ export async function handleCheckoutCompleted(sessionId: string) {
     items,
   });
 
+  // The order is saved and a retry would skip it, so attribution problems are logged, not thrown.
+  if (orderId) await attributeCheckout(session, orderId, subscriptionId, email).catch((err) => console.error(`Affiliate attribution for ${sessionId} failed`, err));
   if (session.recovered_from) await markRecovered(session.recovered_from, orderId);
   if (orderId && session.metadata?.manual_by) {
     await db().from('orders').update({ tags: ['manual', 'payment-link'] }).eq('id', orderId);
@@ -262,7 +265,7 @@ export async function handleInvoicePaid(invoice: Stripe.Invoice) {
   const email = invoice.customer_email ?? (!customer.deleted ? customer.email : null);
   if (!email) throw new Error(`Invoice ${invoice.id} has no customer email`);
 
-  await createOrder({
+  const orderId = await createOrder({
     kind: 'subscription_renewal',
     customerId,
     subscriptionId,
@@ -280,6 +283,7 @@ export async function handleInvoicePaid(invoice: Stripe.Invoice) {
     paymentIntentId: await paymentIntentForInvoice(invoice.id),
     items,
   });
+  if (orderId) await attributeRenewal(orderId, subscriptionId, email).catch((err) => console.error(`Affiliate attribution for ${invoice.id} failed`, err));
 }
 
 export async function handleChargeRefunded(charge: Stripe.Charge) {
@@ -296,4 +300,5 @@ export async function handleChargeRefunded(charge: Stripe.Charge) {
   if (order && fullyRefunded) {
     await db().from('fulfilments').update({ status: 'cancelled' }).eq('order_id', order.id).eq('status', 'queued');
   }
+  if (order) await syncCommission(order.id);
 }

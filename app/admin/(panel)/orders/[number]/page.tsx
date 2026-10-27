@@ -26,7 +26,7 @@ export default async function OrderDetail({ params, searchParams }: { params: Pr
 
   const { data: o } = await db()
     .from('orders')
-    .select('*, order_items(*), fulfilments(*), subscriptions(stripe_subscription_id, status, paused, frequency_days), order_notes(id, author, body, created_at)')
+    .select('*, order_items(*), fulfilments(*), subscriptions(stripe_subscription_id, status, paused, frequency_days), order_notes(id, author, body, created_at), affiliates(id, name, code), commissions(amount_cents, status)')
     .eq('order_number', Number(number))
     .maybeSingle();
   if (!o) notFound();
@@ -35,6 +35,8 @@ export default async function OrderDetail({ params, searchParams }: { params: Pr
   const path = `/admin/orders/${number}`;
   const sub = o.subscriptions as { stripe_subscription_id: string; status: string; paused: boolean; frequency_days: number } | null;
   const canMoney = can(me.role, 'orders.money');
+  // commissions.order_id is unique, so PostgREST may embed it as an object rather than an array.
+  const commission = (Array.isArray(o.commissions) ? o.commissions[0] : o.commissions) as { amount_cents: number; status: string } | null;
   const remaining = o.total_cents - (o.refunded_cents ?? 0);
   const shipped = (o.fulfilments as { status: string }[]).some((f) => ['shipped', 'delivered'].includes(f.status));
   const notes = [...(o.order_notes as { id: string; author: string; body: string; created_at: string }[])].sort((a, b) => a.created_at.localeCompare(b.created_at));
@@ -137,6 +139,13 @@ export default async function OrderDetail({ params, searchParams }: { params: Pr
               {addr.country}
             </p>
             <p className="mt-4 text-xs text-[var(--color-muted)]">Age confirmed: {o.age_confirmed ? 'yes' : 'n/a'}</p>
+            {o.affiliates && (
+              <p className="mt-2 text-xs text-[var(--color-muted)]">
+                Referred by{' '}
+                <Link href={`/admin/affiliates/${o.affiliates.id}`} className="font-semibold text-[var(--color-accent)]">{o.affiliates.name} ({o.affiliates.code})</Link>
+                {commission && <> · commission {money(commission.amount_cents)} ({commission.status})</>}
+              </p>
+            )}
           </Card>
 
           {sub && (

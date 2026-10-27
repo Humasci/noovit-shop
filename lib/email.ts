@@ -21,7 +21,7 @@ async function send(to: string, subject: string, html: string, headers?: Record<
 
 const layout = (body: string) => `
 <div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;color:#1f2937">
-  <p style="font-size:22px;font-weight:800;color:#14213d">noovit.</p>
+  <p style="font-size:24px;font-weight:600;color:#14213d">noovit<sup style="color:#5fa68d;font-size:14px">+</sup></p>
   ${body}
   <p style="margin-top:32px;font-size:12px;color:#6b7280">Questions? Just reply to this email.<br/>Noovit · Clean, science-driven supplements</p>
 </div>`;
@@ -76,6 +76,27 @@ export function sendPortalLink(to: string, url: string) {
       <p>Use the secure link below to change or cancel your subscription, update your card and address, and view invoices. The link expires shortly.</p>
       <p><a href="${esc(url)}" style="display:inline-block;background:#14213d;color:#fff;padding:12px 24px;border-radius:999px;text-decoration:none;font-weight:bold">Manage my subscription</a></p>
       <p style="font-size:12px;color:#6b7280">If you didn't request this, you can ignore this email.</p>`)
+  );
+}
+
+export function sendPartnerWelcome(
+  to: string,
+  p: { name: string; code: string; discountPct: number; commissionPct: number; recurring: boolean; link: string; dashboard: string }
+) {
+  const btn = 'display:inline-block;background:#14213d;color:#fff;padding:12px 24px;border-radius:999px;text-decoration:none;font-weight:bold';
+  return send(
+    to,
+    'Your Noovit partner code and link',
+    layout(`
+      <h1 style="font-size:20px">Welcome to the Noovit partner programme, ${esc(p.name.split(' ')[0])}</h1>
+      ${p.discountPct > 0 ? `<p>Your code gives your audience <b>${p.discountPct}% off</b> their first order:</p>
+      <p style="font-size:24px;font-weight:800;letter-spacing:2px;color:#14213d">${esc(p.code)}</p>` : ''}
+      <p>Your personal link (it remembers your followers for 30 days and applies your code automatically):<br/>
+      <a href="${esc(p.link)}" style="color:#3a8069">${esc(p.link)}</a></p>
+      <p>You earn <b>${p.commissionPct}%</b> of each order you refer${p.recurring ? ', including every subscription renewal' : ''}, after discounts and refunds.</p>
+      <p>Track clicks, orders and earnings any time on your private dashboard:</p>
+      <p><a href="${esc(p.dashboard)}" style="${btn}">Open my dashboard</a></p>
+      <p style="font-size:12px;color:#6b7280">Keep the dashboard link private. Please disclose the partnership in your posts (e.g. #ad), as the FTC requires.</p>`)
   );
 }
 

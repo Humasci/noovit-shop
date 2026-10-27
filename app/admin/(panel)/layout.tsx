@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import {
   LayoutDashboard, ShoppingCart, Truck, Repeat, Users, Package, Star, Tag, LogOut, ExternalLink, Mail, ShoppingBag, Settings,
-  Layers, FileText, Home, BarChart3, UserCog, UserCircle,
+  Layers, FileText, Home, BarChart3, UserCog, UserCircle, Handshake,
 } from 'lucide-react';
 import { requireAdmin, endSession } from '@/lib/admin/auth';
 import { can, Permission } from '@/lib/admin/permissions';
@@ -36,6 +36,7 @@ const NAV: { group: string; items: { href: string; label: string; icon: typeof H
     group: 'Marketing',
     items: [
       { href: '/admin/discounts', label: 'Discounts', icon: Tag, perm: 'marketing' },
+      { href: '/admin/affiliates', label: 'Affiliates', icon: Handshake, perm: 'marketing' },
       { href: '/admin/subscribers', label: 'Subscribers', icon: Mail, perm: 'marketing' },
       { href: '/admin/abandoned', label: 'Abandoned carts', icon: ShoppingBag, perm: 'marketing' },
     ],

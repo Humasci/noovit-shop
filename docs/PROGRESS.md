@@ -25,6 +25,8 @@ _Last updated: 2026-10-26_
 - [x] Admin dashboard (`/admin`): overview, orders, fulfilment queue + CSV export, subscriptions, customers, products (supplier SKUs), reviews, discount codes.
 - [x] Tested end-to-end against a local Postgres + PostgREST and a fake Stripe: checkout rules, webhook ingestion (one-time, subscription, renewal, duplicates, refunds), portal links, reviews, every admin action.
 - [x] **Phase 1 (Shopify parity):** admin product editor (DB catalog, photos, status, SEO, supplier SKU, automatic Stripe sync); sitemap, robots, structured data, PNG product images; Google/Meta/TikTok product feeds; richer discount codes; newsletter subscribers with one-click unsubscribe; abandoned-checkout recovery; Settings page with GA4/Meta/TikTok pixels behind a cookie banner. 46/46 end-to-end checks passing.
+- [x] **Affiliates & influencers:** partner codes + share links (noovit.com/r/CODE, 30-day memory, code auto-applied), commissions on first orders and optionally renewals, refund-aware, 30-day hold then auto-approval, payouts log, private partner dashboard, CSV export. 55/55 end-to-end checks.
+- [x] Supplier research (Oct 2026) → `docs/SUPPLIER_RESEARCH.md`.
 - [x] **Phase 2 (Shopify parity):** staff accounts with Owner/Manager/Fulfilment roles; partial refunds, cancellations, order notes & tags, manual replacement orders and payment links; customer profiles with notes, tags, segments and CSV export; collections, bundles, bulk product actions, product CSV import/export; editable homepage, announcement bar and pop-up; blog; review-request emails (daily cron), automatic spend discount, cart cross-sell, Klaviyo sync; reports with charts.
 
 ## Waiting on
@@ -35,7 +37,9 @@ _Last updated: 2026-10-26_
 - [ ] `APP_SECRET`, `CRON_SECRET` and `ADMIN_PASSWORD` generated/chosen → add in Vercel; sign in and create the Owner account.
 - [ ] Optional: Klaviyo private key + list ID.
 - [ ] Admin → Settings: GA4 / Meta / TikTok IDs, welcome code (create WELCOME10 first), business postal address; add feed URLs to Google Merchant Center, Meta Commerce Manager, TikTok.
-- [ ] Supplier replies → choose US supplier, map supplier SKUs, decide API vs CSV fulfilment.
+- [ ] Run migration `0004_affiliates.sql` in Supabase (SQL editor).
+- [ ] Suppliers (see `docs/SUPPLIER_RESEARCH.md`): HoneyComm appears defunct; request samples from On Demand Fulfillment, Supliful, Professional Nutritionals, Vitalabs and pet makers (Pet Tech Labs / Natural Pet Innovations); then choose, map supplier SKUs, build order forwarding.
+- [ ] Catalog changes implied by research: drop/replace Niacinamide and odorless garlic softgels, drop "marine" unless confirmed, defer the two cat products, pets as a later inventory line.
 - [x] Preliminary trademark knock-out search (owner, Oct 2026) — see below.
 - [ ] Attorney clearance + file NOOVIT in US and UK (class 5 + 35, consider 30/31) before ordering labelled samples.
 - [x] Brand: noovit⁺ wordmark in Funnel Display (raised opal + mark, also the favicon), Manrope headings, Inter body text, lighter weights; navy + opal green accent (tokens in `app/globals.css`).
@@ -116,7 +120,8 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 | Automatic discounts, bundles, cart upsells, newsletter pop-up | Have |
 | Blog / content pages for SEO | Have |
 | Sales reports by product/day, subscription retention, CSV export | Have (Reports) |
-| Affiliates/influencer codes, loyalty, gift cards | Tool or Phase 3 |
+| Affiliate/influencer codes with commissions & payouts | Have |
+| Loyalty, gift cards | Tool or Phase 3 |
 
 ### Store settings
 | Shopify feature | Status |

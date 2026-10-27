@@ -242,6 +242,25 @@ Create discount codes customers enter at checkout:
 - Shipping is always free, so there's no free-shipping code type.
 - The newsletter promises 10% off the first order — create `WELCOME10` (10%, first payment only, first-time customers only) and enter it in **Settings**.
 
+### Affiliates & influencers
+Give creators, coaches and ambassadors their own code and link, and pay them a share of the sales they bring in. **Marketing → Affiliates.**
+
+**Adding a partner:** enter their name, email, a code (e.g. `SARAH10`), the **customer discount** their followers get (% off the first payment; 0 = link only, no discount), their **commission** (% of each order) and whether they also earn on **subscription renewals**. Each partner gets:
+- **A code** customers can type at checkout.
+- **A share link**, `noovit.com/r/SARAH10`. It remembers the visitor for **30 days** and applies the code at checkout automatically, so followers don't need to type anything. To link to a product, add `?to=` and the page, e.g. `noovit.com/r/SARAH10?to=/products/magnesium-complex`. If someone clicks two partners' links, the last one wins.
+- **A private dashboard link** where they see their clicks, orders and earnings (never customer names or emails). Use **Email them their code & links** to send everything in one email. **New dashboard link** cancels the old one if it was shared by mistake.
+
+**How commission is worked out:** the order total after discounts and refunds, excluding tax and shipping, times their rate. Examples at 15%: a $70 order with 10% off earns $9.45; if half is refunded, it drops to about $4.95. If the order is fully refunded or cancelled, the commission is cancelled. If the automatic discount gives the customer more than the partner's code, the customer gets the bigger discount and the partner is still credited. A partner who buys with their own code earns nothing on that order.
+
+**Paying partners:**
+1. New commissions are **pending** for the hold period (Settings → Affiliates, default **30 days**), so refunds can come in first. They then become **approved** (owed) automatically. **Approve pending now** skips the wait.
+2. Send the money yourself (PayPal, bank transfer…). Save their payout details on the partner page.
+3. Click **Record payout** with the method and reference. Everything approved is marked **paid** and the payout is logged. A refund after payment doesn't change a paid commission; agree with the partner how to handle it.
+
+**Other controls:** change the commission rate (future orders only) or the customer discount (Noovit creates a fresh Stripe code with the same name), **Pause** a partner (their code and link stop working immediately), **Void** a single commission, and **Export CSV** for your records. Each order page shows which partner referred it.
+
+**Good practice:** ask partners to disclose the relationship in every post (#ad / "paid partnership"), as the FTC requires, and to use only the health wording on the product pages. Keep a simple written agreement with the rate, hold period and payout schedule.
+
 ### Subscribers
 Everyone who joined the newsletter or ticked the marketing box at checkout. See totals (subscribed, new in 30 days, unsubscribed), search, filter, and **Export subscribed (CSV)** to import into an email tool such as Klaviyo. Unsubscribes are recorded automatically.
 
@@ -279,6 +298,7 @@ Add people with their name, email, role and a temporary password (12+ characters
 - **Marketing emails:** the welcome discount code and your business postal address (US law requires it in marketing emails).
 - **Review requests:** how many days after shipping to email customers asking for a review (default 14; 0 switches it off). Sent once per order, never to people who unsubscribed or whose order was refunded or cancelled. Runs daily at 15:00 UTC.
 - **Automatic discount:** a minimum order ($) and % off, e.g. 100 and 10. Leave blank to switch off.
+- **Affiliates:** how many days a commission stays pending before it is approved for payout (default 30). Approval runs with the daily job.
 - **Klaviyo:** your Klaviyo list ID. With the Klaviyo private key added to the hosting settings, new subscribers are added to that list, unsubscribes are synced, and every order is sent to Klaviyo as **Placed Order** (and **Fulfilled Order** when shipped) — use these to build welcome, post-purchase and win-back flows in Klaviyo.
 - **Sales channels:** the product-feed links for **Google Merchant Center** (Google Shopping), **Meta Commerce Manager** (Facebook & Instagram shops and catalog ads) and **TikTok**, with where to paste each one. Feeds always reflect current products, prices, photos and stock; hidden products are left out. The sitemap link for Google Search Console is here too.
 
@@ -301,6 +321,8 @@ Add people with their name, email, role and a temporary password (12+ characters
 
 | I want to… | Do this |
 |---|---|
+| Add an influencer | Admin → Affiliates → Add a partner → open them → Email them their code & links |
+| Pay partners | Admin → Affiliates → open partner → pay them by PayPal/bank → Record payout |
 | Ship today's orders | Admin → Fulfilment → Export CSV → send to supplier → Mark as submitted |
 | Add tracking | Admin → Orders → open order → status *shipped* + tracking → Save |
 | Cancel a customer's subscription for them | Admin → Subscriptions → Cancel at period end |

@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { timingSafeEqual } from 'crypto';
 import { dbConfigured } from '@/lib/config';
 import { sendReviewRequests } from '@/lib/marketing/review-requests';
+import { approveDueCommissions } from '@/lib/affiliates';
+import { loadSettings } from '@/lib/settings';
 
 // Vercel Cron calls this daily (vercel.json) with "Authorization: Bearer <CRON_SECRET>".
 export async function GET(req: NextRequest) {
@@ -12,5 +14,7 @@ export async function GET(req: NextRequest) {
   if (given.length !== expected.length || !timingSafeEqual(given, expected)) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const reviewRequests = await sendReviewRequests();
-  return NextResponse.json({ ok: true, reviewRequests });
+  const holdDays = Number((await loadSettings()).affiliate_hold_days || 30);
+  const commissionsApproved = await approveDueCommissions(holdDays);
+  return NextResponse.json({ ok: true, reviewRequests, commissionsApproved });
 }

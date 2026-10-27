@@ -15,6 +15,7 @@ export const SETTING_FIELDS = {
   review_request_days: { label: 'Days after shipping to ask for a review (0 = off)', placeholder: '14', pattern: /^\d{1,2}$/, env: 'REVIEW_REQUEST_DAYS', upper: false },
   auto_discount_threshold: { label: 'Automatic discount: minimum order ($)', placeholder: '100', pattern: /^\d{1,4}$/, env: 'AUTO_DISCOUNT_THRESHOLD', upper: false },
   auto_discount_percent: { label: 'Automatic discount: % off', placeholder: '10', pattern: /^([1-9]|[1-4]\d|50)$/, env: 'AUTO_DISCOUNT_PERCENT', upper: false },
+  affiliate_hold_days: { label: 'Affiliates: days before a commission is approved for payout', placeholder: '30', pattern: /^\d{1,3}$/, env: 'AFFILIATE_HOLD_DAYS', upper: false },
   klaviyo_list_id: { label: 'Klaviyo list ID', placeholder: 'Y6nRLr', pattern: /^[A-Za-z0-9]{4,12}$/, env: 'KLAVIYO_LIST_ID', upper: false },
 } as const;
 

@@ -28,6 +28,11 @@ const GROUPS: { title: string; note: string; keys: (keyof typeof SETTING_FIELDS)
     keys: ['auto_discount_threshold', 'auto_discount_percent'],
   },
   {
+    title: 'Affiliates',
+    note: 'Partner commissions stay pending for this many days so refunds can come in first, then become payable automatically (checked daily). Default 30.',
+    keys: ['affiliate_hold_days'],
+  },
+  {
     title: 'Klaviyo',
     note: 'Optional. With a Klaviyo private API key set as KLAVIYO_PRIVATE_KEY in the hosting environment, new subscribers are added to this list and orders are sent as “Placed Order” and “Fulfilled Order” events for your Klaviyo flows. Unsubscribes sync too.',
     keys: ['klaviyo_list_id'],

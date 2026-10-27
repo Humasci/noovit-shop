@@ -8,6 +8,7 @@ import { addNote, parseTags } from '@/lib/orders/admin';
 import { db } from '@/lib/db/server';
 import { stripe } from '@/lib/stripe/server';
 import { syncSubscription } from '@/lib/orders/ingest';
+import { syncCommission } from '@/lib/affiliates';
 import { loadCatalog } from '@/lib/catalog/server';
 import { findProduct, packOptions } from '@/data/products';
 import { priceLookupKey } from '@/lib/stripe/catalog';
@@ -59,6 +60,7 @@ export async function refundOrder(f: FormData) {
     .update({ refunded_cents: refunded, ...(order!.status !== 'cancelled' ? { status: full ? 'refunded' : 'partially_refunded' } : {}) })
     .eq('id', order!.id);
   if (full) await db().from('fulfilments').update({ status: 'cancelled' }).eq('order_id', order!.id).eq('status', 'queued');
+  await syncCommission(order!.id);
   await addNote(order!.id, me, `Refunded ${formatPrice(amount / 100)}${reason ? ` (${reason.replace(/_/g, ' ')})` : ''}.${note ? ` ${note}` : ''}`);
   revalidatePath('/admin', 'layout');
   back(path, `Refunded ${formatPrice(amount / 100)}.`);
@@ -91,6 +93,7 @@ export async function cancelOrder(f: FormData) {
     .from('orders')
     .update({ status: 'cancelled', cancelled_at: new Date().toISOString(), refunded_cents: order!.stripe_payment_intent_id ? order!.total_cents : order!.refunded_cents })
     .eq('id', order!.id);
+  await syncCommission(order!.id);
 
   let subNote = '';
   const sub = order!.subscriptions as unknown as { stripe_subscription_id: string } | null;

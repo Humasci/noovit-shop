@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { stripe } from '@/lib/stripe/server';
-import { stripeConfigured } from '@/lib/config';
+import { dbConfigured, stripeConfigured } from '@/lib/config';
 import { validateCheckout } from '@/lib/checkout/validate';
 import { loadCatalog } from '@/lib/catalog/server';
 import { getSettings } from '@/lib/settings';
 import { autoDiscountCoupon, autoDiscountFrom } from '@/lib/marketing/auto-discount';
+import { REF_COOKIE, activeAffiliateByCode } from '@/lib/affiliates';
 
 async function resolvePriceIds(lookupKeys: string[]) {
   const ids = new Map<string, string>();
@@ -51,20 +52,32 @@ export async function POST(req: NextRequest) {
   };
 
   // Stripe allows either an applied discount or customer-entered codes, not both.
+  const applyDiscount = (discount: Stripe.Checkout.SessionCreateParams.Discount) => {
+    params.discounts = [discount];
+    delete params.allow_promotion_codes;
+    params.after_expiration = { recovery: { enabled: true, allow_promotion_codes: false } };
+  };
+
+  // Visitors who came through a partner's share link are credited to that partner, and the partner's
+  // code is pre-applied unless the automatic discount gives the customer more.
+  const affiliate = dbConfigured() ? await activeAffiliateByCode(req.cookies.get(REF_COOKIE)?.value).catch(() => null) : null;
+  if (affiliate) params.metadata!.affiliate_id = affiliate.id;
+
   const auto = autoDiscountFrom(await getSettings());
   const subtotal = lines.reduce((sum, l) => sum + l.unitAmount * l.quantity, 0);
-  if (auto && subtotal >= auto.thresholdCents) {
+  const autoApplies = auto && subtotal >= auto.thresholdCents;
+  if (affiliate?.stripe_promotion_code_id && !(autoApplies && auto.percent > affiliate.customer_discount_pct)) {
+    applyDiscount({ promotion_code: affiliate.stripe_promotion_code_id });
+  } else if (autoApplies) {
     try {
-      params.discounts = [{ coupon: await autoDiscountCoupon(auto.percent) }];
-      delete params.allow_promotion_codes;
-      params.after_expiration = { recovery: { enabled: true, allow_promotion_codes: false } };
+      applyDiscount({ coupon: await autoDiscountCoupon(auto.percent) });
     } catch (err) {
       console.error('Automatic discount unavailable', err);
     }
   }
 
   if (frequency) {
-    params.subscription_data = { metadata: { frequency_days: String(frequency) } };
+    params.subscription_data = { metadata: { frequency_days: String(frequency), ...(affiliate ? { affiliate_id: affiliate.id } : {}) } };
     params.custom_text = {
       submit: {
         message: `Your subscription renews automatically every ${frequency} days at the price shown until you cancel. Cancel anytime from "My Subscriptions" at noovit.com.`,
