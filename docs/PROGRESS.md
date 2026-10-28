@@ -62,6 +62,16 @@ _Last updated: 2026-10-27_
 - [ ] Turn on live Stripe keys and run `npm run stripe:sync -- --live`.
 
 ## Next
+- **Social media posting system/agent** (to scope together). Draft scope:
+  - turn each guide or comparison into posts: Shorts/Reels/TikTok scripts for the AI avatar and the dietitian, carousels, captions
+  - a content calendar
+  - an approval queue in the admin (nothing posts without approval)
+  - scheduled posting via the platforms' APIs or a scheduler (Buffer/Later/Metricool)
+  - compliance checks on claims (FDA/FTC, #ad for paid partners)
+  - performance tracking
+- **Real products** from Supliful (owner to provide: Supplement Facts, counts, cost, SKU, photos), then align names, doses and prices.
+- **Content programme:** an ingredient guide per product, "X vs Y" comparisons, "can I take X with Y" pages. Voice is nerdy and data-forward; the audience is broad, including biohackers. Owner runs deep research per ingredient.
+- **Certificate of analysis (COA) per product page** once lab reports exist (lot, potency vs spec, heavy metals), as Double Wood does.
 - Direct supplier integration (API or Shopify bridge) once a supplier is chosen.
 - UK market: region switch (GBP), UK claims copy, UK supplier routing.
 - Brand styling from logo/mockups.
