@@ -94,6 +94,19 @@ _Privacy only keeps your name off **public** records. It doesn't change who know
 | **31 Jan 2028** | **Self Assessment for 2026/27** (UK tax year 6 Apr 2026 – 5 Apr 2027) | Covers any Noovit income from launch to 5 April 2027. The 31 Jan **2027** deadline is for 2025/26, before Noovit existed. |
 | **Every anniversary** | Wyoming annual report ($60) | Missing it gets the LLC dissolved. |
 
+## Until six3 exists (launch first)
+- six3 isn't formed yet, so there's no marketing fee to pay at launch. Until it exists: **reinvest**. Noovit LLC pays its own costs (Supliful, ads, apps) from its account.
+- **Avoid taking money out personally.** Any money moving between you and the LLC (paying costs for it, or taking cash out) is a related-party transaction for the 5472, and how the UK taxes withdrawals depends on the accountant's answer. Keep it simple: put money in only when needed, and take nothing out until six3 and the fee agreement are in place.
+
+## Barbill LLC (formed end of January 2026): owner's other company
+_Assumes Barbill is also a Wyoming single-member LLC on a calendar tax year. Confirm the state._
+| When | What |
+|---|---|
+| **~1 Jan 2027** (the first day of its anniversary month) | **Wyoming annual report ($60 minimum)** + registered agent renewal. Due soon. A report left 60 days overdue leads to dissolution |
+| **31 Jan 2027** | **UK Self Assessment 2025/26** (6 Apr 2025 – 5 Apr 2026). If Barbill had **any income or activity between formation and 5 April 2026**, it belongs on this return |
+| **15 Apr 2027** | **Form 5472 + pro forma 1120 for 2026.** Due even with no income if money moved between you and Barbill (paying its fees, putting money in) |
+| Ongoing | If HMRC treats Barbill as a UK-run company, corporation tax registration was due within 3 months of it starting to trade. Ask the accountant when you ask about Noovit |
+
 ## Stock from a minimum-order supplier (e.g. Makers Nutrition) later
 - Buying stock is **not a cost when you pay for it**. It's an asset ("inventory") until sold, and becomes a cost (cost of goods sold) **as each unit sells**.
 - Example: buy 1,000 bottles at $4 ($4,000) in November and sell 300 by year-end → **$1,200** counts as this year's cost; **$2,800** of stock carries into next year.
