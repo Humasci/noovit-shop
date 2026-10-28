@@ -134,7 +134,7 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
       <nav className="mb-4 text-xs text-[var(--color-muted)]">
         <Link href="/">Home</Link> / <Link href="/guides">Supplement guides</Link> / <span className="text-[var(--color-ink)]">{g.ingredient}</span>
       </nav>
-      <h1 className="text-balance text-4xl md:text-5xl">{title}</h1>
+      <h1 className="text-balance text-3xl sm:text-4xl md:text-5xl">{title}</h1>
       <p className="mt-4 text-sm text-[var(--color-muted)]">
         Updated {fmt(g.updated)}
         {g.reviewer && <> · Reviewed by <b className="text-[var(--color-ink)]">{g.reviewer.name}</b>, {g.reviewer.credentials}</>}
@@ -234,7 +234,7 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
         <section className="mt-12">
           <h2 className="text-2xl">From our range</h2>
           {related.length > 0 && (
-            <div className="mt-5 grid grid-cols-2 gap-5">
+            <div className="mt-5 grid grid-cols-2 gap-3 sm:gap-5">
               {related.map((p) => <ProductCard key={p.id} product={p} />)}
             </div>
           )}

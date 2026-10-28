@@ -92,25 +92,26 @@ export function ShopBrowser({
         </div>
       </section>
 
-      <div className="sticky top-[75px] z-30 md:top-[82px] border-b border-[var(--color-line)] bg-[var(--color-canvas)]">
-        <div className="container px-6 py-4">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      {/* Sticky only from tablet up: on phones the filter bar would cover a third of the screen. */}
+      <div className="z-30 border-b border-[var(--color-line)] bg-[var(--color-canvas)] md:sticky md:top-[82px]">
+        <div className="container px-4 py-3 sm:px-6 md:py-4">
+          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between md:gap-4">
             <div className="no-scrollbar flex items-center gap-2 overflow-x-auto">
-              <span className="mr-1 shrink-0 text-xs font-bold uppercase tracking-wider text-[var(--color-muted)]">Product Type</span>
+              <span className="mr-1 hidden shrink-0 text-xs font-bold uppercase tracking-wider text-[var(--color-muted)] sm:inline">Product Type</span>
               {TYPE_TABS.filter((t) => t.value === 'all' || t.value === 'best-sellers' || products.some((p) => p.productType === t.value)).map((t) => (
                 <Pill key={t.value} active={type === t.value} onClick={() => setType(t.value)}>
                   {t.label}
                 </Pill>
               ))}
             </div>
-            <div className="flex items-center gap-3">
-              <button onClick={() => setShowDiet(!showDiet)} className="flex items-center gap-1 text-sm font-semibold">
+            <div className="flex items-center justify-between gap-3">
+              <button onClick={() => setShowDiet(!showDiet)} className="flex shrink-0 items-center gap-1 text-sm font-semibold">
                 <SlidersHorizontal className="h-4 w-4" /> {showDiet ? 'Fewer filters' : 'More filters'}
               </button>
               <select
                 value={sort}
                 onChange={(e) => setSort(e.target.value as Sort)}
-                className="rounded border border-[var(--color-line)] bg-white px-4 py-2 text-sm font-semibold"
+                className="min-w-0 rounded border border-[var(--color-line)] bg-white px-3 py-2 text-sm font-semibold sm:px-4"
                 aria-label="Sort by"
               >
                 {SORTS.map((s) => (
@@ -123,7 +124,7 @@ export function ShopBrowser({
           </div>
           {showDiet && (
             <div className="no-scrollbar mt-3 flex items-center gap-2 overflow-x-auto">
-              <span className="mr-1 shrink-0 text-xs font-bold uppercase tracking-wider text-[var(--color-muted)]">For Every Body</span>
+              <span className="mr-1 hidden shrink-0 text-xs font-bold uppercase tracking-wider text-[var(--color-muted)] sm:inline">For Every Body</span>
               {PUBLIC_DIETARY_TAGS.map((t) => (
                 <Pill key={t.value} active={tags.includes(t.value)} onClick={() => toggleTag(t.value)}>
                   {t.label}
@@ -139,17 +140,17 @@ export function ShopBrowser({
         </div>
       </div>
 
-      <div className="container px-6 py-12">
+      <div className="container px-4 py-8 sm:px-6 md:py-12">
         {groups.length === 0 ? (
           <p className="py-20 text-center text-[var(--color-muted)]">No products match your search criteria.</p>
         ) : (
-          <div className="space-y-16">
+          <div className="space-y-12 md:space-y-16">
             {groups.map((g) => (
               <section key={g.value}>
-                <h2 className="mb-8 text-2xl md:text-3xl">
+                <h2 className="mb-5 text-2xl md:mb-8 md:text-3xl">
                   {g.label} <span className="text-[var(--color-muted)]">({g.items.length})</span>
                 </h2>
-                <div className="grid grid-cols-2 gap-x-5 gap-y-10 lg:grid-cols-4">
+                <div className="grid grid-cols-2 gap-x-3 gap-y-6 sm:gap-x-5 sm:gap-y-10 lg:grid-cols-4">
                   {g.items.map((p) => (
                     <ProductCard key={p.id} product={p} />
                   ))}

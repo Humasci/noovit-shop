@@ -44,17 +44,18 @@ export function ProductCard({ product }: { product: Product }) {
             />
           ))}
         </span>
-        <span className="absolute left-3 top-3 flex flex-col items-start gap-1.5">
+        {/* Phones show one small tag so the bottle stays visible; larger screens show both. */}
+        <span className="absolute left-2 top-2 flex flex-col items-start gap-1 sm:left-3 sm:top-3 sm:gap-1.5">
           {goal && (
-            <span className="rounded-full bg-white px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-[var(--color-navy)]">{goal}</span>
+            <span className={`${product.bestSeller ? 'hidden sm:inline-block' : ''} max-w-full truncate rounded-full bg-white/90 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-[var(--color-navy)] sm:px-2.5 sm:py-1 sm:text-[10px] sm:tracking-wider`}>{goal}</span>
           )}
           {product.bestSeller && (
-            <span className="rounded-full bg-[var(--color-navy)] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">Best seller</span>
+            <span className="rounded-full bg-[var(--color-navy)] px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-white sm:px-2.5 sm:py-1 sm:text-[10px] sm:tracking-wider">Best seller</span>
           )}
         </span>
       </Link>
 
-      <div className="flex flex-1 flex-col p-4">
+      <div className="flex flex-1 flex-col p-3 sm:p-4">
         {product.reviewCount > 0 && (
           <div className="mb-1 flex items-center gap-2">
             <Stars rating={product.rating} size={13} />
@@ -62,19 +63,25 @@ export function ProductCard({ product }: { product: Product }) {
           </div>
         )}
         <Link href={`/products/${product.slug}`}>
-          <h3 className="text-base font-semibold hover:text-[var(--color-accent)] md:text-lg">{product.name}</h3>
+          <h3 className="text-[15px] font-semibold leading-snug hover:text-[var(--color-accent)] sm:text-base md:text-lg">{product.name}</h3>
         </Link>
-        <p className="mt-1 line-clamp-2 flex-1 text-sm text-[var(--color-muted)]">{product.tagline || product.shortBenefit}</p>
-        <p className="mt-3 text-sm">
-          <span className="font-semibold text-[var(--color-navy)]">From {formatPrice(from)}</span>{' '}
-          {off > 0 && <s className="text-[var(--color-muted)]">{formatPrice(product.basePrice)}</s>}{' '}
-          {off > 0 && <span className="font-semibold text-[var(--color-accent)]">{off}% off</span>}
-          <span className="block text-xs text-[var(--color-muted)]">{product.servings}-day supply{product.bundleItems?.length ? '' : ' per bottle'}</span>
+        <p className="mt-1 line-clamp-2 flex-1 text-xs text-[var(--color-muted)] sm:text-sm">{product.tagline || product.shortBenefit}</p>
+        <p className="mt-2 text-sm sm:mt-3">
+          <span className="font-semibold text-[var(--color-navy)]">From {formatPrice(from)}</span>
+          {off > 0 && (
+            <span className="block text-xs sm:inline sm:text-sm">
+              <s className="text-[var(--color-muted)] sm:ml-1">{formatPrice(product.basePrice)}</s>{' '}
+              <span className="font-semibold text-[var(--color-accent)]">{off}% off</span>
+            </span>
+          )}
+          <span className="block text-xs text-[var(--color-muted)]">
+            {product.servings}-day supply<span className="hidden sm:inline">{product.bundleItems?.length ? '' : ' per bottle'}</span>
+          </span>
         </p>
         {product.status === 'active' ? (
           <button
             onClick={add}
-            className="relative mt-3 overflow-hidden whitespace-nowrap rounded border-[1.5px] border-[var(--color-navy)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.06em] text-[var(--color-navy)] transition-colors hover:bg-[var(--color-navy)] hover:text-white"
+            className="relative mt-3 w-full overflow-hidden rounded border-[1.5px] border-[var(--color-navy)] px-2 py-2 text-[11px] font-semibold uppercase leading-tight tracking-[0.04em] text-[var(--color-navy)] transition-colors hover:bg-[var(--color-navy)] hover:text-white sm:px-4 sm:text-xs sm:tracking-[0.06em]"
           >
             {/* Tile fill: the button fills left to right with navy squares, then confirms */}
             <span aria-hidden className="absolute inset-0 grid grid-cols-8 grid-rows-2">

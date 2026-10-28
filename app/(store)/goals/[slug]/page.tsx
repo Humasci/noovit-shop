@@ -29,7 +29,7 @@ export default async function GoalPage({ params }: { params: Promise<{ slug: str
           <nav className="mb-4 text-xs text-[var(--color-muted)]">
             <Link href="/">Home</Link> / <Link href="/shop">Shop</Link> / <span className="text-[var(--color-ink)]">{goal.name}</span>
           </nav>
-          <h1 className="max-w-2xl text-balance text-4xl md:text-5xl">{goal.title}</h1>
+          <h1 className="max-w-2xl text-balance text-3xl sm:text-4xl md:text-5xl">{goal.title}</h1>
           <p className="mt-4 max-w-xl text-lg text-[var(--color-ink)]/80">{goal.intro}</p>
           <nav aria-label="Other goals" className="mt-8 flex flex-wrap gap-2">
             {GOAL_PAGES.map((g) => (
@@ -50,7 +50,7 @@ export default async function GoalPage({ params }: { params: Promise<{ slug: str
           {items.length === 0 ? (
             <p className="text-center text-[var(--color-muted)]">New products for this goal are on the way.</p>
           ) : (
-            <div className="grid grid-cols-2 gap-x-5 gap-y-10 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-x-3 gap-y-6 sm:gap-x-5 sm:gap-y-10 lg:grid-cols-4">
               {items.map((p) => (
                 <ProductCard key={p.id} product={p} />
               ))}

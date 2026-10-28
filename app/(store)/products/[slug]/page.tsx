@@ -372,7 +372,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         <section className="section bg-[var(--color-soft)]">
           <div className="container px-6">
             <SectionHeading eyebrow="Save with a bundle" title={`Bundles with ${product.name}`} />
-            <div className="mx-auto grid max-w-4xl grid-cols-2 gap-x-5 gap-y-10 lg:grid-cols-3">
+            <div className="mx-auto grid max-w-4xl grid-cols-2 gap-x-3 gap-y-6 sm:gap-x-5 sm:gap-y-10 lg:grid-cols-3">
               {bundles.map((p) => (
                 <ProductCard key={p.id} product={p} />
               ))}
@@ -385,7 +385,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       <section className="section">
         <div className="container px-6">
           <SectionHeading title={isPet ? 'More for your pet' : components.length ? 'In this bundle' : 'Pairs well with'} sub={components.length ? 'Also sold separately' : undefined} />
-          <div className="grid grid-cols-2 gap-x-5 gap-y-10 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-x-3 gap-y-6 sm:gap-x-5 sm:gap-y-10 lg:grid-cols-4">
             {related.map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}

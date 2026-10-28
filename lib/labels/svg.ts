@@ -131,19 +131,20 @@ const SUBTITLES: Record<string, string> = {
   'glucosamine-complex': 'With Chondroitin, MSM & Curcumin',
   'collagen-complex': 'With Hyaluronic Acid & Vitamin C',
   'menopause-complex': 'Black Cohosh, Sage, D3 & B6',
-  'magnesium-complex': '3 Forms of Magnesium + Zinc & D3',
+  'magnesium-complex': '275mg Magnesium as Glycinate',
   zinc: 'Zinc Picolinate 25mg + Copper',
   'iron-complex': 'Gentle Bisglycinate + Vitamin C',
   'vitamin-d3-k2': '2000 IU D3 + 75mcg K2 (MK-7)',
   'turmeric-complex': '95% Curcuminoids + Black Pepper',
   'berberine-complex': '500mg Berberine HCl + Chromium',
-  ashwagandha: '600mg Root Extract, 5% Withanolides',
+  ashwagandha: 'KSM-66® 600mg, 5% Withanolides',
   multivitamin: '23 Active Vitamins & Minerals',
   'biotin-complex': 'With Zinc & Selenium',
-  creatine: 'Micronised Monohydrate, 5g Serving',
+  creatine: 'Pure Monohydrate, 5g Serving',
   'mushroom-blend-powder': "Lion's Mane, Cordyceps, Reishi & Chaga",
   'focus-complex': "Lion's Mane, Bacopa & L-Theanine",
-  'lions-mane': '1000mg Fruiting Body Extract',
+  'lions-mane': "1000mg Organic Lion's Mane",
+  coq10: '200mg Coenzyme Q10 (Ubiquinone)',
   'l-theanine': '200mg Pure L-Theanine',
   nac: 'N-Acetyl Cysteine 600mg',
 };
@@ -218,8 +219,10 @@ export function frontPanel(p: Product, mode: FontMode, bleed = 0, pattern: Label
   const dark = shade(p.color);
   const { units } = labelCounts(p);
   const qty = netQuantity(p);
-  const unitWord = p.form === 'powder' ? qty.replace(/^\S+\s/, '') : UNITS[p.form][units === 1 ? 0 : 1];
-  const big = p.form === 'powder' ? qty.split(' ')[0] : String(units);
+  // Powders: "280 g" large, "NET WT (9.9 OZ)" small; otherwise the count and its unit.
+  const wt = qty.match(/^Net Wt (\d+ g) \((.+)\)$/);
+  const big = wt ? wt[1] : p.form === 'powder' ? qty.split(' ')[0] : String(units);
+  const unitWord = wt ? `Net Wt ${wt[2]}` : p.form === 'powder' ? qty.replace(/^\S+\s/, '') : UNITS[p.form][units === 1 ? 0 : 1];
   const benefit = balance(wrap(p.shortBenefit.replace(/\.$/, '') + '*', 126, 9.6, 0.5).slice(0, 3));
   const sub = balance(wrap(labelSubtitle(p), FRONT.w - 18 - 50, 10, 0.5).slice(0, 2));
   // Name + details sit in the lower part of the colour block, balanced against the icon above.
@@ -237,7 +240,7 @@ export function frontPanel(p: Product, mode: FontMode, bleed = 0, pattern: Label
     ${textBlock(benefit, 18, BAND + 20 + shift, 9.6, 11.6, `font-weight="500" fill="${INK}" ${font('body', mode)}`)}
     <text x="18" y="${FRONT.h - 13 + shift / 4}" font-size="7.6" font-weight="600" letter-spacing="1" fill="${dark}" ${font('body', mode)}>DIETARY SUPPLEMENT</text>
     <text x="${FRONT.w - 18}" y="${BAND + 34 + shift}" text-anchor="end" font-size="21.7" font-weight="600" fill="${dark}" ${font('head', mode)}>${esc(big)}</text>
-    <text x="${FRONT.w - 18}" y="${BAND + 52 + shift * 0.6}" text-anchor="end" font-size="9.4" font-weight="600" letter-spacing="0.8" fill="${dark}" ${font('body', mode)}>${esc(unitWord.toUpperCase())}</text>
+    <text x="${FRONT.w - 18}" y="${BAND + 52 + shift * 0.6}" text-anchor="end" font-size="${wt ? 7.4 : 9.4}" font-weight="600" letter-spacing="0.8" fill="${dark}" ${font('body', mode)}>${esc(unitWord.toUpperCase())}</text>
   </g>`;
 }
 
@@ -260,6 +263,7 @@ const DAILY_VALUES: [RegExp, number, 'mg' | 'mcg'][] = [
   [/copper/i, 0.9, 'mg'],
   [/selenium/i, 55, 'mcg'],
   [/chromium/i, 35, 'mcg'],
+  [/magnesium/i, 420, 'mg'],
 ];
 
 // "1000 IU" vitamin D → "25 mcg (1,000 IU)" as required since 2020; %DV where a Daily Value exists.
@@ -412,11 +416,11 @@ function bottle(p: Product, mode: FontMode, uid: string, pattern: LabelPattern =
   const e = 0.07; // ellipse ratio for cap and base: ry = r·e (a near-front view)
   const eLabel = 0.022; // label edges read almost straight, like a product photo
   const R = jar ? 112 : 94;
-  const capR = jar ? 104 : 56;
-  const capTop = jar ? 112 : 64;
-  const capBot = jar ? 152 : 124;
-  const neck = jar ? 104 : 50;
-  const shoulder = jar ? 160 : 132;
+  const capR = jar ? 104 : 66;
+  const capTop = jar ? 112 : 70;
+  const capBot = jar ? 152 : 113;
+  const neck = jar ? 104 : 58;
+  const shoulder = jar ? 160 : 131;
   const bodyTop = jar ? 166 : 180;
   const base = 410;
   const lw = R * 2 + 4; // a touch wider than the body so no bare bottle shows at the edges
@@ -428,37 +432,38 @@ function bottle(p: Product, mode: FontMode, uid: string, pattern: LabelPattern =
   const arc = (y: number, r: number, sweep = 0) => `A${r} ${n(r * e)} 0 0 ${sweep} ${sweep ? cx - r : cx + r} ${y}`;
   const body = jar
     ? `M${X0} ${bodyTop} V${base} ${arc(base, R)} V${bodyTop} ${arc(bodyTop, R, 1)} Z`
-    : `M${cx - neck} ${shoulder - 6} C${cx - neck} ${shoulder + 18} ${X0} ${shoulder + 16} ${X0} ${bodyTop} V${base} ${arc(base, R)} V${bodyTop} C${X1} ${shoulder + 16} ${cx + neck} ${shoulder + 18} ${cx + neck} ${shoulder - 6} Z`;
+    : `M${cx - neck} ${shoulder - 6} C${cx - neck - 6} ${shoulder + 8} ${X0} ${shoulder + 6} ${X0} ${bodyTop} V${base} ${arc(base, R)} V${bodyTop} C${X1} ${shoulder + 6} ${cx + neck + 6} ${shoulder + 8} ${cx + neck} ${shoulder - 6} Z`;
   const arcL = (y: number, r: number, sweep = 0) => `A${r} ${n(r * eLabel)} 0 0 ${sweep} ${sweep ? cx - r : cx + r} ${y}`;
   const band = `M${X0} ${n(LT)} ${arcL(n(LT), R)} V${n(LB)} ${arcL(n(LB), R, 1)} Z`;
-  const ribs = Array.from({ length: Math.round((capR * 2) / 3.05) - 1 }, (_, i) =>
-    `<rect x="${n(cx - capR + 2 + i * 3.05)}" y="${capTop}" width="1.2" height="${n(capBot - capTop + capR * e)}" fill="#000" opacity="${n(0.05 + 0.05 * Math.abs(Math.sin(i / 5)))}"/>`
+  const ribs = Array.from({ length: Math.round((capR * 2) / 2.4) - 1 }, (_, i) =>
+    `<rect x="${n(cx - capR + 1.6 + i * 2.4)}" y="${capTop + 1}" width="0.8" height="${n(capBot - capTop + capR * e - 1)}" fill="#000" opacity="${n(0.035 + 0.035 * Math.abs(Math.sin(i / 6)))}"/>`
   ).join('');
   return `<defs>
     <linearGradient id="cyl-${uid}" x1="0" x2="1">
-      <stop offset="0" stop-color="#000" stop-opacity="0.16"/><stop offset="0.12" stop-color="#000" stop-opacity="0.05"/>
-      <stop offset="0.36" stop-color="#fff" stop-opacity="0.10"/><stop offset="0.58" stop-color="#fff" stop-opacity="0"/>
-      <stop offset="0.86" stop-color="#000" stop-opacity="0.05"/><stop offset="1" stop-color="#000" stop-opacity="0.18"/>
+      <stop offset="0" stop-color="#000" stop-opacity="0.07"/><stop offset="0.1" stop-color="#000" stop-opacity="0.015"/>
+      <stop offset="0.3" stop-color="#fff" stop-opacity="0.14"/><stop offset="0.5" stop-color="#fff" stop-opacity="0.06"/>
+      <stop offset="0.8" stop-color="#000" stop-opacity="0.02"/><stop offset="1" stop-color="#000" stop-opacity="0.09"/>
     </linearGradient>
-    <linearGradient id="sh-${uid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="0.5" stop-color="#fff" stop-opacity="0.5"/><stop offset="1" stop-color="#000" stop-opacity="0.04"/></linearGradient>
-    <linearGradient id="cap-${uid}" x1="0" x2="1"><stop offset="0" stop-color="#c8ced5"/><stop offset="0.25" stop-color="#fff"/><stop offset="0.55" stop-color="#f2f4f6"/><stop offset="1" stop-color="#b9c0c8"/></linearGradient>
-    <radialGradient id="ct-${uid}" cx="0.4" cy="0.4" r="0.7"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#e3e7eb"/></radialGradient>
+    <linearGradient id="sh-${uid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity="0.07"/><stop offset="0.35" stop-color="#fff" stop-opacity="0.4"/><stop offset="1" stop-color="#000" stop-opacity="0.03"/></linearGradient>
+    <linearGradient id="cap-${uid}" x1="0" x2="1"><stop offset="0" stop-color="#d6d5d1"/><stop offset="0.14" stop-color="#fbfbfa"/><stop offset="0.3" stop-color="#ffffff"/><stop offset="0.7" stop-color="#f1f1ee"/><stop offset="1" stop-color="#cdccc7"/></linearGradient>
+    <linearGradient id="ct-${uid}" x1="0" x2="1"><stop offset="0" stop-color="#f4f4f2"/><stop offset="0.3" stop-color="#fff"/><stop offset="1" stop-color="#ececea"/></linearGradient>
     <filter id="soft-${uid}" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9"/></filter>
     <filter id="hl-${uid}" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>
     <clipPath id="body-${uid}"><path d="${body}"/></clipPath>
     <clipPath id="label-${uid}"><path d="${band}"/></clipPath>
   </defs>
-  <ellipse cx="${cx}" cy="${base + 10}" rx="${R + 14}" ry="16" fill="#000" opacity="0.18" filter="url(#soft-${uid})"/>
-  <ellipse cx="${cx}" cy="${base + 3}" rx="${R - 6}" ry="7" fill="#000" opacity="0.18" filter="url(#hl-${uid})"/>
+  <ellipse cx="${cx - 14}" cy="${base + 8}" rx="${R + 26}" ry="15" fill="#000" opacity="0.13" filter="url(#soft-${uid})"/>
+  <ellipse cx="${cx}" cy="${base + 3}" rx="${R - 4}" ry="6" fill="#000" opacity="0.22" filter="url(#hl-${uid})"/>
   <g clip-path="url(#body-${uid})">
-    <rect x="${X0 - 10}" y="${shoulder - 20}" width="${R * 2 + 20}" height="${base - shoulder + 40}" fill="#fafafa"/>
+    <rect x="${X0 - 10}" y="${shoulder - 20}" width="${R * 2 + 20}" height="${base - shoulder + 40}" fill="#f8f8f6"/>
     <rect x="${X0 - 10}" y="${shoulder - 20}" width="${R * 2 + 20}" height="${bodyTop - shoulder + 30}" fill="url(#sh-${uid})"/>
     <g clip-path="url(#label-${uid})"><g transform="translate(${n(cx - lw / 2)} ${n(LT)}) scale(${n(scale)})">${frontPanel(p, mode, 30, pattern)}</g></g>
     <path d="M${X0} ${n(LT)} ${arcL(n(LT), R)}" fill="none" stroke="#000" stroke-opacity="0.07"/>
     <path d="M${X0} ${n(LB)} ${arcL(n(LB), R)}" fill="none" stroke="#000" stroke-opacity="0.07"/>
     <rect x="${X0 - 10}" y="${shoulder - 20}" width="${R * 2 + 20}" height="${base - shoulder + 40}" fill="url(#cyl-${uid})"/>
   </g>
-  <path d="M${cx - neck - 2} ${capBot + 4} ${arc(capBot + 4, neck + 2)} V${capBot + 14} ${arc(capBot + 14, neck + 2, 1)} Z" fill="#e9ecef"/>
+  <path d="M${cx - neck} ${capBot - 2} ${arc(capBot - 2, neck)} V${shoulder - 4} ${arc(shoulder - 4, neck, 1)} Z" fill="url(#cap-${uid})"/>
+  <path d="M${cx - neck} ${capBot + 1} ${arc(capBot + 1, neck)} V${capBot + 5} ${arc(capBot + 5, neck, 1)} Z" fill="#000" opacity="0.08"/>
   <path d="M${cx - capR} ${capTop} V${capBot} ${arc(capBot, capR)} V${capTop} Z" fill="url(#cap-${uid})"/>
   ${ribs}
   <ellipse cx="${cx}" cy="${capTop}" rx="${capR}" ry="${n(capR * e)}" fill="url(#ct-${uid})" stroke="#d5dade" stroke-width="0.8"/>`;

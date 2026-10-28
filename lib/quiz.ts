@@ -80,6 +80,7 @@ const WEIGHTS: Record<string, Weights> = {
   'focus-complex': { goals: { brain: 4 }, symptoms: { fog: 3, stress: 1 } },
   'lions-mane': { goals: { brain: 3 }, symptoms: { fog: 2 } },
   'l-theanine': { goals: { brain: 2, sleep: 1 }, symptoms: { stress: 2 } },
+  coq10: { goals: { heart: 3, energy: 1 }, symptoms: { tired: 1 }, bonus: (a) => (a.age === '45-59' || a.age === '60+' ? 1 : 0) },
 };
 
 export interface Recommendation {

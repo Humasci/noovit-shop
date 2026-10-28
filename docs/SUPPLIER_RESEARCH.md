@@ -381,6 +381,23 @@ Described as private-label protein powders and custom formulas, made in-house, w
 
 ---
 
+### 2.14 More on-demand candidates (added 28 Oct 2026, web research)
+_V = verified on the supplier's own site; UNV = third-party only. None clearly offers our premium specs (KSM-66 by name, Niagen NR, IFOS omega-3, iron bisglycinate, plain L-theanine 200 mg); all sell generic stock formulas._
+
+| Supplier | Location | Model | Fees | Gap products listed | Verdict |
+|---|---|---|---|---|---|
+| **Rocktomic** (rocktomic.com) | Lawrenceville, GA | From 1 unit, prints and applies our label, ships per order (V) | $97 / $157 / $297 a month after a 30-day trial, plus $2 fulfilment and $1.49 processing per order (V) | Vitamin K2 + D3, NAC Plus, men's and women's multivitamins, Berberine Plus, Ashwagandha (KSM-66 not stated), Omega 3, Neuro Plus Brain & Focus (V, no doses on pages). No L-theanine, iron or NR (NMN instead) | **Best new lead.** Ask for Supplement Facts and doses |
+| **Vox Nutrition** (voxnutrition.com) | Utah (UNV: West Jordan) | Manufacturer with 115+ stock formulas and "Ship Central" fulfilment to end customers (V); minimums for single units not stated | Not stated | None named | **Worth a call.** NSF-certified facility claimed (V). May be the manufacturer behind ODF (UNV) |
+| **Rapid Fulfillment** (rapidfulfillment.com) | Pacoima, CA and St. Charles, IL | 3PL with a no-minimum private-label add-on (V) | $999 setup + $29.95 a month for private label (V); per-order fees by quote | None named; "50+" catalogue on request | Worth a call |
+| Jetpack (jetpackshipping.io) | Ohio (no address) | Says no minimums (V) | Pricing page 404 | Berberine HCl 500 mg; a nootropic blend (V) | **Avoid:** "FDA Approved" badge; label and description don't match |
+| Productifi | Davenport, FL | Shopify app, made on demand (V) | — | Zinc only inside a blend | Too new (Dec 2025, 22 products) |
+| ShipOffers | Denver CO / Nashville TN | "On-demand" catalogue aimed at direct-response sellers | Not stated | None named | Not our fit |
+| Blanka | Vancouver; ships from Dallas TX | Beauty catalogue only on demand; supplements only as custom formulation (500 units, 3–6 months) (V) | $39 / $149 a month | None | **Screened out** |
+
+Also screened out: Nutfill (Shenzhen, China), NutriSport Pharmacal (~2,000-bottle minimum, UNV), Bangalla (distributor), NutraCap Labs (domain for sale), Wellgenix and Nutritional Engineering (no website found). **Health Thru Nutrition** (NY) lists KSM-66 500 mg as dropship-capable on RangeMe (UNV), so it's worth one email for KSM-66.
+
+**Contact first:** Rocktomic → Vox Nutrition → Rapid Fulfillment. Ask each for Supplement Facts/COAs, the actual manufacturer (several likely resell the same white-label stock), and whether KSM-66 or Niagen are licensed. For NR, IFOS omega-3 and KSM-66 by name, a low-minimum co-packer plus a 3PL may be the only realistic route.
+
 ### 2.10 Screened out
 
 | Supplier | Reason |
