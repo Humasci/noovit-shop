@@ -88,7 +88,7 @@ Our current render (white bottle, orange band, small text) sits **between** the 
 3. **Our angle:** "**evidence-graded**". It's honest where competitors overclaim. In the title and on the label: the dose, the standardisation (95% curcuminoids) and the form (with black pepper).
 4. **Better turmeric formula option:** a **branded, studied form** (e.g. a phytosome or a water-dispersible curcumin, if Supliful or another supplier has one) is what justifies premium pricing in this category. Plain turmeric with black pepper is the commodity version.
 5. **Lead with the bundle:** our **Joint Support Trio** is rare in this grid, so advertise it as a distinct product.
-6. **Look:** go fully into the quiet premium cluster (minimal label, bigger name, one accent, maybe amber). Mock-ups are next.
+6. **Look:** go fully into the quiet premium cluster (minimal label, bigger name, one accent, maybe amber). Mock-ups: `design/label-options/comparison.png`. Spreadsheet: `docs/pricing/noovit-pricing.xlsx`.
 7. **Feed hygiene:**
    - titles like `Noovit Turmeric Complex – 95% Curcuminoids + Black Pepper – 60 Capsules`
    - return policy (90 days) and shipping speed in Merchant Center

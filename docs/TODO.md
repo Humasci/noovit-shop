@@ -45,7 +45,9 @@ _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only yo
 - [ ] **Build:** minimal redesign in the Innerbody Labs / Momentous style: cleaner header (no dark trust bar), lighter type, fewer boxes, diet pills, ingredient accordion with doses, a clinical-research module with a chart, a certification row.
 - [ ] **Build:** a cleaner label option (white label, bigger name, thin colour accent, optional amber bottle); mock it up at Google Shopping thumbnail size for the owner.
 - [ ] **Build:** Google-style feed titles (brand + product + key spec + count).
-- [ ] **Owner:** confirm Supliful costs and shipping per product. Turmeric is $11 ($8 with Pro); see `docs/PRICING_NOTES.md`. Decide the price points (e.g. turmeric $36 / $30 subscribed).
+- [ ] **Owner:** confirm Supliful costs and shipping per product. Turmeric is $11.05 all-in ($8 with Pro); berberine is $10.25 all-in. See `docs/PRICING_NOTES.md` and `docs/pricing/noovit-pricing.xlsx`. Decide the price points (e.g. turmeric $36 / $30 subscribed, berberine $36 / $32).
+- [ ] **Owner: ask Supliful for berberine's Supplement Facts/COA with mg of berberine per serving.** Their ingredient list suggests only ~146 mg a day (studies use 900–1,500 mg). If that's right, source a 500 mg berberine HCl elsewhere. See `docs/SHOPPING_ANALYSIS_BERBERINE.md`.
+- [ ] **Owner:** pick a label direction (B clinical white / C colour block / D amber). See `design/label-options/comparison.png`.
 
 ## 🟡 Content and SEO
 - [ ] **Owner:** deep research briefs (template in `CONTENT_GUIDELINES.md` §11) for magnesium, ashwagandha, probiotics, creatine, NAC and lion's mane.
