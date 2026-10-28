@@ -41,11 +41,11 @@ _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only yo
 - [ ] Re-run the full audit after real products: Lighthouse on Vercel, links, claims, US spelling pass.
 - [ ] Creatine "Adults 18+" notice on the product page and cards.
 
-## 🟣 Direction change (28 Oct): nootropics-led, more minimal design
-- [ ] **Owner:** decide the catalog scope: nootropics-led with wellness as a secondary range, or nootropics only (see `docs/DESIGN_DIRECTION.md` §Minimal).
-- [ ] **Owner:** check which nootropic formulas Supliful (or other suppliers) carry: a focus stack (citicoline, L-theanine, rhodiola, lion's mane), lion's mane, L-theanine, NAC, creatine, magnesium.
-- [ ] **Build:** minimal redesign in the Innerbody Labs style (cleaner header, lighter type, fewer boxes, diet tags, ingredient accordion with doses, clinical-research module with a chart, certification row).
-- [ ] **Build:** reposition copy, home page, goal pages and quiz around cognition (focus, memory, calm, energy, sleep).
+## 🟣 Direction (28 Oct): "nootropic" minimal aesthetic. The catalog stays as is.
+- [ ] **Build:** minimal redesign in the Innerbody Labs / Momentous style: cleaner header (no dark trust bar), lighter type, fewer boxes, diet pills, ingredient accordion with doses, a clinical-research module with a chart, a certification row.
+- [ ] **Build:** a cleaner label option (white label, bigger name, thin colour accent, optional amber bottle); mock it up at Google Shopping thumbnail size for the owner.
+- [ ] **Build:** Google-style feed titles (brand + product + key spec + count).
+- [ ] **Owner:** confirm Supliful costs and shipping per product. Turmeric is $11 ($8 with Pro); see `docs/PRICING_NOTES.md`. Decide the price points (e.g. turmeric $36 / $30 subscribed).
 
 ## 🟡 Content and SEO
 - [ ] **Owner:** deep research briefs (template in `CONTENT_GUIDELINES.md` §11) for magnesium, ashwagandha, probiotics, creatine, NAC and lion's mane.

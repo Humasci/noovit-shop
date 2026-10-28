@@ -470,7 +470,8 @@ function scene(uid: string) {
 }
 
 // Square 400×400 image. `uid` keeps gradient/clip ids unique when several images share a page.
-export function bottleSvg(p: Product, variant: BottleVariant = 'front', opts: { mode?: FontMode; uid?: string; size?: number; pattern?: LabelPattern } = {}) {
+// backdrop 'white': plain white square with a larger bottle, for Google Shopping / Meta feeds (Merchant Center prefers it).
+export function bottleSvg(p: Product, variant: BottleVariant = 'front', opts: { mode?: FontMode; uid?: string; size?: number; pattern?: LabelPattern; backdrop?: 'scene' | 'white' } = {}) {
   const mode = opts.mode ?? 'web';
   const uid = (opts.uid ?? `${p.slug}-${variant}`).replace(/[^a-z0-9-]/gi, '');
   const place = (x: number, y: number, s: number, id: string) => `<g transform="translate(${x} ${y}) scale(${s})">${bottle(p, mode, id, opts.pattern)}</g>`;
@@ -484,7 +485,7 @@ export function bottleSvg(p: Product, variant: BottleVariant = 'front', opts: { 
         ? placePart(parts[0], -34, 20, 0.74, `${uid}a`) + placePart(parts[1], 104, 6, 0.8, `${uid}b`)
         : placePart(parts[0], -62, 58, 0.62, `${uid}a`) + placePart(parts[2], 158, 58, 0.62, `${uid}c`) + placePart(parts[1], 40, 22, 0.72, `${uid}b`);
   } else {
-    if (variant === 'front') body = place(26, -6, 0.87, uid);
+    if (variant === 'front') body = opts.backdrop === 'white' ? place(14, -22, 0.95, uid) : place(26, -6, 0.87, uid);
     if (variant === 'duo') body = place(-34, 20, 0.74, `${uid}a`) + place(104, 6, 0.8, `${uid}b`);
   }
   if (variant === 'facts') {
@@ -499,5 +500,6 @@ export function bottleSvg(p: Product, variant: BottleVariant = 'front', opts: { 
       <g transform="translate(${n(200 - (W * s) / 2)} ${n(200 - (facts.height * s) / 2)}) scale(${n(s)})">${facts.svg}</g>`;
   }
   const size = opts.size ? `width="${opts.size}" height="${opts.size}"` : '';
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" ${size}>${scene(uid)}${body}</svg>`;
+  const backdrop = opts.backdrop === 'white' ? '<rect width="400" height="400" fill="#fff"/>' : scene(uid);
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" ${size}>${backdrop}${body}</svg>`;
 }

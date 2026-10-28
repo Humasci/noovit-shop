@@ -102,7 +102,9 @@ These come from the real Supliful products plus the deep research. Until then we
 
 ---
 
-# Update (28 Oct): more minimal and polished, nootropics-led
+# Update (28 Oct): more minimal and polished, with a "nootropic" aesthetic
+
+> **Clarified by the owner:** "nootropics" means the **look** (clean, clinical, minimal, like Innerbody Labs and Momentous). The product range stays as it is. The positioning section below is kept only as an option.
 _Reference: innerbodylabs.com/products/focus-support (screenshots in `design/reference/innerbody-*`). The owner wants the site **more minimal and polished**, with the brand leaning **toward nootropics**._
 
 ## What Innerbody Labs does
