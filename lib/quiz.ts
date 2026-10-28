@@ -124,3 +124,24 @@ export function productsForGoal(products: Product[], goal: string) {
     .filter((p) => p.productType !== 'pets' && p.status !== 'hidden' && (WEIGHTS[p.slug]?.goals?.[goal] ?? 0) > 0)
     .sort((a, b) => (WEIGHTS[b.slug]?.goals?.[goal] ?? 0) - (WEIGHTS[a.slug]?.goals?.[goal] ?? 0) || Number(b.bestSeller) - Number(a.bestSeller));
 }
+
+// The goals a product serves, strongest first (goal ids from GOALS).
+export const goalsForProduct = (slug: string) =>
+  Object.entries(WEIGHTS[slug]?.goals ?? {})
+    .sort((a, b) => b[1] - a[1])
+    .map(([goal]) => goal);
+
+// Products that serve the same goals, most overlap first: "pairs well with" on product pages.
+export function relatedByGoal(product: Product, products: Product[], count = 4) {
+  const mine = WEIGHTS[product.slug]?.goals ?? {};
+  return products
+    .filter((p) => p.slug !== product.slug && p.status === 'active' && p.productType !== 'pets' && !p.bundleItems?.length)
+    .map((p) => {
+      const theirs = WEIGHTS[p.slug]?.goals ?? {};
+      const overlap = Object.keys(mine).reduce((sum, g) => sum + Math.min(mine[g], theirs[g] ?? 0), 0);
+      return { p, overlap };
+    })
+    .sort((a, b) => b.overlap - a.overlap || Number(b.p.bestSeller) - Number(a.p.bestSeller))
+    .slice(0, count)
+    .map((x) => x.p);
+}

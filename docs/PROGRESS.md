@@ -71,6 +71,14 @@ _Last updated: 2026-10-27_
   - performance tracking
 - **Real products** from Supliful (owner to provide: Supplement Facts, counts, cost, SKU, photos), then align names, doses and prices.
 - **Content programme:** an ingredient guide per product, "X vs Y" comparisons, "can I take X with Y" pages. Voice is nerdy and data-forward; the audience is broad, including biohackers. Owner runs deep research per ingredient.
+- **Trust and conversion ideas** (from Double Wood and Naomi):
+  - FrontrowMD "Clinicians' Choice" badge (apply once products are final)
+  - HSA/FSA payment via Flex or Truemed
+  - a goal question in the newsletter pop-up
+  - a "Build your stack" tool with a multi-buy discount
+  - a rewards programme
+  - an announcement bar with proof points
+  - not doing: gamified "try your luck" pop-ups
 - **Certificate of analysis (COA) per product page** once lab reports exist (lot, potency vs spec, heavy metals), as Double Wood does.
 - Direct supplier integration (API or Shopify bridge) once a supplier is chosen.
 - UK market: region switch (GBP), UK claims copy, UK supplier routing.

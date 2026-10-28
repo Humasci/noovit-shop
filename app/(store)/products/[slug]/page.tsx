@@ -11,6 +11,8 @@ import { ProductCard } from '@/components/product/ProductCard';
 import { Stars } from '@/components/ui/Stars';
 import { PlaceholderNote } from '@/components/ui/Placeholder';
 import { guidesForProduct } from '@/lib/guides';
+import { GOAL_PAGES } from '@/lib/goals';
+import { goalsForProduct, relatedByGoal } from '@/lib/quiz';
 import { getSettings, placeholdersOn } from '@/lib/settings';
 import { ReviewsModule } from '@/components/reviews/ReviewsModule';
 import { FAQSection, SubscriptionPerks, SectionHeading } from '@/components/sections/Sections';
@@ -46,7 +48,17 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const placeholders = placeholdersOn(await getSettings());
 
   const isPet = product.productType === 'pets';
-  const related = (isPet ? petProducts(all) : bestSellers(all)).filter((p) => p.id !== product.id && p.status === 'active').slice(0, 4);
+  // Bundle components are related by definition; otherwise products serving the same goals (quiz weights).
+  const components = (product.bundleItems ?? []).map((b) => all.find((p) => p.slug === b.slug)).filter((p) => p !== undefined);
+  const related = isPet
+    ? petProducts(all).filter((p) => p.id !== product.id && p.status === 'active').slice(0, 4)
+    : components.length
+      ? components
+      : relatedByGoal(product, all);
+  if (!isPet && related.length < 4) related.push(...bestSellers(all).filter((p) => p.id !== product.id && p.status === 'active' && !related.includes(p)).slice(0, 4 - related.length));
+  const bundles = all.filter((p) => p.status === 'active' && p.bundleItems?.some((b) => b.slug === product.slug));
+  const goals = goalsForProduct(product.slug).map((g) => GOAL_PAGES.find((x) => x.goal === g)).filter((x) => x !== undefined).slice(0, 3);
+  const guides = guidesForProduct(product.slug);
   const quality = [
     isPet
       ? { icon: Leaf, label: 'Vet Formulated' }
@@ -166,7 +178,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           <div className="mt-8">
             <InfoTabs product={product} />
           </div>
-          {guidesForProduct(product.slug).map((g) => (
+          {guides.map((g) => (
             <Link key={g.slug} href={`/guides/${g.slug}`} className="mt-4 block rounded-2xl border border-[var(--color-line)] p-4 text-sm hover:border-[var(--color-navy)]">
               <span className="font-bold">{g.ingredient} guide:</span> benefits, dosage, side effects and research →
             </Link>
@@ -174,15 +186,46 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         </div>
       </section>
 
+      {/* Bundles that include this product */}
+      {bundles.length > 0 && (
+        <section className="section bg-[var(--color-soft)]">
+          <div className="container px-6">
+            <SectionHeading eyebrow="Save with a bundle" title={`Bundles with ${product.name}`} />
+            <div className="mx-auto grid max-w-4xl grid-cols-2 gap-x-5 gap-y-10 lg:grid-cols-3">
+              {bundles.map((p) => (
+                <ProductCard key={p.id} product={p} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Related */}
       <section className="section">
         <div className="container px-6">
-          <SectionHeading title={isPet ? 'More for your pet' : 'Build your health routine'} sub="Pairs well with" />
+          <SectionHeading title={isPet ? 'More for your pet' : components.length ? 'In this bundle' : 'Build your health routine'} sub={components.length ? 'Also sold separately' : 'Pairs well with'} />
           <div className="grid grid-cols-2 gap-x-5 gap-y-10 lg:grid-cols-4">
             {related.map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}
           </div>
+          {(guides.length > 0 || goals.length > 0) && (
+            <div className="mx-auto mt-12 max-w-3xl rounded-3xl border border-[var(--color-line)] p-6">
+              <h2 className="text-xl">Learn more</h2>
+              <ul className="mt-3 space-y-2 text-sm">
+                {guides.map((g) => (
+                  <li key={g.slug}>
+                    <Link href={`/guides/${g.slug}`} className="font-semibold text-[var(--color-accent)] hover:underline">{g.ingredient}: benefits, dosage, side effects and the research →</Link>
+                  </li>
+                ))}
+                {goals.map((g) => (
+                  <li key={g.slug}>
+                    <Link href={`/goals/${g.slug}`} className="font-semibold text-[var(--color-accent)] hover:underline">More {g.name.toLowerCase()} supplements →</Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </section>
 
