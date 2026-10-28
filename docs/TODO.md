@@ -5,8 +5,11 @@ _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only yo
 ## 🔴 Before launch: owner
 **🛑 Pre-launch mode is ON (28 Oct).** The public sees a "Coming soon" page with a waitlist; every response says `noindex`; robots.txt has no sitemap. You see the full store while signed in to Admin, and Admin → Overview shows a 30-day preview link to share. Waitlist sign-ups appear in Admin → Subscribers (source `launch-waitlist`).
 
-**Company first**
-- [ ] Form the company (LLC), registered agent and business address; get the EIN.
+**Company first** (full plan: `docs/COMPANY_SETUP.md`)
+- [ ] Decide: Wyoming LLC (good if you live outside the US) vs home-state LLC (if you live in a US state). Separate LLC for Noovit, not an existing one.
+- [ ] Check "Noovit LLC" on the Wyoming SOS; registered agent with a mailing address; file Articles; Operating Agreement; EIN.
+- [ ] Accountant: non-US owner → Form 5472 + pro forma 1120 every year ($25k penalty if missed); US tax and home-country tax position.
+- [ ] Adverse-event procedure (serious events to FDA within 15 business days) and US contact on the label.
 - [ ] Business bank account; Stripe account in the company's name (sandbox now, live keys later).
 - [ ] Product liability insurance; sales tax registration where required (Stripe Tax helps).
 - [ ] Replace placeholders with real company details: Admin → Settings (support email, business address), label address, legal pages.

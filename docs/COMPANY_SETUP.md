@@ -1,0 +1,73 @@
+# Company setup plan: Noovit LLC (Wyoming)
+
+_28 Oct 2026. A plan, not legal or tax advice. Confirm the tax points with a cross-border accountant and the supplement points with the regulatory lawyer (already on the TODO). Rules change, so re-check each step when you do it._
+
+## 0. Two answers that change the plan
+1. **Where do you live and pay tax?**
+   - **Outside the US:** Wyoming is a good fit (cheap, private, no state income tax). Extra federal filing applies (see §4) and banking/Stripe need checking for non-residents.
+   - **In a US state:** usually form the LLC **in your home state**. A Wyoming LLC run from another state normally has to register there as a "foreign LLC" anyway, so you pay twice.
+2. **New LLC or an existing one?** Use a **separate LLC for Noovit**, even if you already have a Wyoming LLC for other projects. Supplements carry product-liability risk, and a separate company keeps that risk away from your other businesses.
+
+## 1. Why Wyoming (for a non-US owner)
+- **Cheap:** about $100 to file, and the annual report is $60 minimum (based on assets in Wyoming).
+- **Private:** members aren't listed publicly.
+- **No state income tax**, and simple upkeep.
+- Delaware only matters if you plan to raise venture capital (usually as a C-corp). Not needed for a DTC shop now; you can convert later.
+
+## 2. Formation steps (about 1–3 weeks, longer for the EIN without an SSN)
+1. **Check the name** "Noovit LLC" on the Wyoming Secretary of State business search. Also check USPTO for "NOOVIT" (the trademark item is already on the TODO).
+2. **Choose a registered agent** in Wyoming (about $25–150 a year). Pick one that also offers a **mailing address and mail scanning**, because you'll need a US address for the label, emails and banking (see §5).
+3. **File the Articles of Organization** online (Wyoming SOS), about $100. Or use a formation service, but check you aren't paying for add-ons you don't need.
+4. **Write an Operating Agreement** (single-member). Banks and Stripe ask for it, and it supports the liability shield.
+5. **Get the EIN** from the IRS. It's free.
+   - **With an SSN/ITIN:** online, the same day.
+   - **Without one:** Form SS-4 by fax or post, 4–8 weeks (some agents do this for a fee).
+6. **Beneficial ownership (BOI):** since March 2025, FinCEN exempts US-formed companies from BOI reporting. Confirm this still applies when you file.
+
+## 3. Money
+- **Business bank account** in the LLC's name. Options include Mercury, Relay and Wise Business; non-resident policies change often, so check each bank's current rules.
+- **Stripe:** open the live account in the **LLC's name** with the EIN. Check what Stripe needs from the account representative if you don't have an SSN; Stripe Atlas is the fallback, but it forms a Delaware company. Move the sandbox setup over when the LLC exists.
+- **Keep finances separate.** No personal spending from the business account. Mixing them weakens the liability protection.
+- **Bookkeeping** from day one (e.g. QuickBooks, Xero or Wave), so year-end filings are easy.
+
+## 4. Tax (confirm with an accountant)
+- **Federal:** a single-member LLC is "disregarded" by default.
+  - **If you're a non-US owner:** you must file **Form 5472 with a pro forma Form 1120 every year**. The penalty for missing it is $25,000.
+  - Whether you owe US income tax depends on whether the business counts as "effectively connected" with the US. With US fulfilment (Supliful) and US customers, get a professional view.
+  - Your **home country** may tax the LLC's profits too. How it treats a US LLC varies by country.
+- **Sales tax:** where you **sell**, not where you're incorporated, decides this. You owe it in a state once you pass its "economic nexus" threshold, often $100,000 in sales or 200 orders a year.
+  - **Turn on Stripe Tax** to track thresholds and collect, and register in each state as you cross its threshold.
+  - Check whether supplements are taxable in each state; many states exempt food but tax supplements, and the rules differ.
+- **Wyoming annual report** each year on the formation anniversary. Missing it gets the LLC dissolved.
+
+## 5. Supplement-specific obligations (Noovit's name is on the label)
+- **Label address:** the label must show the name and place of business of the manufacturer, packer or distributor, for us "Distributed by Noovit LLC, city, state, ZIP". Use the LLC's real US address and replace `[Street address]` / `[City, ST ZIP]` in the label generator.
+- **Adverse event reporting:**
+  - The label needs a **US address or phone number** for adverse event reports.
+  - **Serious adverse events must be reported to the FDA within 15 business days**, by the company named on the label, and records kept for 6 years.
+  - Set up a support inbox and a short written procedure.
+- **Structure/function notification** to the FDA within 30 days of first selling each product with a claim (already on the TODO). Noovit LLC files it.
+- **Facility registration:** the manufacturer (Supliful's facility) is registered. A brand that doesn't hold stock usually isn't required to register; confirm with the lawyer.
+- **Product liability insurance:** essential for supplements. Get it before launch; some suppliers ask for a certificate naming them.
+- **Prop 65 (California):** check heavy-metal results for botanicals and powders.
+- **Trademark "NOOVIT"** filed in the **LLC's name** (classes 5 and 35), not yours personally.
+
+## 6. Update the shop when the LLC exists
+- **Admin → Settings:**
+  - **Business address:** the real one. Emails must include a physical address under CAN-SPAM; a registered-agent mail address or a USPS-registered mailbox works.
+  - **Support email:** the real support address.
+- **Legal pages:** company name, address and contact in the privacy policy, terms and returns pages.
+- **Labels:** the distributor line and address.
+- **Accounts in the LLC's name:** Stripe, Google (Merchant Center, Ads), Meta Business, Supliful and Resend.
+- **Then flip pre-launch off** (`SITE_LIVE=true`), as described in the TODO launch-day steps.
+
+## Rough costs (first year)
+| Item | Cost |
+|---|---|
+| Wyoming filing | ~$100 |
+| Registered agent + mail address | ~$50–300/yr |
+| EIN | free (a service may charge $50–150 without an SSN) |
+| Annual report (from year 2) | $60 minimum |
+| Accountant (non-US owner, 5472/1120 + advice) | ~$300–1,000/yr |
+| Product liability insurance | often ~$500–3,000/yr (quote needed) |
+| Trademark (USPTO, 2 classes) | ~$700 + attorney fees |
