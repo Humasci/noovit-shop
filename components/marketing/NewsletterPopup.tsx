@@ -8,6 +8,7 @@ import { useStoreConfig } from '@/components/store/StoreConfig';
 import { Brand } from '@/components/brand/Brand';
 import { useCart } from '@/lib/store/cart';
 import { useDialog } from '@/lib/useDialog';
+import { trackSignup } from '@/lib/analytics';
 
 const SEEN_KEY = 'noovit-popup-seen';
 export const SUBSCRIBED_KEY = 'noovit-subscribed';
@@ -58,6 +59,7 @@ export function NewsletterPopup() {
     setBusy(false);
     if (!res.ok) return void toast.error(data.error || 'Something went wrong.');
     localStorage.setItem(SUBSCRIBED_KEY, '1');
+    trackSignup('newsletter_popup');
     toast.success(data.message);
     setOpen(false);
   };

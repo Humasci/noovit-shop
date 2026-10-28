@@ -10,6 +10,7 @@ import { Stars } from '@/components/ui/Stars';
 import { SocialLinks } from '@/components/layout/Footer';
 import { brandify } from '@/components/brand/Brand';
 import { PlaceholderNote } from '@/components/ui/Placeholder';
+import { trackSignup } from '@/lib/analytics';
 
 export function SectionHeading({ eyebrow, title, sub, center = true }: { eyebrow?: string; title: string; sub?: string; center?: boolean }) {
   return (
@@ -182,6 +183,7 @@ export function NewsletterSection() {
                 const data = await res.json().catch(() => ({}));
                 if (!res.ok) return void toast.error(data.error || 'Something went wrong. Please try again.');
                 toast.success(data.message);
+                trackSignup('newsletter_section');
                 localStorage.setItem('noovit-subscribed', '1');
                 setEmail('');
               }}

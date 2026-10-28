@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { trackSignup } from '@/lib/analytics';
 
 export function WaitlistForm() {
   const [state, setState] = useState<{ status: 'idle' | 'sending' | 'done' | 'error'; message?: string }>({ status: 'idle' });
@@ -15,6 +16,7 @@ export function WaitlistForm() {
       body: JSON.stringify({ email: form.get('email'), company: form.get('company'), source: 'launch' }),
     }).catch(() => null);
     const data = await res?.json().catch(() => ({}));
+    if (res?.ok) trackSignup('launch_waitlist');
     setState(res?.ok ? { status: 'done', message: data.message } : { status: 'error', message: data?.error ?? 'Something went wrong. Please try again.' });
   }
 

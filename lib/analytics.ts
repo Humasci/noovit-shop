@@ -61,3 +61,14 @@ export function track(e: TrackEvent) {
     content_type: 'product',
   });
 }
+
+// Email sign-ups, as GA4's recommended lead event; `lead_source` says which form it came from.
+export type SignupSource = 'launch_waitlist' | 'newsletter_popup' | 'newsletter_section' | 'quiz' | 'pets_waitlist';
+
+export function trackSignup(source: SignupSource) {
+  if (!hasConsent()) return;
+  window.dataLayer?.push({ event: 'generate_lead', lead_source: source });
+  window.gtag?.('event', 'generate_lead', { lead_source: source });
+  window.fbq?.('track', 'Lead', { content_name: source });
+  window.ttq?.track('SubmitForm', { content_name: source });
+}

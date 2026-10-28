@@ -12,6 +12,7 @@ import { labelSubtitle } from '@/lib/labels/svg';
 import { DIETS, GOALS, SYMPTOMS, QuizAnswers, recommend } from '@/lib/quiz';
 import { ProductImage } from '@/components/product/ProductImage';
 import { MosaicLoader } from '@/components/brand/MosaicLoader';
+import { trackSignup } from '@/lib/analytics';
 
 type Step = 'intro' | 'sex' | 'age' | 'goals' | 'symptoms' | 'activity' | 'diet' | 'pregnant' | 'medication' | 'email' | 'calculating' | 'results';
 
@@ -91,6 +92,7 @@ export function Quiz({ products, code }: { products: Product[]; code: string }) 
       try {
         const res = await fetch('/api/newsletter', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, source: 'quiz' }) });
         setJoined(res.ok);
+        if (res.ok) trackSignup('quiz');
       } catch {
         /* the plan still shows */
       }

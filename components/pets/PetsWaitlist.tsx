@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Mail, PawPrint } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { trackSignup } from '@/lib/analytics';
 
 // Shown on /pets while no pet products are on sale. Sign-ups are stored as subscribers with source "pets-waitlist".
 export function PetsWaitlist() {
@@ -32,6 +33,7 @@ export function PetsWaitlist() {
                 });
                 const data = await res.json().catch(() => ({}));
                 if (!res.ok) return void toast.error(data.error || 'Something went wrong. Please try again.');
+                trackSignup('pets_waitlist');
                 setDone(true);
               }}
             >

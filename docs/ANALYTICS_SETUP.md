@@ -5,6 +5,7 @@ _Set up 28 Oct 2026. The site loads **Google Tag Manager `GTM-5LKW5HGS`** on eve
 ## How the site behaves
 - **Opt-out model** (US store): GTM, and any Meta/TikTok pixels set in Admin → Settings, load immediately. The cookie banner offers **Accept** (dismisses it) or **Decline** (turns all tags off for that browser and reloads). "Cookie preferences" in the footer reopens it.
 - **Shop events** are pushed to GTM's `dataLayer` in GA4 ecommerce format: `view_item`, `add_to_cart`, `begin_checkout`, `purchase` (with `transaction_id`, `value`, `currency: USD`, `items`).
+- **Email sign-ups** push `generate_lead` with `lead_source`: `launch_waitlist` (coming-soon page), `newsletter_popup`, `newsletter_section`, `quiz` or `pets_waitlist`.
 - **Page views** on client-side navigation are caught by GA4's enhanced measurement ("page changes based on browser history events").
 - **Leave Admin → Settings → "Google Analytics 4 measurement ID" empty.** If it's filled as well as GA4 inside GTM, every visit counts twice.
 
@@ -21,12 +22,17 @@ _Set up 28 Oct 2026. The site loads **Google Tag Manager `GTM-5LKW5HGS`** on eve
    - Event name: `{{Event}}`
    - **More settings → Ecommerce → tick "Send Ecommerce data"**, data source **Data Layer**
    - Trigger: `Ecommerce events`. Save as `GA4 – Ecommerce events`
-4. **Preview** (top right) → enter `https://www.noovit.com` → browse a product and add it to the cart. Both tags should show as "Fired".
-5. **Submit → Publish.**
+4. **Sign-ups (waitlist and newsletter):**
+   - **Variables → User-Defined → New → Data Layer Variable**, name `lead_source`, saved as `DLV – lead_source`
+   - **Triggers → New → Custom Event**, event name `generate_lead`, saved as `Lead`
+   - **Tags → New → Google Analytics: GA4 Event**: Measurement ID `G-JHK7BF5QB1`, event name `generate_lead`, **Event parameters**: `lead_source` = `{{DLV – lead_source}}`. Leave "Send Ecommerce data" off. Trigger: `Lead`. Save as `GA4 – Lead`
+5. **Preview** (top right) → enter `https://www.noovit.com` → browse a product and add it to the cart. Both tags should show as "Fired".
+6. **Submit → Publish.**
 
 ## In GA4
 - **Admin → Data streams → noovit web → Enhanced measurement** (already on): click the gear → **Page views → Show advanced settings** → make sure **"Page changes based on browser history events"** is ticked.
-- **Admin → Events:** `purchase` is a key event by default. Mark `begin_checkout` as a key event too if you want it in conversion reports.
+- **Admin → Events:** `purchase` is a key event by default. Mark **`generate_lead`** as a key event (waitlist sign-ups are your pre-launch conversion), and `begin_checkout` too if you want it in conversion reports.
+- **Admin → Custom definitions → Create custom dimension:** name `Lead source`, scope Event, parameter `lead_source`, so reports can split sign-ups by form.
 - The "Data collection isn't active" warning clears within a few hours to 48 hours of publishing GTM.
 
 ## Later
