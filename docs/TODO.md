@@ -81,7 +81,7 @@ _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only yo
 - [ ] **Owner:** pick a label direction (B clinical white / C colour block / D amber). See `design/label-options/comparison.png`.
 
 ## 🟡 Content and SEO
-- [ ] **Owner:** deep research briefs (template in `CONTENT_GUIDELINES.md` §11) for magnesium, ashwagandha, probiotics, creatine, NAC and lion's mane.
+- [ ] **Owner: run the deep research prompts** in `docs/RESEARCH_PROMPTS.md` (copy-paste ready). First the 6 launch products: magnesium glycinate, ashwagandha KSM-66, lion's mane, creatine, turmeric blend, CoQ10. Then batch 2 (probiotics, collagen, menopause, NAC) and the guides (GLP-1 nutrition, methylene blue, NAD+/NMN/NR, berberine). Save results in `docs/research/` or send them to Claude.
 - [ ] **Build:** a guide per ingredient, plus "X vs Y" comparisons and "Can I take X with Y?" pages, following `CONTENT_GUIDELINES.md`.
 - [ ] **Build:** add `relatedProducts` and goals to each guide; 1200×630 social image; shipping/returns + breadcrumb schema on product pages.
 - [ ] **Owner:** Google Merchant Center account → free listings; later a paid Shopping test on 3–5 proven products.
