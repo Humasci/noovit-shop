@@ -15,6 +15,8 @@ _28 Oct 2026. From the owner's Google Shopping screenshots for "turmeric tablets
 4. **Stars need reviews through an approved aggregator** (50+ reviews). Without them we compete on image, title and price.
 5. Free delivery dates show for everyone, so free shipping is table stakes.
 
+> ⚠️ **Formula correction (28 Oct, later):** Supliful's catalogue has only one turmeric, **Platinum Turmeric**, a joint blend (turmeric + 95% extract, glucosamine from shellfish, chondroitin, boswellia, MSM, BioPerine, quercetin, bromelain). The prices below still apply, but the product isn't plain curcumin + black pepper. See `SUPLIFUL_PRODUCT_SCREEN.md`.
+
 ## Our turmeric pricing (corrected again 28 Oct)
 Supliful turmeric 60 caps shows **$4.05 – $11.05**: **$4.05 is the product**, and **$11.05 is the all-in cost of one bottle delivered** (≈ $4.05 product + $5.29 shipping + $1.29 fulfilment + ~$0.42 processing). About **$8 all-in on Pro.** Supliful's suggested retail price is $25.90. Stripe is about 3% + $0.30 on top.
 

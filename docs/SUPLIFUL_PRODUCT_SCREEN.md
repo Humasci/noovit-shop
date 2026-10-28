@@ -4,10 +4,39 @@ _One place for every Supliful product we've checked, with a verdict. Started 28 
 
 **Watch-out for every product:** Vitasy (store brands **Cortex, Compass and Fernwood**, plus Vitasy gummies) resells Supliful's catalogue and sells identical formulas at about $25–45 with free shipping. We differentiate on evidence, honesty, content, bundles and brand, not on formula.
 
-## Verdicts at a glance
+## ⭐ Recap: what we can sell (28 Oct, after a sweep of all 189 Supliful products)
+_Supliful's catalogue sitemap lists 189 products (about 123 supplements; the rest are cosmetics, coffee and drinks). We checked every product that fits our range. **Caveat:** many pages show the Supplement Facts only as an image our tools can't read, so "amounts not stated" can mean "in the image". Screenshots of the facts panels settle it._
+
+**✅ Launch shortlist (pending price + Supplement Facts/COA)**
+| Product | Formula | Becomes | Check before launch |
+|---|---|---|---|
+| **Magnesium Glycinate** (90 caps, 3/day) | **275 mg elemental magnesium** from 2,500 mg glycinate | **Magnesium Sleep+** (hero) | Price; it's glycinate only, not the "3 forms" in our draft, so update the product copy |
+| **Ashwagandha Plus** (60 caps) | **KSM-66 600 mg** + token extras | **Ashwagandha Calm+** | Vitasy sells it ×3 at $29.99, so price $30–32 or find a plain KSM-66 |
+| **Lion's Mane** (60 caps) | 1,000 mg organic fruiting body + mycelium | **Lion's Mane** (nootropic hero) | Beta-glucan COA; price |
+| **Creatine Monohydrate** (281 g powder) | Creatine monohydrate only | **Creatine** | Scoop size (5 g → ~56 servings?), Creapure or not; price. Strongest evidence of anything here (grade A) |
+| **CoQ10** (30 caps) | **200 mg ubiquinone** | **New: CoQ10** (heart/energy, "healthy ageing") | Price. A cleaner healthy-ageing product than NAD+ |
+
+**🟡 Possible, after checks**
+| Product | Formula | Use | Issue |
+|---|---|---|---|
+| **Platinum Turmeric** (60 caps) | Turmeric root + **95% curcuminoid extract**, glucosamine (**shellfish**), chondroitin, ginger, boswellia, MSM, BioPerine, quercetin, methionine, bromelain; amounts not visible | **Turmeric Complex** / joint product | ⚠️ **This is the only turmeric in Supliful's catalogue, so it's almost certainly the $4.05–11.05 product we priced.** It's a joint blend, not plain curcumin, so our turmeric analysis assumed the wrong formula. Get the facts panel: curcuminoid mg decides whether it's a turmeric or a joint product. Shellfish allergen |
+| **Joint Support** (60 caps) | MSM, **vegan glucosamine** (GlucosaGreen), turmeric, white willow bark, boswellia 65%, hyaluronic acid; amounts not visible | **Glucosamine Joint+** | Facts panel; willow bark is aspirin-like (warning for blood thinners, aspirin allergy); gelatin capsule |
+| **Women's Vitality** (60 caps) | Black cohosh 160 mg, red clover 400 mg, sage 200 mg, dong quai 150 mg, licorice 150 mg, soy isoflavones 30 mg, chasteberry, etc. | **Menopause Balance+** | Transparent doses, but needs strong warnings (black cohosh: rare liver injury; licorice: blood pressure; dong quai: bleeding; phytoestrogens and breast-cancer history) plus dietitian and lawyer review |
+| **Collagen Peptides** (280 g, bovine types I & III) | Grams per scoop in image | **Collagen Glow+** | Facts panel (aim for 10 g/serving); price |
+| **Colostrum Powder** (69 g) | **2,300 mg** bovine colostrum, 25% IgG | Gut & Immunity Reset | Better than the capsules (500 mg); still low-end vs studies; "Contains: milk"; ~30 servings |
+| **Sleep Formula** (60 caps) | **Melatonin 2 mg** + valerian 150 mg, chamomile, GABA, tryptophan, lemon balm, passion flower 100 mg each | Possible "Sleep" product | Melatonin does the work (fair dose); herbs are low. Overlaps with Magnesium Sleep+ |
+| **Probiotic 40B + prebiotic** (60 caps) / **Probiotic 20B** (30 caps, 13 strains) | No strain codes | **Probiotic Gut+** / bundles | Evidence is strain-specific; without strain IDs we can't grade it. Ask for strain codes |
+| **Omega-3**, **Vitamin D3** | See below | Bundles, add-ons | Commodity specs |
+| **NMN**, **NAD+** | See below | Phase 2 | Evidence and Vitasy competition |
+
+**🔴 Don't sell** (beyond those already listed below): **Mushroom Complex 10X** (proprietary blend), **Gotu Kola & Bacopa** (231 mg blend of 6 herbs; bacopa studies use 300 mg alone), **Brain & Focus Formula** (multivitamin + 609 mg proprietary blend with huperzine A), **Cognitive Support** (caffeine + huperzine + 8 others, no amounts), **Sleep Support** (melatonin + 5-HTP kitchen sink), **Hair, Skin & Nails Essentials** (biotin 5,000 mcg, which can distort lab tests including heart-attack troponin tests; iron; proprietary blend), **Complete Multivitamin** (cheap forms such as oxides, cyanocobalamin and synthetic vitamin E; amounts not visible; saw palmetto and nettle). Weight-loss, "blood sugar" drops, keto, fat-burner, libido and "enhancement" products are off-brand.
+
+**Gaps (no suitable Supliful product), so we need a second supplier:** zinc capsule, **vitamin D3 + K2**, **L-theanine**, **NAC**, a quality multivitamin, iron capsule, **berberine 500 mg**, **plain KSM-66 600 mg**, a transparent **focus stack**, **NR**, concentrated IFOS omega-3. Candidates: On Demand Fulfillment, Vitalabs, Professional Nutritionals, Makers (see `SUPPLIER_RESEARCH.md`).
+
+## Verdicts at a glance (detailed checks)
 | Product | Formula (per daily serving) | Verdict | Why |
 |---|---|---|---|
-| **Turmeric** 60 caps | 95% curcuminoids + black pepper | ✅ **Launch** | $11.05 all-in; premium tier $29–40. See `SHOPPING_ANALYSIS_TURMERIC.md` |
+| **Turmeric** (= **Platinum Turmeric**) 60 caps | ⚠️ Corrected 28 Oct: a joint blend (turmeric + 95% extract, glucosamine, chondroitin, boswellia, MSM, BioPerine…), not plain curcumin + pepper | 🟡 **Check the facts panel first** | $11.05 all-in; turmeric premium tier $29–40. Curcuminoid mg decides turmeric vs joint positioning. Shellfish allergen. See `SHOPPING_ANALYSIS_TURMERIC.md` |
 | **Ashwagandha Plus** 60 caps | **KSM-66 600 mg** (5% withanolides) + L-arginine 300 mg, maca 150 mg, Panax ginseng 100 mg, shatavari 50 mg, D3 20 mcg, B6 2.5 mg, B12 25 mcg | ✅ **Good formula, but sold 3× by Vitasy at $29.99**. Prefer a plain KSM-66 600 mg | KSM-66 at the study dose; the extras are token amounts. Market $22–39. See `SHOPPING_ANALYSIS_ASHWAGANDHA.md` |
 | **Ashwagandha (plain)** 60 caps | Organic ashwagandha **root** + organic black pepper; **no amounts, extract type or withanolide %** listed; 1 capsule twice a day | 🟠 **Weaker than Ashwagandha Plus** | Probably root powder, not a studied extract like KSM-66. Likely the product behind Vitasy's Fernwood "with black pepper" ($24.99). Ask for the Supplement Facts |
 | **Lion's mane** 60 caps | 1,000 mg organic fruiting body + mycelium, 40% polysaccharides | ✅ **Launch** (after the COA) | Fair dose, in line per mg at $35–40. Ask for the beta-glucan %. See `SHOPPING_ANALYSIS_LIONS_MANE.md` |
