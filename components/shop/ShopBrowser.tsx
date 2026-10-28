@@ -29,7 +29,7 @@ function Pill({ active, onClick, children }: { active: boolean; onClick: () => v
   return (
     <button
       onClick={onClick}
-      className={`shrink-0 rounded-full border px-4 py-1.5 text-sm font-semibold transition-colors ${
+      className={`shrink-0 rounded border px-4 py-1.5 text-sm font-semibold transition-colors ${
         active ? 'border-[var(--color-navy)] bg-[var(--color-navy)] text-white' : 'border-[var(--color-line)] hover:border-[var(--color-navy)]'
       }`}
     >
@@ -92,7 +92,7 @@ export function ShopBrowser({
         </div>
       </section>
 
-      <div className="sticky top-[75px] z-30 md:top-[82px] border-b border-[var(--color-line)] bg-white">
+      <div className="sticky top-[75px] z-30 md:top-[82px] border-b border-[var(--color-line)] bg-[var(--color-canvas)]">
         <div className="container px-6 py-4">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div className="no-scrollbar flex items-center gap-2 overflow-x-auto">
@@ -110,7 +110,7 @@ export function ShopBrowser({
               <select
                 value={sort}
                 onChange={(e) => setSort(e.target.value as Sort)}
-                className="rounded-full border border-[var(--color-line)] px-4 py-2 text-sm font-semibold"
+                className="rounded border border-[var(--color-line)] bg-white px-4 py-2 text-sm font-semibold"
                 aria-label="Sort by"
               >
                 {SORTS.map((s) => (

@@ -56,6 +56,7 @@ export function buildProduct(row: ProductRow, real?: RealRating): Product {
 export function toProductData(p: Product): ProductData {
   return {
     name: p.name,
+    ...(p.tagline ? { tagline: p.tagline } : {}),
     shortBenefit: p.shortBenefit,
     description: p.description,
     whoFor: p.whoFor,

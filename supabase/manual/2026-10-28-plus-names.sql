@@ -12,3 +12,25 @@ from (values
   ('multivitamin', 'Daily Multi+')
 ) as v(slug, name)
 where products.slug = v.slug;
+
+-- Product page headlines (tagline), shown after the name: "Magnesium Sleep+: Restful Sleep & Calm".
+update products set data = data || jsonb_build_object('tagline', v.tagline), updated_at = now()
+from (values
+  ('probiotic-complex', 'Digestive Balance & Gut Comfort'),
+  ('glucosamine-complex', 'Joint Comfort & Mobility'),
+  ('collagen-complex', 'Skin, Hair & Nail Support'),
+  ('menopause-complex', 'Support Through Menopause'),
+  ('magnesium-complex', 'Restful Sleep & Calm'),
+  ('zinc', 'Immune & Skin Support'),
+  ('iron-complex', 'Gentle Iron for Everyday Energy'),
+  ('vitamin-d3-k2', 'Bone, Immune & Energy Support'),
+  ('turmeric-complex', 'Joint Comfort & Recovery'),
+  ('berberine-complex', 'Metabolic Health Support'),
+  ('ashwagandha', 'Stress Resilience & Calm'),
+  ('multivitamin', 'Your Daily Foundation'),
+  ('biotin-complex', 'Hair, Skin & Nail Support'),
+  ('creatine', 'Strength, Power & Focus'),
+  ('mushroom-blend-powder', 'Focus & Daily Energy'),
+  ('nac', 'Antioxidant & Glutathione Support')
+) as v(slug, tagline)
+where products.slug = v.slug;

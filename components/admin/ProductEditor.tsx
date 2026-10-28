@@ -128,6 +128,9 @@ export function ProductEditor({
                 className={`${full} disabled:bg-[var(--color-soft)]`}
               />
             </Field>
+            <Field title="Headline" hint="Shown after the name on the product page, e.g. “Restful Sleep & Calm”.">
+              <input value={d.tagline ?? ''} onChange={(e) => set('tagline', e.target.value)} className={full} maxLength={60} />
+            </Field>
             <Field title="Short benefit" hint="One line, shown on product cards.">
               <input value={d.shortBenefit} onChange={(e) => set('shortBenefit', e.target.value)} className={full} maxLength={160} />
             </Field>

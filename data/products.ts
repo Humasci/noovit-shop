@@ -13,6 +13,7 @@ const seeds: Seed[] = [
   {
     name: 'Probiotic Gut+',
     slug: 'probiotic-complex',
+    tagline: 'Digestive Balance & Gut Comfort',
     shortBenefit: 'Supports gut balance and healthy digestion.',
     description: 'A multi-strain probiotic paired with a prebiotic fibre, in delayed-release capsules built to reach the gut intact.',
     whoFor: 'Anyone dealing with occasional bloating or irregularity, or wanting daily digestive and immune support.',
@@ -31,6 +32,7 @@ const seeds: Seed[] = [
   {
     name: 'Glucosamine Joint+',
     slug: 'glucosamine-complex',
+    tagline: 'Joint Comfort & Mobility',
     shortBenefit: 'Supports joint comfort and mobility.',
     description: 'Glucosamine, chondroitin and MSM with a touch of curcumin for joints that keep up with you.',
     whoFor: 'Active people, runners, and anyone who wants to keep joints moving comfortably.',
@@ -50,6 +52,7 @@ const seeds: Seed[] = [
   {
     name: 'Collagen Glow+',
     slug: 'collagen-complex',
+    tagline: 'Skin, Hair & Nail Support',
     shortBenefit: 'Supports skin elasticity, hair and nails.',
     description: 'Hydrolysed collagen peptides with vitamin C and hyaluronic acid for skin support from within.',
     whoFor: 'Anyone who wants to support skin hydration, elasticity, and stronger hair and nails.',
@@ -68,6 +71,7 @@ const seeds: Seed[] = [
   {
     name: 'Menopause Balance+',
     slug: 'menopause-complex',
+    tagline: 'Support Through Menopause',
     shortBenefit: 'Supports balance through menopause.',
     description: 'Botanicals and key nutrients chosen to support women through perimenopause and menopause.',
     whoFor: 'Women in perimenopause or menopause looking for daily, hormone-free support.',
@@ -87,6 +91,7 @@ const seeds: Seed[] = [
   {
     name: 'Magnesium Sleep+',
     slug: 'magnesium-complex',
+    tagline: 'Restful Sleep & Calm',
     shortBenefit: 'Supports relaxation, sleep and muscle function.',
     description: 'Three forms of magnesium — glycinate, malate and citrate — with zinc and vitamin D3.',
     whoFor: 'Anyone with a busy mind at night, tired muscles after training, or low daily magnesium intake.',
@@ -108,6 +113,7 @@ const seeds: Seed[] = [
   {
     name: 'Zinc',
     slug: 'zinc',
+    tagline: 'Immune & Skin Support',
     shortBenefit: 'Supports immune function and skin health.',
     description: 'Highly absorbable zinc picolinate with copper to keep minerals in balance.',
     whoFor: 'Anyone wanting everyday immune support, or with a plant-based diet that may be low in zinc.',
@@ -125,6 +131,7 @@ const seeds: Seed[] = [
   {
     name: 'Iron Complex',
     slug: 'iron-complex',
+    tagline: 'Gentle Iron for Everyday Energy',
     shortBenefit: 'Supports energy without the stomach upset.',
     description: 'Gentle iron bisglycinate with vitamin C, B12 and folate to fight tiredness.',
     whoFor: 'Women with heavy periods, plant-based eaters, and anyone feeling low on energy.',
@@ -144,6 +151,7 @@ const seeds: Seed[] = [
   {
     name: 'Vitamin D3 & K2',
     slug: 'vitamin-d3-k2',
+    tagline: 'Bone, Immune & Energy Support',
     shortBenefit: 'Supports bones, immunity and calcium use.',
     description: 'Vitamin D3 paired with K2 (MK-7) so calcium goes where your body needs it.',
     whoFor: 'Anyone who spends most days indoors or lives somewhere with dark winters.',
@@ -162,6 +170,7 @@ const seeds: Seed[] = [
   {
     name: 'Turmeric Complex',
     slug: 'turmeric-complex',
+    tagline: 'Joint Comfort & Recovery',
     shortBenefit: 'Supports joints and a healthy inflammatory response.',
     description: 'Standardised curcumin with boswellia, ginger and black pepper extract for absorption.',
     whoFor: 'Active people and anyone who wants daily joint and recovery support.',
@@ -181,6 +190,7 @@ const seeds: Seed[] = [
   {
     name: 'Berberine Complex',
     slug: 'berberine-complex',
+    tagline: 'Metabolic Health Support',
     shortBenefit: 'Supports healthy blood sugar and metabolism.',
     description: 'Berberine HCl with chromium and cinnamon to support glucose metabolism.',
     whoFor: 'Adults looking to support healthy blood sugar alongside diet and exercise.',
@@ -214,6 +224,7 @@ const seeds: Seed[] = [
   {
     name: 'Ashwagandha Calm+',
     slug: 'ashwagandha',
+    tagline: 'Stress Resilience & Calm',
     shortBenefit: 'Supports calm, stress balance and sleep.',
     description: 'Full-spectrum ashwagandha root extract, an adaptogen for steadier days and calmer nights.',
     whoFor: 'Busy people dealing with everyday stress, low energy, or restless sleep.',
@@ -228,6 +239,7 @@ const seeds: Seed[] = [
   {
     name: 'Daily Multi+',
     slug: 'multivitamin',
+    tagline: 'Your Daily Foundation',
     shortBenefit: 'Daily foundation of essential vitamins and minerals.',
     description: '23 vitamins and minerals in active, bioavailable forms to fill the gaps in a busy diet.',
     whoFor: 'Anyone wanting a simple daily nutrition foundation.',
@@ -267,6 +279,7 @@ const seeds: Seed[] = [
   {
     name: 'Biotin Complex',
     slug: 'biotin-complex',
+    tagline: 'Hair, Skin & Nail Support',
     shortBenefit: 'Supports stronger hair and nails.',
     description: 'High-strength biotin with zinc and selenium for hair, skin and nails.',
     whoFor: 'Anyone wanting to support hair thickness and nail strength.',
@@ -285,6 +298,7 @@ const seeds: Seed[] = [
   {
     name: 'Creatine',
     slug: 'creatine',
+    tagline: 'Strength, Power & Focus',
     shortBenefit: 'Supports strength, power and performance.',
     description: 'Pure micronised creatine monohydrate. Unflavoured, mixes easily, one ingredient.',
     whoFor: 'Anyone training for strength, power or high-intensity sport — and anyone wanting cognitive support.',
@@ -300,6 +314,7 @@ const seeds: Seed[] = [
   {
     name: 'Mushroom Clarity+',
     slug: 'mushroom-blend-powder',
+    tagline: 'Focus & Daily Energy',
     shortBenefit: 'Supports focus, energy and immunity.',
     description: "A functional mushroom blend — lion's mane, cordyceps, reishi and chaga — to stir into coffee or smoothies.",
     whoFor: 'Coffee drinkers wanting smoother focus, and anyone looking for daily adaptogenic support.',
@@ -373,11 +388,12 @@ const seeds: Seed[] = [
   {
     name: 'Sleep & Calm Stack',
     slug: 'sleep-calm-stack',
+    tagline: 'Wind Down, Sleep Deeper',
     status: 'active',
     shortBenefit: 'Magnesium Sleep+ and Ashwagandha Calm+ for restful nights and calmer days.',
     description: 'Two formulas for winding down, together for less: Magnesium Sleep+ (three forms of magnesium with zinc and D3) and Ashwagandha Calm+ (ashwagandha root extract, 5% withanolides).',
     whoFor: 'Anyone who wants to sleep more soundly and feel calmer through busy days.',
-    benefits: ['Supports restful sleep', 'Supports a calm mood and stress resilience', 'Supports muscle relaxation', 'Save vs. buying separately'],
+    benefits: ['Supports restful sleep', 'Supports a calm mood and stress resilience', 'Supports muscle relaxation'],
     ingredients: [
       { name: 'Magnesium Sleep+ (1 bottle)', amount: '1 × 60 capsules' },
       { name: 'Ashwagandha Calm+ (1 bottle)', amount: '1 × 60 capsules' },
@@ -392,11 +408,12 @@ const seeds: Seed[] = [
   {
     name: 'Gut & Immunity Reset',
     slug: 'gut-immunity-reset',
+    tagline: 'Gut & Immune Essentials',
     status: 'active',
     shortBenefit: 'Probiotic Gut+, Vitamin D3 & K2 and Zinc for digestion and immune support.',
     description: 'Three everyday essentials for a healthy gut and a normal immune system, together for less: Probiotic Gut+, Vitamin D3 & K2 and Zinc.',
     whoFor: 'Anyone who wants year-round support for digestion and immunity.',
-    benefits: ['Supports digestive balance', 'Supports normal immune function', 'Supports bone health (D3 & K2)', 'Save vs. buying separately'],
+    benefits: ['Supports digestive balance', 'Supports normal immune function', 'Supports bone health (D3 & K2)'],
     ingredients: [
       { name: 'Probiotic Gut+ (1 bottle)', amount: '1 × 60 capsules' },
       { name: 'Vitamin D3 & K2 (1 bottle)', amount: '1 × 60 capsules' },
@@ -412,11 +429,12 @@ const seeds: Seed[] = [
   {
     name: 'Joint Support Trio',
     slug: 'joint-support-trio',
+    tagline: 'A Complete Joint Routine',
     status: 'active',
     shortBenefit: 'Glucosamine Joint+, Turmeric Complex and Collagen Glow+ for comfortable movement.',
     description: 'A complete joint routine, together for less: Glucosamine Joint+ (with chondroitin and MSM), Turmeric Complex and Collagen Glow+.',
     whoFor: 'Active people, runners and anyone who wants to keep moving comfortably.',
-    benefits: ['Supports joint comfort and flexibility', 'Supports cartilage and connective tissue', 'Supports a healthy inflammatory response', 'Save vs. buying separately'],
+    benefits: ['Supports joint comfort and flexibility', 'Supports cartilage and connective tissue', 'Supports a healthy inflammatory response'],
     ingredients: [
       { name: 'Glucosamine Joint+ (1 bottle)', amount: '1 × 90 capsules' },
       { name: 'Turmeric Complex (1 bottle)', amount: '1 × 60 capsules' },
@@ -436,6 +454,7 @@ const seeds: Seed[] = [
     // liver, addiction or mental-health claims.
     name: 'NAC',
     slug: 'nac',
+    tagline: 'Antioxidant & Glutathione Support',
     status: 'hidden',
     shortBenefit: 'Supports antioxidant defenses.',
     description: 'N-acetyl cysteine (NAC), a stable form of the amino acid cysteine, which the body uses to make glutathione, one of its main antioxidants.',

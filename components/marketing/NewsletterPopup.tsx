@@ -72,7 +72,7 @@ export function NewsletterPopup() {
         <h2 id="popup-title" className="mt-2 text-2xl">{popup.headline}</h2>
         {popup.text && <p className="mt-2 text-sm text-[var(--color-muted)]">{popup.text}</p>}
         <form onSubmit={submit} className="mt-6 flex flex-col gap-3">
-          <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Your email" aria-label="Email address" autoComplete="email" className="rounded-full border border-[var(--color-line)] px-5 py-3" />
+          <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Your email" aria-label="Email address" autoComplete="email" className="rounded border border-[var(--color-line)] bg-white px-5 py-3" />
           <button disabled={busy} className="btn btn-primary disabled:opacity-50">{busy ? 'Joining…' : 'Sign me up'}</button>
         </form>
         <button onClick={close} className="mt-4 p-1 text-xs text-[var(--color-muted)] underline">No thanks</button>

@@ -47,7 +47,7 @@ export default function CartPage() {
                   <span className="font-bold">{formatPrice(lineTotal(item))}</span>
                 </div>
                 <div className="mt-auto flex items-center justify-between pt-3">
-                  <div className="flex items-center rounded-full border border-[var(--color-line)]">
+                  <div className="flex items-center rounded border border-[var(--color-line)]">
                     <button className="px-3 py-2" onClick={() => updateQuantity(item.key, item.quantity - 1)} aria-label="Decrease">
                       <Minus className="h-3 w-3" />
                     </button>

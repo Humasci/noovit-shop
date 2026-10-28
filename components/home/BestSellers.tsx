@@ -31,7 +31,7 @@ export function BestSellers({ products }: { products: Product[] }) {
             <button
               key={t.label}
               onClick={() => setTab(i)}
-              className={`shrink-0 rounded-full px-5 py-2 text-sm font-bold transition-colors ${
+              className={`shrink-0 rounded px-5 py-2 text-sm font-bold transition-colors ${
                 tab === i ? 'bg-[var(--color-navy)] text-white' : 'bg-[var(--color-soft)] text-[var(--color-navy)] hover:bg-[var(--color-line)]'
               }`}
             >

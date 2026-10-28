@@ -63,7 +63,7 @@ export function CheckoutButton() {
             <select
               value={frequency}
               onChange={(e) => setFrequency(Number(e.target.value) as Frequency)}
-              className="rounded-full border border-[var(--color-line)] bg-white px-3 py-1.5"
+              className="rounded border border-[var(--color-line)] bg-white px-3 py-1.5"
             >
               {[30, 60, 90].map((d) => (
                 <option key={d} value={d}>{d} days</option>

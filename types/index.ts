@@ -30,6 +30,8 @@ export type ProductStatus = 'active' | 'out_of_stock' | 'hidden';
 // The editable product fields, stored as JSON in products.data.
 export interface ProductData {
   name: string;
+  // Product page headline after the name, e.g. "Magnesium Sleep+: Restful Sleep & Calm".
+  tagline?: string;
   shortBenefit: string;
   description: string;
   whoFor: string;

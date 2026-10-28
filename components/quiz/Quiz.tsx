@@ -188,7 +188,7 @@ export function Quiz({ products, code }: { products: Product[]; code: string }) 
                         addItem({ product, mode: 'one-time', ...single });
                         toast.success(`${product.name} added`);
                       }}
-                      className="rounded-full border-2 border-[var(--color-accent)] px-4 py-1.5 text-sm font-bold text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-white"
+                      className="rounded border-[1.5px] border-[var(--color-navy)] px-4 py-1.5 text-sm font-bold text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-white"
                     >
                       Add one bottle
                     </button>
@@ -228,7 +228,7 @@ export function Quiz({ products, code }: { products: Product[]; code: string }) 
     <div className="mx-auto max-w-2xl py-6">
       {/* Progress: one tile per question, filled in orange as you go */}
       <div className="mb-8 flex items-center gap-3">
-        <button onClick={back} aria-label="Back" className="rounded-full p-2 hover:bg-[var(--color-soft)]"><ArrowLeft className="h-5 w-5" /></button>
+        <button onClick={back} aria-label="Back" className="rounded p-2 hover:bg-[var(--color-soft)]"><ArrowLeft className="h-5 w-5" /></button>
         <div className="flex flex-1 gap-1.5" role="progressbar" aria-valuemin={1} aria-valuemax={flow.length} aria-valuenow={index + 1} aria-label={`Question ${index + 1} of ${flow.length}`}>
           {flow.map((s, i) => (
             <span key={s} className={`h-2.5 flex-1 rounded-[3px] transition-colors duration-500 ${i <= index ? 'bg-[var(--color-orange)]' : 'bg-[var(--color-line)]'}`} style={{ opacity: i <= index ? 0.45 + (0.55 * (i + 1)) / flow.length : 1 }} />
@@ -341,8 +341,8 @@ export function Quiz({ products, code }: { products: Product[]; code: string }) 
               finish(consent);
             }}
           >
-            <input value={name} onChange={(e) => setName(e.target.value)} placeholder="First name" aria-label="First name" autoComplete="given-name" className="rounded-full border border-[var(--color-line)] px-5 py-3" />
-            <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" aria-label="Email address" autoComplete="email" className="rounded-full border border-[var(--color-line)] px-5 py-3" />
+            <input value={name} onChange={(e) => setName(e.target.value)} placeholder="First name" aria-label="First name" autoComplete="given-name" className="rounded border border-[var(--color-line)] bg-white px-5 py-3" />
+            <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" aria-label="Email address" autoComplete="email" className="rounded border border-[var(--color-line)] bg-white px-5 py-3" />
             <label className="flex items-start gap-2 text-xs text-[var(--color-muted)]">
               <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-0.5" />
               Email me my welcome code, tips and offers from Noovit. Unsubscribe anytime.

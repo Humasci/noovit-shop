@@ -37,7 +37,7 @@ export default async function GoalPage({ params }: { params: Promise<{ slug: str
                 key={g.slug}
                 href={`/goals/${g.slug}`}
                 aria-current={g.slug === goal.slug ? 'page' : undefined}
-                className={`rounded-full px-4 py-2 text-sm font-semibold ${g.slug === goal.slug ? 'bg-[var(--color-navy)] text-white' : 'bg-white hover:bg-white/70'}`}
+                className={`rounded px-4 py-2 text-sm font-semibold ${g.slug === goal.slug ? 'bg-[var(--color-navy)] text-white' : 'bg-white hover:bg-white/70'}`}
               >
                 {g.name}
               </Link>

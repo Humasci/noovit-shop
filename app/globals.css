@@ -6,12 +6,14 @@
   --color-ink: #1f2937;
   /* Opal green accent: links, icons, highlights. -dark for hover, -light on navy backgrounds. */
   --color-opal: #5fa68d;
-  --color-accent: #337a63;
+  --color-accent: #2f725d;
   --color-accent-dark: #2f6f5b;
   --color-accent-light: #9cc9b8;
-  --color-green: #337a63;
-  --color-soft: #eef5f2;
-  --color-line: #e2ebe7;
+  --color-green: #2f725d;
+  /* Warm off-white canvas (The Absorption Company direction): page, soft panels, hairlines. */
+  --color-canvas: #f6f4ef;
+  --color-soft: #efece6;
+  --color-line: #e3ded5;
   --color-muted: #5b6472;
   --color-orange: #ff5f00;
   --color-logo-plus: var(--color-orange);
@@ -42,6 +44,10 @@
   --font-weight-semibold: 550;
   --font-weight-bold: 600;
   --font-weight-extrabold: 650;
+
+  /* Calmer corners: cards stay softly rounded, controls are near-square. */
+  --radius-2xl: 0.75rem;
+  --radius-3xl: 1rem;
 }
 
 @layer base {
@@ -52,7 +58,7 @@
   }
 
   body {
-    background: #fff;
+    background: var(--color-canvas);
     color: var(--color-ink);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
@@ -88,9 +94,12 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    padding: 0.9rem 2rem;
-    border-radius: 999px;
+    padding: 0.95rem 2rem;
+    border-radius: 4px;
     font-weight: 600;
+    font-size: 0.875rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
     transition: background 0.2s, color 0.2s, transform 0.2s;
   }
 
@@ -104,11 +113,11 @@
   }
 
   .btn-primary:hover {
-    background: var(--color-accent);
+    background: #22335a;
   }
 
   .btn-outline {
-    border: 2px solid var(--color-navy);
+    border: 1.5px solid var(--color-navy);
     color: var(--color-navy);
   }
 
@@ -208,3 +217,6 @@
 
 /* The brand name inside uppercase, letter-spaced eyebrows: set like the logo, not spaced out letter by letter. */
 .uppercase .brand-word { font-family: var(--font-logo); font-weight: 500; letter-spacing: -0.01em; font-size: 1.3em; line-height: 1; }
+
+/* Small uppercase section labels ("CHOOSE YOUR PLAN", "THE RESEARCH"). */
+.label-caps { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-muted); }

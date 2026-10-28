@@ -30,7 +30,9 @@ _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only yo
 - [ ] Collect real reviews (the review emails are automatic). Set up **Trustpilot** and **Google Customer Reviews**.
 
 ## 🟠 Before launch: build
-- [ ] **Product page redesign** in the Absorption Company style (`docs/DESIGN_DIRECTION.md`).
+- [x] **Redesign, phase 1** (28 Oct): off-white canvas, square navy buttons, calmer corners, new product page (orange-name headline, bullets, stat strip, plan cards, trust row, accordions, bundle upsell, Benefits / Research / What's-inside panels, desktop sticky section bar), new product cards (goal tag, "from" price and % off), giant-wordmark footer.
+- [ ] **Redesign, phase 2:** "What to expect" timelines and research panels from the deep research; expert/dietitian section; real product photos; home and goal pages in the same style (owner review first).
+- [ ] **Owner:** in Supabase, re-run `supabase/manual/2026-10-28-plus-names.sql`. It now also sets the product page headlines (taglines).
 - [ ] Align the catalog with the real Supliful products: names, formulas, doses, prices, Supplement Facts with %DV and the iron warning, capsule counts.
 - [ ] **COA / lab results** block on product pages (once documents arrive).
 - [ ] Google Merchant Center verification meta tag + Search Console; Google Customer Reviews script on `/checkout/success`.

@@ -78,7 +78,7 @@ export function CartDrawer({ suggestions }: { suggestions: Product[] }) {
                       {item.mode === 'subscribe' ? `Delivered every ${item.frequency} days` : 'One-time purchase'}
                     </p>
                     <div className="mt-2 flex items-center justify-between">
-                      <div className="flex items-center rounded-full border border-[var(--color-line)]">
+                      <div className="flex items-center rounded border border-[var(--color-line)]">
                         <button className="px-3 py-2.5" onClick={() => updateQuantity(item.key, item.quantity - 1)} aria-label={`Decrease quantity of ${item.product.name}`}>
                           <Minus className="h-3 w-3" />
                         </button>
@@ -139,7 +139,7 @@ function PairsWellWith({ suggestions }: { suggestions: Product[] }) {
               <button
                 onClick={() => addItem({ product: p, mode: 'one-time', ...single })}
                 aria-label={`Add ${p.name} to cart`}
-                className="rounded-full border-2 border-[var(--color-accent)] px-3 py-2 text-xs font-bold text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-white"
+                className="rounded border-[1.5px] border-[var(--color-navy)] px-3 py-2 text-xs font-bold uppercase tracking-wide text-[var(--color-navy)] transition-colors hover:bg-[var(--color-accent)] hover:text-white"
               >
                 Add to Cart
               </button>

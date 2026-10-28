@@ -35,7 +35,7 @@ export function PetsWaitlist() {
                 setDone(true);
               }}
             >
-              <div className="flex flex-1 items-center gap-2 rounded-full bg-white px-4 focus-within:ring-2 focus-within:ring-[var(--color-accent)]">
+              <div className="flex flex-1 items-center gap-2 rounded bg-white px-4 focus-within:ring-2 focus-within:ring-[var(--color-accent)]">
                 <Mail className="h-4 w-4 text-[var(--color-muted)]" />
                 <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Your email" aria-label="Email address" autoComplete="email" className="w-full bg-transparent py-3 focus:outline-none" />
               </div>

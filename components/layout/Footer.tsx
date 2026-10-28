@@ -99,6 +99,13 @@ export function Footer() {
         ))}
       </div>
 
+      {/* Giant wordmark, The Absorption Company style. */}
+      <div aria-hidden className="container overflow-hidden px-6 pb-4">
+        <p className="select-none whitespace-nowrap text-center text-[19vw] leading-[0.9] text-white xl:text-[15rem]">
+          <Logo />
+        </p>
+      </div>
+
       <div className="border-t border-white/10">
         <div className="container flex flex-col items-center justify-between gap-4 px-6 py-6 text-xs text-white/60 md:flex-row">
           <p>

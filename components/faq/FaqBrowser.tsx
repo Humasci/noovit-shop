@@ -33,7 +33,7 @@ export function FaqBrowser({ products }: { products: Product[] }) {
 
       <section className="container max-w-3xl px-6">
         <h2 className="mb-4 text-3xl">Product questions</h2>
-        <div className="flex items-center gap-2 rounded-full border border-[var(--color-line)] px-5 focus-within:ring-2 focus-within:ring-[var(--color-accent)]">
+        <div className="flex items-center gap-2 rounded border bg-white border-[var(--color-line)] px-5 focus-within:ring-2 focus-within:ring-[var(--color-accent)]">
           <Search className="h-4 w-4 text-[var(--color-muted)]" />
           <input
             value={query}

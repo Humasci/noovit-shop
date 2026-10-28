@@ -43,7 +43,7 @@ function Account() {
       )}
 
       <form onSubmit={submit} className="mt-8 flex flex-col gap-3 sm:flex-row">
-        <div className="flex flex-1 items-center gap-2 rounded-full border border-[var(--color-line)] px-4 focus-within:ring-2 focus-within:ring-[var(--color-accent)]">
+        <div className="flex flex-1 items-center gap-2 rounded border bg-white border-[var(--color-line)] px-4 focus-within:ring-2 focus-within:ring-[var(--color-accent)]">
           <Mail className="h-4 w-4 text-[var(--color-muted)]" />
           <input
             type="email"

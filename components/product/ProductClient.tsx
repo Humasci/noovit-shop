@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useId, useRef, useState, useSyncExternalStore } from 'react';
-import { Check, Truck } from 'lucide-react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
+import { Check, RefreshCw, ShieldCheck, Truck } from 'lucide-react';
 import { Frequency, Product, PurchaseMode } from '@/types';
 import { packOptions, maxSavingPercent } from '@/data/products';
 import { PAYMENT_METHODS } from '@/data/content';
@@ -34,14 +34,14 @@ export function Gallery({ product }: { product: Product }) {
 
   return (
     <div>
-      <div className="overflow-hidden rounded-3xl bg-[var(--color-soft)]">{slide(Math.min(active, count - 1), 'aspect-square w-full', true)}</div>
+      <div className="overflow-hidden rounded-lg border border-[var(--color-line)] bg-[var(--color-soft)]">{slide(Math.min(active, count - 1), 'aspect-square w-full', true)}</div>
       {count > 1 && (
         <div className="mt-4 grid grid-cols-4 gap-3">
           {Array.from({ length: count }, (_, i) => (
             <button
               key={i}
               onClick={() => setActive(i)}
-              className={`overflow-hidden rounded-xl border-2 ${i === active ? 'border-[var(--color-navy)]' : 'border-transparent'}`}
+              className={`overflow-hidden rounded border-2 ${i === active ? 'border-[var(--color-navy)]' : 'border-transparent'}`}
               aria-label={`Show image ${i + 1} of ${count}`}
               aria-current={i === active}
             >
@@ -70,10 +70,12 @@ function DeliveryEstimate() {
   ) : null;
 }
 
-const PERKS = ['Change or cancel anytime online', 'Free US shipping on every delivery', '90-day money-back guarantee', 'Choose every 30, 60 or 90 days'];
+const PERKS = ['Change, skip or cancel anytime online', 'Free US shipping on every delivery', '90-day money-back guarantee'];
 
-export function PurchaseBox({ product }: { product: Product }) {
-  // One-time is the default so the first price shown matches the Google Shopping feed (and nothing is pre-selected into a recurring charge).
+// Plan selector, add to cart and sticky bars (The Absorption Company layout, Noovit colours).
+// One-time is the default so the first price matches the Google Shopping feed and nothing is pre-selected
+// into a recurring charge; the best-value pack is highlighted, not pre-selected.
+export function PurchaseBox({ product, sections = [] }: { product: Product; sections?: { id: string; label: string }[] }) {
   const [mode, setMode] = useState<PurchaseMode>('one-time');
   const [bottles, setBottles] = useState(1);
   const [frequency, setFrequency] = useState<Frequency>(30);
@@ -85,8 +87,11 @@ export function PurchaseBox({ product }: { product: Product }) {
   const options = packOptions(product, mode);
   const pack = options.find((o) => o.bottles === bottles) ?? options[0];
   const active = product.status === 'active';
+  const bundle = Boolean(product.bundleItems?.length);
+  const best = options.length > 1 ? options[options.length - 1].bottles : null;
+  const unit = bundle ? 'bundle' : 'bottle';
 
-  // On phones the Add to Cart button is far down the page; a sticky bar stands in while it is off screen.
+  // The main button can be far down on phones; sticky bars stand in while it is off screen.
   useEffect(() => {
     const el = mainButton.current;
     if (!el) return;
@@ -103,194 +108,144 @@ export function PurchaseBox({ product }: { product: Product }) {
     addItem({ product, mode, bottles: pack.bottles, pricePerBottle: pack.pricePerBottle, frequency: mode === 'subscribe' ? frequency : undefined });
     track({ name: 'add_to_cart', item: { id: product.slug, name: product.name, price: pack.pricePerBottle * pack.bottles } });
   };
-  const label = active ? `Add to Cart — ${formatPrice(pack.pricePerBottle * pack.bottles)}` : 'Out of stock';
+  const total = pack.pricePerBottle * pack.bottles;
+  const label = active ? `Add to cart — ${formatPrice(total)}` : 'Out of stock';
+  const packTitle = (n: number) => (bundle ? `Bundle of ${product.bundleItems!.length} bottles` : `${n} ${n === 1 ? 'Bottle' : 'Bottles'}`);
 
   return (
     <div>
-      <p className="mb-5 flex items-center gap-2 text-sm">
-        <Truck className="h-4 w-4 text-[var(--color-green)]" />
-        Free US shipping on every order
-        <DeliveryEstimate />
-      </p>
-
-      <div className="grid grid-cols-2 gap-2 rounded-full bg-[var(--color-soft)] p-1" role="group" aria-label="Purchase type">
-        {(['subscribe', 'one-time'] as const).map((m) => (
+      <p className="label-caps">Choose your plan</p>
+      <div className="mt-3 grid grid-cols-2 overflow-hidden rounded border border-[var(--color-navy)]" role="group" aria-label="Purchase type">
+        {(['one-time', 'subscribe'] as const).map((m) => (
           <button
             key={m}
             onClick={() => setMode(m)}
             aria-pressed={mode === m}
-            className={`rounded-full px-3 py-2.5 text-sm font-bold transition-colors ${mode === m ? 'bg-[var(--color-navy)] text-white' : ''}`}
+            className={`px-3 py-2.5 text-sm font-semibold transition-colors ${mode === m ? 'bg-[var(--color-navy)] text-white' : 'bg-white text-[var(--color-navy)] hover:bg-[var(--color-soft)]'}`}
           >
-            {m === 'subscribe' ? `Subscribe & Save up to ${maxSavingPercent(product)}%` : 'One-Time Purchase'}
+            {m === 'subscribe' ? `Subscribe & save${bundle ? '' : ` up to ${maxSavingPercent(product)}%`}` : 'One-time purchase'}
           </button>
         ))}
       </div>
 
-      <div className="mt-4 space-y-3">
+      <div className="mt-3 space-y-3">
         {options.map((o) => {
           const selected = pack.bottles === o.bottles;
+          const compare = product.basePrice * o.bottles;
+          const price = o.pricePerBottle * o.bottles;
           const saving = Math.round((1 - o.pricePerBottle / product.basePrice) * 100);
           return (
             <label
               key={o.bottles}
-              className={`flex cursor-pointer items-center justify-between rounded-2xl border-2 p-4 ${
-                selected ? 'border-[var(--color-navy)] bg-[var(--color-soft)]' : 'border-[var(--color-line)]'
+              className={`relative block cursor-pointer rounded-lg border p-4 transition-colors ${
+                selected ? 'border-[1.5px] border-[var(--color-orange)] bg-[var(--color-pets-soft)]' : 'border-[var(--color-line)] bg-white hover:border-[var(--color-navy)]'
               }`}
             >
+              {best === o.bottles && (
+                <span className="absolute -top-px right-4 rounded-b bg-[var(--color-orange)] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[var(--color-navy)]">
+                  Best value
+                </span>
+              )}
               <span className="flex items-center gap-3">
-                <input type="radio" name="pack" checked={selected} onChange={() => setBottles(o.bottles)} className="accent-[var(--color-navy)]" />
-                <span>
-                  <span className="block font-bold">
-                    {product.bundleItems?.length ? `Bundle of ${product.bundleItems.length} bottles` : `${o.bottles} ${o.bottles === 1 ? 'Bottle' : 'Bottles'}`}
-                    {saving > 0 && (
-                      <span className="ml-2 rounded-full bg-[var(--color-green)] px-2 py-0.5 text-[10px] font-bold uppercase text-white">
-                        Save {saving}%
+                <input type="radio" name="pack" checked={selected} onChange={() => setBottles(o.bottles)} className="h-4 w-4 accent-[var(--color-navy)]" />
+                <span className="font-semibold">{packTitle(o.bottles)}</span>
+                <span className="text-xs text-[var(--color-muted)]">{o.bottles * product.servings}-day supply</span>
+              </span>
+              <span className="mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-1 pl-7">
+                {saving > 0 && <span className="rounded-sm bg-[var(--color-navy)] px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-white">Save {saving}%</span>}
+                <span className="text-xl font-semibold text-[var(--color-navy)]">{formatPrice(o.pricePerBottle)}</span>
+                <span className="text-sm text-[var(--color-muted)]">/{unit}</span>
+              </span>
+              {(o.bottles > 1 || saving > 0) && (
+                <span className="mt-1 flex flex-wrap items-baseline gap-x-2 pl-7 text-sm">
+                  {saving > 0 && <s className="text-[var(--color-muted)]">{formatPrice(compare)}</s>}
+                  <span className="font-semibold">{formatPrice(price)} total today</span>
+                  {saving > 0 && <span className="font-semibold text-[var(--color-pets-dark)]">save {formatPrice(compare - price)}</span>}
+                </span>
+              )}
+              {selected && mode === 'subscribe' && (
+                <span className="mt-3 block border-t border-[var(--color-orange)]/30 pl-7 pt-3">
+                  <span className="grid gap-1.5 text-sm">
+                    {PERKS.map((p) => (
+                      <span key={p} className="flex items-center gap-2">
+                        <Check className="h-4 w-4 text-[var(--color-pets-dark)]" /> {p}
                       </span>
-                    )}
+                    ))}
                   </span>
-                  <span className="text-xs text-[var(--color-muted)]">
-                    {o.bottles * product.servings}-day supply
+                  <span className="mt-3 flex items-center justify-between text-sm font-semibold">
+                    Deliver every
+                    <select
+                      value={frequency}
+                      onChange={(e) => setFrequency(Number(e.target.value) as Frequency)}
+                      onClick={(e) => e.preventDefault()}
+                      className="rounded border border-[var(--color-line)] bg-white px-3 py-1.5"
+                    >
+                      {[30, 60, 90].map((d) => (
+                        <option key={d} value={d}>{d} days</option>
+                      ))}
+                    </select>
                   </span>
                 </span>
-              </span>
-              <span className="text-right">
-                <span className="block font-bold">
-                  {mode === 'subscribe' && o.pricePerBottle < product.basePrice && (
-                    <s className="mr-1.5 text-sm font-normal text-[var(--color-muted)]">{formatPrice(product.basePrice)}</s>
-                  )}
-                  {formatPrice(o.pricePerBottle)}
-                </span>
-                <span className="text-xs text-[var(--color-muted)]">{product.bundleItems?.length ? "per bundle" : "per bottle"}</span>
-              </span>
+              )}
             </label>
           );
         })}
       </div>
 
-      {mode === 'subscribe' && (
-        <div className="mt-4 rounded-2xl bg-[var(--color-soft)] p-4">
-          <ul className="grid gap-2 text-sm sm:grid-cols-2">
-            {PERKS.map((p) => (
-              <li key={p} className="flex items-center gap-2">
-                <Check className="h-4 w-4 text-[var(--color-green)]" /> {p}
-              </li>
-            ))}
-          </ul>
-          <label className="mt-4 flex items-center justify-between text-sm font-semibold">
-            Deliver every
-            <select
-              value={frequency}
-              onChange={(e) => setFrequency(Number(e.target.value) as Frequency)}
-              className="rounded-full border border-[var(--color-line)] bg-white px-4 py-2"
-            >
-              {[30, 60, 90].map((d) => (
-                <option key={d} value={d}>
-                  {d} days
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-      )}
-
-      <button ref={mainButton} disabled={!active} onClick={add} className="btn btn-primary mt-5 w-full text-lg disabled:opacity-50">
+      <button ref={mainButton} disabled={!active} onClick={add} className="btn btn-primary mt-5 w-full py-4 disabled:opacity-50">
         {label}
       </button>
+      <p className="mt-2 text-center text-xs text-[var(--color-muted)]">
+        <Truck className="mr-1 inline h-3.5 w-3.5" aria-hidden />
+        Free US shipping
+        <DeliveryEstimate />
+      </p>
+
+      <ul className="mt-5 grid grid-cols-3 divide-x divide-[var(--color-line)] border-y border-[var(--color-line)] py-3 text-center text-xs text-[var(--color-ink)]">
+        <li className="flex flex-col items-center gap-1 px-2"><Truck className="h-5 w-5" strokeWidth={1.25} aria-hidden /> Free US shipping</li>
+        <li className="flex flex-col items-center gap-1 px-2"><ShieldCheck className="h-5 w-5" strokeWidth={1.25} aria-hidden /> 90-day money-back</li>
+        <li className="flex flex-col items-center gap-1 px-2"><RefreshCw className="h-5 w-5" strokeWidth={1.25} aria-hidden /> Cancel anytime</li>
+      </ul>
 
       {active && !buttonVisible && (
-        <div className="fixed inset-x-0 bottom-0 z-30 flex items-center gap-3 border-t border-[var(--color-line)] bg-white/95 px-4 py-3 backdrop-blur md:hidden">
-          <div className="min-w-0 flex-1 text-sm">
-            <p className="truncate font-bold">{product.name}</p>
-            <p className="text-xs text-[var(--color-muted)]">
-              {pack.bottles} {pack.bottles === 1 ? 'bottle' : 'bottles'} · {mode === 'subscribe' ? `every ${frequency} days` : 'one-time'}
-            </p>
+        <>
+          {/* Phones: compact add bar. */}
+          <div className="fixed inset-x-0 bottom-0 z-30 flex items-center gap-3 border-t border-[var(--color-line)] bg-[var(--color-canvas)]/95 px-4 py-3 backdrop-blur md:hidden">
+            <div className="min-w-0 flex-1 text-sm">
+              <p className="truncate font-bold">{product.name}</p>
+              <p className="text-xs text-[var(--color-muted)]">
+                {packTitle(pack.bottles)} · {mode === 'subscribe' ? `every ${frequency} days` : 'one-time'}
+              </p>
+            </div>
+            <button onClick={add} className="btn btn-primary shrink-0 px-5 py-3">Add — {formatPrice(total)}</button>
           </div>
-          <button onClick={add} className="btn btn-primary shrink-0 px-5 py-3 text-sm">
-            Add — {formatPrice(pack.pricePerBottle * pack.bottles)}
-          </button>
-        </div>
+          {/* Desktop: section tabs + mini product + add to cart. */}
+          <div className="fixed inset-x-0 bottom-0 z-30 hidden border-t border-[var(--color-line)] bg-[var(--color-canvas)]/95 backdrop-blur md:block">
+            <div className="container flex items-center gap-6 px-6 py-3">
+              <nav aria-label="Product sections" className="flex flex-1 gap-6 overflow-x-auto text-sm font-semibold">
+                {sections.map((s) => (
+                  <a key={s.id} href={`#${s.id}`} className="whitespace-nowrap py-2 hover:text-[var(--color-accent)]">{s.label}</a>
+                ))}
+              </nav>
+              <div className="flex items-center gap-3">
+                <ProductImage product={product} sizes="48px" className="h-12 w-12 rounded" />
+                <div className="text-sm leading-tight">
+                  <p className="font-semibold">{product.name}</p>
+                  <p className="text-xs text-[var(--color-muted)]">{packTitle(pack.bottles)} · {formatPrice(total)}</p>
+                </div>
+                <button onClick={add} className="btn btn-primary px-6 py-3">Add to cart</button>
+              </div>
+            </div>
+          </div>
+        </>
       )}
 
       <div className="mt-4 flex flex-wrap justify-center gap-1.5">
         {PAYMENT_METHODS.map((m) => (
-          <span key={m} className="rounded border border-[var(--color-line)] px-2 py-0.5 text-[10px] font-semibold text-[var(--color-muted)]">
+          <span key={m} className="rounded-sm border border-[var(--color-line)] bg-white px-2 py-0.5 text-[10px] font-semibold text-[var(--color-muted)]">
             {m}
           </span>
         ))}
-      </div>
-    </div>
-  );
-}
-
-export function InfoTabs({ product }: { product: Product }) {
-  const tabs = [
-    {
-      label: 'Benefits',
-      body: (
-        <ul className="space-y-2">
-          {product.benefits.map((b) => (
-            <li key={b} className="flex gap-2">
-              <Check className="mt-0.5 h-5 w-5 shrink-0 text-[var(--color-green)]" /> {b}*
-            </li>
-          ))}
-        </ul>
-      ),
-    },
-    { label: 'Description', body: <p>{product.description}</p> },
-    { label: "Who's It For", body: <p>{product.whoFor}</p> },
-    {
-      label: 'Ingredients',
-      body: (
-        <div>
-          <table className="w-full text-sm">
-            <tbody>
-              {product.ingredients.map((i) => (
-                <tr key={i.name} className="border-b border-[var(--color-line)]">
-                  <td className="py-2 font-semibold">{i.name}</td>
-                  <td className="py-2 text-right">{i.amount}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <p className="mt-3 text-sm text-[var(--color-muted)]">Other ingredients: {product.otherIngredients}</p>
-          <p className="mt-1 text-sm text-[var(--color-muted)]">How to take: {product.dosage}</p>
-        </div>
-      ),
-    },
-  ];
-  const [active, setActive] = useState(0);
-  const id = useId();
-  // WAI-ARIA tabs: arrow keys move between tabs.
-  const onKey = (e: React.KeyboardEvent) => {
-    const step = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
-    if (!step) return;
-    const next = (active + step + tabs.length) % tabs.length;
-    setActive(next);
-    document.getElementById(`${id}-tab-${next}`)?.focus();
-  };
-
-  return (
-    <div>
-      <div role="tablist" aria-label="Product details" onKeyDown={onKey} className="no-scrollbar flex gap-6 overflow-x-auto border-b border-[var(--color-line)]">
-        {tabs.map((t, i) => (
-          <button
-            key={t.label}
-            id={`${id}-tab-${i}`}
-            role="tab"
-            aria-selected={i === active}
-            aria-controls={`${id}-panel`}
-            tabIndex={i === active ? 0 : -1}
-            onClick={() => setActive(i)}
-            className={`-mb-px shrink-0 border-b-2 pb-3 text-sm font-bold ${
-              i === active ? 'border-[var(--color-navy)] text-[var(--color-navy)]' : 'border-transparent text-[var(--color-muted)]'
-            }`}
-          >
-            {t.label}
-          </button>
-        ))}
-      </div>
-      <div id={`${id}-panel`} role="tabpanel" aria-labelledby={`${id}-tab-${active}`} tabIndex={0} className="pt-5 text-[var(--color-ink)]">
-        {tabs[active].body}
       </div>
     </div>
   );

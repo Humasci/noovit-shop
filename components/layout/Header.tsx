@@ -97,7 +97,7 @@ export function Header({ trustBar, announcement }: { trustBar: string[]; announc
         </div>
       </div>
 
-      <header className="sticky top-0 z-40 border-b border-[var(--color-line)] bg-white/95 backdrop-blur">
+      <header className="sticky top-0 z-40 border-b border-[var(--color-line)] bg-[var(--color-canvas)]/95 backdrop-blur">
         <div className="container grid grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 py-4 md:px-6">
           <nav aria-label="Main" className="hidden items-center gap-6 whitespace-nowrap font-logo text-[15px] font-medium lg:flex">
             {NAV.filter((n) => !n.pets).map((n) => {
@@ -163,14 +163,14 @@ export function Header({ trustBar, announcement }: { trustBar: string[]; announc
             {onPets ? (
               <Link
                 href="/shop"
-                className="hidden items-center gap-1.5 rounded-full bg-[var(--color-opal)] px-4 py-1.5 font-logo text-[15px] font-medium text-[var(--color-navy)] transition-colors hover:bg-[var(--color-accent-light)] lg:flex"
+                className="hidden items-center gap-1.5 rounded bg-[var(--color-opal)] px-4 py-1.5 font-logo text-[15px] font-medium text-[var(--color-navy)] transition-colors hover:bg-[var(--color-accent-light)] lg:flex"
               >
                 <User className="h-4 w-4" /> Humans
               </Link>
             ) : (
               <Link
                 href="/pets"
-                className="hidden items-center gap-1.5 rounded-full bg-[var(--color-pets)] px-4 py-1.5 font-logo text-[15px] font-medium text-[var(--color-navy)] transition-colors hover:brightness-95 lg:flex"
+                className="hidden items-center gap-1.5 rounded bg-[var(--color-pets)] px-4 py-1.5 font-logo text-[15px] font-medium text-[var(--color-navy)] transition-colors hover:brightness-95 lg:flex"
               >
                 <PawPrint className="h-4 w-4" /> Pets
               </Link>
@@ -199,7 +199,7 @@ export function Header({ trustBar, announcement }: { trustBar: string[]; announc
                 {n.children && (
                   <div className="mt-2 flex flex-wrap gap-2">
                     {n.children.slice(1).map((c) => (
-                      <Link key={c.href} href={c.href} onClick={() => setMenuOpen(false)} className="rounded-full bg-[var(--color-soft)] px-3 py-1 text-sm font-medium">
+                      <Link key={c.href} href={c.href} onClick={() => setMenuOpen(false)} className="rounded bg-[var(--color-soft)] px-3 py-1 text-sm font-medium">
                         {c.name}
                       </Link>
                     ))}
@@ -210,7 +210,7 @@ export function Header({ trustBar, announcement }: { trustBar: string[]; announc
                     <p className="mt-4 font-sans text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--color-muted)]">Shop by goal</p>
                     <div className="mt-2 flex flex-wrap gap-2">
                       {GOAL_LINKS.map((c) => (
-                        <Link key={c.href} href={c.href} onClick={() => setMenuOpen(false)} className="rounded-full bg-[var(--color-soft)] px-3 py-1 text-sm font-medium">
+                        <Link key={c.href} href={c.href} onClick={() => setMenuOpen(false)} className="rounded bg-[var(--color-soft)] px-3 py-1 text-sm font-medium">
                           {c.name}
                         </Link>
                       ))}

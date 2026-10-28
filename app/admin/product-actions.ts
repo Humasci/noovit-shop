@@ -43,6 +43,7 @@ function validate(input: ProductInput): { data: ProductData; error?: string } {
   const d = input.data ?? ({} as ProductData);
   const data: ProductData = {
     name: text(d.name, 100),
+    ...(text(d.tagline, 60) ? { tagline: text(d.tagline, 60) } : {}),
     shortBenefit: text(d.shortBenefit, 160),
     description: text(d.description, 2000),
     whoFor: text(d.whoFor, 1000),

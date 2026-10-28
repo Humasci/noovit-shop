@@ -186,7 +186,7 @@ export function NewsletterSection() {
                 setEmail('');
               }}
             >
-              <div className="flex flex-1 items-center gap-2 rounded-full bg-white px-4 focus-within:ring-2 focus-within:ring-[var(--color-accent)]">
+              <div className="flex flex-1 items-center gap-2 rounded bg-white px-4 focus-within:ring-2 focus-within:ring-[var(--color-accent)]">
                 <Mail className="h-4 w-4 text-[var(--color-muted)]" />
                 <input
                   type="email"

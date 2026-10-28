@@ -33,7 +33,7 @@ export async function loadCatalog(): Promise<Product[]> {
 }
 
 // Cached for the storefront; admin saves call updateTag(CATALOG_TAG).
-export const getCatalog = unstable_cache(loadCatalog, ['catalog-v1'], { tags: [CATALOG_TAG] });
+export const getCatalog = unstable_cache(loadCatalog, ['catalog-v2'], { tags: [CATALOG_TAG] });
 
 // Everything a shopper may see (hidden products excluded).
 export async function getStoreProducts() {

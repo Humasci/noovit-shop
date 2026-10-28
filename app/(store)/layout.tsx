@@ -21,7 +21,7 @@ export default async function StoreLayout({ children }: Readonly<{ children: Rea
   };
   return (
     <StoreConfigProvider value={config}>
-      <a href="#main" className="sr-only-focusable fixed left-4 top-4 z-[70] rounded-full bg-[var(--color-navy)] px-5 py-3 font-semibold text-white">
+      <a href="#main" className="sr-only-focusable fixed left-4 top-4 z-[70] rounded bg-[var(--color-navy)] px-5 py-3 font-semibold text-white">
         Skip to content
       </a>
       <Header
