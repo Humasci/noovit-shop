@@ -28,6 +28,26 @@ A US LLC owned and run by a UK resident gets very different tax treatment on eac
   4. UK Ltd only, selling to US customers (then the label still needs a US address or phone number for adverse event reports)
 - Also ask: Self Assessment reporting, how you pay yourself (salary or dividends), and whether US sales via Supliful's fulfilment create a US trade or business.
 
+## Thresholds people mix up (none of these is a "no tax below £/$X" rule for profits)
+| Threshold | What it is | Applies to Noovit? |
+|---|---|---|
+| **US sales tax ~$100k or 200 orders per state** | When you must start **collecting sales tax from customers** in that state | Yes, per state; Stripe Tax tracks it |
+| **UK VAT £90k** | When a UK business must register for VAT | Only for UK sales (US sales through a US LLC aren't UK-VATable) |
+| **US income tax** | A one-owner LLC owned by a non-resident pays **no US income tax at any profit level** if it has no "US trade or business". If it does have one, tax applies **from the first dollar**. There is no $80–100k allowance | The question for the accountant |
+| **UK tax** | You're UK-resident, so the profit is taxed in the UK **at any amount**, either as corporation tax (if HMRC sees the LLC as a UK-run company) or on your personal return | Yes |
+
+## Plan: Noovit LLC pays six3 (owner's UK company) for marketing
+Common and legitimate, **if it's done at arm's length**:
+- **Written agreement** between Noovit LLC and six3 (scope: marketing, content, ads management), with a **market-rate fee** (e.g. a monthly retainer or % of ad spend, what six3 would charge a stranger).
+- **Real services, real invoices** from six3 to Noovit LLC, paid from the **LLC's bank account** to six3's account. No personal accounts in between.
+- **UK VAT:** marketing services from a UK business to a business customer outside the UK are generally **outside the scope of UK VAT**, so six3 invoices without VAT (the place of supply is the US). Note "reverse charge / outside scope" on the invoice. Confirm with the accountant.
+- **Form 5472:** every payment from Noovit LLC to six3 is a **reportable related-party transaction** on the yearly 5472. Keep a ledger.
+- **Transfer pricing:** UK rules generally exempt small and medium-sized businesses, and the US side matters little if the LLC has no US trade or business. The fee should still be defensible, so don't move 100% of the profit with a made-up fee.
+- **You** then pay yourself from six3 as normal (salary and dividends), taxed in the UK.
+- **Alternative to ask about:** **six3 owns Noovit LLC** (option 3 above). Then Noovit's profit belongs to six3 directly, with no need for a fee to move it. That said, it puts supplement risk under six3's ownership. The LLC still holds the liability, but think about whether that matters to six3's clients or a future sale.
+
+**Accountant questions:** (1) Is the LLC UK-resident under HMRC's "central management and control" test? (2) Is it better owned by me or by six3? (3) Is the marketing fee arrangement sound, and what's a defensible fee? (4) Do I need a US trade-or-business review? (5) How do I report it all on my Self Assessment and six3's accounts?
+
 ## UK owner: practical steps
 - **EIN without an SSN:** fax Form SS-4 to the IRS, or **phone the IRS international line (+1 267 941 1099)**, which can usually issue the EIN on the call. The "responsible party" is you, with your passport details; no ITIN is needed.
 - **Bank:** Mercury and Wise Business have accepted non-US owners of US LLCs. Policies change, so check them when you apply. You'll need the Articles, the EIN letter (CP 575), the Operating Agreement and your passport.
