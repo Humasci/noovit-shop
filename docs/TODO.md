@@ -1,0 +1,70 @@
+# Noovit — Open items
+
+_Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only you can do it. **Build** = Claude does it. Tick items off here; `PROGRESS.md` keeps the history._
+
+## 🔴 Before launch: owner
+**Products and claims**
+- [ ] **Real products (tomorrow):** pick the Supliful products. For each, send the Supplement Facts, capsule count and serving, your cost, Supliful SKU, and photos if you have them.
+- [ ] **"Made in the USA" wording:** confirm with Supliful which products qualify. If unsure, use "Manufactured in the USA from domestic and imported ingredients". It also appears on labels (`ORIGIN_CLAIM`) and feed images.
+- [ ] **Proof for "third-party tested" and "GMP certified":** get Supliful's GMP certificate and per-lot COAs, or tell me to remove the claims.
+- [ ] **Regulatory lawyer review of claims.** Covers iron, berberine, zinc/testosterone, "clinically studied strains", quiz symptom wording and the nattokinase guide.
+- [ ] FDA structure/function notification within 30 days of first sale.
+- [ ] Prop 65 check (heavy metals in botanicals/powders); product liability insurance.
+- [ ] Trademark attorney: clear **NOOVIT** (US/UK, classes 5 and 35) and the "+" product names. Note the existing **CALM+** application.
+- [ ] Print labels: replace `[Street address]` / `[City, ST ZIP]`; buy **GS1 UPC** barcodes.
+
+**Legal pages**
+- [ ] Full privacy policy, a Consumer Health Data policy (WA/NV) and a "Do Not Sell or Share" link.
+- [ ] Full Terms; Delivery & Returns (how to return, refund timing, renewals).
+
+**Accounts and settings**
+- [ ] Stripe: keys in Vercel, `npm run stripe:sync`, webhook, customer portal, Stripe Tax; then a real test-mode order.
+- [ ] Vercel env: `NEXT_PUBLIC_SITE_URL`, `RESEND_API_KEY` + `EMAIL_FROM` (verified domain), and social URLs (`NEXT_PUBLIC_INSTAGRAM_URL`, `NEXT_PUBLIC_TIKTOK_URL`, `NEXT_PUBLIC_FACEBOOK_URL`).
+- [ ] Supabase SQL editor: run `supabase/manual/2026-10-28-plus-names.sql`. Then Admin → Products → **Import launch catalog** (adds the bundles and the NAC draft).
+- [ ] Admin → Settings: support email, business address, welcome code (create **WELCOME10** first), GA4/Meta/TikTok IDs.
+- [ ] Admin → Products: map each **Supplier SKU** to its Supliful product.
+- [ ] **Switch "Show placeholder trust content" to `off`** once real reviews and advisors replace the placeholders.
+
+**Trust**
+- [ ] Recruit a **registered dietitian (RDN)** as medical reviewer and advisor: name, credentials, photo, consent, paid-relationship disclosure.
+- [ ] Collect real reviews (the review emails are automatic). Set up **Trustpilot** and **Google Customer Reviews**.
+
+## 🟠 Before launch: build
+- [ ] **Product page redesign** in the Absorption Company style (`docs/DESIGN_DIRECTION.md`).
+- [ ] Align the catalog with the real Supliful products: names, formulas, doses, prices, Supplement Facts with %DV and the iron warning, capsule counts.
+- [ ] **COA / lab results** block on product pages (once documents arrive).
+- [ ] Google Merchant Center verification meta tag + Search Console; Google Customer Reviews script on `/checkout/success`.
+- [ ] Re-run the full audit after real products: Lighthouse on Vercel, links, claims, US spelling pass.
+- [ ] Creatine "Adults 18+" notice on the product page and cards.
+
+## 🟡 Content and SEO
+- [ ] **Owner:** deep research briefs (template in `CONTENT_GUIDELINES.md` §11) for magnesium, ashwagandha, probiotics, creatine, NAC and lion's mane.
+- [ ] **Build:** a guide per ingredient, plus "X vs Y" comparisons and "Can I take X with Y?" pages, following `CONTENT_GUIDELINES.md`.
+- [ ] **Build:** add `relatedProducts` and goals to each guide; 1200×630 social image; shipping/returns + breadcrumb schema on product pages.
+- [ ] **Owner:** Google Merchant Center account → free listings; later a paid Shopping test on 3–5 proven products.
+- [ ] **Owner:** decide what to do with nattokinase (hold until lawyer and dietitian review; a guide only for now).
+
+## 🟢 Social (plan: `docs/SOCIAL_PLAN.md`)
+- [ ] **Owner:** Buffer account, connect TikTok → Instagram → YouTube → Pinterest → X; Buffer API key in Vercel.
+- [ ] **Owner:** decide the presenter. You on camera (recommended for key videos) plus the AI avatar for volume, labelled as AI.
+- [ ] **Owner:** add the compliance-check skill from your other projects to this repo (`.claude/skills/`).
+- [ ] **Build:** content packs, compliance check, admin approval queue, Buffer publishing, UTM tracking, performance dashboard.
+
+## 🔵 Growth and conversion (after launch)
+- [ ] **FrontrowMD** demo and application once products and labels are final (Clinicians' Choice badge + clinician reviews).
+- [ ] **HSA/FSA payments** via Flex or Truemed (Absorption Company and Naomi both show it).
+- [ ] Newsletter pop-up asks the **goal first**, then the email.
+- [ ] **Build-your-stack** (multi-buy discount) and a **rewards** programme.
+- [ ] Announcement bar with proof points (evidence-graded · tested · free shipping).
+- [ ] "+" drawn as the orange mosaic cross in product names and labels (mock-up first).
+- [ ] **Daily pack** line with OK Capsule (quotes, API docs, branded sample).
+- [ ] Automatic Supliful orders via a hidden Shopify backend (when manual orders reach about 10–15 a day).
+- [ ] Amazon (needs lab testing via an approved lab), then TikTok Shop (lab reports ≤180 days); eBay is low priority.
+- [ ] Bundles: maybe a 4th, **Women 40+** (Menopause + Magnesium + D3&K2).
+- [ ] Pets line (3 dog chews via a 3PL), UK launch, NAC product (recheck FDA status).
+
+## ⚪ Tech debt and nice-to-haves (from the audit)
+- [ ] Mobile shop filters as a bottom sheet; quiz steps in the URL (back button).
+- [ ] Replace or self-host the Unsplash photos; real product photography; feed images without text overlays.
+- [ ] Admin tools: privacy export/delete, disputes and failed renewals view.
+- [ ] Re-measure mobile Lighthouse on production.
