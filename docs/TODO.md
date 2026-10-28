@@ -6,7 +6,9 @@ _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only yo
 **🛑 Pre-launch mode is ON (28 Oct).** The public sees a "Coming soon" page with a waitlist; every response says `noindex`; robots.txt has no sitemap. You see the full store while signed in to Admin, and Admin → Overview shows a 30-day preview link to share. Waitlist sign-ups appear in Admin → Subscribers (source `launch-waitlist`).
 
 **Company first** (full plan: `docs/COMPANY_SETUP.md`)
-- [ ] Decide: Wyoming LLC (good if you live outside the US) vs home-state LLC (if you live in a US state). Separate LLC for Noovit, not an existing one.
+- [x] Decided: **new Wyoming LLC** for Noovit (owner is UK resident), formed via **Wyoming Agents** ($153 incl. state fee + year-1 agent; ask them to sign as organizer; add the mail-scanning suite, $49+/yr, for the label address).
+- [ ] **First: 1-hour call with a UK accountant who knows US LLCs.** HMRC usually treats a US LLC as a company, and one run from the UK can be UK tax-resident. Choose: LLC owned personally, LLC taxed as a C-corp, or a UK Ltd owning the LLC (see `docs/COMPANY_SETUP.md`).
+- [ ] EIN via the IRS international line (+1 267 941 1099) or an SS-4 fax; bank (Mercury or Wise Business); check that Stripe US accepts a UK-resident representative without an SSN.
 - [ ] Check "Noovit LLC" on the Wyoming SOS; registered agent with a mailing address; file Articles; Operating Agreement; EIN.
 - [ ] Accountant: non-US owner → Form 5472 + pro forma 1120 every year ($25k penalty if missed); US tax and home-country tax position.
 - [ ] Adverse-event procedure (serious events to FDA within 15 business days) and US contact on the label.

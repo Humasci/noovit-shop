@@ -8,6 +8,32 @@ _28 Oct 2026. A plan, not legal or tax advice. Confirm the tax points with a cro
    - **In a US state:** usually form the LLC **in your home state**. A Wyoming LLC run from another state normally has to register there as a "foreign LLC" anyway, so you pay twice.
 2. **New LLC or an existing one?** Use a **separate LLC for Noovit**, even if you already have a Wyoming LLC for other projects. Supplements carry product-liability risk, and a separate company keeps that risk away from your other businesses.
 
+## ★ Decisions so far (28 Oct)
+- Owner lives in the **UK** → Wyoming fits. Noovit gets a **new LLC**.
+- Formation through **Wyoming Agents** (wyomingagents.com, Wyoming Registered Agent Services LLC, 32 N Gould St, Sheridan WY):
+  - **$153 total**: $103 state fee, plus year 1 of the $25/yr registered agent, compliance reminders and scanning of state notices. Filing takes 3–5 business days.
+  - Ask them to **sign as organizer**, which keeps your name off the public record.
+  - Add the **mail scanning plan / unique suite** (from $49/yr). That gives the address for the label ("Distributed by Noovit LLC…"), CAN-SPAM emails and the bank. Their site says the address can be used as the mailing and principal address; confirm in writing that it can go on product labels.
+  - **Skip their $100 renewal service.** The Wyoming annual report ($60 minimum) takes about 5 minutes online each year.
+  - Their site doesn't mention EIN help or an operating agreement. Do both yourself (below).
+
+## ⚠️ UK owner: settle the tax structure BEFORE filing
+A US LLC owned and run by a UK resident gets very different tax treatment on each side:
+- **US:** a single-member LLC is "disregarded". With no US trade or business, there's usually no US income tax, but the **Form 5472 + pro forma 1120 filing is due every year** ($25,000 penalty if missed).
+- **UK:** HMRC generally treats a US LLC as a **company** (opaque), not see-through. A company **managed and controlled from the UK** (you, running it from home) can be **UK tax-resident**, which means **UK corporation tax** (19–25%) on its profits, plus registering it with HMRC. The mismatch between the US and UK treatment can cause double tax or lost treaty relief.
+- **Options to ask a UK accountant with US experience** (a one-hour consult is worth it):
+  1. Wyoming LLC owned by you personally (simplest on the US side; the UK position is the question)
+  2. Wyoming LLC **elected to be taxed as a C-corp** (Form 8832)
+  3. **UK Ltd owning the Wyoming LLC.** UK corporation tax on the profits; clean for HMRC; common for UK founders
+  4. UK Ltd only, selling to US customers (then the label still needs a US address or phone number for adverse event reports)
+- Also ask: Self Assessment reporting, how you pay yourself (salary or dividends), and whether US sales via Supliful's fulfilment create a US trade or business.
+
+## UK owner: practical steps
+- **EIN without an SSN:** fax Form SS-4 to the IRS, or **phone the IRS international line (+1 267 941 1099)**, which can usually issue the EIN on the call. The "responsible party" is you, with your passport details; no ITIN is needed.
+- **Bank:** Mercury and Wise Business have accepted non-US owners of US LLCs. Policies change, so check them when you apply. You'll need the Articles, the EIN letter (CP 575), the Operating Agreement and your passport.
+- **Stripe:** check whether Stripe US accepts your LLC with a UK-resident representative without an SSN. If not, the alternatives are Stripe Atlas (a Delaware company) or Stripe UK through a UK Ltd (option 3 or 4 above).
+- **Operating Agreement:** a single-member template is fine (many are free). Keep it with the bank documents.
+
 ## 1. Why Wyoming (for a non-US owner)
 - **Cheap:** about $100 to file, and the annual report is $60 minimum (based on assets in Wyoming).
 - **Private:** members aren't listed publicly.
