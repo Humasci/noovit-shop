@@ -36,6 +36,13 @@ A US LLC owned and run by a UK resident gets very different tax treatment on eac
 | **US income tax** | A one-owner LLC owned by a non-resident pays **no US income tax at any profit level** if it has no "US trade or business". If it does have one, tax applies **from the first dollar**. There is no $80–100k allowance | The question for the accountant |
 | **UK tax** | You're UK-resident, so the profit is taxed in the UK **at any amount**, either as corporation tax (if HMRC sees the LLC as a UK-run company) or on your personal return | Yes |
 
+## What "US trade or business" means (and why it's usually zero US tax for us)
+- **The test:** the US taxes a foreign owner's business profits only if the business has a **"trade or business in the US"**: regular, continuous activity carried out *in* the US by you, employees or agents. Under the **US–UK tax treaty**, the US can tax business profits only if there's a **"permanent establishment"**: a fixed place of business in the US (office, shop, your own warehouse or staff) or a US agent who habitually signs contracts for you.
+- **Usually does NOT count:** selling online to US customers from the UK; using **independent** providers (Supliful making and shipping orders, Stripe, Vercel servers, a registered agent address, a US bank account); paying independent US freelancers, affiliates or a dietitian who don't sign contracts for Noovit. The treaty also excludes facilities used *only to store or deliver* goods.
+- **Could change it later:** hiring staff or a manager in the US, renting an office, or a US person who negotiates and signs deals for Noovit. Moving to our own stock in a 3PL is usually still fine under the treaty's storage exclusion, but review it at the time.
+- **Still required either way:** Form 5472 + pro forma 1120 every year; possibly Form 8833 to claim treaty benefits. HMRC's "LLC = company" view can affect treaty access, which is another accountant question.
+- **State taxes are separate:** Wyoming has no income tax, but a few states charge **gross-receipts or business taxes** once your sales there pass a threshold (e.g. Washington's B&O tax), even for remote sellers. Stripe Tax covers sales tax, not these; review once sales grow.
+
 ## Plan: Noovit LLC pays six3 (owner's UK company) for marketing
 Common and legitimate, **if it's done at arm's length**:
 - **Written agreement** between Noovit LLC and six3 (scope: marketing, content, ads management), with a **market-rate fee** (e.g. a monthly retainer or % of ad spend, what six3 would charge a stranger).
