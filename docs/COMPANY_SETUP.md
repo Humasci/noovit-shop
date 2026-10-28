@@ -78,13 +78,21 @@ _Privacy only keeps your name off **public** records. It doesn't change who know
 ## Budget path (no paid accountant yet)
 1. **Ask six3's existing accountant first.** If six3 is a UK Ltd, it already pays an accountant for its accounts and CT600. Ask them to add the five questions above as a small add-on; it's often cheap or folded into the yearly fee.
 2. **Use free first calls.** Many UK firms, and firms that specialise in US LLCs for non-residents, offer a free 15–30 minute call. Send the five questions in advance so one short call answers them.
-3. **Form the LLC now in your own name.** It's cheap, and the US side is clear. Get the UK answer **before your first UK tax return** (Self Assessment is due 31 January after the tax year ends). While you're reinvesting there will be little or no profit, so there's little at stake at first. Moving ownership to six3 later is simple while the LLC is worth almost nothing.
+3. **Form the LLC in your own name.** It's cheap, and the US side is clear. Get the UK answer within about 3 months of the first sales (see the deadlines below). While you're reinvesting there will be little or no profit, so there's little at stake at first. Moving ownership to six3 later is simple while the LLC is worth almost nothing.
 4. **Do-it-yourself musts (free or nearly free):**
    - **Form 5472 + pro forma 1120 by 15 April every year.** Plenty of founders file it themselves from the IRS instructions (by fax or post), or use a low-cost filing service. Calendar it now; this is the one with the $25k penalty.
    - **Bookkeeping from day one** in free software (e.g. Wave), using the LLC bank account only. Admin → Reports exports orders and revenue as CSV.
    - **Signed six3 service agreement + monthly invoices**, kept with the books.
    - **Never pay yourself directly from the LLC account.** Money goes LLC → six3 (invoice) → you.
 5. **Free reading:** HMRC's International Manual on US LLCs (search "INTM180030"), and the IRS Form 5472 instructions.
+
+## Key deadlines (if formed Nov–Dec 2026)
+| Date | What | Notes |
+|---|---|---|
+| **15 Apr 2027** | **Form 5472 + pro forma 1120 for 2026** | Due even with no sales: paying the formation fee into or for the LLC counts as a reportable transaction. **Tip:** if launch isn't before January, forming on or after **1 Jan 2027** avoids a near-empty 2026 filing (the first would then be due 15 Apr 2028). |
+| **~3 months after the first sale** | **Only if HMRC treats the LLC as a UK-resident company:** tell HMRC it has started trading (corporation tax registration) | This is the one UK deadline that comes soon after launch, so get the accountant's answer by then. |
+| **31 Jan 2028** | **Self Assessment for 2026/27** (UK tax year 6 Apr 2026 – 5 Apr 2027) | Covers any Noovit income from launch to 5 April 2027. The 31 Jan **2027** deadline is for 2025/26, before Noovit existed. |
+| **Every anniversary** | Wyoming annual report ($60) | Missing it gets the LLC dissolved. |
 
 ## Stock from a minimum-order supplier (e.g. Makers Nutrition) later
 - Buying stock is **not a cost when you pay for it**. It's an asset ("inventory") until sold, and becomes a cost (cost of goods sold) **as each unit sells**.
