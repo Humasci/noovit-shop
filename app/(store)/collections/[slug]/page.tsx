@@ -56,7 +56,7 @@ export default async function CollectionPage({ params }: { params: Promise<{ slu
           {items.length === 0 ? (
             <p className="text-center text-[var(--color-muted)]">No products here yet.</p>
           ) : (
-            <div className="grid grid-cols-2 gap-x-3 gap-y-6 sm:gap-x-5 sm:gap-y-10 lg:grid-cols-4">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-x-5 sm:gap-y-10 lg:grid-cols-4">
               {items.map((p) => (
                 <ProductCard key={p.slug} product={p} />
               ))}

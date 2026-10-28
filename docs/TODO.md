@@ -4,7 +4,7 @@ _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only yo
 
 ## 🔴 Before launch: owner
 **⏳ Next time you're at a computer (5 min)**
-- [ ] **Supabase → SQL Editor:** paste and run `supabase/manual/2026-10-28-catalog-update.sql` (replaces the earlier plus-names file). It applies the "+" names and headlines, the confirmed Supliful formulas (magnesium glycinate 275 mg, KSM-66 ashwagandha, lion's mane, creatine) and hides Berberine Complex. Safe to re-run; supplier SKUs are kept. (Or reconnect the Supabase connector and Claude runs it.) **Until this runs, the live shop shows the old names** ("Collagen Complex", "Magnesium Complex").
+- [ ] **Supabase → SQL Editor:** paste and run `supabase/manual/2026-10-28-catalog-update.sql` (replaces the earlier plus-names file). It applies the "+" names and headlines, the confirmed Supliful formulas (magnesium glycinate 275 mg, KSM-66 ashwagandha, lion's mane, creatine) and hides Berberine Complex. It also sets the **new prices** (`docs/PRICE_LIST.md`). Safe to re-run; supplier SKUs are kept. **Then Admin → Products → Sync to Stripe** so checkout charges the new prices. (Or reconnect the Supabase connector and Claude runs it.) **Until this runs, the live shop shows the old names** ("Collagen Complex", "Magnesium Complex").
 - [ ] **Admin → Products → Import launch catalog** (adds the 3 bundles and the NAC and CoQ10 drafts), then save any product once (refreshes the cache) or redeploy.
 
 **Products and claims**
@@ -44,6 +44,7 @@ _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only yo
 ## 🟣 Direction (28 Oct): "nootropic" minimal aesthetic. The catalog stays as is.
 - [ ] **Build:** minimal redesign in the Innerbody Labs / Momentous style: cleaner header (no dark trust bar), lighter type, fewer boxes, diet pills, ingredient accordion with doses, a clinical-research module with a chart, a certification row.
 - [ ] **Build:** a cleaner label option (white label, bigger name, thin colour accent, optional amber bottle); mock it up at Google Shopping thumbnail size for the owner.
+- [x] **Photo mockups (28 Oct):** single capsule/softgel products now use Supliful's real blank-bottle photo with our label wrapped on (`lib/labels/photo.ts`, `assets/mockups/`). **Still drawn:** bundles and powder tubs (creatine, Mushroom Clarity+). **Build next:** the same for tubs and bundles using Supliful's tub and multi-bottle photos.
 - [ ] **Build:** Google-style feed titles (brand + product + key spec + count).
 - [ ] **Owner:** confirm Supliful costs and shipping per product. Turmeric is $11.05 all-in ($8 with Pro); berberine is $10.25 all-in. See `docs/PRICING_NOTES.md` and `docs/pricing/noovit-pricing.xlsx`. Decide the price points (e.g. turmeric $36 / $30 subscribed, berberine $36 / $32).
 - [ ] **Owner: ask Supliful for berberine's Supplement Facts/COA with mg of berberine per serving.** Their ingredient list suggests only ~146 mg a day (studies use 900–1,500 mg). If that's right, source a 500 mg berberine HCl elsewhere. See `docs/SHOPPING_ANALYSIS_BERBERINE.md`.

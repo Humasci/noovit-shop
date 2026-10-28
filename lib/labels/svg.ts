@@ -9,6 +9,9 @@ import { CROSS_GAP, MARK_CROSS, crossTile } from '@/lib/brand/cross';
 
 export type FontMode = 'web' | 'print';
 
+// Bump when the photo mockup (lib/labels/photo.ts) changes, so cached product image URLs refresh.
+export const MOCKUP_VERSION = 'photo-v1';
+
 const NAVY = '#14213d';
 const INK = '#4b5563';
 export const ORANGE = '#ff5f00';
@@ -118,7 +121,7 @@ export function wordmark(cx: number, y: number, size: number, mode: FontMode, co
 // ---------- Front panel (220 × 225 units = 2.2" × 2.25") ----------
 
 export const FRONT = { w: 220, h: 225 };
-const BAND = 158; // colour block above, white band below; identity and net quantity sit in the bottom 30%
+export const BAND = 158; // colour block above, white band below; identity and net quantity sit in the bottom 30%
 
 // Darker shade of the product colour for small text on white.
 function shade(hex: string, k = 0.35) {
@@ -470,7 +473,7 @@ function bottle(p: Product, mode: FontMode, uid: string, pattern: LabelPattern =
 }
 
 // Cream scene with a soft floor line.
-function scene(uid: string) {
+export function scene(uid: string) {
   return `<defs><linearGradient id="bg-${uid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fbf7f2"/><stop offset="0.8" stop-color="#f3ece3"/><stop offset="0.8" stop-color="#ebe2d6"/><stop offset="1" stop-color="#f2ebe2"/></linearGradient></defs><rect width="400" height="400" fill="url(#bg-${uid})"/>`;
 }
 

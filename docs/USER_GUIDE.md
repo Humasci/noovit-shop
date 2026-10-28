@@ -321,9 +321,9 @@ Evidence-based ingredient pages live at `noovit.com/guides/<ingredient>`, for ex
 
 ### Bundles
 Three bundles are in the catalog:
-- **Sleep & Calm Stack**, $59
-- **Gut & Immunity Reset**, $79
-- **Joint Support Trio**, $95
+- **Sleep & Calm Stack**, $55
+- **Gut & Immunity Reset**, $74
+- **Joint Support Trio**, $89
 
 Each is bought as one item, with $5 off on subscription, and its picture shows the real bottles. In Fulfilment, each bundle expands into its component products with their supplier SKUs. To add them to the live store: Admin → Products → **Import launch catalog**.
 

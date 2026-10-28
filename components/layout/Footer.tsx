@@ -77,10 +77,8 @@ export function Footer() {
     <footer className="bg-[var(--color-navy)] text-white">
       <div className="container grid gap-10 px-6 py-14 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
         <div>
-          <Link href="/" className="text-[2.25rem]">
-            <Logo />
-          </Link>
-          <p className="mt-3 max-w-xs text-sm text-white/70">Clean, science-driven supplements for everyday health.</p>
+          {/* One logo only: the giant wordmark below. */}
+          <p className="max-w-xs text-sm text-white/70">Clean, science-driven supplements for everyday health.</p>
           <SocialLinks className="mt-5 text-white/80" />
         </div>
         {COLUMNS.map((col) => (

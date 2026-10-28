@@ -46,3 +46,32 @@ update products set data = data || '{"description":"1,000 mg of organic lion''s 
 
 -- Part 3: hide Berberine Complex until a 500 mg berberine HCl source is confirmed (Supliful's is ~146 mg/day)
 update products set status = 'hidden', updated_at = now() where slug = 'berberine-complex';
+
+-- Part 4: new prices (one-time per bottle; subscribe and 3-pack are $5 less, 6-pack $10 less). Then run the Stripe sync (Admin -> Products -> Sync to Stripe).
+update products set data = jsonb_set(data, '{basePrice}', to_jsonb(v.price)), updated_at = now()
+from (values
+  ('magnesium-complex', 32),
+  ('ashwagandha', 32),
+  ('lions-mane', 40),
+  ('turmeric-complex', 36),
+  ('creatine', 34),
+  ('coq10', 32),
+  ('probiotic-complex', 38),
+  ('glucosamine-complex', 36),
+  ('collagen-complex', 34),
+  ('menopause-complex', 38),
+  ('zinc', 22),
+  ('iron-complex', 24),
+  ('vitamin-d3-k2', 26),
+  ('biotin-complex', 28),
+  ('niacinamide', 32),
+  ('mushroom-blend-powder', 42),
+  ('l-theanine', 26),
+  ('nac', 28),
+  ('berberine-complex', 36),
+  ('odorless-garlic', 26),
+  ('sleep-calm-stack', 55),
+  ('gut-immunity-reset', 74),
+  ('joint-support-trio', 89)
+) as v(slug, price)
+where products.slug = v.slug;

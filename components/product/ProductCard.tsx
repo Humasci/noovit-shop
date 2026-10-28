@@ -32,9 +32,10 @@ export function ProductCard({ product }: { product: Product }) {
   const off = Math.round((1 - from / product.basePrice) * 100);
 
   return (
-    <div className="group flex flex-col overflow-hidden rounded-lg border border-[var(--color-line)] bg-white">
-      <Link href={`/products/${product.slug}`} className="relative block overflow-hidden bg-[var(--color-soft)]">
-        <ProductImage product={product} className="aspect-square w-full transition-transform duration-500 group-hover:scale-105" />
+    // Phones: one product per row (image left, details right). From sm up: the classic vertical card.
+    <div className="group flex flex-row overflow-hidden rounded-lg border border-[var(--color-line)] bg-white sm:flex-col">
+      <Link href={`/products/${product.slug}`} className="relative block w-[42%] shrink-0 overflow-hidden bg-[var(--color-soft)] sm:w-full">
+        <ProductImage product={product} className="h-full w-full transition-transform duration-500 group-hover:scale-105 sm:aspect-square sm:h-auto" />
         <span aria-hidden className="pointer-events-none absolute right-3 top-3">
           {CORNER.map(([c, r, o], k) => (
             <i
@@ -55,7 +56,7 @@ export function ProductCard({ product }: { product: Product }) {
         </span>
       </Link>
 
-      <div className="flex flex-1 flex-col p-3 sm:p-4">
+      <div className="flex min-w-0 flex-1 flex-col p-3 sm:p-4">
         {product.reviewCount > 0 && (
           <div className="mb-1 flex items-center gap-2">
             <Stars rating={product.rating} size={13} />

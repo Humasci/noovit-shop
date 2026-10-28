@@ -150,7 +150,7 @@ export function ShopBrowser({
                 <h2 className="mb-5 text-2xl md:mb-8 md:text-3xl">
                   {g.label} <span className="text-[var(--color-muted)]">({g.items.length})</span>
                 </h2>
-                <div className="grid grid-cols-2 gap-x-3 gap-y-6 sm:gap-x-5 sm:gap-y-10 lg:grid-cols-4">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-x-5 sm:gap-y-10 lg:grid-cols-4">
                   {g.items.map((p) => (
                     <ProductCard key={p.id} product={p} />
                   ))}

@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { Product } from '@/types';
-import { bottleSvg, BottleVariant } from '@/lib/labels/svg';
+import { bottleSvg, BottleVariant, MOCKUP_VERSION } from '@/lib/labels/svg';
 
 export type ImageVariant = BottleVariant;
 
@@ -12,9 +12,9 @@ function hash(s: string) {
 }
 
 export const productImageSrc = (product: Product, variant: ImageVariant = 'front') =>
-  `/product-image/${product.slug}/${variant}-${hash(bottleSvg(product, variant))}.png`;
+  `/product-image/${product.slug}/${variant}-${hash(bottleSvg(product, variant) + MOCKUP_VERSION)}.png`;
 
-const LABELS: Record<ImageVariant, string> = { front: 'bottle', duo: 'two bottles', facts: 'supplement facts' };
+const LABELS: Record<ImageVariant, string> = { front: 'bottle', duo: 'label close-up', facts: 'supplement facts' };
 
 // Uploaded photos win for the main image; otherwise a branded bottle drawn from the label design (lib/labels/svg.ts),
 // served as a resized, cached image. `inline` draws the SVG in place instead (the admin editor's live preview).

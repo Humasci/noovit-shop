@@ -50,7 +50,7 @@ export default async function GoalPage({ params }: { params: Promise<{ slug: str
           {items.length === 0 ? (
             <p className="text-center text-[var(--color-muted)]">New products for this goal are on the way.</p>
           ) : (
-            <div className="grid grid-cols-2 gap-x-3 gap-y-6 sm:gap-x-5 sm:gap-y-10 lg:grid-cols-4">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-x-5 sm:gap-y-10 lg:grid-cols-4">
               {items.map((p) => (
                 <ProductCard key={p.id} product={p} />
               ))}

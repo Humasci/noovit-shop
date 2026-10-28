@@ -234,7 +234,7 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
         <section className="mt-12">
           <h2 className="text-2xl">From our range</h2>
           {related.length > 0 && (
-            <div className="mt-5 grid grid-cols-2 gap-3 sm:gap-5">
+            <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-5">
               {related.map((p) => <ProductCard key={p.id} product={p} />)}
             </div>
           )}
