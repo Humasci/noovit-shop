@@ -99,7 +99,7 @@ _Privacy only keeps your name off **public** records. It doesn't change who know
 - **Avoid taking money out personally.** Any money moving between you and the LLC (paying costs for it, or taking cash out) is a related-party transaction for the 5472, and how the UK taxes withdrawals depends on the accountant's answer. Keep it simple: put money in only when needed, and take nothing out until six3 and the fee agreement are in place.
 
 ## Barbill LLC (formed end of January 2026): owner's other company
-_Assumes Barbill is also a Wyoming single-member LLC on a calendar tax year. Confirm the state._
+_Barbill is a Wyoming single-member LLC (confirmed), calendar tax year._
 | When | What |
 |---|---|
 | **~1 Jan 2027** (the first day of its anniversary month) | **Wyoming annual report ($60 minimum)** + registered agent renewal. Due soon. A report left 60 days overdue leads to dissolution |
