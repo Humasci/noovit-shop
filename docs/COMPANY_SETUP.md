@@ -75,6 +75,17 @@ _Privacy only keeps your name off **public** records. It doesn't change who know
 - **US preparer (CPA or Enrolled Agent) for Form 5472 + pro forma 1120** each year, typically a few hundred dollars. Check credentials. The 5472 is due **April 15** for a calendar year, and an extension (Form 7004) **does not** extend the 5472. Even putting money into the LLC (a capital contribution) is a reportable transaction, so it's due even in a year with no sales.
 - Some firms do both; one firm for both sides is ideal.
 
+## Budget path (no paid accountant yet)
+1. **Ask six3's existing accountant first.** If six3 is a UK Ltd, it already pays an accountant for its accounts and CT600. Ask them to add the five questions above as a small add-on; it's often cheap or folded into the yearly fee.
+2. **Use free first calls.** Many UK firms, and firms that specialise in US LLCs for non-residents, offer a free 15–30 minute call. Send the five questions in advance so one short call answers them.
+3. **Form the LLC now in your own name.** It's cheap, and the US side is clear. Get the UK answer **before your first UK tax return** (Self Assessment is due 31 January after the tax year ends). While you're reinvesting there will be little or no profit, so there's little at stake at first. Moving ownership to six3 later is simple while the LLC is worth almost nothing.
+4. **Do-it-yourself musts (free or nearly free):**
+   - **Form 5472 + pro forma 1120 by 15 April every year.** Plenty of founders file it themselves from the IRS instructions (by fax or post), or use a low-cost filing service. Calendar it now; this is the one with the $25k penalty.
+   - **Bookkeeping from day one** in free software (e.g. Wave), using the LLC bank account only. Admin → Reports exports orders and revenue as CSV.
+   - **Signed six3 service agreement + monthly invoices**, kept with the books.
+   - **Never pay yourself directly from the LLC account.** Money goes LLC → six3 (invoice) → you.
+5. **Free reading:** HMRC's International Manual on US LLCs (search "INTM180030"), and the IRS Form 5472 instructions.
+
 ## Stock from a minimum-order supplier (e.g. Makers Nutrition) later
 - Buying stock is **not a cost when you pay for it**. It's an asset ("inventory") until sold, and becomes a cost (cost of goods sold) **as each unit sells**.
 - Example: buy 1,000 bottles at $4 ($4,000) in November and sell 300 by year-end → **$1,200** counts as this year's cost; **$2,800** of stock carries into next year.

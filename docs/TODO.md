@@ -7,7 +7,7 @@ _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only yo
 
 **Company first** (full plan: `docs/COMPANY_SETUP.md`)
 - [x] Decided: **new Wyoming LLC** for Noovit (owner is UK resident), formed via **Wyoming Agents** ($153 incl. state fee + year-1 agent; ask them to sign as organizer; add the mail-scanning suite, $49+/yr, for the label address).
-- [ ] **First: 1-hour call with a UK accountant who knows US LLCs.** HMRC usually treats a US LLC as a company, and one run from the UK can be UK tax-resident. Choose: LLC owned personally, LLC taxed as a C-corp, or a UK Ltd owning the LLC (see `docs/COMPANY_SETUP.md`).
+- [ ] **Accountant (budget path in `docs/COMPANY_SETUP.md`):** ask six3's accountant or use a free first call. Get the answer **before the first UK tax return**; forming the LLC doesn't need to wait. HMRC usually treats a US LLC as a company, and one run from the UK can be UK tax-resident. Choose: LLC owned personally, LLC taxed as a C-corp, or a UK Ltd owning the LLC (see `docs/COMPANY_SETUP.md`).
 - [ ] **New EIN for Noovit LLC** once the LLC is filed. An EIN belongs to one entity, so the existing one (other company) can't be reused. Use the IRS international line (+1 267 941 1099) or an SS-4 fax; bank (Mercury or Wise Business); check that Stripe US accepts a UK-resident representative without an SSN.
 - [ ] Check "Noovit LLC" on the Wyoming SOS; registered agent with a mailing address; file Articles; Operating Agreement; EIN.
 - [ ] Accountant: non-US owner → Form 5472 + pro forma 1120 every year ($25k penalty if missed); US tax and home-country tax position.
