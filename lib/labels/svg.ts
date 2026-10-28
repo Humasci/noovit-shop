@@ -243,6 +243,43 @@ export function frontPanel(p: Product, mode: FontMode, bleed = 0, pattern: Label
 
 // ---------- Supplement Facts (draft, from the catalog; replace with the supplier's panel) ----------
 
+// FDA reference Daily Values (21 CFR 101.9(c), adults and children 4+) for nutrients we use.
+// Botanicals and compounds without a DV keep the † mark. Amounts are read from the label text.
+const DAILY_VALUES: [RegExp, number, 'mg' | 'mcg'][] = [
+  [/vitamin a\b/i, 900, 'mcg'],
+  [/vitamin e\b/i, 15, 'mg'],
+  [/vitamin d/i, 20, 'mcg'],
+  [/vitamin k/i, 120, 'mcg'],
+  [/vitamin c/i, 90, 'mg'],
+  [/vitamin b12|cobalamin/i, 2.4, 'mcg'],
+  [/vitamin b6|pyridox/i, 1.7, 'mg'],
+  [/folate|folic/i, 400, 'mcg'],
+  [/biotin/i, 30, 'mcg'],
+  [/zinc/i, 11, 'mg'],
+  [/iron/i, 18, 'mg'],
+  [/copper/i, 0.9, 'mg'],
+  [/selenium/i, 55, 'mcg'],
+  [/chromium/i, 35, 'mcg'],
+];
+
+// "1000 IU" vitamin D → "25 mcg (1,000 IU)" as required since 2020; %DV where a Daily Value exists.
+export function factsRow(name: string, amount: string): { amount: string; dv: string } {
+  const m = amount.match(/([\d.,]+)\s*(mg|mcg|µg|IU)\b/i);
+  if (!m) return { amount, dv: '†' };
+  let value = Number(m[1].replace(/,/g, ''));
+  let unit = m[2].toLowerCase().replace('µg', 'mcg');
+  let shown = amount;
+  if (unit === 'iu' && /vitamin d/i.test(name)) {
+    value = value / 40;
+    unit = 'mcg';
+    shown = `${value} mcg (${Number(m[1].replace(/,/g, '')).toLocaleString('en-US')} IU)`;
+  }
+  const dv = DAILY_VALUES.find(([re]) => re.test(name));
+  if (!dv || unit === 'iu') return { amount: shown, dv: '†' };
+  const inUnit = unit === dv[2] ? value : unit === 'mg' ? value * 1000 : value / 1000;
+  return { amount: shown, dv: `${Math.round((inUnit / dv[1]) * 100)}%` };
+}
+
 export function factsPanel(p: Product, mode: FontMode, w = 190) {
   const { perServing, servingsPerContainer } = labelCounts(p);
   const unit = UNITS[p.form][perServing === 1 ? 0 : 1];
@@ -261,19 +298,24 @@ export function factsPanel(p: Product, mode: FontMode, w = 190) {
   out.push(`<text x="0" y="${y}" font-size="7" font-weight="700" fill="#000" ${f}>Amount Per Serving</text><text x="${w}" y="${y}" text-anchor="end" font-size="7" font-weight="700" fill="#000" ${f}>% Daily Value</text>`);
   y += 3;
   out.push(`<rect x="0" y="${y}" width="${w}" height="1.5" fill="#000"/>`);
-  for (const ing of p.ingredients.slice(0, 6)) {
-    const name = wrap(ing.name, w - 70, 8);
+  let undeclared = false;
+  for (const ing of p.ingredients.slice(0, 10)) {
+    const row = factsRow(ing.name, ing.amount);
+    if (row.dv === '†') undeclared = true;
+    const name = wrap(ing.name, w - 105, 8);
     y += 11;
     out.push(textBlock(name, 0, y, 8, 10, `fill="#000" ${f}`));
-    out.push(`<text x="${w - 30}" y="${y}" text-anchor="end" font-size="8" fill="#000" ${f}>${esc(ing.amount)}</text><text x="${w}" y="${y}" text-anchor="end" font-size="8" fill="#000" ${f}>†</text>`);
+    out.push(`<text x="${w - 34}" y="${y}" text-anchor="end" font-size="8" fill="#000" ${f}>${esc(row.amount)}</text><text x="${w}" y="${y}" text-anchor="end" font-size="8" font-weight="700" fill="#000" ${f}>${esc(row.dv)}</text>`);
     y += (name.length - 1) * 10 + 3;
     out.push(`<rect x="0" y="${y}" width="${w}" height="0.6" fill="#000"/>`);
   }
   y += 2;
   out.push(`<rect x="0" y="${y}" width="${w}" height="5" fill="#000"/>`);
   y += 12;
-  out.push(`<text x="0" y="${y}" font-size="7" fill="#000" ${f}>† Daily Value not established.</text>`);
-  y += 12;
+  if (undeclared) {
+    out.push(`<text x="0" y="${y}" font-size="7" fill="#000" ${f}>† Daily Value not established.</text>`);
+    y += 12;
+  }
   const other = wrap(`Other ingredients: ${p.otherIngredients}`, w, 7, 0.5);
   out.push(textBlock(other, 0, y, 7, 9, `fill="#000" ${f}`));
   y += other.length * 9;
@@ -446,10 +488,15 @@ export function bottleSvg(p: Product, variant: BottleVariant = 'front', opts: { 
     if (variant === 'duo') body = place(-34, 20, 0.74, `${uid}a`) + place(104, 6, 0.8, `${uid}b`);
   }
   if (variant === 'facts') {
-    const facts = factsPanel(p, mode, 260);
-    const s = Math.min(1.2, 330 / facts.height);
-    body = `<rect x="50" y="${n(200 - (facts.height * s) / 2 - 18)}" width="300" height="${n(facts.height * s + 36)}" rx="14" fill="#fff" stroke="#e5e7eb"/>
-      <g transform="translate(${n(200 - 130 * s)} ${n(200 - (facts.height * s) / 2)}) scale(${n(s)})">${facts.svg}</g>`;
+    // The panel always fits inside its white card: scale to the card's inner width, or down to fit the height.
+    const W = 250;
+    const facts = factsPanel(p, mode, W);
+    const s = Math.min(1.12, 336 / facts.height);
+    const pad = 20;
+    const cardW = W * s + pad * 2;
+    const cardH = facts.height * s + pad * 2;
+    body = `<rect x="${n(200 - cardW / 2)}" y="${n(200 - cardH / 2)}" width="${n(cardW)}" height="${n(cardH)}" rx="6" fill="#fff" stroke="#e3ded5"/>
+      <g transform="translate(${n(200 - (W * s) / 2)} ${n(200 - (facts.height * s) / 2)}) scale(${n(s)})">${facts.svg}</g>`;
   }
   const size = opts.size ? `width="${opts.size}" height="${opts.size}"` : '';
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" ${size}>${scene(uid)}${body}</svg>`;

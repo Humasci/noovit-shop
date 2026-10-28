@@ -98,3 +98,48 @@ These come from the real Supliful products plus the deep research. Until then we
 3. Left-column research and benefits cards, plus the sticky section bar.
 4. Lower sections: timeline, expert, pairs-well cards, reviews restyle, giant-wordmark footer.
 5. Apply to bundles and goal pages; mobile polish; screenshots for owner review.
+
+
+---
+
+# Update (28 Oct): more minimal and polished, nootropics-led
+_Reference: innerbodylabs.com/products/focus-support (screenshots in `design/reference/innerbody-*`). The owner wants the site **more minimal and polished**, with the brand leaning **toward nootropics**._
+
+## What Innerbody Labs does
+- **Very quiet canvas:** near-white/light grey, lots of air, no announcement clutter beyond one thin bar.
+- **Light, large type:** product name in a thin display weight (~48px light), a bold one-line positioning statement under it ("Focus that starts with calm, not overstimulation"), then one sentence and 4 plain bullets.
+- **Diet and quality tags as outlined pills:** GLUTEN-FREE · DAIRY-FREE · VEGAN · NON-GMO · cGMP-CERTIFIED · LAB-TESTED.
+- **Simple plan rows:** grey filled rows with radio buttons; the selected row has a thin blue outline and a "Most popular" tag; price per month on the right with a strike-through. One big CTA ("Subscribe & save 32%").
+- **One quiet trust line:** 30-day money-back · free shipping over $50 · HSA/FSA eligible.
+- **Few sections, each a single idea:** Key ingredients accordion · third-party testing link · pairs best with (2 rows).
+- **Below the fold:**
+  - certification icon row
+  - a dark photo section with benefits (Memory · Calm mood · Stress · Attention)
+  - "Every ingredient earns its place" plus "The Innerbody Labs Standard"
+  - **"See what we included and why":** an ingredient accordion with the **dose in accent colour on the right** and the evidence inside, with linked studies
+  - "Ingredients we don't include" (artificial dyes, titanium dioxide, proprietary blends, animal gelatin, talc)
+  - **"Supported by clinical research":** ingredient tabs plus a **chart of the trial result vs placebo**, with the full citation
+  - reviews
+- **Mobile sticky bar:** a plan dropdown plus a "Subscribe – $182" button.
+
+## What changes for Noovit
+1. **Header:** drop the dark trust bar. Logo plus 3–4 links (Shop · Learn · Quiz · About), cart, account. One thin announcement bar at most.
+2. **Typography:** headings lighter and larger. Manrope at a light weight or Funnel Display Light for product names, Inter for body. Fewer uppercase labels.
+3. **Fewer boxes:**
+   - The stat strip becomes a line of outlined **diet/quality pills**.
+   - Left-column cards collapse into one **"What's inside and why" ingredient accordion** (dose on the right, evidence inside).
+   - Remove the bundle upsell card from the hero (keep it lower down).
+   - Remove decorative mosaic fields from content pages; keep the mosaic for the logo, loader and a single hero accent.
+4. **Plan selector:** light grey rows, thin navy outline when selected, "Most popular" tag, one CTA.
+5. **Research module:** per product, a tab per key ingredient with a **simple bar chart** (result vs placebo), the evidence grade and a citation. Built from the guides and deep research; it's our strongest nootropics differentiator.
+6. **"What we leave out"** box (no proprietary blends, artificial dyes, titanium dioxide, gelatin, talc), once confirmed with the supplier.
+7. **Photography:** real amber/white bottle photos on a plain background. Our rendered bottles stay until the supplier photos arrive.
+8. **Colour:** keep navy plus orange as the only accents. Opal is used very sparingly.
+
+## Nootropics positioning
+- **Positioning line (draft):** "Evidence-graded nootropics for focus, calm and energy."
+- **Hero range (cognition):** Focus stack (citicoline + L-theanine + rhodiola + lion's mane, pending supplier), Lion's Mane, L-Theanine Calm Focus, Mushroom Clarity+, Creatine (brain plus body), NAC (antioxidant), Magnesium Sleep+ (recovery and sleep), Ashwagandha Calm+ (stress).
+- **Wellness range** (gut, joints, menopause, beauty) becomes secondary, or is retired; this is the owner's decision.
+- **Navigation by outcome:** Focus · Memory · Calm · Energy · Sleep (goal pages already exist; re-map them).
+- **Quiz:** lead with cognitive goals.
+- **Pop-up (if used):** "What's most important to you? Focus · Calm · Energy · Sleep" → email → welcome offer.

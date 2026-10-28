@@ -3,6 +3,10 @@
 _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only you can do it. **Build** = Claude does it. Tick items off here; `PROGRESS.md` keeps the history._
 
 ## 🔴 Before launch: owner
+**⏳ Next time you're at a computer (5 min)**
+- [ ] **Supabase → SQL Editor:** paste and run `supabase/manual/2026-10-28-plus-names.sql`. It applies the "+" names and the product headlines. (Or reconnect the Supabase connector and Claude runs it.)
+- [ ] **Admin → Products → Import launch catalog** (adds the 3 bundles and the NAC draft), then save any product once (refreshes the cache) or redeploy.
+
 **Products and claims**
 - [ ] **Real products (tomorrow):** pick the Supliful products. For each, send the Supplement Facts, capsule count and serving, your cost, Supliful SKU, and photos if you have them.
 - [ ] **"Made in the USA" wording:** confirm with Supliful which products qualify. If unsure, use "Manufactured in the USA from domestic and imported ingredients". It also appears on labels (`ORIGIN_CLAIM`) and feed images.
@@ -20,7 +24,6 @@ _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only yo
 **Accounts and settings**
 - [ ] Stripe: keys in Vercel, `npm run stripe:sync`, webhook, customer portal, Stripe Tax; then a real test-mode order.
 - [ ] Vercel env: `NEXT_PUBLIC_SITE_URL`, `RESEND_API_KEY` + `EMAIL_FROM` (verified domain), and social URLs (`NEXT_PUBLIC_INSTAGRAM_URL`, `NEXT_PUBLIC_TIKTOK_URL`, `NEXT_PUBLIC_FACEBOOK_URL`).
-- [ ] Supabase SQL editor: run `supabase/manual/2026-10-28-plus-names.sql`. Then Admin → Products → **Import launch catalog** (adds the bundles and the NAC draft).
 - [ ] Admin → Settings: support email, business address, welcome code (create **WELCOME10** first), GA4/Meta/TikTok IDs.
 - [ ] Admin → Products: map each **Supplier SKU** to its Supliful product.
 - [ ] **Switch "Show placeholder trust content" to `off`** once real reviews and advisors replace the placeholders.
@@ -32,12 +35,17 @@ _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only yo
 ## 🟠 Before launch: build
 - [x] **Redesign, phase 1** (28 Oct): off-white canvas, square navy buttons, calmer corners, new product page (orange-name headline, bullets, stat strip, plan cards, trust row, accordions, bundle upsell, Benefits / Research / What's-inside panels, desktop sticky section bar), new product cards (goal tag, "from" price and % off), giant-wordmark footer.
 - [ ] **Redesign, phase 2:** "What to expect" timelines and research panels from the deep research; expert/dietitian section; real product photos; home and goal pages in the same style (owner review first).
-- [ ] **Owner:** in Supabase, re-run `supabase/manual/2026-10-28-plus-names.sql`. It now also sets the product page headlines (taglines).
 - [ ] Align the catalog with the real Supliful products: names, formulas, doses, prices, Supplement Facts with %DV and the iron warning, capsule counts.
 - [ ] **COA / lab results** block on product pages (once documents arrive).
 - [ ] Google Merchant Center verification meta tag + Search Console; Google Customer Reviews script on `/checkout/success`.
 - [ ] Re-run the full audit after real products: Lighthouse on Vercel, links, claims, US spelling pass.
 - [ ] Creatine "Adults 18+" notice on the product page and cards.
+
+## 🟣 Direction change (28 Oct): nootropics-led, more minimal design
+- [ ] **Owner:** decide the catalog scope: nootropics-led with wellness as a secondary range, or nootropics only (see `docs/DESIGN_DIRECTION.md` §Minimal).
+- [ ] **Owner:** check which nootropic formulas Supliful (or other suppliers) carry: a focus stack (citicoline, L-theanine, rhodiola, lion's mane), lion's mane, L-theanine, NAC, creatine, magnesium.
+- [ ] **Build:** minimal redesign in the Innerbody Labs style (cleaner header, lighter type, fewer boxes, diet tags, ingredient accordion with doses, clinical-research module with a chart, certification row).
+- [ ] **Build:** reposition copy, home page, goal pages and quiz around cognition (focus, memory, calm, energy, sleep).
 
 ## 🟡 Content and SEO
 - [ ] **Owner:** deep research briefs (template in `CONTENT_GUIDELINES.md` §11) for magnesium, ashwagandha, probiotics, creatine, NAC and lion's mane.
