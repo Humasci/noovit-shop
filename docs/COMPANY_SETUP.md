@@ -10,6 +10,7 @@ _28 Oct 2026. A plan, not legal or tax advice. Confirm the tax points with a cro
 
 ## ★ Decisions so far (28 Oct)
 - Owner lives in the **UK** → Wyoming fits. Noovit gets a **new LLC**.
+- **Plan:** Wyoming LLC (cheapest, simplest); **reinvest** revenue into stock, ads and content; pay **six3** an arm's-length marketing fee; the owner is paid through six3 (UK tax). For tax, money *spent* on business costs (ads, Supliful orders, fees) reduces profit. Profit *kept* in the bank still counts as profit, so confirm with the accountant how HMRC taxes retained LLC profit.
 - Formation through **Wyoming Agents** (wyomingagents.com, Wyoming Registered Agent Services LLC, 32 N Gould St, Sheridan WY):
   - **$153 total**: $103 state fee, plus year 1 of the $25/yr registered agent, compliance reminders and scanning of state notices. Filing takes 3–5 business days.
   - Ask them to **sign as organizer**, which keeps your name off the public record.
