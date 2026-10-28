@@ -11,7 +11,7 @@ _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only yo
 - [ ] **Real products (tomorrow):** pick the Supliful products. For each, send the Supplement Facts, capsule count and serving, your cost, Supliful SKU, and photos if you have them.
 - [ ] **"Made in the USA" wording:** confirm with Supliful which products qualify. If unsure, use "Manufactured in the USA from domestic and imported ingredients". It also appears on labels (`ORIGIN_CLAIM`) and feed images.
 - [ ] **Proof for "third-party tested" and "GMP certified":** get Supliful's GMP certificate and per-lot COAs, or tell me to remove the claims.
-- [ ] **Regulatory lawyer review of claims.** Covers iron, berberine, zinc/testosterone, "clinically studied strains", quiz symptom wording and the nattokinase guide.
+- [ ] **Regulatory lawyer review of claims.** Covers iron, berberine, zinc/testosterone, "clinically studied strains", quiz symptom wording and the nattokinase guide. Also ask: can methylene blue be sold as a dietary supplement at all? (see `docs/SHOPPING_ANALYSIS_METHYLENE_BLUE.md`)
 - [ ] FDA structure/function notification within 30 days of first sale.
 - [ ] Prop 65 check (heavy metals in botanicals/powders); product liability insurance.
 - [ ] Trademark attorney: clear **NOOVIT** (US/UK, classes 5 and 35) and the "+" product names. Note the existing **CALM+** application.
@@ -48,6 +48,7 @@ _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only yo
 - [ ] **Owner:** confirm Supliful costs and shipping per product. Turmeric is $11.05 all-in ($8 with Pro); berberine is $10.25 all-in. See `docs/PRICING_NOTES.md` and `docs/pricing/noovit-pricing.xlsx`. Decide the price points (e.g. turmeric $36 / $30 subscribed, berberine $36 / $32).
 - [ ] **Owner: ask Supliful for berberine's Supplement Facts/COA with mg of berberine per serving.** Their ingredient list suggests only ~146 mg a day (studies use 900–1,500 mg). If that's right, source a 500 mg berberine HCl elsewhere. See `docs/SHOPPING_ANALYSIS_BERBERINE.md`.
 - [ ] **Owner: lion's mane.** Send Supliful's price screenshot (the spreadsheet uses an $11 placeholder) and ask for a COA with beta-glucan % and the fruiting body : mycelium ratio. See `docs/SHOPPING_ANALYSIS_LIONS_MANE.md`.
+- [ ] **Methylene blue: on hold** (unclear legal status as a supplement, serotonin-syndrome risk with SSRIs, G6PD, 10 mg dose far below studies). **Build:** an evidence guide instead. See `docs/SHOPPING_ANALYSIS_METHYLENE_BLUE.md`.
 - [ ] **Owner:** pick a label direction (B clinical white / C colour block / D amber). See `design/label-options/comparison.png`.
 
 ## 🟡 Content and SEO
