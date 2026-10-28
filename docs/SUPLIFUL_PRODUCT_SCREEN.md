@@ -9,6 +9,7 @@ _One place for every Supliful product we've checked, with a verdict. Started 28 
 |---|---|---|---|
 | **Turmeric** 60 caps | 95% curcuminoids + black pepper | ✅ **Launch** | $11.05 all-in; premium tier $29–40. See `SHOPPING_ANALYSIS_TURMERIC.md` |
 | **Ashwagandha Plus** 60 caps | **KSM-66 600 mg** (5% withanolides) + L-arginine 300 mg, maca 150 mg, Panax ginseng 100 mg, shatavari 50 mg, D3 20 mcg, B6 2.5 mg, B12 25 mcg | ✅ **Good formula, but sold 3× by Vitasy at $29.99**. Prefer a plain KSM-66 600 mg | KSM-66 at the study dose; the extras are token amounts. Market $22–39. See `SHOPPING_ANALYSIS_ASHWAGANDHA.md` |
+| **Ashwagandha (plain)** 60 caps | Organic ashwagandha **root** + organic black pepper; **no amounts, extract type or withanolide %** listed; 1 capsule twice a day | 🟠 **Weaker than Ashwagandha Plus** | Probably root powder, not a studied extract like KSM-66. Likely the product behind Vitasy's Fernwood "with black pepper" ($24.99). Ask for the Supplement Facts |
 | **Lion's mane** 60 caps | 1,000 mg organic fruiting body + mycelium, 40% polysaccharides | ✅ **Launch** (after the COA) | Fair dose, in line per mg at $35–40. Ask for the beta-glucan %. See `SHOPPING_ANALYSIS_LIONS_MANE.md` |
 | **Vitamin D3 2,000 IU** 100 softgels | D3 50 mcg in soybean/corn oil, gelatin softgel | 🟡 **Bundle/add-on only** | Commodity: big brands sell 2,000 IU for ~$10. Our planned D3 & K2 is a better hero |
 | **Omega-3** 100 softgels | EPA 180 + DHA 120 mg per softgel (600 mg/day at 2 a day) | 🟡 **Bundle/basic only**, or source a better one | Standard "18/12" mass-market spec, no IFOS or oxidation testing stated |
@@ -57,6 +58,12 @@ _One place for every Supliful product we've checked, with a verdict. Started 28 
 - **Warnings needed** (Supliful's are generic): not in pregnancy or breastfeeding; talk to a doctor with thyroid conditions (ashwagandha can raise thyroid hormone), autoimmune disease, liver problems (rare liver-injury reports), or if taking sedatives, thyroid, diabetes or blood-pressure medication. Ginseng can interact with blood thinners. Some European countries have restricted ashwagandha, which is worth a line in our guide.
 - **Licensing:** using the KSM-66 name and logo needs the brand owner's (Ixoreal) approval, usually arranged through the supplier. Ask Supliful.
 - **Market check (done):** see `SHOPPING_ANALYSIS_ASHWAGANDHA.md`. Plain capsules sell for $22–39 (median ~$30). **Vitasy sells this exact product as Cortex, Compass and Fernwood Ashwagandha Plus at $29.99**, so if we use it, price at $30–32 / $27 subscribed, or better, get a plain KSM-66.
+
+### Ashwagandha, plain (60 capsules, 1 twice a day), added 28 Oct
+- Organic ashwagandha root and organic black pepper, but the page gives **no amounts, no extract type and no withanolide %**. "Root" with no extract named usually means **root powder**. Human trials mostly use standardised extracts (KSM-66 at 600 mg, Sensoril at 250–500 mg), so powder can't claim the study dose.
+- Organic is a plus. Claims on the page such as "promotes normal hormone balance" and the cited sperm-count studies are ones we wouldn't use.
+- This looks like the product Vitasy sells as **Fernwood Ashwagandha with black pepper at $24.99**.
+- **Verdict:** it isn't the plain KSM-66 we want. Of Supliful's two, **Ashwagandha Plus (KSM-66 600 mg) is the better formula.** Ask Supliful for this product's Supplement Facts in case it turns out to be an extract, and ask other suppliers (On Demand Fulfillment, Vitalabs, Professional Nutritionals) for a plain KSM-66 600 mg.
 
 ### Reishi Relax gummies (30 gummies, 1–2 a day), added 28 Oct
 - Reishi extract 200 mg (no ratio, beta-glucan figure or fruiting-body statement) + **25 mg each** of L-theanine, lemon balm, passion flower and valerian. Studies use about 200 mg L-theanine and 300–600 mg valerian or lemon balm, so these are label dressing.
