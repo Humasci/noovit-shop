@@ -2,13 +2,13 @@
 
 _One place for every Supliful product we've checked, with a verdict. Started 28 Oct 2026. Formulas are from Supliful's public product pages; **prices are hidden on most pages, so the owner needs to send them**. Market detail for products with a Google Shopping check is in the linked `SHOPPING_ANALYSIS_*.md` files and in `docs/pricing/noovit-pricing.xlsx`._
 
-**Watch-out for every product:** Vitasy (sub-brands Cortex and Compass) appears to resell Supliful's catalogue and sells identical formulas at about $25–45 with free shipping. We differentiate on evidence, honesty, content, bundles and brand, not on formula.
+**Watch-out for every product:** Vitasy (store brands **Cortex, Compass and Fernwood**, plus Vitasy gummies) resells Supliful's catalogue and sells identical formulas at about $25–45 with free shipping. We differentiate on evidence, honesty, content, bundles and brand, not on formula.
 
 ## Verdicts at a glance
 | Product | Formula (per daily serving) | Verdict | Why |
 |---|---|---|---|
 | **Turmeric** 60 caps | 95% curcuminoids + black pepper | ✅ **Launch** | $11.05 all-in; premium tier $29–40. See `SHOPPING_ANALYSIS_TURMERIC.md` |
-| **Ashwagandha Plus** 60 caps | **KSM-66 600 mg** (5% withanolides) + L-arginine 300 mg, maca 150 mg, Panax ginseng 100 mg, shatavari 50 mg, D3 20 mcg, B6 2.5 mg, B12 25 mcg | ✅ **Launch-worthy core** (prefer plain KSM-66 if Supliful has it) | KSM-66 at 600 mg is the most-studied branded extract at the study dose. The extras are token amounts |
+| **Ashwagandha Plus** 60 caps | **KSM-66 600 mg** (5% withanolides) + L-arginine 300 mg, maca 150 mg, Panax ginseng 100 mg, shatavari 50 mg, D3 20 mcg, B6 2.5 mg, B12 25 mcg | ✅ **Good formula, but sold 3× by Vitasy at $29.99**. Prefer a plain KSM-66 600 mg | KSM-66 at the study dose; the extras are token amounts. Market $22–39. See `SHOPPING_ANALYSIS_ASHWAGANDHA.md` |
 | **Lion's mane** 60 caps | 1,000 mg organic fruiting body + mycelium, 40% polysaccharides | ✅ **Launch** (after the COA) | Fair dose, in line per mg at $35–40. Ask for the beta-glucan %. See `SHOPPING_ANALYSIS_LIONS_MANE.md` |
 | **Vitamin D3 2,000 IU** 100 softgels | D3 50 mcg in soybean/corn oil, gelatin softgel | 🟡 **Bundle/add-on only** | Commodity: big brands sell 2,000 IU for ~$10. Our planned D3 & K2 is a better hero |
 | **Omega-3** 100 softgels | EPA 180 + DHA 120 mg per softgel (600 mg/day at 2 a day) | 🟡 **Bundle/basic only**, or source a better one | Standard "18/12" mass-market spec, no IFOS or oxidation testing stated |
@@ -17,6 +17,8 @@ _One place for every Supliful product we've checked, with a verdict. Started 28 
 | **NAD+** 60 caps | 500 mg NAD+ + 250 mg quercetin + 150 mg resveratrol | 🟠 **Phase 2 at best** | Oral NAD+ has weak evidence; Cortex sells the same capsule. See `SHOPPING_ANALYSIS_NAD.md` |
 | **Berberine** 60 caps | ~146 mg berberine/day (estimated) | 🔴 **Not as is** | 6–8× more expensive per mg than competitors. Needs a 500 mg source. See `SHOPPING_ANALYSIS_BERBERINE.md` |
 | **"GLP-1 Support"** 60 caps | Multivitamin + 3 proprietary blends | 🔴 **No** | Proprietary blends, B6 26 mg (above the EU limit), iron, under-dosed actives. Build our own companion bundle instead |
+| **Reishi Relax gummies** 30 | Reishi extract 200 mg + L-theanine, lemon balm, passion flower, valerian 25 mg each; cane sugar | 🔴 **No** | Every herb is a token dose (studies: theanine 200 mg, valerian/lemon balm 300–600 mg); reishi ratio and source unknown; weak human evidence for relaxation |
+| **Chaga** 60 caps | 400 mg organic chaga **mycelium** powder, 40% polysaccharides | 🔴 **No** | Not true chaga (the birch conk); polysaccharides inflated by grain starch; almost no human evidence; high oxalate (kidney case reports); blood-sugar and SARS-CoV-2 claims on the page |
 | **Methylene blue** drops | 10 mg/mL, 60 mL | 🔴 **No (on hold)** | Unclear legal status as a supplement; serotonin syndrome with SSRIs; G6PD. Guide only. See `SHOPPING_ANALYSIS_METHYLENE_BLUE.md` |
 
 ## Notes on the four new ones
@@ -53,7 +55,19 @@ _One place for every Supliful product we've checked, with a verdict. Started 28 
 - **Best option:** ask Supliful for a **plain KSM-66 600 mg** capsule and sell that as Ashwagandha Calm+, saying "KSM-66, 600 mg, the dose used in the studies". If they don't have one, this product works, but we'd say honestly that KSM-66 does the work. It could also become a separate "energy & vitality" product.
 - **Warnings needed** (Supliful's are generic): not in pregnancy or breastfeeding; talk to a doctor with thyroid conditions (ashwagandha can raise thyroid hormone), autoimmune disease, liver problems (rare liver-injury reports), or if taking sedatives, thyroid, diabetes or blood-pressure medication. Ginseng can interact with blood thinners. Some European countries have restricted ashwagandha, which is worth a line in our guide.
 - **Licensing:** using the KSM-66 name and logo needs the brand owner's (Ixoreal) approval, usually arranged through the supplier. Ask Supliful.
-- **Market check:** pending owner screenshots ("ashwagandha KSM-66"). Expect a crowded category with cheap Amazon KSM-66 at about $15–25 and premium at $30–40.
+- **Market check (done):** see `SHOPPING_ANALYSIS_ASHWAGANDHA.md`. Plain capsules sell for $22–39 (median ~$30). **Vitasy sells this exact product as Cortex, Compass and Fernwood Ashwagandha Plus at $29.99**, so if we use it, price at $30–32 / $27 subscribed, or better, get a plain KSM-66.
+
+### Reishi Relax gummies (30 gummies, 1–2 a day), added 28 Oct
+- Reishi extract 200 mg (no ratio, beta-glucan figure or fruiting-body statement) + **25 mg each** of L-theanine, lemon balm, passion flower and valerian. Studies use about 200 mg L-theanine and 300–600 mg valerian or lemon balm, so these are label dressing.
+- Human evidence for reishi and relaxation or sleep is weak. Organic cane sugar and tapioca syrup; pectin (vegan).
+- A 30-gummy bottle at 1–2 a day lasts only 15–30 days.
+- **Verdict: no.** If we want a calm gummy later, L-theanine at 200 mg is the evidence-backed option.
+
+### Chaga (60 capsules, 2 a day), added 28 Oct
+- **It's mycelium, not chaga as people know it.** Traditional chaga is the black conk (sclerotium) that grows on birch trees. This is lab-grown mycelium powder, and "40% polysaccharides" again counts grain starch.
+- **Evidence:** almost entirely lab and animal studies. Supliful's page cites COVID (SARS-CoV-2) and blood-sugar research. We couldn't use either claim.
+- **Safety:** chaga is very high in **oxalates**; there are case reports of kidney damage from long-term chaga use. It may add to diabetes medicines and blood thinners. Supliful's page has no such warnings.
+- **Verdict: no.** (Our catalog's Mushroom Clarity+ powder blend also lists chaga 500 mg; review it when the real products arrive.)
 
 ## Questions for Supliful (all products)
 1. Prices (product, shipping, fulfilment, Pro) for: ashwagandha, lion's mane, NAD+, NMN, colostrum, omega-3, D3, methylene blue.
