@@ -70,6 +70,18 @@ _Privacy only keeps your name off **public** records. It doesn't change who know
 - [ ] **If six3 ever owns Noovit,** check with the accountant whether six3's UK filings would list it.
 - [ ] Founder posts on LinkedIn or social media will connect you; decide if and when you want that.
 
+## Accountants (Wyoming Agents doesn't do tax or accounting)
+- **UK accountant with US LLC experience** (main adviser): structure, HMRC view of the LLC, six3 fee, Self Assessment. Find one through ICAEW's "Find a chartered accountant" (filter for US or international tax), or ask for referrals in UK founder communities. Ask up front: "Have you advised UK residents with Wyoming single-member LLCs and filed or coordinated Form 5472?"
+- **US preparer (CPA or Enrolled Agent) for Form 5472 + pro forma 1120** each year, typically a few hundred dollars. Check credentials. The 5472 is due **April 15** for a calendar year, and an extension (Form 7004) **does not** extend the 5472. Even putting money into the LLC (a capital contribution) is a reportable transaction, so it's due even in a year with no sales.
+- Some firms do both; one firm for both sides is ideal.
+
+## Stock from a minimum-order supplier (e.g. Makers Nutrition) later
+- Buying stock is **not a cost when you pay for it**. It's an asset ("inventory") until sold, and becomes a cost (cost of goods sold) **as each unit sells**.
+- Example: buy 1,000 bottles at $4 ($4,000) in November and sell 300 by year-end → **$1,200** counts as this year's cost; **$2,800** of stock carries into next year.
+- **Expired, damaged or unsellable stock can be written down** (supplements have expiry dates, so track batches and dates).
+- Cash-flow warning: minimum orders tie up cash, and you can owe tax on profit while the cash sits in boxes. Size orders carefully.
+- (Companies use this "accruals" basis. If the accountant decides you're taxed personally instead, simpler cash-basis rules may apply. Ask.)
+
 ## UK owner: practical steps
 - **EIN without an SSN:** fax Form SS-4 to the IRS, or **phone the IRS international line (+1 267 941 1099)**, which can usually issue the EIN on the call. The "responsible party" is you, with your passport details; no ITIN is needed.
 - **Bank:** Mercury and Wise Business have accepted non-US owners of US LLCs. Policies change, so check them when you apply. You'll need the Articles, the EIN letter (CP 575), the Operating Agreement and your passport.
