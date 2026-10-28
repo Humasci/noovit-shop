@@ -94,6 +94,14 @@ _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only yo
 - [ ] **Build:** content packs, compliance check, admin approval queue, Buffer publishing, UTM tracking, performance dashboard.
 
 ## 🔵 Growth and conversion (after launch)
+- [ ] **Meta ads (notes, 28 Oct):**
+  - [ ] Set up Business Manager + ad account in the company's name; add the Pixel ID in Admin → Settings (the site already sends ViewContent, AddToCart, InitiateCheckout, Purchase and Lead).
+  - [ ] Expect Meta to label the account **"health and wellness"** (since early 2025): purchase optimisation and conversion-based audiences may be limited. Plan for upper-funnel optimisation (landing page views, leads), judge results in GA4, and appeal a wrong label. Don't disguise event names to dodge it (risks an account ban). Check current rules in Meta's Business Help Center at setup.
+  - [ ] Creative rules: no "you"-health wording ("Struggling with anxiety?"), no before/after, no body-image or weight-loss promises, no disease or "FDA approved" claims; landing page must match the ad; target 18+.
+  - [ ] Banned/at-risk ingredients: anabolic steroids, chitosan, comfrey, DHEA, ephedra, HGH, plus anything Meta deems unsafe (methylene blue and "GLP-1" products are high risk).
+  - [ ] Confirm whether Facebook/Instagram Shops allow supplement listings (likely not); ads link to noovit.com.
+  - [ ] Ask the lawyer about Washington's My Health My Data Act before retargeting health-product viewers.
+  - [ ] Start small and clean: new accounts with supplement ads get extra scrutiny.
 - [ ] **FrontrowMD** demo and application once products and labels are final (Clinicians' Choice badge + clinician reviews).
 - [ ] **HSA/FSA payments** via Flex or Truemed (Absorption Company and Naomi both show it).
 - [ ] Newsletter pop-up asks the **goal first**, then the email.
