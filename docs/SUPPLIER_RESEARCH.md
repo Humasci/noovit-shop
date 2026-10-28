@@ -51,7 +51,7 @@ Coverage counts are for our 23 launch products: **Y** = yes, **~** = close subst
 **2. Coverage**
 - See the matrix in §3: 8 Y / 6 ~ / 9 N. No pet chews; the "Pet Parents" filter shows only 2 items.
 - Catalogue has 189 items, of which 123 are supplements.
-- **NMN capsules are in the catalogue.** Do not list them.
+- **NMN capsules are in the catalogue.** ~~Do not list them.~~ _(Update 28 Oct 2026: the FDA reversed its NMN exclusion on 29 Sept 2025, so NMN is lawful in supplements again. See `SUPLIFUL_PRODUCT_SCREEN.md`.)_
 
 **Brain/nootropic range (good):**
 - Lion's Mane capsules
@@ -475,7 +475,7 @@ Described as private-label protein powders and custom formulas, made in-house, w
 | **D3 & K2** | ODF capsules match. Elsewhere it is a chewable/gummy, or Supliful's version includes calcium; facts must match |
 | **Cat Probiotic Powder and Cat Hairball chews** | **Defer**. No stock source verified |
 | **Iron and Zinc** | PN (both) or Vitalabs (zinc). Supliful/ODF cannot cover them |
-| **NMN** | Both Supliful and Vitalabs list it. Make sure it never gets published to the US store |
+| **NMN** | Both Supliful and Vitalabs list it. ~~Make sure it never gets published to the US store~~ Lawful again since the FDA reversal (29 Sept 2025); a phase-2 candidate, see `SUPLIFUL_PRODUCT_SCREEN.md` |
 
 ### Phases
 
