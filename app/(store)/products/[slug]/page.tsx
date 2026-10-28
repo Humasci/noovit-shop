@@ -54,11 +54,14 @@ function Row({ title, children, open = false }: { title: string; children: React
   );
 }
 
-// Card with a coloured caps header, as in the reference design's left column.
+// Card with a caps header (hairline divider, small orange tile), as in the reference design's left column.
 function Panel({ id, title, children }: { id?: string; title: string; children: React.ReactNode }) {
   return (
     <section id={id} className="scroll-mt-28 overflow-hidden rounded-lg border border-[var(--color-line)] bg-white">
-      <h2 className="bg-[var(--color-orange)] px-5 py-2.5 font-sans text-xs font-bold uppercase tracking-[0.14em] text-[var(--color-navy)]">{title}</h2>
+      <h2 className="flex items-center gap-2.5 border-b border-[var(--color-line)] px-5 py-3 font-sans text-xs font-bold uppercase tracking-[0.14em] text-[var(--color-navy)]">
+        <span aria-hidden className="h-2 w-2 rounded-[2px] bg-[var(--color-orange)]" />
+        {title}
+      </h2>
       {children}
     </section>
   );
