@@ -15,7 +15,7 @@ _28 Oct 2026. A plan, not legal or tax advice. Confirm the tax points with a cro
   - **$153 total**: $103 state fee, plus year 1 of the $25/yr registered agent, compliance reminders and scanning of state notices. Filing takes 3–5 business days.
   - Ask them to **sign as organizer**, which keeps your name off the public record.
   - Add the **mail scanning plan / unique suite** (from $49/yr). That gives the address for the label ("Distributed by Noovit LLC…"), CAN-SPAM emails and the bank. Their site says the address can be used as the mailing and principal address; confirm in writing that it can go on product labels.
-  - **Skip their $100 renewal service.** The Wyoming annual report ($60 minimum) takes about 5 minutes online each year.
+  - **Their Renewal Service is opt-out:** agent clients are auto-enrolled ($100 + the state fee). **Cancel it in your account** and file the annual report yourself ($60 minimum, about 5 minutes on the Wyoming SOS site). The $153 formation does not include the annual report.
   - Their site doesn't mention EIN help or an operating agreement. Do both yourself (below).
 
 ## ⚠️ UK owner: settle the tax structure BEFORE filing

@@ -56,6 +56,10 @@ I'm a **UK tax resident** setting up a US e-commerce business while bootstrappin
 6. **Banking and Stripe** for a UK-resident owner of a US LLC: which bank (Mercury, Wise Business), and whether Stripe US accepts me without an SSN.
 7. **six3 service agreement** outline and a sensible way to set the fee.
 8. **A calendar** of every deadline for me, Barbill, Noovit and later six3.
+9. **Opaque vs transparent:** HMRC treats US LLCs as opaque by default (after *Anson v HMRC* [2015] UKSC 44, HMRC said it would continue to treat them as opaque, case by case). Is it realistic to draft an "Anson-style" operating agreement to argue transparency? Or, since I'm **reinvesting**, is company treatment actually better: corporation tax at the 19% small-profits rate (profits up to £50k), with personal tax only when I take money out, vs. transparent treatment, where all profit is taxed on me personally each year (income tax plus Class 4 NIC) whether I take it or not?
+
+## Note on Wyoming Agents
+- Their $153 formation covers the state fee + year 1 of the agent. **It does not include the annual report.** Registered-agent clients are **auto-enrolled in their Renewal Service** ($100 + the state fee, so ~$160/yr). To file it yourself for $60, **cancel the Renewal Service in your account** (check Barbill too if it's with them).
 
 ---
 
