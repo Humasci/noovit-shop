@@ -39,7 +39,12 @@ _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only yo
 - [ ] Stripe: keys in Vercel, `npm run stripe:sync`, webhook, customer portal, Stripe Tax; then a real test-mode order.
 - [ ] Vercel env: `NEXT_PUBLIC_SITE_URL`, `RESEND_API_KEY` + `EMAIL_FROM` (verified domain), and social URLs (`NEXT_PUBLIC_INSTAGRAM_URL`, `NEXT_PUBLIC_TIKTOK_URL`, `NEXT_PUBLIC_FACEBOOK_URL`).
 - [ ] Admin → Settings: support email, business address, welcome code (create **WELCOME10** first), Meta/TikTok IDs. (GTM `GTM-5LKW5HGS` is built in; leave the GA4 field empty.)
-- [ ] **Owner: set up GA4 inside GTM** (≈10 min, steps in `docs/ANALYTICS_SETUP.md`): Google tag `G-JHK7BF5QB1`, ecommerce event tag, then Preview and Publish.
+- [ ] **Owner: set up GA4 inside GTM** (≈15 min, steps in `docs/ANALYTICS_SETUP.md`):
+  - [ ] Google tag `G-JHK7BF5QB1` on Initialization – All Pages
+  - [ ] Ecommerce trigger (`view_item|add_to_cart|begin_checkout|purchase`, regex) + GA4 event tag with "Send Ecommerce data"
+  - [ ] Sign-ups: Data Layer Variable `lead_source`, Custom Event trigger `generate_lead`, GA4 event tag `generate_lead` with parameter `lead_source`
+  - [ ] Preview on noovit.com (join the waitlist; sign in to Admin first to test shop events), then Submit → Publish
+  - [ ] GA4: mark `generate_lead` (and `begin_checkout`) as key events; custom dimension `Lead source` (parameter `lead_source`); check "page changes based on browser history events" is on
 - [ ] Admin → Products: map each **Supplier SKU** to its Supliful product.
 - [ ] **Switch "Show placeholder trust content" to `off`** once real reviews and advisors replace the placeholders.
 
