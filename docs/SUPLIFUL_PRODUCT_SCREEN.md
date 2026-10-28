@@ -18,6 +18,7 @@ _One place for every Supliful product we've checked, with a verdict. Started 28 
 | **Berberine** 60 caps | ~146 mg berberine/day (estimated) | 🔴 **Not as is** | 6–8× more expensive per mg than competitors. Needs a 500 mg source. See `SHOPPING_ANALYSIS_BERBERINE.md` |
 | **"GLP-1 Support"** 60 caps | Multivitamin + 3 proprietary blends | 🔴 **No** | Proprietary blends, B6 26 mg (above the EU limit), iron, under-dosed actives. Build our own companion bundle instead |
 | **Reishi Relax gummies** 30 | Reishi extract 200 mg + L-theanine, lemon balm, passion flower, valerian 25 mg each; cane sugar | 🔴 **No** | Every herb is a token dose (studies: theanine 200 mg, valerian/lemon balm 300–600 mg); reishi ratio and source unknown; weak human evidence for relaxation |
+| **Cordyceps Energy gummies** 30 | Cordyceps extract 200 mg + GABA, ginkgo, L-glutamine, DMAE 25 mg each; cane sugar | 🔴 **No** | Same template as Reishi Relax: species, ratio and source unknown; studies use 1–3 g cordyceps; every add-on is a token dose; ginkgo needs a blood-thinner warning |
 | **Chaga** 60 caps | 400 mg organic chaga **mycelium** powder, 40% polysaccharides | 🔴 **No** | Not true chaga (the birch conk); polysaccharides inflated by grain starch; almost no human evidence; high oxalate (kidney case reports); blood-sugar and SARS-CoV-2 claims on the page |
 | **Methylene blue** drops | 10 mg/mL, 60 mL | 🔴 **No (on hold)** | Unclear legal status as a supplement; serotonin syndrome with SSRIs; G6PD. Guide only. See `SHOPPING_ANALYSIS_METHYLENE_BLUE.md` |
 
@@ -62,6 +63,13 @@ _One place for every Supliful product we've checked, with a verdict. Started 28 
 - Human evidence for reishi and relaxation or sleep is weak. Organic cane sugar and tapioca syrup; pectin (vegan).
 - A 30-gummy bottle at 1–2 a day lasts only 15–30 days.
 - **Verdict: no.** If we want a calm gummy later, L-theanine at 200 mg is the evidence-backed option.
+
+### Cordyceps Energy gummies (30 gummies, 1–2 a day), added 28 Oct
+- **Cordyceps extract 200 mg**, with no species (militaris or CS-4), ratio, fruiting body or cordycepin figure. The page's own evidence section cites a different extract (CordyMax Cs-4) at **1 g a day**, with only non-significant trends. Studies generally use 1–3 g a day.
+- **Add-ons at 25 mg each** are label dressing: GABA (barely crosses into the brain when swallowed), ginkgo (studies use 120–240 mg), L-glutamine (studies use grams) and DMAE (weak evidence).
+- Ginkgo can add to blood thinners, which needs a warning even at low doses. No caffeine, despite the "energy" name.
+- Organic cane sugar and tapioca syrup; pectin (vegan). 30 gummies last 15–30 days.
+- **Verdict: no.** Supliful's gummy line uses one template (≈200 mg mushroom + four 25 mg extras), so expect the same from its other mushroom gummies. If we want cordyceps later, look for a CS-4 or militaris fruiting-body extract at 1 g+ in capsules.
 
 ### Chaga (60 capsules, 2 a day), added 28 Oct
 - **It's mycelium, not chaga as people know it.** Traditional chaga is the black conk (sclerotium) that grows on birch trees. This is lab-grown mycelium powder, and "40% polysaccharides" again counts grain starch.
