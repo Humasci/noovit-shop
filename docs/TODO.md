@@ -4,7 +4,7 @@ _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only yo
 
 ## 🔴 Before launch: owner
 **⏳ Next time you're at a computer (5 min)**
-- [ ] **Supabase → SQL Editor:** paste and run `supabase/manual/2026-10-28-catalog-update.sql` (replaces the earlier plus-names file). It applies the "+" names and headlines, the confirmed Supliful formulas (magnesium glycinate 275 mg, KSM-66 ashwagandha, lion's mane, creatine) and hides Berberine Complex. It also sets the **new prices** (`docs/PRICE_LIST.md`). Safe to re-run; supplier SKUs are kept. **Then Admin → Products → Sync to Stripe** so checkout charges the new prices. (Or reconnect the Supabase connector and Claude runs it.) **Until this runs, the live shop shows the old names** ("Collagen Complex", "Magnesium Complex").
+- [x] **Supabase → SQL Editor (done 28 Oct):** paste and run `supabase/manual/2026-10-28-catalog-update.sql` (replaces the earlier plus-names file). It applies the "+" names and headlines, the confirmed Supliful formulas (magnesium glycinate 275 mg, KSM-66 ashwagandha, lion's mane, creatine) and hides Berberine Complex. It also sets the **new prices** (`docs/PRICE_LIST.md`). Safe to re-run; supplier SKUs are kept. **Then Admin → Products → Sync to Stripe** so checkout charges the new prices. (Or reconnect the Supabase connector and Claude runs it.) **Until this runs, the live shop shows the old names** ("Collagen Complex", "Magnesium Complex").
 - [ ] **Admin → Products → Import launch catalog** (adds the 3 bundles and the NAC and CoQ10 drafts), then save any product once (refreshes the cache) or redeploy.
 
 **Products and claims**
