@@ -6,7 +6,7 @@ _28 Oct 2026. A plan, not legal or tax advice. Confirm the tax points with a cro
 1. **Where do you live and pay tax?**
    - **Outside the US:** Wyoming is a good fit (cheap, private, no state income tax). Extra federal filing applies (see §4) and banking/Stripe need checking for non-residents.
    - **In a US state:** usually form the LLC **in your home state**. A Wyoming LLC run from another state normally has to register there as a "foreign LLC" anyway, so you pay twice.
-2. **New LLC or an existing one?** Use a **separate LLC for Noovit**, even if you already have a Wyoming LLC for other projects. Supplements carry product-liability risk, and a separate company keeps that risk away from your other businesses.
+2. **New LLC or an existing one?** Use a **separate LLC for Noovit**. **Don't trade it under Barbill LLC**, which holds the legal media projects: a supplement liability claim could reach those sites; a payment processor freezing the account over supplement disputes would freeze Barbill's revenue too; and Meta's "health and wellness" label is applied per business, so it could restrict ad tracking for the legal projects.
 
 ## ★ Decisions so far (28 Oct)
 - Owner lives in the **UK** → Wyoming fits. Noovit gets a **new LLC**.
@@ -115,7 +115,11 @@ _Barbill is a Wyoming single-member LLC (confirmed), calendar tax year._
 - (Companies use this "accruals" basis. If the accountant decides you're taxed personally instead, simpler cash-basis rules may apply. Ask.)
 
 ## UK owner: practical steps
-- **EIN without an SSN:** fax Form SS-4 to the IRS, or **phone the IRS international line (+1 267 941 1099)**, which can usually issue the EIN on the call. The "responsible party" is you, with your passport details; no ITIN is needed.
+- **EIN without an SSN** (the owner's Barbill fax got no reply, so she paid a service last time):
+  - **Phone** the IRS international line, **+1 267 941 1099**, Mon–Fri 6am–11pm US Eastern (**11:00–04:00 UK**). Call right at opening (11:00 UK) for the shortest wait. They can issue the EIN on the call.
+  - **Fax/post without waiting by the fax:** put the **Wyoming Agents mailing address** on the SS-4. The IRS posts the EIN letter (CP 575) there in about 4–8 weeks, and their mail scanning shows it in your account. Faxed replies often fail when there's no return fax number on the form; an online fax number works if you want the fax reply.
+  - **Or pay a service** (often ~$50–150) if time matters more than money.
+  - The "responsible party" is you, with your passport details; no ITIN is needed.
 - **Bank:** Mercury and Wise Business have accepted non-US owners of US LLCs. Policies change, so check them when you apply. You'll need the Articles, the EIN letter (CP 575), the Operating Agreement and your passport.
 - **Stripe:** check whether Stripe US accepts your LLC with a UK-resident representative without an SSN. If not, the alternatives are Stripe Atlas (a Delaware company) or Stripe UK through a UK Ltd (option 3 or 4 above).
 - **Operating Agreement:** a single-member template is fine (many are free). Keep it with the bank documents.
