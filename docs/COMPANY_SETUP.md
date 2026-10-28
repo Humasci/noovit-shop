@@ -56,6 +56,20 @@ Common and legitimate, **if it's done at arm's length**:
 
 **Accountant questions:** (1) Is the LLC UK-resident under HMRC's "central management and control" test? (2) Is it better owned by me or by six3? (3) Is the marketing fee arrangement sound, and what's a defensible fee? (4) Do I need a US trade-or-business review? (5) How do I report it all on my Self Assessment and six3's accounts?
 
+## Privacy checklist (keep the owner's name off public records)
+_Privacy only keeps your name off **public** records. It doesn't change who knows privately (IRS, HMRC, banks, Stripe, Supliful) and it doesn't change any tax you owe._
+- [ ] **Wyoming Agents** acts as **registered agent and organizer**, so the public filing shows only Noovit LLC and their name. Ask whether the organizer service is included in the $153.
+- [ ] **Operating Agreement** names you as the member. It's private; keep it for the bank and Stripe.
+- [ ] **Trademark (USPTO):** file in **Noovit LLC's** name; the attorney signs and is the correspondent. Applications are public.
+- [ ] **Google Ads / Merchant Center:** verify as an **organisation (Noovit LLC)**, not an individual; Google's public Ads Transparency Center shows the verified name.
+- [ ] **Meta Business / ad account** in the company's name.
+- [ ] **Domain:** WHOIS privacy on; move the registrant to Noovit LLC.
+- [ ] **Website, emails and labels:** "Noovit LLC" + the Wyoming Agents suite address only. No personal name or address in the footer, privacy policy contact or emails (use support@).
+- [ ] **FDA structure/function notifications:** signed with a title ("Member, Noovit LLC"); ask the lawyer what a public-records request would reveal.
+- [ ] **Marketplaces later** (Amazon, TikTok Shop): register as the business; they display business details.
+- [ ] **If six3 ever owns Noovit,** check with the accountant whether six3's UK filings would list it.
+- [ ] Founder posts on LinkedIn or social media will connect you; decide if and when you want that.
+
 ## UK owner: practical steps
 - **EIN without an SSN:** fax Form SS-4 to the IRS, or **phone the IRS international line (+1 267 941 1099)**, which can usually issue the EIN on the call. The "responsible party" is you, with your passport details; no ITIN is needed.
 - **Bank:** Mercury and Wise Business have accepted non-US owners of US LLCs. Policies change, so check them when you apply. You'll need the Articles, the EIN letter (CP 575), the Operating Agreement and your passport.
