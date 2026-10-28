@@ -26,7 +26,7 @@ _Set up 28 Oct 2026. The site loads **Google Tag Manager `GTM-5LKW5HGS`** on eve
    - **Variables → User-Defined → New → Data Layer Variable**, name `lead_source`, saved as `DLV – lead_source`
    - **Triggers → New → Custom Event**, event name `generate_lead`, saved as `Lead`
    - **Tags → New → Google Analytics: GA4 Event**: Measurement ID `G-JHK7BF5QB1`, event name `generate_lead`, **Event parameters**: `lead_source` = `{{DLV – lead_source}}`. Leave "Send Ecommerce data" off. Trigger: `Lead`. Save as `GA4 – Lead`
-5. **Preview** (top right) → enter `https://www.noovit.com` → browse a product and add it to the cart. Both tags should show as "Fired".
+5. **Preview** (top right) → enter `https://www.noovit.com`. While pre-launch mode is on you'll see the coming-soon page: join the waitlist and check `GA4 – Lead` fires. To test shop events, sign in to Admin (or open your preview link) in the same browser first, then browse a product and add it to the cart: `GA4 – Ecommerce events` should fire.
 6. **Submit → Publish.**
 
 ## In GA4
