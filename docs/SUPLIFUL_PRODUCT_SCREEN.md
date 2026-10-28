@@ -8,6 +8,7 @@ _One place for every Supliful product we've checked, with a verdict. Started 28 
 | Product | Formula (per daily serving) | Verdict | Why |
 |---|---|---|---|
 | **Turmeric** 60 caps | 95% curcuminoids + black pepper | ✅ **Launch** | $11.05 all-in; premium tier $29–40. See `SHOPPING_ANALYSIS_TURMERIC.md` |
+| **Ashwagandha Plus** 60 caps | **KSM-66 600 mg** (5% withanolides) + L-arginine 300 mg, maca 150 mg, Panax ginseng 100 mg, shatavari 50 mg, D3 20 mcg, B6 2.5 mg, B12 25 mcg | ✅ **Launch-worthy core** (prefer plain KSM-66 if Supliful has it) | KSM-66 at 600 mg is the most-studied branded extract at the study dose. The extras are token amounts |
 | **Lion's mane** 60 caps | 1,000 mg organic fruiting body + mycelium, 40% polysaccharides | ✅ **Launch** (after the COA) | Fair dose, in line per mg at $35–40. Ask for the beta-glucan %. See `SHOPPING_ANALYSIS_LIONS_MANE.md` |
 | **Vitamin D3 2,000 IU** 100 softgels | D3 50 mcg in soybean/corn oil, gelatin softgel | 🟡 **Bundle/add-on only** | Commodity: big brands sell 2,000 IU for ~$10. Our planned D3 & K2 is a better hero |
 | **Omega-3** 100 softgels | EPA 180 + DHA 120 mg per softgel (600 mg/day at 2 a day) | 🟡 **Bundle/basic only**, or source a better one | Standard "18/12" mass-market spec, no IFOS or oxidation testing stated |
@@ -46,10 +47,18 @@ _One place for every Supliful product we've checked, with a verdict. Started 28 
 - **Supliful claims "increases energy levels"**, which isn't supported unless someone is deficient. Drop it.
 - Our catalog already plans **Vitamin D3 & K2** (2,000 IU + 75 mcg MK-7), a better hero. Use plain D3 only as an add-on or in bundles (GLP-1 companion, Women 40+).
 
+### Ashwagandha Plus (60 capsules, 2 a day), added 28 Oct
+- **The good part is excellent:** **KSM-66** is the best-known branded ashwagandha extract. **600 mg a day** (5% withanolides) is the dose used in the main human trials on stress, cortisol and sleep. A branded, studied ingredient on the label is exactly what an evidence-graded brand wants. It also matches our planned **Ashwagandha Calm+** (600 mg, 5% withanolides).
+- **The extras are "label dressing":** L-arginine 300 mg (studies use 3–6 g), maca 150 mg (studies use 1.5–3 g), Panax ginseng 100 mg as plain powder (studies use 200–400 mg of extract), shatavari 50 mg. They're too small to grade, and stimulating ginseng and arginine sit oddly with a *calm and sleep* product. The vitamins (D3 800 IU, B6, B12) are low and harmless.
+- **Best option:** ask Supliful for a **plain KSM-66 600 mg** capsule and sell that as Ashwagandha Calm+, saying "KSM-66, 600 mg, the dose used in the studies". If they don't have one, this product works, but we'd say honestly that KSM-66 does the work. It could also become a separate "energy & vitality" product.
+- **Warnings needed** (Supliful's are generic): not in pregnancy or breastfeeding; talk to a doctor with thyroid conditions (ashwagandha can raise thyroid hormone), autoimmune disease, liver problems (rare liver-injury reports), or if taking sedatives, thyroid, diabetes or blood-pressure medication. Ginseng can interact with blood thinners. Some European countries have restricted ashwagandha, which is worth a line in our guide.
+- **Licensing:** using the KSM-66 name and logo needs the brand owner's (Ixoreal) approval, usually arranged through the supplier. Ask Supliful.
+- **Market check:** pending owner screenshots ("ashwagandha KSM-66"). Expect a crowded category with cheap Amazon KSM-66 at about $15–25 and premium at $30–40.
+
 ## Questions for Supliful (all products)
-1. Prices (product, shipping, fulfilment, Pro) for: lion's mane, NAD+, NMN, colostrum, omega-3, D3, methylene blue.
+1. Prices (product, shipping, fulfilment, Pro) for: ashwagandha, lion's mane, NAD+, NMN, colostrum, omega-3, D3, methylene blue.
 2. Full Supplement Facts panels as text or PDF, and per-lot COAs (berberine mg, lion's mane beta-glucans, NMN purity, NAD+ potency, omega-3 oxidation/TOTOX).
-3. Options: berberine 500 mg, NR/Niagen, concentrated IFOS omega-3 (or algae), colostrum powder, D3 + K2 combo.
+3. Options: plain KSM-66 600 mg ashwagandha (and the right to use the KSM-66 logo), berberine 500 mg, NR/Niagen, concentrated IFOS omega-3 (or algae), colostrum powder, D3 + K2 combo.
 4. Softgel gelatin source (bovine, porcine or fish) for omega-3 and D3.
 
 ## Sources
