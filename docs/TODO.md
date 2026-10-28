@@ -22,7 +22,7 @@ _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only yo
 1. Turn off "Show placeholder trust content" in Admin → Settings.
 2. Vercel → Environment Variables: `SITE_LIVE=true` → redeploy. (This removes the coming-soon page, the noindex and restores the sitemap.)
 3. Google Search Console: add the domain, submit `https://www.noovit.com/sitemap.xml`, request indexing of the home page.
-4. Google Merchant Center (free listings): add the product feed `https://www.noovit.com/feeds/google` (only now: while pre-launch is on, product pages show "Coming soon" and Google would reject them). Set up the account beforehand, in Noovit LLC's name: verify and claim the domain, add free shipping and the 90-day return policy.
+4. Google Merchant Center (free listings): add the product feed `https://www.noovit.com/feeds/google.xml` (only now: while pre-launch is on, product pages show "Coming soon" and Google would reject them). Set up the account beforehand, in Noovit LLC's name: verify and claim the domain, add free shipping and the 90-day return policy.
 5. Email the waitlist (Admin → Subscribers, source `launch-waitlist`) with the welcome code.
 
 **⏳ Next time you're at a computer (5 min)**
