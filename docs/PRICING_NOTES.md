@@ -15,26 +15,25 @@ _28 Oct 2026. From the owner's Google Shopping screenshots for "turmeric tablets
 4. **Stars need reviews through an approved aggregator** (50+ reviews). Without them we compete on image, title and price.
 5. Free delivery dates show for everyone, so free shipping is table stakes.
 
-## Our turmeric pricing (corrected 28 Oct: shipping and fees are extra)
-Supliful turmeric 60 caps: **product $11.05** (free plan; ~$8 on Pro, as low as $4.05 on higher tiers or volume) **+ shipping from $5.29 + fulfilment from $1.29 per order + processing fee if applicable.** Supliful's suggested retail price is $25.90.
+## Our turmeric pricing (corrected again 28 Oct)
+Supliful turmeric 60 caps shows **$4.05 – $11.05**: **$4.05 is the product**, and **$11.05 is the all-in cost of one bottle delivered** (≈ $4.05 product + $5.29 shipping + $1.29 fulfilment + ~$0.42 processing). About **$8 all-in on Pro.** Supliful's suggested retail price is $25.90. Stripe is about 3% + $0.30 on top.
 
-**Landed cost of a 1-bottle order:** **$17.63** on the free plan, **~$14.58** on Pro (before any processing fee). Stripe is about 3% + $0.30 on top.
-
-| Our price (1 bottle) | Profit, free plan | Profit, Pro |
+| Our price (1 bottle) | Profit, free plan ($11.05 landed) | Profit, Pro (~$8) |
 |---|---|---|
-| $40 one-time (today) | $20.87 (52%) | $23.92 (60%) |
-| $36 one-time (suggested) | $16.99 (47%) | $20.04 (56%) |
-| $35 subscribed (today) | $16.02 (46%) | $19.07 (54%) |
-| $30 subscribed (suggested) | $11.17 (37%) | $14.22 (47%) |
+| $40 one-time | $27.45 (69%) | ~$30.50 (76%) |
+| $36 one-time | $23.57 (65%) | ~$26.60 (74%) |
+| $35 subscribed | $22.60 (65%) | ~$25.65 (73%) |
+| $32 subscribed | $19.69 (62%) | ~$22.75 (71%) |
+| $30 subscribed | $17.75 (59%) | ~$20.80 (69%) |
 
-Multi-bottle orders spread the $5.29 shipping and $1.29 fulfilment across bottles (exact multi-unit shipping to confirm with Supliful), so 3- and 6-packs carry better margin per bottle.
+Extra bottles in the same order add roughly the $4.05 product cost plus a little shipping (multi-unit shipping to confirm), so packs and bundles are very profitable.
 
 **What this means:**
-- **A first order paid for with ads (~$10–25 per new customer) roughly breaks even on a single bottle.** The profit comes from **subscriptions, packs and bundles**, which also share shipping.
-- **Free shipping on everything costs us $5.29 per order.** Premium peers often use **free shipping over $50** (Innerbody) or free shipping on subscriptions only. Option: free shipping on subscriptions and orders $50+, and $4.95 on a single one-time bottle.
-- **Pro ($69/mo)** saves about $3.05/bottle, so it **pays for itself at about 23 bottles a month**. Higher tiers ($4.05) only make sense at volume.
-- **Don't price near Supliful's suggested $25.90.** That's the mass/mid tier; at that price margins after shipping and ads disappear.
-- **Suggested turmeric pricing:** **$36 one-time / $32 subscribed / 3-pack $33 a bottle / 6-pack $30 a bottle**, with free shipping on subscriptions and orders over $50. Confirm once all real costs are in.
+- **Margins are healthy:** a first order is profitable even after ~$10–25 of ad cost, and repeat orders are mostly profit.
+- **Keep free shipping on all orders.** Shipping is already inside the landed cost.
+- **Pro ($69/mo)** saves about $3/bottle, so it pays for itself at about 23 bottles a month.
+- **Don't price near Supliful's suggested $25.90.** Our tier is $29–40.
+- **Suggested turmeric pricing:** $36–40 one-time / **$30–32 subscribed** / 3-pack $33 a bottle / 6-pack $30 a bottle, free shipping on everything.
 
 ## Changes made for Shopping
 - Feed images (`/product-image/<slug>`, used by Google, Meta and TikTok) now use a **plain white background with the bottle filling the frame**, as Merchant Center prefers. The website keeps its warm scene.
