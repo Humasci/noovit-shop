@@ -1,8 +1,9 @@
-// Client-side event tracking. Calls are no-ops until the visitor has accepted cookies and the pixels have loaded.
+// Client-side event tracking. Opt-out model: events flow unless the visitor declined cookies; calls to a pixel that isn't loaded are no-ops.
 
 type Fn = (...args: unknown[]) => void;
 declare global {
   interface Window {
+    dataLayer?: unknown[];
     gtag?: Fn;
     fbq?: Fn;
     ttq?: { track: Fn; page: Fn };
@@ -23,7 +24,7 @@ export type TrackEvent =
   | { name: 'purchase'; transactionId: string; value: number; items: TrackItem[] };
 
 export const CONSENT_KEY = 'noovit-consent';
-export const hasConsent = () => typeof window !== 'undefined' && localStorage.getItem(CONSENT_KEY) === 'granted';
+export const hasConsent = () => typeof window !== 'undefined' && localStorage.getItem(CONSENT_KEY) !== 'denied';
 
 const gaItems = (items: TrackItem[]) => items.map((i) => ({ item_id: i.id, item_name: i.name, price: i.price, quantity: i.quantity ?? 1 }));
 
@@ -32,6 +33,15 @@ export function track(e: TrackEvent) {
   const items = e.name === 'view_item' || e.name === 'add_to_cart' ? [e.item] : e.items;
   const value = e.name === 'view_item' || e.name === 'add_to_cart' ? e.item.price * (e.item.quantity ?? 1) : e.value;
   const ids = items.map((i) => i.id);
+
+  // Google Tag Manager: GA4 ecommerce format. Clearing `ecommerce` first stops items leaking between events.
+  if (window.dataLayer) {
+    window.dataLayer.push({ ecommerce: null });
+    window.dataLayer.push({
+      event: e.name,
+      ecommerce: { currency: 'USD', value, items: gaItems(items), ...(e.name === 'purchase' ? { transaction_id: e.transactionId } : {}) },
+    });
+  }
 
   window.gtag?.('event', e.name, {
     currency: 'USD',

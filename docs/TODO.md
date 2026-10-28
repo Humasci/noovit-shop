@@ -24,7 +24,8 @@ _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only yo
 **Accounts and settings**
 - [ ] Stripe: keys in Vercel, `npm run stripe:sync`, webhook, customer portal, Stripe Tax; then a real test-mode order.
 - [ ] Vercel env: `NEXT_PUBLIC_SITE_URL`, `RESEND_API_KEY` + `EMAIL_FROM` (verified domain), and social URLs (`NEXT_PUBLIC_INSTAGRAM_URL`, `NEXT_PUBLIC_TIKTOK_URL`, `NEXT_PUBLIC_FACEBOOK_URL`).
-- [ ] Admin → Settings: support email, business address, welcome code (create **WELCOME10** first), GA4/Meta/TikTok IDs.
+- [ ] Admin → Settings: support email, business address, welcome code (create **WELCOME10** first), Meta/TikTok IDs. (GTM `GTM-5LKW5HGS` is built in; leave the GA4 field empty.)
+- [ ] **Owner: set up GA4 inside GTM** (≈10 min, steps in `docs/ANALYTICS_SETUP.md`): Google tag `G-JHK7BF5QB1`, ecommerce event tag, then Preview and Publish.
 - [ ] Admin → Products: map each **Supplier SKU** to its Supliful product.
 - [ ] **Switch "Show placeholder trust content" to `off`** once real reviews and advisors replace the placeholders.
 

@@ -6,6 +6,7 @@ import Script from 'next/script';
 import { CONSENT_KEY } from '@/lib/analytics';
 
 export interface PixelIds {
+  gtm: string;
   ga4: string;
   meta: string;
   tiktok: string;
@@ -28,7 +29,9 @@ const readConsent = () => localStorage.getItem(CONSENT_KEY) ?? 'unset';
 
 function setConsent(value: 'granted' | 'denied') {
   localStorage.setItem(CONSENT_KEY, value);
-  window.dispatchEvent(new Event(CHANGE_EVENT));
+  // Declining reloads the page so nothing that already loaded keeps running.
+  if (value === 'denied') window.location.reload();
+  else window.dispatchEvent(new Event(CHANGE_EVENT));
 }
 
 export function openCookiePreferences() {
@@ -47,28 +50,44 @@ function PageViews() {
 }
 
 // IDs are validated against strict patterns when saved, and JSON-encoded here before going into inline scripts.
+// Opt-out model (US store): tags load straight away; "Decline" turns them off for this browser.
 export function Analytics({ ids }: { ids: PixelIds }) {
   const consent = useSyncExternalStore(subscribe, readConsent, () => 'pending');
-  const any = Boolean(ids.ga4 || ids.meta || ids.tiktok);
-  if (!any) return null;
-
-  if (consent === 'unset') {
-    return (
-      <div role="region" aria-label="Cookie consent" className="fixed inset-x-0 bottom-0 z-40 border-t border-[var(--color-line)] bg-white p-4 shadow-2xl md:inset-x-auto md:bottom-4 md:left-4 md:max-w-md md:rounded-2xl md:border">
-        <p className="text-sm">
-          We use cookies to measure site traffic and show you relevant ads. You can change your choice anytime from &ldquo;Cookie preferences&rdquo; in the footer.
-        </p>
-        <div className="mt-3 flex gap-2">
-          <button onClick={() => setConsent('granted')} className="btn btn-primary !px-5 !py-2 text-sm">Accept</button>
-          <button onClick={() => setConsent('denied')} className="btn btn-outline !px-5 !py-2 text-sm">Decline</button>
-        </div>
-      </div>
-    );
-  }
-  if (consent !== 'granted') return null;
+  const any = Boolean(ids.gtm || ids.ga4 || ids.meta || ids.tiktok);
+  if (!any || consent === 'pending' || consent === 'denied') return null;
 
   return (
     <>
+      <Tags ids={ids} />
+      {consent === 'unset' && <Banner />}
+    </>
+  );
+}
+
+function Banner() {
+  return (
+    <div role="region" aria-label="Cookie consent" className="fixed inset-x-0 bottom-0 z-40 border-t border-[var(--color-line)] bg-white p-4 shadow-2xl md:inset-x-auto md:bottom-4 md:left-4 md:max-w-md md:rounded-2xl md:border">
+      <p className="text-sm">
+        We use cookies to measure site traffic and show you relevant ads. Decline to opt out; you can change your choice anytime from &ldquo;Cookie preferences&rdquo; in the footer.
+      </p>
+      <div className="mt-3 flex gap-2">
+        <button onClick={() => setConsent('granted')} className="btn btn-primary !px-5 !py-2 text-sm">Accept</button>
+        <button onClick={() => setConsent('denied')} className="btn btn-outline !px-5 !py-2 text-sm">Decline</button>
+      </div>
+    </div>
+  );
+}
+
+function Tags({ ids }: { ids: PixelIds }) {
+  return (
+    <>
+      {/* Google Tag Manager, on every page unless the visitor opted out. Single-page navigations
+          reach GA4 through its "page changes based on browser history" setting; shop events arrive via dataLayer (lib/analytics.ts). */}
+      {ids.gtm && (
+        <Script id="gtm" strategy="afterInteractive">
+          {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer',${JSON.stringify(ids.gtm)});`}
+        </Script>
+      )}
       {ids.ga4 && (
         <>
           <Script src={`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(ids.ga4)}`} strategy="afterInteractive" />
