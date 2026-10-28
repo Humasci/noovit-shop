@@ -18,6 +18,26 @@ If "8%" and "97%" are the berberine content, each capsule holds about **73 mg of
 - At ~146 mg we'd be **the lowest dose in the grid** and, at $36, the most expensive per mg (about **$8 per 1,000 mg** vs **$1.20–1.50** for Thorne and NAOMI).
 - It would contradict our "evidence-graded" positioning: we couldn't honestly show the study dose.
 
+### Price per mg: we'd be the most expensive in the grid
+Price per 1,000 mg of berberine, for listings where the dose is visible (30-day bottles unless noted; `Berberine profit` tab, live formulas):
+
+| Product | mg/day | Price | Price/day | **$ per 1,000 mg** | Noovit price to match it (at 146 mg/day) |
+|---|---|---|---|---|---|
+| Jade Pure Berberine 1,200 mg | 1,200 | $37.99 | $1.27 | **$1.06** | $4.64 |
+| NAOMI Himalayan 500 mg | ~1,000 | $39.99 | $1.33 | **$1.33** | $5.83 |
+| Xymogen 1 g (120 caps, 60 days) | 1,000 | $86.99 | $1.45 | **$1.45** | $6.35 |
+| Thorne Berberine 500 mg | ~1,000 | $44.00 | $1.47 | **$1.47** | $6.44 |
+| Naked Nutrition 200 mg | ~400 | $24.99 | $0.83 | **$2.08** | $9.11 |
+| Thorne Berberine 200 mg | ~400 | $30.00 | $1.00 | **$2.50** | $10.95 |
+| Absorption Co. 250 mg | ~250 | $31.85 | $1.06 | **$4.24** | $18.57 |
+| **Noovit (Supliful) at $36** | **~146** | $36.00 | $1.20 | **$8.22** | — |
+| Noovit at $29 | ~146 | $29.00 | $0.97 | **$6.62** | — |
+
+- At $36 we'd cost **6–8× more per mg** than Thorne 500 mg or NAOMI, and about 2× more than the next-worst (Absorption Co.).
+- To match Thorne 500 mg per mg we'd have to sell the bottle for about **$6.40**, below our $10.25 cost. **There's no price that makes it competitive per mg.**
+- Reaching a study dose (1,000 mg/day) would take about **14 capsules a day**, a bottle every 4–5 days.
+- Our nerdy, data-forward audience *will* do this maths, and so will reviewers and AI answers. It can't be fixed with marketing; only with a different formula.
+
 Our current catalog entry (`Berberine Complex`: 500 mg berberine HCl + chromium + Ceylon cinnamon) **doesn't match** this product either.
 
 **Action:** ask Supliful for the Supplement Facts panel and a COA that states **mg of berberine per serving**. Then:

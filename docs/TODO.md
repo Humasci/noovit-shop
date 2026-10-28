@@ -47,6 +47,7 @@ _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only yo
 - [ ] **Build:** Google-style feed titles (brand + product + key spec + count).
 - [ ] **Owner:** confirm Supliful costs and shipping per product. Turmeric is $11.05 all-in ($8 with Pro); berberine is $10.25 all-in. See `docs/PRICING_NOTES.md` and `docs/pricing/noovit-pricing.xlsx`. Decide the price points (e.g. turmeric $36 / $30 subscribed, berberine $36 / $32).
 - [ ] **Owner: ask Supliful for berberine's Supplement Facts/COA with mg of berberine per serving.** Their ingredient list suggests only ~146 mg a day (studies use 900–1,500 mg). If that's right, source a 500 mg berberine HCl elsewhere. See `docs/SHOPPING_ANALYSIS_BERBERINE.md`.
+- [ ] **Owner: lion's mane.** Send Supliful's price screenshot (the spreadsheet uses an $11 placeholder) and ask for a COA with beta-glucan % and the fruiting body : mycelium ratio. See `docs/SHOPPING_ANALYSIS_LIONS_MANE.md`.
 - [ ] **Owner:** pick a label direction (B clinical white / C colour block / D amber). See `design/label-options/comparison.png`.
 
 ## 🟡 Content and SEO
