@@ -3,6 +3,20 @@
 _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only you can do it. **Build** = Claude does it. Tick items off here; `PROGRESS.md` keeps the history._
 
 ## 🔴 Before launch: owner
+**🛑 Pre-launch mode is ON (28 Oct).** The public sees a "Coming soon" page with a waitlist; every response says `noindex`; robots.txt has no sitemap. You see the full store while signed in to Admin, and Admin → Overview shows a 30-day preview link to share. Waitlist sign-ups appear in Admin → Subscribers (source `launch-waitlist`).
+
+**Company first**
+- [ ] Form the company (LLC), registered agent and business address; get the EIN.
+- [ ] Business bank account; Stripe account in the company's name (sandbox now, live keys later).
+- [ ] Product liability insurance; sales tax registration where required (Stripe Tax helps).
+- [ ] Replace placeholders with real company details: Admin → Settings (support email, business address), label address, legal pages.
+
+**🚀 Launch day**
+1. Turn off "Show placeholder trust content" in Admin → Settings.
+2. Vercel → Environment Variables: `SITE_LIVE=true` → redeploy. (This removes the coming-soon page, the noindex and restores the sitemap.)
+3. Google Search Console: add the domain, submit `https://www.noovit.com/sitemap.xml`, request indexing of the home page.
+4. Email the waitlist (Admin → Subscribers, source `launch-waitlist`) with the welcome code.
+
 **⏳ Next time you're at a computer (5 min)**
 - [x] **Supabase → SQL Editor (done 28 Oct):** paste and run `supabase/manual/2026-10-28-catalog-update.sql` (replaces the earlier plus-names file). It applies the "+" names and headlines, the confirmed Supliful formulas (magnesium glycinate 275 mg, KSM-66 ashwagandha, lion's mane, creatine) and hides Berberine Complex. It also sets the **new prices** (`docs/PRICE_LIST.md`). Safe to re-run; supplier SKUs are kept. **Then Admin → Products → Sync to Stripe** so checkout charges the new prices. (Or reconnect the Supabase connector and Claude runs it.) **Until this runs, the live shop shows the old names** ("Collagen Complex", "Magnesium Complex").
 - [ ] **Admin → Products → Import launch catalog** (adds the 3 bundles and the NAC and CoQ10 drafts), then save any product once (refreshes the cache) or redeploy.

@@ -16,6 +16,8 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   async headers() {
     return [
+      // Pre-launch (lib/launch.ts): keep the whole site out of search results until SITE_LIVE=true.
+      ...(process.env.SITE_LIVE === 'true' ? [] : [{ source: '/:path*', headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }] }]),
       {
         source: '/:path*',
         headers: [

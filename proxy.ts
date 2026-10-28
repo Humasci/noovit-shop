@@ -2,6 +2,7 @@ import { createHash } from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
 import { ADMIN_COOKIE, adminConfigured, isAdminToken } from '@/lib/admin/session';
 import { signToken, verifyToken } from '@/lib/sign';
+import { PREVIEW_COOKIE, isPreviewToken, siteLive } from '@/lib/launch';
 
 // Hidden admin entrance. When ADMIN_PATH is set, /admin answers 404 to anyone who hasn't
 // first opened /<ADMIN_PATH> on this browser (which sets a signed "gate" cookie) or isn't
@@ -15,10 +16,19 @@ const gateId = (path: string) => createHash('sha256').update(path).digest('base6
 const hasGate = (req: NextRequest, path: string) => verifyToken<{ gate?: string }>(req.cookies.get(GATE_COOKIE)?.value)?.gate === gateId(path);
 const notFound = (req: NextRequest) => NextResponse.rewrite(new URL('/__not-found', req.url));
 
+// Pre-launch: everything a shopper could open goes to /coming-soon, except for signed-in staff and preview-link holders.
+// Admin, the preview link, robots/sitemap and files (anything with an extension) stay reachable.
+const OPEN_PATHS = /^\/(admin|coming-soon|preview|unsubscribe|__not-found)(\/|$)/;
+const gated = (pathname: string) => !OPEN_PATHS.test(pathname) && !/\.[a-z0-9]+$/i.test(pathname);
+
 export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const secret = adminPath();
   const signedIn = isAdminToken(req.cookies.get(ADMIN_COOKIE)?.value);
+
+  if (!siteLive() && gated(pathname) && !signedIn && !(adminConfigured() && isPreviewToken(req.cookies.get(PREVIEW_COOKIE)?.value))) {
+    if (!(secret && pathname === `/${secret}`)) return NextResponse.rewrite(new URL('/coming-soon', req.url));
+  }
 
   if (secret && pathname === `/${secret}`) {
     if (!adminConfigured()) return notFound(req);

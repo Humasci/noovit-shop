@@ -11,9 +11,12 @@ export async function POST(req: NextRequest) {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return NextResponse.json({ error: 'Please enter a valid email address.' }, { status: 400 });
 
   const waitlist = body.source === 'pets';
-  const source = waitlist ? 'pets-waitlist' : body.source === 'quiz' ? 'quiz' : 'newsletter';
-  if (await subscribe(email, source)) {
+  const launch = body.source === 'launch'; // pre-launch "coming soon" page
+  const source = launch ? 'launch-waitlist' : waitlist ? 'pets-waitlist' : body.source === 'quiz' ? 'quiz' : 'newsletter';
+  // No welcome code before launch: there's no shop to use it in yet.
+  if ((await subscribe(email, source)) && !launch) {
     await welcome(email).catch((err) => console.error('Welcome email failed', err));
   }
+  if (launch) return NextResponse.json({ ok: true, message: "You're on the list. We'll email you the day Noovit opens." });
   return NextResponse.json({ ok: true, message: waitlist ? "You're on the list — we'll email you when Noovit Pets launches." : "You're in! Check your inbox for your welcome code." });
 }

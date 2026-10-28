@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { db } from '@/lib/db/server';
 import { dbConfigured } from '@/lib/config';
 import { Badge, Card, Flash, NotConfigured, PageTitle, Stat, Table, dateTime, money, td } from '@/components/admin/ui';
+import { LaunchNotice } from '@/components/admin/LaunchNotice';
 
 const DAY = 86_400_000;
 const COUNTED = ['paid', 'fulfilling', 'shipped', 'delivered', 'partially_refunded'];
@@ -60,6 +61,7 @@ export default async function Overview({ searchParams }: { searchParams: Promise
   return (
     <>
       <PageTitle title="Overview" />
+      <LaunchNotice />
       <Flash msg={msg} />
 
       {stuck > 0 && (
