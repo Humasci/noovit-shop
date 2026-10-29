@@ -18,8 +18,8 @@ import { goalsForProduct, relatedByGoal } from '@/lib/quiz';
 import { getSettings, placeholdersOn } from '@/lib/settings';
 import { ReviewsModule } from '@/components/reviews/ReviewsModule';
 import { FAQSection, SectionHeading } from '@/components/sections/Sections';
-import { netQuantity } from '@/lib/labels/svg';
-import { asLowAs } from '@/data/products';
+import { heroDose, netQuantity } from '@/lib/labels/svg';
+import { PUBLIC_DIETARY_TAGS, asLowAs } from '@/data/products';
 import { formatPrice } from '@/lib/utils/format';
 
 export async function generateStaticParams() {
@@ -88,8 +88,10 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const guides = guidesForProduct(product.slug);
   const guide = guides[0] ?? null;
 
+  const dietary = PUBLIC_DIETARY_TAGS.filter((t) => product.dietaryTags.includes(t.value));
   // Stat strip: figures straight from the label and price, never marketing multipliers.
   const [count, unitWord] = netQuantity(product).split(' ');
+  const dose = heroDose(product);
   const separately = components.reduce((sum, p) => sum + p.basePrice, 0);
   const stats = isBundle
     ? [
@@ -99,7 +101,10 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         ...(separately > product.basePrice ? [{ value: `${Math.round((1 - product.basePrice / separately) * 100)}%`, label: 'less than buying separately' }] : []),
       ]
     : [
-        { value: product.ingredients[0]?.amount ?? '', label: (product.ingredients[0]?.name ?? '').split(' ').slice(0, 2).join(' ') },
+        // Same dose line as the label front; blends fall back to the first ingredient's name without brackets.
+        dose
+          ? { value: `${dose.value} ${dose.unit}`, label: dose.line }
+          : { value: product.ingredients[0]?.amount ?? '', label: (product.ingredients[0]?.name ?? '').replace(/\s*\(.*?\)/g, '').split(' ').slice(0, 2).join(' ') },
         { value: count, label: unitWord.toLowerCase() },
         { value: `${product.servings}`, label: 'day supply' },
         { value: formatPrice(asLowAs(product) / product.servings), label: 'per day, from' },
@@ -276,6 +281,19 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               </div>
             ))}
           </dl>
+
+          {/* Dietary facts live here, not on the bottle: the front panel stays for identity, dose and quantity.
+              Only the product's own tags (set in Admin, confirmed with the supplier); pregnancy tags stay internal. */}
+          {dietary.length > 0 && (
+            <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-[var(--color-muted)]">
+              {dietary.map((t) => (
+                <li key={t.value} className="flex items-center gap-1.5">
+                  <Check aria-hidden className="h-3.5 w-3.5 text-[var(--color-accent)]" strokeWidth={3} />
+                  {t.label}
+                </li>
+              ))}
+            </ul>
+          )}
 
           <div className="mt-7">
             <PurchaseBox product={product} sections={sections} />
