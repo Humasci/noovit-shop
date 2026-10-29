@@ -1,6 +1,6 @@
 import 'server-only';
 import { formatPrice } from '@/lib/utils/format';
-import { SITE_URL } from '@/lib/site';
+import { LEGAL_NAME, SITE_URL } from '@/lib/site';
 
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 
@@ -28,7 +28,7 @@ const layout = (body: string) => `
 <div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;color:#1f2937">
   <p style="font-size:24px;font-weight:600;color:#14213d">noovit<sup style="color:#ff5f00;font-size:14px">+</sup></p>
   ${body}
-  <p style="margin-top:32px;font-size:12px;color:#6b7280">Questions? Just reply to this email.<br/>Noovit · Clean, science-driven supplements</p>
+  <p style="margin-top:32px;font-size:12px;color:#6b7280">Questions? Just reply to this email.<br/>Noovit · Clean, science-driven supplements<br/>${LEGAL_NAME}</p>
 </div>`;
 
 export interface EmailOrder {

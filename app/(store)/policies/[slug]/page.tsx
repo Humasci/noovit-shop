@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { LEGAL_NAME } from '@/lib/site';
+import { getSettings, supportEmail } from '@/lib/settings';
 
 // PLACEHOLDER: have these reviewed by a lawyer before launch.
 const POLICIES: Record<string, { title: string; sections: { h: string; p: string }[] }> = {
@@ -43,6 +45,7 @@ export function generateStaticParams() {
 export default async function PolicyPage({ params }: { params: Promise<{ slug: string }> }) {
   const policy = POLICIES[(await params).slug];
   if (!policy) notFound();
+  const [email, settings] = await Promise.all([supportEmail(), getSettings()]);
   return (
     <article className="container max-w-3xl px-6 py-16">
       <h1 className="text-4xl">{policy.title}</h1>
@@ -52,6 +55,14 @@ export default async function PolicyPage({ params }: { params: Promise<{ slug: s
           <p className="mt-2 text-[var(--color-muted)]">{s.p}</p>
         </section>
       ))}
+      <section className="mt-8">
+        <h2 className="text-xl">Who we are</h2>
+        <p className="mt-2 text-[var(--color-muted)]">
+          noovit.com is operated by {LEGAL_NAME}, a Wyoming limited liability company
+          {settings.business_address ? `, ${settings.business_address.replace(/^Noovit LLC,?\s*/i, '')}` : ''}. Contact us at{' '}
+          <a href={`mailto:${email}`} className="underline">{email}</a>.
+        </p>
+      </section>
     </article>
   );
 }

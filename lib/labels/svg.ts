@@ -1,6 +1,7 @@
 import { Product } from '@/types';
 import { CROSS_GAP, MARK_CROSS, crossTile } from '@/lib/brand/cross';
 import { GOALS, goalsForProduct } from '@/lib/quiz';
+import { LEGAL_NAME } from '@/lib/site';
 
 // Noovit label system, drawn as SVG strings so one design feeds three places:
 //  - the print draft of the full wrap-around label (fullLabelSvg, real units: 1 = 0.01 inch),
@@ -445,7 +446,7 @@ export function fullLabelSvg(p: Product, opts: { mode?: FontMode; guides?: boole
       <text x="48" y="36" text-anchor="middle" font-size="7" fill="#6b7280" ${f}>UPC barcode (GS1)</text>
       <rect x="104" y="0" width="86" height="30" fill="#fff" stroke="#9ca3af" stroke-width="0.5" stroke-dasharray="2 2"/>
       <text x="147" y="18" text-anchor="middle" font-size="6.5" fill="#6b7280" ${f}>LOT / EXP</text>
-      <text x="104" y="44" font-size="6.5" font-weight="700" fill="${NAVY}" ${f}>Distributed by Noovit</text>
+      <text x="104" y="44" font-size="6.5" font-weight="700" fill="${NAVY}" ${f}>Distributed by ${LEGAL_NAME}</text>
       <text x="104" y="53" font-size="6.5" fill="${NAVY}" ${f}>[Street address]</text>
       <text x="104" y="62" font-size="6.5" fill="${NAVY}" ${f}>[City, ST ZIP] · noovit.com</text>
     </g>

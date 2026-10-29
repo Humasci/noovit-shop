@@ -16,7 +16,7 @@ import { findProduct, petProducts } from '@/data/products';
 import { getStoreProducts } from '@/lib/catalog/server';
 import { getContent, lines, safeLink } from '@/lib/content';
 import { JsonLd } from '@/components/seo/JsonLd';
-import { SITE_URL } from '@/lib/site';
+import { LEGAL_NAME, SITE_URL } from '@/lib/site';
 import { ADVISORS, GENERAL_FAQS, IMAGES, PET_IMAGES } from '@/data/content';
 import { PLACEHOLDER_EXPERTS, PLACEHOLDER_REVIEWS } from '@/data/placeholders';
 import { PlaceholderNote } from '@/components/ui/Placeholder';
@@ -45,7 +45,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <JsonLd data={{ '@context': 'https://schema.org', '@type': 'Organization', name: 'Noovit', url: SITE_URL }} />
+      <JsonLd data={{ '@context': 'https://schema.org', '@type': 'Organization', name: 'Noovit', legalName: LEGAL_NAME, url: SITE_URL }} />
       {/* Hero */}
       <section className="relative overflow-hidden">
         <img
