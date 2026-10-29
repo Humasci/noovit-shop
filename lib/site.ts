@@ -1,6 +1,6 @@
 import { Product } from '@/types';
 
-// The company behind the store (Wyoming LLC, formed Oct 2026): footer, policies, label, emails, structured data.
+// The company behind the store (Wyoming LLC): footer, policies, label, emails, structured data.
 export const LEGAL_NAME = 'Noovit LLC';
 
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://noovit.com').replace(/\/$/, '');
