@@ -29,16 +29,19 @@ export function usesPhoto(p: Product) {
 const r = (v: number) => Math.round(v * 100) / 100;
 
 // `closeUp` crops to the label for a detail shot (the second gallery image).
-export function photoBottleSvg(p: Product, backdrop: 'scene' | 'white' = 'scene', closeUp = false) {
-  const { photo, mask } = load();
-  const s = (BOTTOM - TOP) / FRONT.h; // px per label unit
-  const ext = (R * Math.PI) / 2 / s - FRONT.w / 2; // label units needed to wrap to the bottle's sides
-  const art = `<g id="art">
+// `art` draws a custom label (label units, x from -ext to FRONT.w + ext so it wraps round the bottle); default is the standard front panel.
+export type LabelArt = (p: Product, ext: number) => string;
+const defaultArt: LabelArt = (p, ext) => `
       <rect x="${r(-ext)}" y="0" width="${r(ext + 1)}" height="${BAND}" fill="${p.color}"/>
       <rect x="${FRONT.w - 1}" y="0" width="${r(ext + 1)}" height="${BAND}" fill="${p.color}"/>
       <rect x="${r(-ext)}" y="${BAND}" width="${r(FRONT.w + ext * 2)}" height="${FRONT.h - BAND}" fill="#fff"/>
-      ${frontPanel(p, 'print')}
-    </g>`;
+      ${frontPanel(p, 'print')}`;
+
+export function photoBottleSvg(p: Product, backdrop: 'scene' | 'white' = 'scene', closeUp = false, artFn: LabelArt = defaultArt) {
+  const { photo, mask } = load();
+  const s = (BOTTOM - TOP) / FRONT.h; // px per label unit
+  const ext = (R * Math.PI) / 2 / s - FRONT.w / 2; // label units needed to wrap to the bottle's sides
+  const art = `<g id="art">${artFn(p, ext)}</g>`;
   const clips: string[] = [];
   const strips: string[] = [];
   for (let k = 0; k < STRIPS; k++) {
