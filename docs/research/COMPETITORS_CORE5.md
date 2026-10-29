@@ -232,3 +232,24 @@ brand | product | page URL | image URL
 - Momentous | Ubiquinol | https://www.livemomentous.com/products/ubiquinol | https://cdn.shopify.com/s/files/1/1400/2351/files/Ubiquinol-DTC-ProductHero.png
 - Doctor's Best | Ubiquinol 200 mg | https://www.doctorsbest.com/products/doctor-s-best-ubiquinol-200-mg-30-softgels-41053 | https://cdn.shopify.com/s/files/1/0553/2542/5869/files/drb-00274-MAIN.jpg
 - Innerbody Labs | CoQ10 Advanced with Urolithin A | https://www.innerbodylabs.com/products/coq10-advanced-with-urolithin-a | https://cdn.shopify.com/s/files/1/0582/2644/2326/files/coq10-advanced-v2.png
+
+## Addendum: what the owner's Google Shopping screenshots show (lion's mane, ashwagandha KSM-66)
+
+Checked against the phone screenshots of the sponsored Shopping rows (Denver CO, Oct 2026). These override the
+"off-white label" advice above where they disagree.
+
+- **The Supliful white bottle is everywhere.** Cortex, Fernwood, Compass, Brainstorm and Revive all sell on the
+  same bottle, many with the same two beige capsules in the bottom-right of the photo. Side by side they read as
+  one product; white or off-white labels (Fernwood, Revive, Thorne) melt into the white tile.
+- **What wins the eye at tile size (~120–140 px):** saturated colour over most of the pack (Vitasy gummies, Goli,
+  Physician's Choice, Tribe Organics, Eversio), dark glass (Superfeast, 3rd Planet, Innerbody) and big numbers
+  (Physician's Choice "1000 mg", Revive "KSM-66"). Almost nobody shows the dose large, so a giant dose is ownable.
+- **Competitors fill the tile.** Their images are cropped so the label spans most of the tile width; our mockups
+  showed the bottle at under half the width. Tight framing is the single biggest legibility win.
+- **Revive already owns a vertical spine wordmark** on a white bottle, so the spine direction (F) is not distinctive.
+- **Dark navy/charcoal wraps = Vitasy/Compass look.** Our creatine navy sits close to it; consider a brighter colour.
+- **Light tinted backgrounds are used** (Vitasy pale blue, Bettervits mint) and stand out from pure white tiles.
+
+Label exploration renders (scratchpad, not committed): A current, E spec band, F spec spine, G colour hero.
+G (product colour over ~70% of the label, white wordmark top-left, giant white dose, paper strip below for form and
+data) framed tight is the clear winner in a mock Shopping row next to the real competitors.
