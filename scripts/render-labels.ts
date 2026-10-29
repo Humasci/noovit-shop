@@ -16,7 +16,8 @@ const fontFiles = readdirSync('assets/fonts').filter((f) => f.endsWith('.ttf')).
 mkdirSync('design/labels', { recursive: true });
 
 for (const p of SEED_PRODUCTS) {
-  if (only.length ? !only.includes(p.slug) : p.productType === 'pets' || RETIRED.includes(p.slug)) continue;
+  // Bundles ship their component bottles, so they have no label of their own.
+  if (only.length ? !only.includes(p.slug) : p.productType === 'pets' || RETIRED.includes(p.slug) || p.bundleItems?.length) continue;
   const guides = fullLabelSvg(p, { mode: 'print', guides: true });
   writeFileSync(`design/labels/${p.slug}.svg`, fullLabelSvg(p, { mode: 'print' }));
   writeFileSync(`design/labels/${p.slug}.guides.svg`, guides);

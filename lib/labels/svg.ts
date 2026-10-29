@@ -1,5 +1,6 @@
 import { Product } from '@/types';
 import { CROSS_GAP, MARK_CROSS, crossTile } from '@/lib/brand/cross';
+import { GOALS, goalsForProduct } from '@/lib/quiz';
 
 // Noovit label system, drawn as SVG strings so one design feeds three places:
 //  - the print draft of the full wrap-around label (fullLabelSvg, real units: 1 = 0.01 inch),
@@ -10,7 +11,7 @@ import { CROSS_GAP, MARK_CROSS, crossTile } from '@/lib/brand/cross';
 export type FontMode = 'web' | 'print';
 
 // Bump when the photo mockup (lib/labels/photo.ts) changes, so cached product image URLs refresh.
-export const MOCKUP_VERSION = 'photo-v1';
+export const MOCKUP_VERSION = 'photo-v2';
 
 const NAVY = '#14213d';
 const INK = '#4b5563';
@@ -121,7 +122,7 @@ export function wordmark(cx: number, y: number, size: number, mode: FontMode, co
 // ---------- Front panel (220 × 225 units = 2.2" × 2.25") ----------
 
 export const FRONT = { w: 220, h: 225 };
-export const BAND = 158; // colour block above, white band below; identity and net quantity sit in the bottom 30%
+export const BAND = 150; // colour block above, white band below; dose and net quantity sit in the bottom third
 
 // Darker shade of the product colour for small text on white.
 function shade(hex: string, k = 0.35) {
@@ -162,12 +163,14 @@ export function labelSubtitle(p: Product) {
 // with imported ingredients use e.g. "Made in the USA with imported ingredients". Confirm with the supplier.
 export const ORIGIN_CLAIM = 'Made in the USA';
 
-// First word on line one, the rest on line two; sized to clear the vertical wordmark.
+// One line when the whole name fits large; otherwise the first word on line one and the rest (set a little smaller)
+// on line two. Sized to clear the vertical wordmark.
 function nameLines(name: string, room: number) {
+  const one = Math.min(26, room / (name.length * 0.6));
   const words = name.split(' ');
-  const lines = words.length > 1 ? [words[0], words.slice(1).join(' ')] : [name];
-  const size = Math.min(20, room / (Math.max(...lines.map((l) => l.length)) * 0.6));
-  return { lines, size };
+  if (one >= 20 || words.length === 1) return { lines: [name], size: one };
+  const lines = [words[0], words.slice(1).join(' ')];
+  return { lines, size: Math.min(26, room / (Math.max(lines[0].length, lines[1].length * 0.82) * 0.6)) };
 }
 
 // Mosaic pattern on the label (exploration): square tiles that dissolve one area into another.
@@ -211,39 +214,79 @@ function labelMosaic(p: Product, pattern: LabelPattern) {
   return out.join('');
 }
 
+// Category line above the product name. Falls back to the product's strongest quiz goal.
+const CATEGORIES: Record<string, string> = {
+  'magnesium-complex': 'Sleep · Recovery',
+  ashwagandha: 'Stress · Calm',
+  'lions-mane': 'Focus · Clarity',
+  creatine: 'Strength · Power',
+  coq10: 'Heart · Energy',
+};
+function labelCategory(p: Product) {
+  if (CATEGORIES[p.slug]) return CATEGORIES[p.slug];
+  const goal = goalsForProduct(p.slug)[0];
+  return GOALS.find((g) => g.id === goal)?.label.replace(/ & /g, ' · ') ?? '';
+}
+
+// What the hero dose is, under the number. Falls back to the ingredient's short name.
+const DOSE_LINES: Record<string, string> = {
+  'magnesium-complex': 'Magnesium as glycinate',
+  ashwagandha: 'KSM-66® ashwagandha root',
+  'lions-mane': "Organic lion's mane",
+  creatine: 'Creatine monohydrate',
+  coq10: 'Coenzyme Q10 (ubiquinone)',
+};
+
+// Single-ingredient products lead with their dose ("275 mg"); blends keep a benefit line instead.
+export function heroDose(p: Product) {
+  if (p.ingredients.length !== 1 || p.bundleItems?.length) return null;
+  const m = p.ingredients[0].amount.match(/^([\d.,]+)\s*(mg|mcg|g|IU)$/i);
+  if (!m) return null;
+  const value = Number(m[1].replace(/,/g, ''));
+  return { value: value.toLocaleString('en-US'), unit: m[2].toUpperCase() === 'IU' ? 'IU' : m[2].toLowerCase(), line: DOSE_LINES[p.slug] ?? shortName(p.ingredients[0].name) };
+}
+
 // Drawn at (0,0); callers translate/scale it. `bleed` extends both colour areas past the trim.
-// Colour block: icon, origin, product name, complex details; the vertical "noovit" wordmark is centred on the right edge.
-// White band (bottom 30%): benefit, "Dietary Supplement", net quantity.
+// Colour block: icon, category, product name; the vertical "noovit" wordmark is centred on the right edge.
+// White band (bottom third): the dose per serving on the left, the net quantity on the right at legal size
+// (21 CFR 101.105: bottom 30% of the panel, digits ≥ 1/8"), then the statement of identity and servings.
 export function frontPanel(p: Product, mode: FontMode, bleed = 0, pattern: LabelPattern = 'top') {
   const shift = pattern === 'band' ? 10 : 0; // white-band content moves down to make room for the dissolve
-  const vSize = 28;
+  const vSize = 26;
   const vLen = (3.02 + 0.44) * vSize; // wordmark length incl. the cross
-  const { lines, size } = nameLines(p.name, FRONT.w - 18 - 54);
+  const { lines, size } = nameLines(p.name, FRONT.w - 18 - 56);
   const dark = shade(p.color);
-  const { units } = labelCounts(p);
+  const { units, servingsPerContainer } = labelCounts(p);
   const qty = netQuantity(p);
-  // Powders: "280 g" large, "NET WT (9.9 OZ)" small; otherwise the count and its unit.
+  // Powders: "280 g" large, "NET WT 9.9 OZ" small; otherwise the count and its unit.
   const wt = qty.match(/^Net Wt (\d+ g) \((.+)\)$/);
   const big = wt ? wt[1] : p.form === 'powder' ? qty.split(' ')[0] : String(units);
   const unitWord = wt ? `Net Wt ${wt[2]}` : p.form === 'powder' ? qty.replace(/^\S+\s/, '') : UNITS[p.form][units === 1 ? 0 : 1];
-  const benefit = balance(wrap(p.shortBenefit.replace(/\.$/, '') + '*', 126, 9.6, 0.5).slice(0, 3));
-  const sub = balance(wrap(labelSubtitle(p), FRONT.w - 18 - 50, 10, 0.5).slice(0, 2));
-  // Name + details sit in the lower part of the colour block, balanced against the icon above.
-  const nameY = lines.length > 1 ? 96 : 106;
-  const subY = nameY + (lines.length - 1) * size * 1.06 + 16;
+  const dose = heroDose(p);
+  const category = labelCategory(p);
+  const caps = (x: number, y: number, t: string, sz: number, fill: string, anchor = 'start', weight = 600) =>
+    `<text x="${n(x)}" y="${n(y)}" text-anchor="${anchor}" font-size="${sz}" font-weight="${weight}" letter-spacing="${n(sz * 0.14)}" fill="${fill}" ${font('body', mode)}>${esc(t.toUpperCase())}</text>`;
+  const y0 = BAND + shift;
+  // Left of the white band: the dose, or for blends the benefit (two lines, clear of the net quantity).
+  const left = dose
+    ? `<text x="17" y="${y0 + 36}" font-size="30" font-weight="700" letter-spacing="-0.9" fill="${dark}" ${font('head', mode)}>${esc(dose.value)}<tspan font-size="12.6" font-weight="600" dx="1.8">${esc(dose.unit)}</tspan></text>
+    ${caps(18, y0 + 48, dose.line, 5.8, INK, 'start', 500)}`
+    : textBlock(balance(wrap(p.shortBenefit.replace(/\.$/, '') + '*', 120, 9.4, 0.5).slice(0, 3)), 18, y0 + 18, 9.4, 11.4, `font-weight="500" fill="${INK}" ${font('body', mode)}`);
   return `<g>
     <rect x="0" y="${-bleed}" width="${FRONT.w}" height="${BAND + bleed}" fill="${p.color}"/>
     <rect x="0" y="${BAND}" width="${FRONT.w}" height="${FRONT.h - BAND + bleed}" fill="#fff"/>
     ${labelMosaic(p, pattern)}
-    <g transform="translate(14 14) scale(0.34)">${icon('#fff')}</g>
-    <text x="18" y="67" font-size="9.4" font-weight="500" fill="#fff" ${font('body', mode)}>${esc(ORIGIN_CLAIM)}</text>
-    ${textBlock(lines, 18, nameY, n(size), n(size * 1.06), `font-weight="600" letter-spacing="${n(-0.01 * size)}" fill="#fff" ${font('head', mode)}`)}
-    ${textBlock(sub, 18, subY, 10, 12, `font-weight="500" fill="#fff" opacity="0.92" ${font('body', mode)}`)}
-    <g transform="translate(${FRONT.w - 14} ${n(BAND / 2 + vLen / 2)}) rotate(-90)">${wordmarkRaw(0, 0, vSize, mode, '#fff', '#fff', 0.62)}</g>
-    ${textBlock(benefit, 18, BAND + 20 + shift, 9.6, 11.6, `font-weight="500" fill="${INK}" ${font('body', mode)}`)}
-    <text x="18" y="${FRONT.h - 13 + shift / 4}" font-size="7.6" font-weight="600" letter-spacing="1" fill="${dark}" ${font('body', mode)}>DIETARY SUPPLEMENT</text>
-    <text x="${FRONT.w - 18}" y="${BAND + 34 + shift}" text-anchor="end" font-size="21.7" font-weight="600" fill="${dark}" ${font('head', mode)}>${esc(big)}</text>
-    <text x="${FRONT.w - 18}" y="${BAND + 52 + shift * 0.6}" text-anchor="end" font-size="${wt ? 7.4 : 9.4}" font-weight="600" letter-spacing="0.8" fill="${dark}" ${font('body', mode)}>${esc(unitWord.toUpperCase())}</text>
+    <g transform="translate(14 14) scale(0.32)">${icon('#fff')}</g>
+    ${category ? caps(18, 64, category, 7, '#fff') : ''}
+    <text x="18" y="98" font-size="${n(size)}" font-weight="600" letter-spacing="${n(-0.02 * size)}" fill="#fff" ${font('head', mode)}>${esc(lines[0])}</text>
+    ${lines[1] ? `<text x="18" y="${n(98 + size * 0.98)}" font-size="${n(size * 0.82)}" font-weight="600" letter-spacing="${n(-0.02 * size)}" fill="#fff" ${font('head', mode)}>${esc(lines[1])}</text>` : ''}
+    <g transform="translate(${FRONT.w - 16} ${n(BAND / 2 + vLen / 2)}) rotate(-90)">${wordmarkRaw(0, 9, vSize, mode, '#fff', '#fff')}</g>
+    ${left}
+    <text x="${FRONT.w - 18}" y="${y0 + 32}" text-anchor="end" font-size="21" font-weight="600" fill="${dark}" ${font('head', mode)}>${esc(big)}</text>
+    ${caps(FRONT.w - 18, y0 + 44, unitWord, unitWord.length > 9 ? 5.6 : 6.6, dark, 'end')}
+    <rect x="18" y="${y0 + 54}" width="${FRONT.w - 36}" height="0.6" fill="#d9d4cb"/>
+    ${caps(18, FRONT.h - 13, 'Dietary supplement', 6.4, NAVY, 'start', 700)}
+    ${caps(FRONT.w - 18, FRONT.h - 13, `${servingsPerContainer} servings`, 5.6, INK, 'end', 500)}
   </g>`;
 }
 
@@ -356,6 +399,7 @@ function infoPanel(p: Product, mode: FontMode, w = 190) {
   para('Caution:', 'Consult your healthcare provider before use if you are pregnant, nursing, taking medication or have a medical condition.' + (iron ? '' : ' Keep out of reach of children.'));
   if (iron) para('', IRON_WARNING, 6.2);
   para('Store', 'in a cool, dry place. Do not use if the seal under the cap is broken or missing.');
+  para('', `${ORIGIN_CLAIM}.`);
   const disc = wrap(DISCLAIMER, w - 8, 6.6, 0.52);
   out.push(`<rect x="0" y="${n(y - 4)}" width="${w}" height="${n(disc.length * 8.4 + 7)}" fill="none" stroke="${NAVY}" stroke-width="0.6"/>`);
   out.push(textBlock(disc, 4, y + 4, 6.6, 8.4, `font-weight="700" fill="${NAVY}" ${f}`));

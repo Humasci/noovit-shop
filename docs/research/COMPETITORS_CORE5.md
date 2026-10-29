@@ -253,3 +253,17 @@ Checked against the phone screenshots of the sponsored Shopping rows (Denver CO,
 Label exploration renders (scratchpad, not committed): A current, E spec band, F spec spine, G colour hero.
 G (product colour over ~70% of the label, white wordmark top-left, giant white dose, paper strip below for form and
 data) framed tight is the clear winner in a mock Shopping row next to the real competitors.
+
+## Decision (29 Oct) and FourFive reference
+
+- **Chosen:** "A": the colour block stays (category, name, vertical wordmark); the white band carries the dose per
+  serving on the left and the net quantity on the right at legal size. The owner found G's giant dose too loud.
+- **Doses vs. the market:** magnesium 275 mg elemental (Thorne 120, Momentous 200) and CoQ10 200 mg (Thorne and
+  Double Wood 100) are above average; ashwagandha 600 mg KSM-66 is the studied dose; lion's mane 1,000 mg and
+  creatine 5 g are standard. The dose goes on every single-ingredient front for consistency; comparisons
+  ("2× Thorne's dose") belong on the site and in ads, not on the pack.
+- **FourFive (owner's reference, H&B lion's mane gummies):** one saturated colour over the whole label, a big
+  horizontal wordmark that is part of the layout, a pill-shaped benefit tag, a thin line illustration, and key facts
+  as a short ruled list. Gallery images do the heavy lifting: the bottle on a dark gummy texture with three ingredient
+  callouts. Worth borrowing for our gallery images 2–4. Their "4,000 mg" is a mushroom-equivalent figure from an
+  extract; our honest 1,000 mg needs a one-line explainer on the product page.

@@ -5,21 +5,19 @@ import { Product } from '@/types';
 import { BAND, FRONT, frontPanel, scene } from './svg';
 
 // Photo mockup: our label wrapped onto Supliful's blank bottle photo (assets/mockups, 1024×1024).
-// The label is sliced into thin vertical strips placed on a cylinder, the capsules in front are masked out,
+// The label is sliced into thin vertical strips placed on a cylinder,
 // and the photo is multiplied back over the label so its own light and shadow fall on the print.
+// The supplier's stock capsules are edited out of the photo (assets/mockups/README.md), so ours don't look like every
+// other brand on the same bottle.
 const DIR = path.join(process.cwd(), 'assets/mockups');
-let assets: { photo: string; mask: string } | null = null;
-const load = () =>
-  (assets ??= {
-    photo: `data:image/jpeg;base64,${readFileSync(path.join(DIR, 'bottle-photo.jpg')).toString('base64')}`,
-    mask: `data:image/png;base64,${readFileSync(path.join(DIR, 'bottle-photo-mask.png')).toString('base64')}`,
-  });
+let photoData: string | null = null;
+const load = () => (photoData ??= `data:image/jpeg;base64,${readFileSync(path.join(DIR, 'bottle-photo.jpg')).toString('base64')}`);
 
 // Bottle geometry measured on the photo (1024 px): body centre and radius, label top and bottom.
 const CX = 505;
 const R = 215;
-const TOP = 396;
-const BOTTOM = 806;
+const TOP = 372;
+const BOTTOM = 846;
 const STRIPS = 48;
 
 export function usesPhoto(p: Product) {
@@ -28,6 +26,7 @@ export function usesPhoto(p: Product) {
 
 const r = (v: number) => Math.round(v * 100) / 100;
 
+// Framed tight so the bottle fills ~90% of the image height, as competitors' Shopping images do.
 // `closeUp` crops to the label for a detail shot (the second gallery image).
 // `art` draws a custom label (label units, x from -ext to FRONT.w + ext so it wraps round the bottle); default is the standard front panel.
 export type LabelArt = (p: Product, ext: number) => string;
@@ -38,7 +37,7 @@ const defaultArt: LabelArt = (p, ext) => `
       ${frontPanel(p, 'print')}`;
 
 export function photoBottleSvg(p: Product, backdrop: 'scene' | 'white' = 'scene', closeUp = false, artFn: LabelArt = defaultArt) {
-  const { photo, mask } = load();
+  const photo = load();
   const s = (BOTTOM - TOP) / FRONT.h; // px per label unit
   const ext = (R * Math.PI) / 2 / s - FRONT.w / 2; // label units needed to wrap to the bottle's sides
   const art = `<g id="art">${artFn(p, ext)}</g>`;
@@ -57,16 +56,15 @@ export function photoBottleSvg(p: Product, backdrop: 'scene' | 'white' = 'scene'
   }
   const bg = backdrop === 'white' ? '<rect width="1024" height="1024" fill="#fff"/>' : `<g transform="scale(2.56)">${scene(`ph-${p.slug}`)}</g>`;
   const blend = backdrop === 'white' ? '' : ' style="mix-blend-mode:multiply"';
-  return `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="${closeUp ? '215 290 600 600' : '0 0 1024 1024'}">
+  return `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="${closeUp ? '205 310 600 600' : '75 82 860 860'}">
   <defs>
     ${art}
     ${clips.join('')}
     <clipPath id="band"><rect x="${CX - R}" y="${TOP}" width="${R * 2}" height="${BOTTOM - TOP}"/></clipPath>
-    <mask id="caps" maskUnits="userSpaceOnUse" x="0" y="0" width="1024" height="1024"><image href="${mask}" width="1024" height="1024"/></mask>
   </defs>
   ${bg}
   <image href="${photo}" width="1024" height="1024"${blend}/>
-  <g mask="url(#caps)">
+  <g>
     <g clip-path="url(#band)">
       ${strips.join('')}
       <rect x="${CX - R}" y="${TOP}" width="${R * 2}" height="1.2" fill="#000" opacity="0.10"/>
