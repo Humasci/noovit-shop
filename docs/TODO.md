@@ -129,6 +129,8 @@ _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only yo
 - [ ] Bundles: maybe a 4th, **Women 40+** (Menopause + Magnesium + D3&K2).
 - [ ] Pets line (3 dog chews via a 3PL), UK launch, NAC product (recheck FDA status).
 
+- [ ] **Apps (brainstorm, `docs/APP_IDEAS.md`):** two tracks. (1) Noovit-branded: Noovit Daily companion web app, free label checker. (2) Unbranded apps published by Noovit LLC with no shop link: Cutoff (caffeine tracker, fast first app), Dosewise (supplement tracker + dose verdicts via NIH DSLD), Trial of One (self-experiments). **Owner:** answer the open questions at the end of the doc. Apple organisation account needs a D-U-N-S number (after LLC + EIN).
+
 ## ⚪ Tech debt and nice-to-haves (from the audit)
 - [ ] Mobile shop filters as a bottom sheet; quiz steps in the URL (back button).
 - [ ] Replace or self-host the Unsplash photos; real product photography; feed images without text overlays.
