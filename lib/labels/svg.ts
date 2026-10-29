@@ -247,7 +247,7 @@ export function heroDose(p: Product) {
 }
 
 // Drawn at (0,0); callers translate/scale it. `bleed` extends both colour areas past the trim.
-// Colour block: icon, category, product name; the vertical "noovit" wordmark is centred on the right edge.
+// Colour block: icon, category, product name, benefit; the vertical "noovit" wordmark is centred on the right edge.
 // White band (bottom third): the dose per serving on the left, the net quantity on the right at legal size
 // (21 CFR 101.105: bottom 30% of the panel, digits ≥ 1/8"), then the statement of identity and servings.
 export function frontPanel(p: Product, mode: FontMode, bleed = 0, pattern: LabelPattern = 'top') {
@@ -264,22 +264,26 @@ export function frontPanel(p: Product, mode: FontMode, bleed = 0, pattern: Label
   const unitWord = wt ? `Net Wt ${wt[2]}` : p.form === 'powder' ? qty.replace(/^\S+\s/, '') : UNITS[p.form][units === 1 ? 0 : 1];
   const dose = heroDose(p);
   const category = labelCategory(p);
+  // Benefit (structure/function claim, starred to the disclaimer on the information panel), bottom of the colour block.
+  const benefit = balance(wrap(p.shortBenefit.replace(/\.$/, '') + '*', FRONT.w - 18 - 50, 8.6, 0.5).slice(0, 2));
+  const nameY = 90;
   const caps = (x: number, y: number, t: string, sz: number, fill: string, anchor = 'start', weight = 600) =>
     `<text x="${n(x)}" y="${n(y)}" text-anchor="${anchor}" font-size="${sz}" font-weight="${weight}" letter-spacing="${n(sz * 0.14)}" fill="${fill}" ${font('body', mode)}>${esc(t.toUpperCase())}</text>`;
   const y0 = BAND + shift;
-  // Left of the white band: the dose, or for blends the benefit (two lines, clear of the net quantity).
+  // Left of the white band: the dose, or for blends what is in it (two lines, clear of the net quantity).
   const left = dose
     ? `<text x="17" y="${y0 + 36}" font-size="30" font-weight="700" letter-spacing="-0.9" fill="${dark}" ${font('head', mode)}>${esc(dose.value)}<tspan font-size="12.6" font-weight="600" dx="1.8">${esc(dose.unit)}</tspan></text>
     ${caps(18, y0 + 48, dose.line, 5.8, INK, 'start', 500)}`
-    : textBlock(balance(wrap(p.shortBenefit.replace(/\.$/, '') + '*', 120, 9.4, 0.5).slice(0, 3)), 18, y0 + 18, 9.4, 11.4, `font-weight="500" fill="${INK}" ${font('body', mode)}`);
+    : textBlock(balance(wrap(labelSubtitle(p), 118, 9.4, 0.5).slice(0, 2)), 18, y0 + 24, 9.4, 11.4, `font-weight="600" fill="${dark}" ${font('body', mode)}`);
   return `<g>
     <rect x="0" y="${-bleed}" width="${FRONT.w}" height="${BAND + bleed}" fill="${p.color}"/>
     <rect x="0" y="${BAND}" width="${FRONT.w}" height="${FRONT.h - BAND + bleed}" fill="#fff"/>
     ${labelMosaic(p, pattern)}
     <g transform="translate(14 14) scale(0.32)">${icon('#fff')}</g>
-    ${category ? caps(18, 64, category, 7, '#fff') : ''}
-    <text x="18" y="98" font-size="${n(size)}" font-weight="600" letter-spacing="${n(-0.02 * size)}" fill="#fff" ${font('head', mode)}>${esc(lines[0])}</text>
-    ${lines[1] ? `<text x="18" y="${n(98 + size * 0.98)}" font-size="${n(size * 0.82)}" font-weight="600" letter-spacing="${n(-0.02 * size)}" fill="#fff" ${font('head', mode)}>${esc(lines[1])}</text>` : ''}
+    ${category ? caps(18, 58, category, 7, '#fff') : ''}
+    <text x="18" y="${nameY}" font-size="${n(size)}" font-weight="600" letter-spacing="${n(-0.02 * size)}" fill="#fff" ${font('head', mode)}>${esc(lines[0])}</text>
+    ${lines[1] ? `<text x="18" y="${n(nameY + size * 0.98)}" font-size="${n(size * 0.82)}" font-weight="600" letter-spacing="${n(-0.02 * size)}" fill="#fff" ${font('head', mode)}>${esc(lines[1])}</text>` : ''}
+    ${textBlock(benefit, 18, BAND - 9 - (benefit.length - 1) * 10.4, 8.6, 10.4, `font-weight="500" fill="#fff" opacity="0.94" ${font('body', mode)}`)}
     <g transform="translate(${FRONT.w - 16} ${n(BAND / 2 + vLen / 2)}) rotate(-90)">${wordmarkRaw(0, 9, vSize, mode, '#fff', '#fff')}</g>
     ${left}
     <text x="${FRONT.w - 18}" y="${y0 + 32}" text-anchor="end" font-size="21" font-weight="600" fill="${dark}" ${font('head', mode)}>${esc(big)}</text>
