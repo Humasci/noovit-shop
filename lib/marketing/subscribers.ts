@@ -18,14 +18,19 @@ export async function marketingFooter(email: string): Promise<MarketingFooter> {
 }
 
 // Returns true when this email is new or re-subscribing (and so should get the welcome email).
-export async function subscribe(email: string, source: 'newsletter' | 'checkout' | 'pets-waitlist' | 'launch-waitlist' | 'quiz') {
+// `goal`: the quiz goal id picked in the newsletter pop-up, kept for segmenting (never overwritten with nothing).
+export async function subscribe(email: string, source: 'newsletter' | 'checkout' | 'pets-waitlist' | 'launch-waitlist' | 'quiz', goal?: string) {
   const normalized = email.trim().toLowerCase();
   const { data: existing } = await db().from('subscribers').select('status').eq('email', normalized).maybeSingle();
-  if (existing?.status === 'subscribed') return false;
+  if (existing?.status === 'subscribed') {
+    if (goal) await db().from('subscribers').update({ goal }).eq('email', normalized); // ignored if the column is missing
+    return false;
+  }
 
-  const { error } = await db()
-    .from('subscribers')
-    .upsert({ email: normalized, source, status: 'subscribed', unsubscribed_at: null }, { onConflict: 'email' });
+  const row: Record<string, string | null> = { email: normalized, source, status: 'subscribed', unsubscribed_at: null };
+  let { error } = await db().from('subscribers').upsert(goal ? { ...row, goal } : row, { onConflict: 'email' });
+  // Before migration 0007 the goal column doesn't exist: still subscribe, just without the goal.
+  if (error && goal && /goal/.test(error.message)) ({ error } = await db().from('subscribers').upsert(row, { onConflict: 'email' }));
   if (error) throw error;
   await klaviyoSubscribe(normalized, source);
   return true;

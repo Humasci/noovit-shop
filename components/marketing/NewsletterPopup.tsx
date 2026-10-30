@@ -9,6 +9,10 @@ import { Brand } from '@/components/brand/Brand';
 import { useCart } from '@/lib/store/cart';
 import { useDialog } from '@/lib/useDialog';
 import { trackSignup } from '@/lib/analytics';
+import { GOALS } from '@/lib/quiz';
+
+// Goal first, then email (higher completion, and the list can be segmented). Menopause stays in the quiz only.
+const POPUP_GOALS = GOALS.filter((g) => !g.female);
 
 const SEEN_KEY = 'noovit-popup-seen';
 export const SUBSCRIBED_KEY = 'noovit-subscribed';
@@ -22,6 +26,7 @@ export function NewsletterPopup() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState('');
+  const [goal, setGoal] = useState<string | null | undefined>(undefined); // undefined = not asked yet, null = skipped
   const [busy, setBusy] = useState(false);
   const box = useRef<HTMLDivElement>(null);
   const close = useCallback(() => setOpen(false), []);
@@ -54,7 +59,7 @@ export function NewsletterPopup() {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setBusy(true);
-    const res = await fetch('/api/newsletter', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
+    const res = await fetch('/api/newsletter', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, goal: goal ?? undefined }) });
     const data = await res.json().catch(() => ({}));
     setBusy(false);
     if (!res.ok) return void toast.error(data.error || 'Something went wrong.');
@@ -71,13 +76,31 @@ export function NewsletterPopup() {
           <X className="h-5 w-5" />
         </button>
         <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-accent)]"><Brand /></p>
-        <h2 id="popup-title" className="mt-2 text-2xl">{popup.headline}</h2>
-        {popup.text && <p className="mt-2 text-sm text-[var(--color-muted)]">{popup.text}</p>}
-        <form onSubmit={submit} className="mt-6 flex flex-col gap-3">
-          <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Your email" aria-label="Email address" autoComplete="email" className="rounded border border-[var(--color-line)] bg-white px-5 py-3" />
-          <button disabled={busy} className="btn btn-primary disabled:opacity-50">{busy ? 'Joining…' : 'Sign me up'}</button>
-        </form>
-        <button onClick={close} className="mt-4 p-1 text-xs text-[var(--color-muted)] underline">No thanks</button>
+        {goal === undefined ? (
+          <>
+            <h2 id="popup-title" className="mt-2 text-2xl">What&apos;s your main goal right now?</h2>
+            <p className="mt-2 text-sm text-[var(--color-muted)]">We&apos;ll tailor tips and offers to it.</p>
+            <div className="mt-6 grid grid-cols-2 gap-2">
+              {POPUP_GOALS.map((g) => (
+                <button key={g.id} onClick={() => setGoal(g.id)} className="rounded border border-[var(--color-line)] px-3 py-2.5 text-sm font-semibold text-[var(--color-navy)] hover:border-[var(--color-navy)]">
+                  {g.label}
+                </button>
+              ))}
+            </div>
+            <button onClick={() => setGoal(null)} className="mt-4 p-1 text-xs text-[var(--color-muted)] underline">Just browsing</button>
+          </>
+        ) : (
+          <>
+            <h2 id="popup-title" className="mt-2 text-2xl">{popup.headline}</h2>
+            {popup.text && <p className="mt-2 text-sm text-[var(--color-muted)]">{popup.text}</p>}
+            {goal && <p className="mt-2 text-sm font-semibold text-[var(--color-accent)]">Plus tips for {GOALS.find((g) => g.id === goal)?.label.toLowerCase()}.</p>}
+            <form onSubmit={submit} className="mt-6 flex flex-col gap-3">
+              <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Your email" aria-label="Email address" autoComplete="email" className="rounded border border-[var(--color-line)] bg-white px-5 py-3" />
+              <button disabled={busy} className="btn btn-primary disabled:opacity-50">{busy ? 'Joining…' : 'Sign me up'}</button>
+            </form>
+            <button onClick={close} className="mt-4 p-1 text-xs text-[var(--color-muted)] underline">No thanks</button>
+          </>
+        )}
       </div>
     </div>
   );

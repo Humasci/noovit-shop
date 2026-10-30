@@ -29,7 +29,8 @@ import { MosaicField } from '@/components/brand/MosaicField';
 // PLACEHOLDER: swap these for press/retailer logos once you have them.
 const MARQUEE = ['Clean Ingredients', 'Third-Party Tested', 'GMP Certified', 'Evidence-Based Doses', 'Made in the USA', 'Vegan Options', '90-Day Guarantee'];
 
-const SPOTLIGHT = ['probiotic-complex', 'glucosamine-complex', 'turmeric-complex', 'collagen-complex'];
+// The core range (docs/research/COMPETITORS_CORE5.md); hidden products drop out automatically. Up to four are shown.
+const SPOTLIGHT = ['magnesium-complex', 'ashwagandha', 'lions-mane', 'creatine', 'coq10', 'turmeric-complex'];
 
 export const metadata: Metadata = { alternates: { canonical: '/' } };
 
@@ -40,7 +41,7 @@ export default async function HomePage() {
   const reviews = reviewPlaceholder ? PLACEHOLDER_REVIEWS : realReviews;
   const advisorPlaceholder = !ADVISORS.length && placeholders;
   const advisors = advisorPlaceholder ? PLACEHOLDER_EXPERTS : ADVISORS;
-  const spotlight = SPOTLIGHT.map((s) => findProduct(products, s)).filter((p) => p !== undefined);
+  const spotlight = SPOTLIGHT.map((s) => findProduct(products, s)).filter((p): p is NonNullable<typeof p> => p !== undefined && p.status !== 'hidden').slice(0, 4);
   const petsLive = petProducts(products).length > 0;
 
   return (
@@ -99,20 +100,21 @@ export default async function HomePage() {
       {/* Product spotlight */}
       <section className="section">
         <div className="container px-6">
-          <div className="grid items-center gap-10 rounded-3xl bg-[var(--color-navy)] p-8 text-white md:grid-cols-2 md:p-14">
+          <div className="grid items-center gap-10 border-y border-[var(--color-line)] py-10 md:grid-cols-2 md:py-14">
             <div>
-              <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-accent-light)]">Where to start</p>
-              <h2 className="text-3xl text-white md:text-4xl">Our core formulas</h2>
+              <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-accent)]">Where to start</p>
+              <h2 className="text-3xl md:text-4xl">Our core formulas</h2>
+              <p className="mt-3 max-w-md text-[var(--color-muted)]">One ingredient each, at the dose used in research, printed on the front of the bottle.</p>
               <ul className="mt-6 space-y-3">
                 {spotlight.map((p) => (
                   <li key={p.slug}>
-                    <Link href={`/products/${p.slug}`} className="flex items-center gap-3 text-lg font-semibold hover:text-[var(--color-accent-light)]">
-                      <ArrowRight className="h-4 w-4" /> {p.name}
+                    <Link href={`/products/${p.slug}`} className="flex items-center gap-3 text-lg font-semibold text-[var(--color-navy)] hover:text-[var(--color-accent)]">
+                      <ArrowRight className="h-4 w-4 text-[var(--color-accent)]" /> {p.name}
                     </Link>
                   </li>
                 ))}
               </ul>
-              <Link href="/shop" className="btn mt-8 bg-white text-[var(--color-navy)] hover:bg-[var(--color-accent-light)]">
+              <Link href="/shop" className="btn btn-primary mt-8">
                 Shop Now
               </Link>
             </div>

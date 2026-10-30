@@ -19,6 +19,8 @@ export const SETTING_FIELDS = {
   auto_discount_threshold: { label: 'Automatic discount: minimum order ($)', placeholder: '100', pattern: /^\d{1,4}$/, env: 'AUTO_DISCOUNT_THRESHOLD', upper: false },
   auto_discount_percent: { label: 'Automatic discount: % off', placeholder: '10', pattern: /^([1-9]|[1-4]\d|50)$/, env: 'AUTO_DISCOUNT_PERCENT', upper: false },
   affiliate_hold_days: { label: 'Affiliates: days before a commission is approved for payout', placeholder: '30', pattern: /^\d{1,3}$/, env: 'AFFILIATE_HOLD_DAYS', upper: false },
+  google_site_verification: { label: 'Google verification code (Search Console / Merchant Center: the content of the google-site-verification meta tag)', placeholder: 'AbCdEf123…', pattern: /^[A-Za-z0-9_-]{20,100}$/, env: 'GOOGLE_SITE_VERIFICATION', upper: false },
+  gcr_merchant_id: { label: 'Google Customer Reviews: Merchant Center ID (shows the review opt-in after checkout)', placeholder: '123456789', pattern: /^\d{6,12}$/, env: 'GCR_MERCHANT_ID', upper: false },
   klaviyo_list_id: { label: 'Klaviyo list ID', placeholder: 'Y6nRLr', pattern: /^[A-Za-z0-9]{4,12}$/, env: 'KLAVIYO_LIST_ID', upper: false },
 } as const;
 

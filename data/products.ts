@@ -26,7 +26,7 @@ const seeds: Seed[] = [
     dosage: 'Take 1 capsule daily with water.',
     servings: 60, form: 'capsules', basePrice: 38, color: '#5B8DB8',
     productType: 'supplements', dietaryTags: ['vegan', 'gluten-free', 'sugar-free', 'pregnancy-safe', 'postpartum-safe'],
-    audiences: ['women', 'men'], bestSeller: true, reviewCount: 4211,
+    audiences: ['women', 'men'], bestSeller: false, reviewCount: 4211,
     faqs: [{ q: 'How many strains does it contain?', a: 'Twelve clinically studied strains plus an inulin prebiotic.' }],
   },
   {
@@ -47,7 +47,7 @@ const seeds: Seed[] = [
     dosage: 'Take 3 capsules daily with a meal.',
     servings: 30, form: 'capsules', basePrice: 36, color: '#4A9B8E',
     productType: 'supplements', dietaryTags: ['gluten-free', 'sugar-free'],
-    audiences: ['men'], bestSeller: true, reviewCount: 2874,
+    audiences: ['men'], bestSeller: false, reviewCount: 2874,
   },
   {
     name: 'Collagen Glow+',
@@ -66,7 +66,7 @@ const seeds: Seed[] = [
     dosage: 'Take 2 capsules daily.',
     servings: 30, form: 'capsules', basePrice: 34, color: '#D98B8B',
     productType: 'supplements', dietaryTags: ['gluten-free', 'sugar-free'],
-    audiences: ['women'], bestSeller: true, reviewCount: 3390,
+    audiences: ['women'], bestSeller: false, reviewCount: 3390,
   },
   {
     name: 'Menopause Balance+',
@@ -86,7 +86,7 @@ const seeds: Seed[] = [
     dosage: 'Take 2 capsules daily with breakfast.',
     servings: 30, form: 'capsules', basePrice: 38, color: '#A27BB8',
     productType: 'supplements', dietaryTags: ['vegan', 'gluten-free', 'sugar-free'],
-    audiences: ['women'], bestSeller: true, reviewCount: 1958,
+    audiences: ['women'], bestSeller: false, reviewCount: 1958,
   },
   {
     name: 'Magnesium Sleep+',
@@ -158,7 +158,7 @@ const seeds: Seed[] = [
     dosage: 'Take 1 capsule daily with a meal.',
     servings: 60, form: 'capsules', basePrice: 26, color: '#E0A63A',
     productType: 'supplements', dietaryTags: ['gluten-free', 'sugar-free', 'low-fodmap', 'pregnancy-safe', 'postpartum-safe'],
-    audiences: ['women', 'men'], bestSeller: true, reviewCount: 3102,
+    audiences: ['women', 'men'], bestSeller: false, reviewCount: 3102,
     faqs: [{ q: 'Why add vitamin K2?', a: 'K2 helps direct calcium to bones and teeth, complementing what D3 does for absorption.' }],
   },
   {
@@ -200,7 +200,7 @@ const seeds: Seed[] = [
     dosage: 'Take 1 capsule up to 3 times daily, before meals.',
     servings: 30, form: 'capsules', basePrice: 36, color: '#C7A23A',
     productType: 'supplements', dietaryTags: ['vegan', 'gluten-free', 'sugar-free'],
-    audiences: ['women', 'men'], bestSeller: true, reviewCount: 1877,
+    audiences: ['women', 'men'], bestSeller: false, reviewCount: 1877,
   },
   {
     name: 'Odorless Garlic',
@@ -230,7 +230,7 @@ const seeds: Seed[] = [
     dosage: 'Take 2 capsules daily, together or split morning and evening.',
     servings: 30, form: 'capsules', basePrice: 27, color: '#9C7A5B',
     productType: 'supplements', dietaryTags: ['vegan', 'gluten-free', 'sugar-free', 'low-fodmap'],
-    audiences: ['women', 'men'], bestSeller: false, reviewCount: 2550,
+    audiences: ['women', 'men'], bestSeller: true, reviewCount: 2550,
   },
   {
     name: 'Daily Multi+',
@@ -302,9 +302,9 @@ const seeds: Seed[] = [
     ingredients: [{ name: 'Creatine Monohydrate', amount: '5g' }],
     otherIngredients: 'None.',
     dosage: 'Mix 1 scoop (5g) into water or a shake daily.',
-    servings: 56, form: 'powder', basePrice: 29, color: '#2F4858',
+    servings: 56, form: 'powder', basePrice: 29, color: '#2E8B57',
     productType: 'sports', dietaryTags: ['vegan', 'gluten-free', 'sugar-free', 'low-fodmap'],
-    audiences: ['men', 'women'], bestSeller: false, reviewCount: 3021, ageRestricted: true,
+    audiences: ['men', 'women'], bestSeller: true, reviewCount: 3021, ageRestricted: true,
     faqs: [{ q: 'How many servings are in a jar?', a: 'About 56 servings of 5g (281g jar).' }],
   },
   {
@@ -363,7 +363,7 @@ const seeds: Seed[] = [
     dosage: 'Take 2 capsules daily.',
     servings: 30, form: 'capsules', basePrice: 35, color: '#B89B72',
     productType: 'supplements', dietaryTags: ['vegan', 'gluten-free', 'sugar-free'],
-    audiences: ['women', 'men'], bestSeller: false, reviewCount: 0,
+    audiences: ['women', 'men'], bestSeller: true, reviewCount: 0,
   },
   {
     name: 'CoQ10',
@@ -379,7 +379,7 @@ const seeds: Seed[] = [
     dosage: 'Take 1 capsule daily with a meal that contains some fat.',
     servings: 30, form: 'capsules', basePrice: 28, color: '#C2573A',
     productType: 'supplements', dietaryTags: ['vegan', 'gluten-free', 'sugar-free'],
-    audiences: ['women', 'men'], bestSeller: false, reviewCount: 0,
+    audiences: ['women', 'men'], bestSeller: true, reviewCount: 0,
     faqs: [
       { q: 'Why take it with food?', a: 'CoQ10 is fat-soluble, so it is absorbed better with a meal that contains some fat.' },
       { q: 'Who should check with a doctor first?', a: 'Anyone taking blood thinners such as warfarin, blood-pressure or diabetes medication, or who is pregnant or breastfeeding.' },
@@ -527,7 +527,7 @@ const seeds: Seed[] = [
     dosage: 'Under 25 lb: 1 chew daily. 25–75 lb: 2 chews. Over 75 lb: 3 chews.',
     servings: 90, form: 'chews', basePrice: 38, color: '#E8833A',
     productType: 'pets', dietaryTags: ['sugar-free'], species: ['dog'],
-    audiences: [], bestSeller: true, reviewCount: 612,
+    audiences: [], bestSeller: false, reviewCount: 612,
   },
   {
     name: 'Hip & Joint Chews for Dogs',
@@ -547,7 +547,7 @@ const seeds: Seed[] = [
     dosage: 'Under 25 lb: 1 chew daily. 25–75 lb: 2 chews. Over 75 lb: 3 chews.',
     servings: 90, form: 'chews', basePrice: 40, color: '#2E8B7A',
     productType: 'pets', dietaryTags: [], species: ['dog'],
-    audiences: [], bestSeller: true, reviewCount: 845,
+    audiences: [], bestSeller: false, reviewCount: 845,
   },
   {
     name: 'Calming Chews for Dogs',
@@ -603,7 +603,7 @@ const seeds: Seed[] = [
     dosage: 'Sprinkle 1 scoop over food once daily.',
     servings: 60, form: 'powder', basePrice: 35, color: '#4C8BC9',
     productType: 'pets', dietaryTags: ['gluten-free', 'sugar-free'], species: ['cat'],
-    audiences: [], bestSeller: true, reviewCount: 287,
+    audiences: [], bestSeller: false, reviewCount: 287,
   },
   {
     name: 'Hairball & Digestive Chews for Cats',

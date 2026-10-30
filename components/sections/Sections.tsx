@@ -2,7 +2,7 @@
 
 import { useId, useState } from 'react';
 import Link from 'next/link';
-import { Award, FlaskConical, GraduationCap, MapPin, ShieldCheck, ChevronDown, BadgeCheck, Mail } from 'lucide-react';
+import { Award, FlaskConical, GraduationCap, MapPin, ShieldCheck, ChevronDown, BadgeCheck, Mail, PackageCheck, BadgePercent, SlidersHorizontal, TrendingUp } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { FAQ, Review } from '@/types';
 import { IMAGES, SUBSCRIPTION_PERKS } from '@/data/content';
@@ -39,11 +39,12 @@ export function TrustSection() {
           title="Quality you can check, not just trust"
           sub="Made in certified facilities and tested by independent labs, with forms and doses chosen from published research."
         />
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
+        {/* Open row (minimal direction): icons and labels, thin dividers, no cards. */}
+        <div className="grid grid-cols-2 gap-y-8 md:grid-cols-5 md:divide-x md:divide-[var(--color-line)]">
           {TRUST_ITEMS.map(({ icon: Icon, label }) => (
-            <div key={label} className="flex flex-col items-center rounded-2xl bg-white p-6 text-center">
-              <Icon className="mb-3 h-9 w-9 text-[var(--color-accent)]" strokeWidth={1} />
-              <p className="text-sm font-bold text-[var(--color-navy)]">{label}</p>
+            <div key={label} className="flex flex-col items-center px-4 text-center">
+              <Icon className="mb-3 h-8 w-8 text-[var(--color-accent)]" strokeWidth={1.25} />
+              <p className="text-sm font-semibold text-[var(--color-navy)]">{label}</p>
             </div>
           ))}
         </div>
@@ -212,21 +213,26 @@ export function NewsletterSection() {
   );
 }
 
+// Never run out · save on every delivery · full control · better results (same order as SUBSCRIPTION_PERKS).
+const PERK_ICONS = [PackageCheck, BadgePercent, SlidersHorizontal, TrendingUp];
+
 export function SubscriptionPerks() {
   return (
     <section className="section">
       <div className="container px-6">
         <SectionHeading eyebrow="Subscribe & Save" title="Stay consistent. Save every month." sub="Change or cancel anytime." />
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {SUBSCRIPTION_PERKS.map((p) => (
-            <div key={p.title} className="overflow-hidden rounded-2xl border border-[var(--color-line)]">
-              <img src={p.image} alt="" className="aspect-[4/3] w-full object-cover" loading="lazy" />
-              <div className="p-5">
-                <h3 className="text-lg">{p.title}</h3>
+        {/* Open row with icons (minimal direction), no photo cards. */}
+        <div className="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+          {SUBSCRIPTION_PERKS.map((p, i) => {
+            const Icon = PERK_ICONS[i % PERK_ICONS.length];
+            return (
+              <div key={p.title} className="border-t border-[var(--color-line)] pt-5">
+                <Icon className="h-6 w-6 text-[var(--color-accent)]" strokeWidth={1.5} aria-hidden />
+                <h3 className="mt-3 text-lg">{p.title}</h3>
                 <p className="mt-1 text-sm text-[var(--color-muted)]">{p.text}</p>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
         <div className="mt-10 text-center">
           <Link href="/shop" className="btn btn-primary">Start Your Journey</Link>

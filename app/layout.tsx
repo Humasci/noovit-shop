@@ -3,8 +3,9 @@ import { Funnel_Display, Inter, Manrope } from 'next/font/google';
 import './globals.css';
 import { Toaster } from 'react-hot-toast';
 import { SITE_URL } from '@/lib/site';
+import { getSettings } from '@/lib/settings';
 
-export const metadata: Metadata = {
+const base: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: 'Noovit — Clean, Science-Driven Supplements',
   description:
@@ -13,6 +14,12 @@ export const metadata: Metadata = {
   openGraph: { siteName: 'Noovit', type: 'website', locale: 'en_US' },
   twitter: { card: 'summary_large_image' },
 };
+
+// On every page, including the pre-launch "Coming soon" page Google sees while the store is hidden.
+export async function generateMetadata(): Promise<Metadata> {
+  const { google_site_verification } = await getSettings();
+  return google_site_verification ? { ...base, verification: { google: google_site_verification } } : base;
+}
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
 const manrope = Manrope({ subsets: ['latin'], variable: '--font-manrope', display: 'swap' });

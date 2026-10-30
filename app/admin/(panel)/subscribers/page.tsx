@@ -2,6 +2,7 @@ import { requireAdmin } from '@/lib/admin/auth';
 import { Download } from 'lucide-react';
 import { db } from '@/lib/db/server';
 import { dbConfigured } from '@/lib/config';
+import { GOALS } from '@/lib/quiz';
 import { Badge, FilterLinks, NotConfigured, PageTitle, Stat, Table, btnSm, btnSmOutline, dateTime, inputCls, td } from '@/components/admin/ui';
 
 const STATUSES = ['subscribed', 'unsubscribed'];
@@ -53,11 +54,12 @@ export default async function SubscribersPage({ searchParams }: { searchParams: 
       <div className="mb-4">
         <FilterLinks base="/admin/subscribers" param="status" current={status} options={STATUSES} />
       </div>
-      <Table head={['Email', 'Source', 'Status', 'Joined', 'Unsubscribed']} empty={!data?.length}>
+      <Table head={['Email', 'Source', 'Goal', 'Status', 'Joined', 'Unsubscribed']} empty={!data?.length}>
         {data?.map((s) => (
           <tr key={s.id}>
             <td className={td}>{s.email}</td>
             <td className={td}>{s.source}</td>
+            <td className={td}>{GOALS.find((g) => g.id === s.goal)?.label ?? '—'}</td>
             <td className={td}><Badge status={s.status === 'subscribed' ? 'active' : 'cancelled'} /></td>
             <td className={td}>{dateTime(s.created_at)}</td>
             <td className={td}>{dateTime(s.unsubscribed_at)}</td>

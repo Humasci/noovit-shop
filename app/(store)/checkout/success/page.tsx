@@ -6,6 +6,8 @@ import { stripeConfigured } from '@/lib/config';
 import { formatPrice } from '@/lib/utils/format';
 import { ClearCart } from '@/components/cart/ClearCart';
 import { PurchaseTracker } from '@/components/analytics/PurchaseTracker';
+import { CustomerReviewsOptIn } from '@/components/analytics/CustomerReviewsOptIn';
+import { getSettings } from '@/lib/settings';
 
 export const metadata: Metadata = { title: 'Order confirmed — Noovit', robots: { index: false } };
 
@@ -33,10 +35,14 @@ export default async function SuccessPage({ searchParams }: { searchParams: Prom
   }
 
   const firstName = session.customer_details?.name?.split(' ')[0];
+  const { gcr_merchant_id } = await getSettings();
 
   return (
     <div className="container max-w-2xl px-6 py-20">
       <ClearCart />
+      {gcr_merchant_id && session.customer_details?.email && (
+        <CustomerReviewsOptIn merchantId={gcr_merchant_id} orderId={session.id} email={session.customer_details.email} />
+      )}
       <PurchaseTracker
         transactionId={session.id}
         value={(session.amount_total ?? 0) / 100}

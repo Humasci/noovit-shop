@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { dbConfigured } from '@/lib/config';
 import { subscribe, welcome } from '@/lib/marketing/subscribers';
+import { GOALS } from '@/lib/quiz';
 
 export async function POST(req: NextRequest) {
   if (!dbConfigured()) return NextResponse.json({ error: 'Sign-up is not available yet.' }, { status: 503 });
@@ -14,7 +15,8 @@ export async function POST(req: NextRequest) {
   const launch = body.source === 'launch'; // pre-launch "coming soon" page
   const source = launch ? 'launch-waitlist' : waitlist ? 'pets-waitlist' : body.source === 'quiz' ? 'quiz' : 'newsletter';
   // No welcome code before launch: there's no shop to use it in yet.
-  if ((await subscribe(email, source)) && !launch) {
+  const goal = GOALS.some((g) => g.id === body.goal) ? (body.goal as string) : undefined;
+  if ((await subscribe(email, source, goal)) && !launch) {
     await welcome(email).catch((err) => console.error('Welcome email failed', err));
   }
   if (launch) return NextResponse.json({ ok: true, message: "You're on the list. We'll email you the day Noovit opens." });

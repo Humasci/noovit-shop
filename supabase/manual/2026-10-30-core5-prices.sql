@@ -13,3 +13,9 @@ from (values
   ('sleep-calm-stack', 49)
 ) as v(slug, price)
 where products.slug = v.slug;
+
+-- Creatine label colour: emerald instead of navy (navy read like the Cortex/Compass labels).
+update products set data = jsonb_set(data, '{color}', to_jsonb('#2E8B57'::text)), updated_at = now() where slug = 'creatine';
+
+-- Best sellers = the core range (home page "Best Sellers", shop filter, badges). Pending-supplier products lose the badge.
+update products set data = jsonb_set(data, '{bestSeller}', to_jsonb(slug in ('magnesium-complex', 'ashwagandha', 'lions-mane', 'creatine', 'coq10', 'turmeric-complex'))), updated_at = now();
