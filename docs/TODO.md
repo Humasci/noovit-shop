@@ -130,7 +130,11 @@ _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only yo
 - [ ] Automatic Supliful orders via a hidden Shopify backend (when manual orders reach about 10–15 a day).
 - [ ] Amazon (needs lab testing via an approved lab), then TikTok Shop (lab reports ≤180 days); eBay is low priority.
 - [ ] Bundles: maybe a 4th, **Women 40+** (Menopause + Magnesium + D3&K2).
-- [ ] Pets line (3 dog chews via a 3PL), UK launch, NAC product (recheck FDA status).
+- [ ] **Pets (rethought 31 Oct):** the store already has the Pets section, 6 drafted products and a waitlist; what's missing is supply (no US dropshipper found; Pet Tech Labs = 504 units/SKU into a 3PL).
+  - **Owner, first:** check Admin → Subscribers for `pets-waitlist` sign-ups (demand signal); run a small Meta test ($100–200) to the Pets waitlist page and compare cost per sign-up with the human products.
+  - **Owner:** contact **Organic Pets Treats Inc.** (Largo, FL; advertises private-label dog soft chews — calming, allergy, probiotic, joint — with no minimum order): confirm MOQ, whether they ship orders to customers (dropship), unit price, label fees, NASC membership. If yes, pets can launch with no inventory, like Supliful.
+  - **If no dropship:** one SKU only (dog hip & joint chews, the biggest category) from Pet Tech Labs or NPI into a 3PL — roughly $2–4k stock + 3PL setup. Only after the human launch shows paid traffic converts.
+  - **Build (when a supplier is confirmed):** pet Shopping/competitor analysis like the core-5 teardown (Zesty Paws, PetLab Co., Native Pet, Pawfectchew), pet labels on the supplier's chew tub, NASC-style label rules, state feed registration check.
 
 - [ ] **Apps (parked 30 Oct, `docs/APP_IDEAS.md`):** not now. If anything, a pet app (meds, supplements and vet reminders).
 
