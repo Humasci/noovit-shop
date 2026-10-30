@@ -1,0 +1,9 @@
+node_modules/
+bin/
+storage/
+*.log
+*.out
+*.res
+test.env
+keys.txt
+postgrest.conf

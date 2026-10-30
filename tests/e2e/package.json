@@ -1,0 +1,13 @@
+{
+  "name": "noovit-e2e",
+  "private": true,
+  "description": "End-to-end tests against a production build with a local database and fake Stripe (see README.md).",
+  "type": "module",
+  "dependencies": {
+    "@electric-sql/pglite": "^0.5.12",
+    "@electric-sql/pglite-socket": "^0.2.15",
+    "jsonwebtoken": "^9.0.3",
+    "playwright-core": "^1.56.0",
+    "stripe": "^19.0.0"
+  }
+}
