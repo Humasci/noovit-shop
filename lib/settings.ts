@@ -14,7 +14,7 @@ export const SETTING_FIELDS = {
   newsletter_code: { label: 'Newsletter welcome discount code', placeholder: 'WELCOME10', pattern: /^[A-Z0-9_-]{3,30}$/, env: 'NEWSLETTER_CODE', upper: true },
   show_placeholders: { label: 'Show placeholder trust content (on / off)', placeholder: 'on', pattern: /^(on|off)$/, env: 'SHOW_PLACEHOLDERS', upper: false },
   support_email: { label: 'Customer support email (shown on the site; contact form messages go here)', placeholder: 'hello@noovit.com', pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, env: 'SUPPORT_EMAIL', upper: false },
-  business_address: { label: 'Business postal address (required in marketing emails)', placeholder: 'Noovit LLC, 123 Main St, Austin, TX 78701', pattern: /^.{10,200}$/, env: 'BUSINESS_ADDRESS', upper: false },
+  business_address: { label: 'Business postal address (required in marketing emails)', placeholder: 'Noovit LLC, 123 Main St, Austin, TX 78701', pattern: /^.{10,200}$/, env: 'BUSINESS_ADDRESS', upper: false, fallback: 'Noovit LLC, 30 N Gould St Ste R, Sheridan, WY 82801, US' },
   review_request_days: { label: 'Days after shipping to ask for a review (0 = off)', placeholder: '14', pattern: /^\d{1,2}$/, env: 'REVIEW_REQUEST_DAYS', upper: false },
   auto_discount_threshold: { label: 'Automatic discount: minimum order ($)', placeholder: '100', pattern: /^\d{1,4}$/, env: 'AUTO_DISCOUNT_THRESHOLD', upper: false },
   auto_discount_percent: { label: 'Automatic discount: % off', placeholder: '10', pattern: /^([1-9]|[1-4]\d|50)$/, env: 'AUTO_DISCOUNT_PERCENT', upper: false },
@@ -40,7 +40,7 @@ async function load(): Promise<Settings> {
   return settings;
 }
 
-export const getSettings = unstable_cache(load, ['settings-v3'], { tags: [SETTINGS_TAG] });
+export const getSettings = unstable_cache(load, ['settings-v4'], { tags: [SETTINGS_TAG] });
 
 export const loadSettings = load;
 
