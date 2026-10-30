@@ -7,6 +7,9 @@ The niche has one big problem worth building for: **people stop taking supplemen
 (results take 4–8 weeks). Apps that help people choose well, take things consistently and see change are useful on their
 own, whether or not they sell anything.
 
+> **Parked (30 Oct).** The owner isn't pursuing this now. If an app happens, it will most likely be **pet-focused**
+> (see #6 Pawdose below: meds, supplements and vet reminders; low regulatory risk, no human health data).
+
 ---
 
 ## Track 1: Noovit-branded (later; supports the shop)
