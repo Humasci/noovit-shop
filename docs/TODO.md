@@ -121,6 +121,11 @@ _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only yo
   - [ ] Ask the lawyer about Washington's My Health My Data Act before retargeting health-product viewers.
   - [ ] Start small and clean: new accounts with supplement ads get extra scrutiny.
 - [ ] **FrontrowMD** demo and application once products and labels are final (Clinicians' Choice badge + clinician reviews).
+- [ ] **Phone line + AI voice agent (Vapi), at launch, kept small:**
+  - **Owner:** buy a US number in Vapi; it becomes the business number (EIN form, website, label — it also covers the label's US contact for adverse-event reports).
+  - **v1 (launch):** the agent says it's an AI assistant, answers from our FAQ/shipping/returns/subscription pages, takes messages, and **captures any health problem report** (name, contact, product, lot, what happened) → emails the owner immediately and logs it (serious events → FDA within 15 business days). No medical advice, no dosing advice beyond the label; offers a human callback by email. Recording disclosure at the start (two-party-consent states).
+  - **v2 (after launch):** order status by order number + email via a small API endpoint (build), and texting the customer a link to manage their subscription (no account changes by voice).
+  - **Build when the account exists:** system prompt + knowledge from the site, the message/adverse-event webhook into Admin, order-lookup endpoint.
 - [ ] **HSA/FSA payments** via Flex or Truemed (Absorption Company and Naomi both show it).
 - [x] Newsletter pop-up asks the **goal first** (30 Oct); goal shown in Admin → Subscribers for segmenting.
 - [ ] **Build-your-stack** (multi-buy discount) and a **rewards** programme.
