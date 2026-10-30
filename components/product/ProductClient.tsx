@@ -11,13 +11,14 @@ import { useCart, cartFrequency } from '@/lib/store/cart';
 import { formatPrice } from '@/lib/utils/format';
 
 import { ProductImage, ImageVariant } from './ProductImage';
-
-const VARIANTS: ImageVariant[] = ['front', 'duo', 'facts'];
+import { galleryVariants } from '@/lib/labels/gallery-data';
 
 // Uploaded photos take over the gallery; until then it shows generated mockups.
 export function Gallery({ product }: { product: Product }) {
   const [active, setActive] = useState(0);
   const photos = product.images;
+  // Front, then the core products' fact and dose-comparison images, then the label close-up and Supplement Facts.
+  const VARIANTS: ImageVariant[] = ['front', ...galleryVariants(product), 'duo', 'facts'];
   const count = photos.length || VARIANTS.length;
   const slide = (i: number, className: string, main = false) =>
     photos.length ? (
@@ -36,7 +37,7 @@ export function Gallery({ product }: { product: Product }) {
     <div>
       <div className="overflow-hidden rounded-lg border border-[var(--color-line)] bg-[var(--color-soft)]">{slide(Math.min(active, count - 1), 'aspect-square w-full', true)}</div>
       {count > 1 && (
-        <div className="mt-4 grid grid-cols-4 gap-3">
+        <div className={`mt-4 grid gap-3 ${count > 4 ? 'grid-cols-5' : 'grid-cols-4'}`}>
           {Array.from({ length: count }, (_, i) => (
             <button
               key={i}

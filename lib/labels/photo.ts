@@ -36,7 +36,8 @@ const defaultArt: LabelArt = (p, ext) => `
       <rect x="${r(-ext)}" y="${BAND}" width="${r(FRONT.w + ext * 2)}" height="${FRONT.h - BAND}" fill="#fff"/>
       ${frontPanel(p, 'print')}`;
 
-export function photoBottleSvg(p: Product, backdrop: 'scene' | 'white' = 'scene', closeUp = false, artFn: LabelArt = defaultArt) {
+// `backdrop`: the cream scene, plain white (feeds), or a hex tint (gallery images), multiplied under the photo.
+export function photoBottleSvg(p: Product, backdrop: 'scene' | 'white' | `#${string}` = 'scene', closeUp = false, artFn: LabelArt = defaultArt) {
   const photo = load();
   const s = (BOTTOM - TOP) / FRONT.h; // px per label unit
   const ext = (R * Math.PI) / 2 / s - FRONT.w / 2; // label units needed to wrap to the bottle's sides
@@ -54,7 +55,11 @@ export function photoBottleSvg(p: Product, backdrop: 'scene' | 'white' = 'scene'
     clips.push(`<clipPath id="s${k}"><rect x="${r(xa - 0.4)}" y="${TOP - 2}" width="${r(xb - xa + 0.8)}" height="${BOTTOM - TOP + 4}"/></clipPath>`);
     strips.push(`<g clip-path="url(#s${k})"><use href="#art" transform="matrix(${r(kx * 1000) / 1000} 0 0 ${r(s * 1000) / 1000} ${r(xa - (FRONT.w / 2 + ua) * kx)} ${TOP})"/></g>`);
   }
-  const bg = backdrop === 'white' ? '<rect width="1024" height="1024" fill="#fff"/>' : `<g transform="scale(2.56)">${scene(`ph-${p.slug}`)}</g>`;
+  const tint = backdrop === 'scene' ? '#f7f1e9' : backdrop === 'white' ? null : backdrop;
+  const bg =
+    backdrop === 'white' ? '<rect width="1024" height="1024" fill="#fff"/>'
+    : backdrop === 'scene' ? `<g transform="scale(2.56)">${scene(`ph-${p.slug}`)}</g>`
+    : `<rect width="1024" height="1024" fill="${backdrop}"/>`;
   const blend = backdrop === 'white' ? '' : ' style="mix-blend-mode:multiply"';
   return `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="${closeUp ? '205 310 600 600' : '75 82 860 860'}">
   <defs>
@@ -70,7 +75,7 @@ export function photoBottleSvg(p: Product, backdrop: 'scene' | 'white' = 'scene'
       <rect x="${CX - R}" y="${TOP}" width="${R * 2}" height="1.2" fill="#000" opacity="0.10"/>
       <rect x="${CX - R}" y="${BOTTOM - 1.2}" width="${R * 2}" height="1.2" fill="#000" opacity="0.10"/>
       <image href="${photo}" width="1024" height="1024" style="mix-blend-mode:multiply"/>
-      ${backdrop === 'white' ? '' : `<rect x="${CX - R}" y="${TOP}" width="${R * 2}" height="${BOTTOM - TOP}" fill="#f7f1e9" style="mix-blend-mode:multiply"/>`}
+      ${tint ? `<rect x="${CX - R}" y="${TOP}" width="${R * 2}" height="${BOTTOM - TOP}" fill="${tint}" style="mix-blend-mode:multiply"/>` : ''}
     </g>
   </g>
 </svg>`;

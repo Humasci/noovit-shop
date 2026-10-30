@@ -126,7 +126,7 @@ export const FRONT = { w: 220, h: 225 };
 export const BAND = 150; // colour block above, white band below; dose and net quantity sit in the bottom third
 
 // Darker shade of the product colour for small text on white.
-function shade(hex: string, k = 0.35) {
+export function shade(hex: string, k = 0.35) {
   return '#' + (hex.match(/\w\w/g) ?? []).map((h) => Math.round(parseInt(h, 16) * (1 - k)).toString(16).padStart(2, '0')).join('');
 }
 
@@ -462,7 +462,7 @@ export type BottleVariant = 'front' | 'duo' | 'facts';
 // A white HDPE bottle (or a wide tub for powders) seen slightly from above, so every circle is an ellipse.
 // The label is the flat front panel above, clipped to the curved band and shaded like a cylinder.
 // Drawn in a 400×460 box centred on x = 200.
-function bottle(p: Product, mode: FontMode, uid: string, pattern: LabelPattern = 'top') {
+export function bottle(p: Product, mode: FontMode, uid: string, pattern: LabelPattern = 'top') {
   const jar = p.form === 'powder' || p.form === 'chews';
   const cx = 200;
   const e = 0.07; // ellipse ratio for cap and base: ry = r·e (a near-front view)

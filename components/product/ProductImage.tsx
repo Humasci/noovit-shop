@@ -1,8 +1,10 @@
 import Image from 'next/image';
 import { Product } from '@/types';
 import { bottleSvg, BottleVariant, MOCKUP_VERSION } from '@/lib/labels/svg';
+import { GalleryVariant, galleryKey } from '@/lib/labels/gallery-data';
 
-export type ImageVariant = BottleVariant;
+export type ImageVariant = BottleVariant | GalleryVariant;
+const isGallery = (v: ImageVariant): v is GalleryVariant => v === 'highlights' || v === 'compare';
 
 // Short content hash of the mockup, so its URL changes whenever the label does (and can be cached forever).
 function hash(s: string) {
@@ -12,9 +14,9 @@ function hash(s: string) {
 }
 
 export const productImageSrc = (product: Product, variant: ImageVariant = 'front') =>
-  `/product-image/${product.slug}/${variant}-${hash(bottleSvg(product, variant) + MOCKUP_VERSION)}.png`;
+  `/product-image/${product.slug}/${variant}-${hash((isGallery(variant) ? galleryKey(product, variant) + bottleSvg(product, 'front') : bottleSvg(product, variant)) + MOCKUP_VERSION)}.png`;
 
-const LABELS: Record<ImageVariant, string> = { front: 'bottle', duo: 'label close-up', facts: 'supplement facts' };
+const LABELS: Record<ImageVariant, string> = { front: 'bottle', duo: 'label close-up', facts: 'supplement facts', highlights: 'what is in every serving', compare: 'dose per serving compared' };
 
 // Uploaded photos win for the main image; otherwise a branded bottle drawn from the label design (lib/labels/svg.ts),
 // served as a resized, cached image. `inline` draws the SVG in place instead (the admin editor's live preview).
@@ -44,7 +46,7 @@ export function ProductImage({
         aria-label={alt}
         className={`overflow-hidden [&>svg]:h-full [&>svg]:w-full ${className}`}
         // Built from our own product data with every text value escaped.
-        dangerouslySetInnerHTML={{ __html: bottleSvg(product, variant) }}
+        dangerouslySetInnerHTML={{ __html: bottleSvg(product, isGallery(variant) ? 'front' : variant) }}
       />
     );
   }
