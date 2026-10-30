@@ -157,3 +157,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 | Edit homepage/announcement text without a developer | Have |
 | Markets / multi-currency (UK) | with UK launch |
 | Custom domain | at launch (noovit.com) |
+- [x] 30 Oct: core-5 price cut (Mg $29, Ashwa $27, Lion's Mane $35, Creatine $29, CoQ10 $28; Sleep & Calm Stack $49; SQL in `supabase/manual/2026-10-30-core5-prices.sql`); "Adults 18+" notices; Google-style feed titles; shipping/returns + breadcrumb schema; gallery images (fact callouts, dose comparison) in `lib/labels/gallery*.ts`; minimal pass (light trust line, lighter headings, open product sections); mobile filter bottom sheet; quiz steps in browser history; draft bundle "Light Appetite Essentials" (hidden); guides: ashwagandha, nutrition on GLP-1 medications (topic guides can override headings). Tests: phase1 47/47, phase2 58/58, aff 55/55.
