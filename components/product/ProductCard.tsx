@@ -78,6 +78,7 @@ export function ProductCard({ product }: { product: Product }) {
           <span className="block text-xs text-[var(--color-muted)]">
             {product.servings}-day supply<span className="hidden sm:inline">{product.bundleItems?.length ? '' : ' per bottle'}</span>
           </span>
+          {product.ageRestricted && <span className="block text-xs font-semibold text-[var(--color-navy)]">Adults 18+ only</span>}
         </p>
         {product.status === 'active' ? (
           <button

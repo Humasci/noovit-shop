@@ -1,5 +1,6 @@
 import { Product } from '@/types';
 import { productImageUrl, productUrl } from '@/lib/site';
+import { labelCounts, labelSubtitle, netQuantity } from '@/lib/labels/svg';
 
 const GOOGLE_CATEGORY = {
   human: 'Health & Beauty > Health Care > Fitness & Nutrition > Vitamins & Supplements',
@@ -19,10 +20,27 @@ export interface FeedItem {
   productType: string;
 }
 
+// Shopping titles: brand + product + the spec people search for + count, e.g.
+// "Noovit Magnesium Sleep+ – Magnesium Glycinate 275 mg – 90 Capsules". No promo words (Google disapproves them).
+const FEED_SPECS: Record<string, string> = {
+  'magnesium-complex': 'Magnesium Glycinate 275 mg',
+  ashwagandha: 'KSM-66 Ashwagandha 600 mg',
+  'lions-mane': "Organic Lion's Mane Mushroom 1,000 mg",
+  creatine: 'Creatine Monohydrate Powder 5 g',
+  coq10: 'CoQ10 Ubiquinone 200 mg',
+};
+export function feedTitle(p: Product) {
+  if (p.bundleItems?.length) return `Noovit ${p.name} – ${p.bundleItems.length}-Product Supplement Bundle`.slice(0, 150);
+  const spec = FEED_SPECS[p.slug] ?? labelSubtitle(p);
+  const grams = netQuantity(p).match(/^Net Wt (\d+ g)/)?.[1];
+  const qty = grams ? `${grams} (${labelCounts(p).servingsPerContainer} Servings)` : netQuantity(p);
+  return [`Noovit ${p.name}`, spec, qty].filter(Boolean).join(' – ').slice(0, 150);
+}
+
 // Hidden products are already excluded by the caller; out-of-stock ones stay listed as such.
 export const toFeedItem = (p: Product): FeedItem => ({
   id: p.slug,
-  title: p.name,
+  title: feedTitle(p),
   description: [p.description, p.shortBenefit].filter(Boolean).join(' ').slice(0, 5000),
   link: productUrl(p),
   image: productImageUrl(p),

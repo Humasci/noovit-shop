@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 import { Check, Plus } from 'lucide-react';
 import { bestSellers, petProducts } from '@/data/products';
 import { getStoreProduct, getStoreProducts } from '@/lib/catalog/server';
-import { productImageUrl, productUrl } from '@/lib/site';
+import { SITE_URL, productImageUrl, productUrl } from '@/lib/site';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { Gallery, PurchaseBox, TrackViewItem } from '@/components/product/ProductClient';
 import { ProductCard } from '@/components/product/ProductCard';
@@ -134,6 +134,25 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       price: product.basePrice.toFixed(2),
       availability: product.status === 'active' ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
       itemCondition: 'https://schema.org/NewCondition',
+      // Matches /policies/delivery-returns: free US shipping, ships in 1–2 business days, arrives 2–5 days later;
+      // 90-day money-back guarantee.
+      shippingDetails: {
+        '@type': 'OfferShippingDetails',
+        shippingRate: { '@type': 'MonetaryAmount', value: 0, currency: 'USD' },
+        shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'US' },
+        deliveryTime: {
+          '@type': 'ShippingDeliveryTime',
+          handlingTime: { '@type': 'QuantitativeValue', minValue: 1, maxValue: 2, unitCode: 'DAY' },
+          transitTime: { '@type': 'QuantitativeValue', minValue: 2, maxValue: 5, unitCode: 'DAY' },
+        },
+      },
+      hasMerchantReturnPolicy: {
+        '@type': 'MerchantReturnPolicy',
+        applicableCountry: 'US',
+        returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+        merchantReturnDays: 90,
+        returnFees: 'https://schema.org/FreeReturn',
+      },
     },
     ...(product.hasRealReviews
       ? { aggregateRating: { '@type': 'AggregateRating', ratingValue: product.rating, reviewCount: product.reviewCount } }
@@ -143,6 +162,17 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   return (
     <>
       <JsonLd data={structured} />
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+            isPet ? { '@type': 'ListItem', position: 2, name: 'Noovit Pets', item: `${SITE_URL}/pets` } : { '@type': 'ListItem', position: 2, name: 'Shop', item: `${SITE_URL}/shop` },
+            { '@type': 'ListItem', position: 3, name: product.name, item: productUrl(product) },
+          ],
+        }}
+      />
       <TrackViewItem product={product} />
       <nav className="container px-6 pt-6 text-xs text-[var(--color-muted)]">
         <Link href="/">Home</Link> / {isPet ? <Link href="/pets">Noovit Pets</Link> : <Link href="/shop">Shop</Link>} / <span className="text-[var(--color-ink)]">{product.name}</span>
@@ -293,6 +323,12 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                 </li>
               ))}
             </ul>
+          )}
+
+          {product.ageRestricted && (
+            <p className="mt-4 rounded-md border border-[var(--color-line)] bg-white px-3 py-2 text-sm text-[var(--color-ink)]">
+              <span className="font-semibold text-[var(--color-navy)]">Adults 18+ only.</span> You&apos;ll confirm your age at checkout.
+            </p>
           )}
 
           <div className="mt-7">
