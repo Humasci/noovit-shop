@@ -46,7 +46,14 @@ export function Quiz({ products, code }: { products: Product[]; code: string }) 
     }
     headingRef.current?.focus();
   }, [step]);
-  const [history, setHistory] = useState<Step[]>([]);
+  // Each step is a browser history entry (#goals, #diet…), so the phone's back button goes to the previous question.
+  useEffect(() => {
+    // A reload or shared link to a mid-quiz step has no answers behind it: start from the intro.
+    if (window.location.hash) window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    const onPop = (e: PopStateEvent) => setStep((e.state?.quizStep as Step | undefined) ?? 'intro');
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
   const [a, setA] = useState<QuizAnswers>({ goals: [], symptoms: [], diet: [] });
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -61,17 +68,12 @@ export function Quiz({ products, code }: { products: Product[]; code: string }) 
   const recs = useMemo(() => recommend(products, a), [products, a]);
 
   const go = (next: Step) => {
-    setHistory((h) => [...h, step]);
     setStep(next);
+    window.history.pushState({ quizStep: next }, '', `#${next}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   const next = () => go(flow[index + 1] ?? 'calculating');
-  const back = () => {
-    const prev = history.at(-1);
-    if (!prev) return;
-    setHistory((h) => h.slice(0, -1));
-    setStep(prev);
-  };
+  const back = () => window.history.back();
   const toggle = (key: 'goals' | 'symptoms' | 'diet', id: string, max = 99) =>
     setA((s) => {
       const has = s[key].includes(id);
@@ -97,7 +99,11 @@ export function Quiz({ products, code }: { products: Product[]; code: string }) 
         /* the plan still shows */
       }
     }
-    setTimeout(() => setStep('results'), 1800);
+    // Results replace the "calculating" entry, so back from the results returns to the last question.
+    setTimeout(() => {
+      setStep('results');
+      window.history.replaceState({ quizStep: 'results' }, '', '#results');
+    }, 1800);
   };
 
   // Adds each recommendation once; clicking again just reopens the cart instead of doubling the plan.
@@ -216,7 +222,7 @@ export function Quiz({ products, code }: { products: Product[]; code: string }) 
           </div>
         )}
         <div className="mt-8 flex justify-center gap-4 text-sm font-semibold">
-          <button onClick={() => { setA({ goals: [], symptoms: [], diet: [] }); setHistory([]); setStep('sex'); }} className="underline">Retake the quiz</button>
+          <button onClick={() => { setA({ goals: [], symptoms: [], diet: [] }); go('sex'); }} className="underline">Retake the quiz</button>
           <Link href="/shop" className="underline">Browse everything</Link>
         </div>
         <p className="mx-auto mt-8 max-w-2xl text-center text-xs text-[var(--color-muted)]">

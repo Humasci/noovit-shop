@@ -32,6 +32,9 @@ export interface Guide {
   relatedProducts: string[]; // product slugs, shown as "From our range" when active
   relatedGoals: string[]; // goal page slugs
   reviewer?: { name: string; credentials: string; url?: string }; // a real, consenting medical reviewer
+  // Topic guides (not a single ingredient) override the page title and section headings.
+  h1?: string;
+  sectionTitles?: Partial<Record<'what' | 'benefits' | 'dosage' | 'sideEffects' | 'interactions' | 'avoid' | 'choose' | 'faq', string>>;
 }
 
 export const GUIDES: Guide[] = [

@@ -1,8 +1,8 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { SlidersHorizontal } from 'lucide-react';
+import { SlidersHorizontal, X } from 'lucide-react';
 import { ProductCard } from '@/components/product/ProductCard';
 import { TrustSection } from '@/components/sections/Sections';
 import { PRODUCT_TYPES, PUBLIC_DIETARY_TAGS, asLowAs } from '@/data/products';
@@ -51,6 +51,19 @@ export function ShopBrowser({
   const [tags, setTags] = useState<DietaryTag[]>([]);
   const [sort, setSort] = useState<Sort>('featured');
   const [showDiet, setShowDiet] = useState(true);
+  const [sheetOpen, setSheetOpen] = useState(false); // phones: filters and sort in a bottom sheet
+
+  useEffect(() => {
+    if (!sheetOpen) return;
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setSheetOpen(false);
+    document.addEventListener('keydown', onKey);
+    const overflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = overflow;
+    };
+  }, [sheetOpen]);
 
   const filtered = useMemo(() => {
     const list = products.filter(
@@ -104,7 +117,16 @@ export function ShopBrowser({
                 </Pill>
               ))}
             </div>
-            <div className="flex items-center justify-between gap-3">
+            {/* Phones: one button opens the bottom sheet with diet filters and sort. */}
+            <button
+              onClick={() => setSheetOpen(true)}
+              className="flex items-center justify-center gap-2 rounded border border-[var(--color-line)] bg-white py-2 text-sm font-semibold md:hidden"
+              aria-haspopup="dialog"
+            >
+              <SlidersHorizontal className="h-4 w-4" /> Filters &amp; sort
+              {tags.length > 0 && <span className="rounded-full bg-[var(--color-navy)] px-1.5 text-xs text-white">{tags.length}</span>}
+            </button>
+            <div className="hidden items-center justify-between gap-3 md:flex">
               <button onClick={() => setShowDiet(!showDiet)} className="flex shrink-0 items-center gap-1 text-sm font-semibold">
                 <SlidersHorizontal className="h-4 w-4" /> {showDiet ? 'Fewer filters' : 'More filters'}
               </button>
@@ -123,7 +145,7 @@ export function ShopBrowser({
             </div>
           </div>
           {showDiet && (
-            <div className="no-scrollbar mt-3 flex items-center gap-2 overflow-x-auto">
+            <div className="no-scrollbar mt-3 hidden items-center gap-2 overflow-x-auto md:flex">
               <span className="mr-1 hidden shrink-0 text-xs font-bold uppercase tracking-wider text-[var(--color-muted)] sm:inline">For Every Body</span>
               {PUBLIC_DIETARY_TAGS.map((t) => (
                 <Pill key={t.value} active={tags.includes(t.value)} onClick={() => toggleTag(t.value)}>
@@ -139,6 +161,41 @@ export function ShopBrowser({
           )}
         </div>
       </div>
+
+      {sheetOpen && (
+        <div className="fixed inset-0 z-50 md:hidden">
+          <button aria-label="Close filters" className="absolute inset-0 bg-black/40" onClick={() => setSheetOpen(false)} />
+          <div role="dialog" aria-modal="true" aria-labelledby="filters-title" className="absolute inset-x-0 bottom-0 max-h-[85vh] overflow-y-auto rounded-t-2xl bg-[var(--color-canvas)] p-5 pb-6 shadow-2xl">
+            <div className="flex items-center justify-between">
+              <h2 id="filters-title" className="text-xl">Filters &amp; sort</h2>
+              <button onClick={() => setSheetOpen(false)} aria-label="Close" className="-mr-2 p-2"><X className="h-5 w-5" /></button>
+            </div>
+            <p className="mt-5 text-xs font-bold uppercase tracking-wider text-[var(--color-muted)]">For every body</p>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {PUBLIC_DIETARY_TAGS.map((t) => (
+                <Pill key={t.value} active={tags.includes(t.value)} onClick={() => toggleTag(t.value)}>
+                  {t.label}
+                </Pill>
+              ))}
+            </div>
+            <p className="mt-6 text-xs font-bold uppercase tracking-wider text-[var(--color-muted)]">Sort by</p>
+            <div className="mt-2 divide-y divide-[var(--color-line)] rounded border border-[var(--color-line)] bg-white">
+              {SORTS.map((o) => (
+                <label key={o.value} className="flex cursor-pointer items-center justify-between px-4 py-3 text-sm">
+                  {o.label}
+                  <input type="radio" name="sort" checked={sort === o.value} onChange={() => setSort(o.value)} className="accent-[var(--color-navy)]" />
+                </label>
+              ))}
+            </div>
+            <div className="mt-6 flex gap-3">
+              <button onClick={() => { setTags([]); setSort('featured'); }} className="btn-outline flex-1">Clear all</button>
+              <button onClick={() => setSheetOpen(false)} className="btn-primary flex-[2]">
+                Show {filtered.length} {filtered.length === 1 ? 'product' : 'products'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="container px-4 py-8 sm:px-6 md:py-12">
         {groups.length === 0 ? (

@@ -83,13 +83,14 @@ export function Header({ trustBar, announcement }: { trustBar: string[]; announc
           )}
         </div>
       )}
-      <div className="bg-[var(--color-navy)] py-2 text-white" role="region" aria-label="Why shop with Noovit">
-        <div tabIndex={0} className="no-scrollbar flex justify-start gap-8 overflow-x-auto px-4 text-xs font-medium md:justify-center">
+      {/* Light, quiet trust line (minimal direction): no dark bar above the header. */}
+      <div className="border-b border-[var(--color-line)] py-1.5 text-[var(--color-muted)]" role="region" aria-label="Why shop with Noovit">
+        <div tabIndex={0} className="no-scrollbar flex justify-start gap-8 overflow-x-auto px-4 text-[11px] font-medium tracking-wide md:justify-center">
           {trustBar.map((label, i) => {
             const Icon = TRUST_ICONS[i % TRUST_ICONS.length];
             return (
               <span key={label} className="flex shrink-0 items-center gap-1.5">
-                <Icon className="h-3.5 w-3.5" aria-hidden />
+                <Icon className="h-3 w-3 text-[var(--color-accent)]" aria-hidden />
                 {brandify(label)}
               </span>
             );

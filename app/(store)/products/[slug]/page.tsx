@@ -54,11 +54,11 @@ function Row({ title, children, open = false }: { title: string; children: React
   );
 }
 
-// Card with a caps header (hairline divider, small orange tile), as in the reference design's left column.
+// Open section with a caps header and a hairline rule (minimal direction: no boxed cards).
 function Panel({ id, title, children }: { id?: string; title: string; children: React.ReactNode }) {
   return (
-    <section id={id} className="scroll-mt-28 overflow-hidden rounded-lg border border-[var(--color-line)] bg-white">
-      <h2 className="flex items-center gap-2.5 border-b border-[var(--color-line)] px-5 py-3 font-sans text-xs font-bold uppercase tracking-[0.14em] text-[var(--color-navy)]">
+    <section id={id} className="scroll-mt-28 border-t border-[var(--color-line)] pt-2 [&_li]:px-0 [&>div]:px-0 [&>p]:px-0">
+      <h2 className="flex items-center gap-2.5 py-3 font-sans text-xs font-bold uppercase tracking-[0.14em] text-[var(--color-navy)]">
         <span aria-hidden className="h-2 w-2 rounded-[2px] bg-[var(--color-orange)]" />
         {title}
       </h2>
@@ -188,11 +188,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           <Panel id="benefits" title="Benefits">
             <ul className="divide-y divide-[var(--color-line)]">
               {product.benefits.map((b) => (
-                <li key={b} className="flex items-start gap-3 px-5 py-4">
-                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[var(--color-navy)]">
-                    <Check className="h-3 w-3 text-white" strokeWidth={3} aria-hidden />
-                  </span>
-                  <span className="font-semibold text-[var(--color-navy)]">{b}*</span>
+                <li key={b} className="flex items-start gap-3 px-5 py-3.5">
+                  <Check className="mt-1 h-4 w-4 shrink-0 text-[var(--color-accent)]" strokeWidth={2.5} aria-hidden />
+                  <span className="text-[var(--color-ink)]">{b}*</span>
                 </li>
               ))}
             </ul>

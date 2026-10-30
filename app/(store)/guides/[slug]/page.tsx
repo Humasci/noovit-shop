@@ -70,6 +70,8 @@ const SECTIONS = [
   ['faq', 'FAQ'],
   ['sources', 'Sources'],
 ] as const;
+// Topic guides' custom headings also label the table of contents.
+const TOC_KEYS: Record<string, string> = { 'what-is': 'what', benefits: 'benefits', dosage: 'dosage', 'side-effects': 'sideEffects', interactions: 'interactions', avoid: 'avoid', choose: 'choose', faq: 'faq' };
 
 export default async function GuidePage({ params }: { params: Promise<{ slug: string }> }) {
   const g = findGuide((await params).slug);
@@ -78,7 +80,8 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
   const related = g.relatedProducts.map((s) => products.find((p) => p.slug === s && p.status === 'active')).filter((p) => p !== undefined);
   const goals = g.relatedGoals.map(findGoal).filter((x) => x !== undefined);
   const url = `${SITE_URL}/guides/${g.slug}`;
-  const title = `${g.ingredient}: benefits, uses, dosage & side effects`;
+  const title = g.h1 ?? `${g.ingredient}: benefits, uses, dosage & side effects`;
+  const t = g.sectionTitles ?? {};
 
   const structured = [
     {
@@ -163,16 +166,16 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
         <p className="font-semibold">On this page</p>
         <ol className="mt-2 grid gap-1 sm:grid-cols-2">
           {SECTIONS.map(([id, label]) => (
-            <li key={id}><a href={`#${id}`} className="text-[var(--color-accent)] hover:underline">{label}</a></li>
+            <li key={id}><a href={`#${id}`} className="text-[var(--color-accent)] hover:underline">{t[TOC_KEYS[id] as keyof typeof t] ?? label}</a></li>
           ))}
         </ol>
       </nav>
 
       <div className="prose-noovit mt-10">
-        <h2 id="what-is">What is {g.ingredient.toLowerCase()}?</h2>
+        <h2 id="what-is">{t.what ?? `What is ${g.ingredient.toLowerCase()}?`}</h2>
         {g.whatItIs.map((p) => <p key={p}><Cited text={p} /></p>)}
 
-        <h2 id="benefits">{g.ingredient} benefits: what the evidence says</h2>
+        <h2 id="benefits">{t.benefits ?? `${g.ingredient} benefits: what the evidence says`}</h2>
         <p className="text-sm text-[var(--color-muted)]">
           Evidence ratings: <b>Moderate</b> = several good human trials; <b>Limited</b> = few or small trials, or mixed results; <b>Early</b> = lab or
           biomarker studies only; <b>Insufficient</b> = trials found no clear effect.
@@ -191,32 +194,32 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
       </div>
 
       <div className="prose-noovit mt-10">
-        <h2 id="dosage">{g.ingredient} dosage</h2>
+        <h2 id="dosage">{t.dosage ?? `${g.ingredient} dosage`}</h2>
       </div>
       {list(g.dosage)}
 
       <div className="prose-noovit mt-10">
-        <h2 id="side-effects">Side effects</h2>
+        <h2 id="side-effects">{t.sideEffects ?? 'Side effects'}</h2>
       </div>
       {list(g.sideEffects)}
 
       <div className="prose-noovit mt-10">
-        <h2 id="interactions">Interactions with medications and supplements</h2>
+        <h2 id="interactions">{t.interactions ?? 'Interactions with medications and supplements'}</h2>
       </div>
       {list(g.interactions)}
 
       <section id="avoid" className="mt-10 rounded-2xl border border-red-200 bg-red-50 p-5">
-        <h2 className="text-xl">Who should avoid {g.ingredient.toLowerCase()}</h2>
+        <h2 className="text-xl">{t.avoid ?? `Who should avoid ${g.ingredient.toLowerCase()}`}</h2>
         {list(g.avoidIf)}
       </section>
 
       <div className="prose-noovit mt-10">
-        <h2 id="choose">How to choose a {g.ingredient.toLowerCase()} supplement</h2>
+        <h2 id="choose">{t.choose ?? `How to choose a ${g.ingredient.toLowerCase()} supplement`}</h2>
       </div>
       {list(g.howToChoose)}
 
       <section id="faq" className="mt-10">
-        <h2 className="text-2xl">{g.ingredient} FAQ</h2>
+        <h2 className="text-2xl">{t.faq ?? `${g.ingredient} FAQ`}</h2>
         <div className="mt-4 divide-y divide-[var(--color-line)] border-y border-[var(--color-line)]">
           {g.faqs.map((f) => (
             <details key={f.q} className="group py-4">

@@ -411,7 +411,7 @@ const seeds: Seed[] = [
     whoFor: 'Anyone who wants to sleep more soundly and feel calmer through busy days.',
     benefits: ['Supports restful sleep', 'Supports a calm mood and stress resilience', 'Supports muscle relaxation'],
     ingredients: [
-      { name: 'Magnesium Sleep+ (1 bottle)', amount: '1 × 60 capsules' },
+      { name: 'Magnesium Sleep+ (1 bottle)', amount: '1 × 90 capsules' },
       { name: 'Ashwagandha Calm+ (1 bottle)', amount: '1 × 60 capsules' },
     ],
     otherIngredients: 'See each product page for full Supplement Facts.',
@@ -462,6 +462,29 @@ const seeds: Seed[] = [
     productType: 'supplements', dietaryTags: ['gluten-free', 'sugar-free'],
     audiences: ['women', 'men'], bestSeller: false, reviewCount: 0,
     bundleItems: [{ slug: 'glucosamine-complex', quantity: 1 }, { slug: 'turmeric-complex', quantity: 1 }, { slug: 'collagen-complex', quantity: 1 }],
+  },
+  {
+    // Draft for people eating much less than usual (e.g. on GLP-1 medications). Hidden until the owner and a lawyer
+    // approve the wording; keep "GLP-1" out of the product name (it must not imply a drug or hormone effect).
+    name: 'Light Appetite Essentials',
+    slug: 'light-appetite-essentials',
+    tagline: 'Everyday Nutrition When You Eat Less',
+    status: 'hidden',
+    shortBenefit: 'Daily Multi+, Probiotic Gut+ and Magnesium Sleep+ for when your plate gets smaller.',
+    description: 'Three of our formulas, every dose visible, for days when you eat much less than usual: Daily Multi+ to help fill nutrient gaps, Probiotic Gut+ for digestion, and Magnesium Sleep+ (275 mg magnesium as glycinate). Read our guide to nutrition on GLP-1 medications, and talk to your prescriber before adding supplements.',
+    whoFor: 'Adults eating much less than usual, for example while taking a GLP-1 medication, who want to cover the basics.',
+    benefits: ['Helps fill common nutrient gaps', 'Supports healthy digestion', 'Supports relaxation and sleep'],
+    ingredients: [
+      { name: 'Daily Multi+ (1 bottle)', amount: '1 × 60 capsules' },
+      { name: 'Probiotic Gut+ (1 bottle)', amount: '1 × 60 capsules' },
+      { name: 'Magnesium Sleep+ (1 bottle)', amount: '1 × 90 capsules' },
+    ],
+    otherIngredients: 'See each product page for full Supplement Facts.',
+    dosage: 'Follow the directions on each bottle. If you take other medicines, ask your pharmacist about timing.',
+    servings: 30, form: 'capsules', basePrice: 85, color: '#5A7F8C',
+    productType: 'supplements', dietaryTags: ['vegan', 'gluten-free', 'sugar-free'],
+    audiences: ['women', 'men'], bestSeller: false, reviewCount: 0,
+    bundleItems: [{ slug: 'multivitamin', quantity: 1 }, { slug: 'probiotic-complex', quantity: 1 }, { slug: 'magnesium-complex', quantity: 1 }],
   },
   {
     // DRAFT, kept hidden. FDA treats NAC as excluded from the supplement definition (approved as a drug in 1963) but
