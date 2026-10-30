@@ -1353,6 +1353,177 @@ export const GUIDES: Guide[] = [
     relatedProducts: [],
     relatedGoals: ['brain-focus'],
   },
+  {
+    slug: 'turmeric',
+    ingredient: 'Turmeric',
+    metaTitle: 'Turmeric & Curcumin: Benefits, Dosage & Side Effects',
+    metaDescription:
+      'What research says about turmeric and curcumin for knee pain and soreness, 95% extracts vs root, black pepper for absorption, liver injury risk.',
+    published: '2026-10-30',
+    updated: '2026-10-30',
+    summary:
+      'Turmeric is a yellow spice root, and curcumin is its best-known active compound. Several meta-analyses found that about 1,000 mg a day of turmeric extract or curcumin modestly lowered knee osteoarthritis pain over 4–12 weeks, but most trials were small [7][10]. Rare but serious liver injury has been reported, mostly with high-dose or high-absorption products such as those with black pepper extract (piperine), and turmeric supplements may interact with blood thinners [2][18][19][25].',
+    quickFacts: [
+      { label: 'What it is', value: 'A root spice (Curcuma longa); curcumin is its main active compound' },
+      { label: 'Typical dose in studies', value: 'About 1,000 mg of curcuminoids or extract per day for 4–12 weeks' },
+      { label: 'Strongest evidence', value: 'Modest relief of knee osteoarthritis pain (moderate)' },
+      { label: 'Main risks', value: 'Rare liver injury; bleeding risk with blood thinners' },
+      { label: 'Avoid if', value: 'Liver or gallbladder disease, on blood thinners, pregnant' },
+    ],
+    whatItIs: [
+      'Turmeric (Curcuma longa) is a plant in the ginger family, grown mainly in India and Southeast Asia. Its underground stem (rhizome) is dried and ground into the yellow spice used in curries [1].',
+      'Curcumin is the main compound that gives turmeric its color [1]. It belongs to a group called curcuminoids, made up of curcumin, demethoxycurcumin and bisdemethoxycurcumin [5].',
+      'Turmeric root and curcumin are not the same thing. Pure turmeric powder contains only about 3% curcumin by weight on average (3.14% in one analysis of US spice products), so 1 g of the spice provides roughly 30 mg of curcumin. Curry powders usually contain much less [3].',
+      'Most supplements use a turmeric extract standardized to 95% curcuminoids. So 500 mg of a 95% extract provides about 475 mg of curcuminoids, the equivalent of roughly 15 g of turmeric powder. Always check the label for mg of curcuminoids, not just mg of turmeric.',
+      'Curcumin is poorly absorbed. It dissolves badly in water, is broken down quickly in the gut and liver, and is cleared fast, so very little reaches the blood [5]. Italian regulators put its oral bioavailability at about 1% [19].',
+      'Piperine, the compound that makes black pepper hot, is the most common add-on to boost absorption. In a small 1998 study in healthy volunteers, 20 mg of piperine taken with 2 g of curcumin raised blood levels of curcumin by about 2,000% (20 times) compared with curcumin alone [4]. That single study is still the main human evidence behind the "20 times" claim, and the number of volunteers is reported inconsistently.',
+      'Other enhanced forms use phospholipids (phytosomes), micelles or other carriers. In one crossover study, a phytosome form raised blood curcuminoids 7.9-fold and a form with hydrophilic carriers 45.9-fold versus a standard extract [5]. In another, liquid micelles were 185 times better absorbed than native curcumin [6]. These were small studies of blood levels after a single dose, and higher blood levels have not been shown to mean better results: in a 2025 network meta-analysis, enhanced forms did not lower knee pain more than standard curcuminoids (WOMAC pain −2.47 versus −3.17 points compared with placebo) [10].',
+    ],
+    benefits: [
+      {
+        title: 'Knee osteoarthritis pain',
+        evidence: 'Moderate',
+        text:
+          'A 2016 meta-analysis of 8 randomized trials (937 people recruited) found that turmeric extract or curcumin, typically about 1,000 mg a day, lowered pain scores by about 2 points on a visual pain scale compared with placebo (mean difference −2.04, 3 trials). In 5 trials it did not differ from pain medicines, but the authors said there were too few trials, too few people and too much variation in quality for firm conclusions [7]. In a 4-week trial of 367 people with knee osteoarthritis, 1,500 mg a day of turmeric extract was as effective as 1,200 mg of ibuprofen on WOMAC pain and function scores, with fewer reports of stomach pain [9]. In a 12-week trial of 70 adults, two capsules a day of a turmeric extract lowered knee pain by 9.1 mm on a 100 mm scale more than placebo, a moderate effect, but did not reduce knee swelling (effusion-synovitis) or change cartilage on MRI [8]. A 2025 network meta-analysis of 17 trials found that all turmeric preparations lowered WOMAC pain versus placebo, but rated the certainty of the evidence as low [10]. NIH’s complementary health center calls the results promising but says higher-quality evidence is needed [1].',
+      },
+      {
+        title: 'Muscle soreness after exercise',
+        evidence: 'Limited',
+        text:
+          'A 2022 meta-analysis of 10 trials found that curcumin lowered creatine kinase, a blood marker of muscle damage, by about 66 IU/L and soreness scores by about half a point, and improved range of motion by about 6.5 degrees, compared with placebo. It did not change the inflammation markers IL-6 or IL-8 [11]. An earlier meta-analysis found a similar drop in creatine kinase (about 49 IU/L) and soreness scores [12]. The trials were small, and the authors called for larger, better-designed studies [11].',
+      },
+      {
+        title: 'Blood sugar and cholesterol',
+        evidence: 'Limited',
+        text:
+          'In a 2026 meta-analysis of 34 trials in adults with prediabetes or type 2 diabetes, curcumin or turmeric lowered fasting blood sugar by about 10 mg/dL and HbA1c by 0.32 percentage points compared with control, but the results varied widely between studies [16]. A companion meta-analysis of 27 trials in the same groups found small drops in triglycerides (about 14 mg/dL) and LDL cholesterol (about 6 mg/dL), and rated the certainty of all results as low [17]. In healthy young adults, 4 weeks of turmeric spice did not change fasting glucose or blood fats [24]. NCCIH says there is not enough evidence on high cholesterol [1].',
+      },
+      {
+        title: 'Low mood',
+        evidence: 'Limited',
+        text:
+          'A 2021 meta-analysis of 10 trials (594 people) found a small improvement in depression scores with curcumin compared with placebo (standardized mean difference −0.32), mostly when added to standard care in people with diagnosed depression. The authors rated the evidence quality as low and said there is great uncertainty [14]. A 2026 meta-analysis of 19 trials found larger effects, but results varied widely and the finding was fragile in sensitivity analyses [15]. Curcumin is not a replacement for prescribed treatment.',
+      },
+      {
+        title: 'Inflammation markers (CRP)',
+        evidence: 'Early',
+        text:
+          'A 2023 meta-analysis of 66 randomized trials found that turmeric or curcumin lowered C-reactive protein (CRP) by about 0.58 mg/L, TNF-α by about 3.5 pg/mL and IL-6 by about 1.3 pg/mL compared with control, but did not change IL-1β [13]. These are blood markers, the trials enrolled many different groups of people, and lower markers do not show that people feel or function better.',
+      },
+    ],
+    dosage: [
+      'Trials in knee osteoarthritis mostly used about 1,000 mg a day of curcuminoids or turmeric extract, with a range of 1,000–1,500 mg, often split into 2–4 doses [7][9]. Trials of enhanced-absorption forms used less, for example 180–500 mg a day [7].',
+      'Doses are specific to the form. A dose studied for a phytosome or micellar product does not apply to a plain 95% extract, and vice versa. Check the mg of curcuminoids per serving, not just mg of turmeric.',
+      'Many products advise taking it with a meal. Stomach upset is the most common side effect [1].',
+      'Time to effect: osteoarthritis trials lasted from 4 weeks to about 4 months, and most measured results at 4–12 weeks [7][9]. NCCIH says conventional forms are likely safe for up to 2–3 months; longer-term safety is less clear [1].',
+      'There is no NIH upper limit for turmeric or curcumin. The European Food Safety Authority set an acceptable daily intake for curcumin of 3 mg per kg of body weight, about 210 mg a day for a 70 kg adult, based on curcumin’s low natural absorption. Italian regulators note that this limit was not set for products with piperine or other absorption boosters [19]. Many supplements provide more than this.',
+      'Talk to your doctor before starting, especially if you take any medication or have a medical condition.',
+    ],
+    sideEffects: [
+      'In trials, turmeric and curcumin were generally well tolerated. The most common side effects are stomach upset, nausea, acid reflux, diarrhea and constipation [1]. In the ibuprofen comparison trial, stomach pain was less common with turmeric extract than with ibuprofen [9].',
+      'Liver injury is rare but can be serious. LiverTox, the NIH database on drug-induced liver injury, estimates it at roughly 1 in 10,000 to 1 in 100,000 people exposed. Most people recover once they stop, but some cases have led to liver failure, especially when the product was continued after symptoms began [2]. Over 70% of cases carried a gene variant called HLA-B*35:01, compared with 10–15% of people without liver injury [2].',
+      'The US Drug-Induced Liver Injury Network described 10 cases, 8 in women, starting 1–4 months after use began. Five people were hospitalized and 1 died of liver failure. Turmeric was confirmed in all 7 products tested, and 3 also contained piperine [18].',
+      'In the first half of 2019, Italy received 28 reports of acute hepatitis, mostly with blocked bile flow (cholestasis), linked to turmeric supplements. Of these, 86% were women and 89% were hospitalized. Nineteen people (67%) had taken high-strength curcumin with piperine, and in 67% of cases with dose data, curcumin intake was 1.6–7 times the European acceptable daily intake [19]. A separate analysis of 7 cases in Tuscany linked them to high-dose, high-bioavailability products [20]. Italy then required a label warning against turmeric supplements for people with liver or bile duct problems [19].',
+      'In 2023, Australia’s Therapeutic Goods Administration reported 18 cases of liver injury with turmeric or curcumin products, 2 of them severe, including 1 death. It said the risk appears higher with enhanced-absorption products and higher doses, and does not appear to apply to turmeric eaten as food [21].',
+      'Stop taking it and see a doctor if you notice yellowing of the skin or eyes, dark urine, unusual tiredness, nausea or loss of appetite [1].',
+      'Gallbladder: curcumin makes the gallbladder contract. In a small study of 12 healthy volunteers, 40 mg of curcumin shrank gallbladder volume by about 51% within 2 hours [22]. This is why people with gallstones or bile duct problems are advised to avoid it [19].',
+      'Iron: turmeric can bind iron in the gut. A case report describes a 66-year-old man whose iron deficiency anemia resolved 2 weeks after he stopped taking six turmeric capsules a day [23].',
+      'Kidney stones: turmeric spice is high in soluble oxalate. In a crossover study of 11 healthy adults, supplemental turmeric raised urine oxalate more than cinnamon or water [24]. This was turmeric powder; purified extracts were not tested.',
+    ],
+    interactions: [
+      'Anticoagulants and antiplatelets (for example warfarin, apixaban, clopidogrel and aspirin): turmeric may increase bleeding risk [25][27]. In one New Zealand case, a patient’s INR rose from stable to above 10 within a few weeks of starting a turmeric product [25].',
+      'NSAIDs (such as ibuprofen and naproxen) and SSRI antidepressants: these also affect bleeding, so combining them with turmeric may add to the risk [25].',
+      'Diabetes medicines (for example metformin, insulin and sulfonylureas): curcumin lowered blood sugar in trials, so effects may add up. Monitor your levels and talk to your doctor [16].',
+      'Medicines broken down by CYP3A4 or carried by P-glycoprotein (for example some heart, blood-pressure, transplant and anti-seizure medicines): piperine blocks both in lab studies and has raised blood levels of drugs such as phenytoin in people [26]. Curcumin also affects these enzymes in lab studies [19][27]. Ask your pharmacist before taking a turmeric product with black pepper extract alongside any prescription medicine.',
+      'Iron supplements: turmeric may reduce iron absorption [23].',
+      'Some chemotherapy drugs and tacrolimus (a transplant medicine): interactions have been reported in lab, animal or case studies [27]. Talk to your cancer or transplant team first.',
+    ],
+    avoidIf: [
+      'You have liver disease, now or in the past, or have had liver problems with any supplement [19][21]',
+      'You have gallstones or a bile duct problem [19][22]',
+      'You take a blood thinner or antiplatelet medicine, or have a bleeding disorder [25]',
+      'You have surgery planned (stop beforehand, as your doctor advises)',
+      'You are pregnant: turmeric supplements may be unsafe in pregnancy; normal amounts in food are not the concern [1]',
+      'You are breastfeeding, or for children (little safety data at supplement doses) [1]',
+      'You have had kidney stones, especially oxalate stones [24][27]',
+      'You have iron deficiency or anemia [23]',
+    ],
+    howToChoose: [
+      'Curcuminoid content in mg on the label. "500 mg turmeric" can mean powdered root (about 15 mg of curcumin) or a 95% extract (about 475 mg of curcuminoids) [3].',
+      'A dose that matches the studies for that form: about 1,000 mg of curcuminoids a day for a standard 95% extract [7]. Enhanced forms were studied at lower doses.',
+      'Be cautious with high-dose, high-absorption products. Liver injury reports cluster around high doses and forms with piperine or other absorption boosters [19][21]. More absorption is not automatically better.',
+      'Third-party tested for identity and heavy metals, especially lead, with a certificate of analysis available on request. Turmeric has been adulterated with lead chromate, a yellow pigment: in a survey of 356 samples from India, Pakistan, Sri Lanka and Nepal, 14% had detectable lead, some above 1,000 µg/g [29], and adding lead chromate during polishing is a long-running practice in Bangladesh [28].',
+      'A natural curcuminoid profile. Italian regulators found that about 60% of tested high-curcumin extracts lacked the other curcuminoids normally present, suggesting synthetic curcumin had been added [19].',
+      'No claims to treat arthritis, depression, diabetes or "inflammation". Under US law supplements cannot make those claims.',
+    ],
+    faqs: [
+      {
+        q: 'What is turmeric good for?',
+        a: 'The best evidence is for modestly lower knee osteoarthritis pain, from meta-analyses of small trials using about 1,000 mg a day of extract for 4–12 weeks [7][10]. Evidence for muscle soreness, blood sugar and mood is more limited [11][14][16].',
+      },
+      {
+        q: 'What is the difference between turmeric and curcumin?',
+        a: 'Turmeric is the whole root spice; curcumin is its main active compound and makes up only about 3% of the powder [3]. Most supplements use extracts standardized to 95% curcuminoids.',
+      },
+      {
+        q: 'Why is black pepper added to turmeric?',
+        a: 'Piperine from black pepper slows the breakdown of curcumin. In a small 1998 study it raised blood curcumin about 20-fold [4]. It also affects how the body processes some medicines, and liver injury reports often involve piperine products [19][26].',
+      },
+      {
+        q: 'Can turmeric damage your liver?',
+        a: 'Rarely, yes. LiverTox estimates about 1 in 10,000 to 1 in 100,000 users, and cases have been reported in the US, Italy and Australia, mostly with high-dose or high-absorption supplements [2][19][21]. Turmeric used in cooking does not appear to carry this risk [21].',
+      },
+      {
+        q: 'How much turmeric should I take a day?',
+        a: 'Knee osteoarthritis trials mostly used about 1,000 mg of curcuminoids or extract a day [7]. There is no official dose; Europe’s acceptable daily intake for curcumin is about 210 mg for a 70 kg adult [19]. Follow the label and your doctor’s advice.',
+      },
+      {
+        q: 'Is it safe to take turmeric every day?',
+        a: 'Conventional forms are likely safe for most adults for up to 2–3 months [1]. Long-term safety is less clear, and rare liver injury has been reported [2].',
+      },
+      {
+        q: 'Who should not take turmeric?',
+        a: 'People with liver or gallbladder disease, those on blood thinners, and pregnant women should avoid turmeric supplements [1][19][25]. Talk to your doctor if you have kidney stones, iron deficiency or take diabetes medicine.',
+      },
+      {
+        q: 'Can turmeric thin your blood?',
+        a: 'Curcumin has antiplatelet effects, and a raised INR has been reported in a person taking warfarin with turmeric [25]. Do not combine turmeric supplements with blood thinners without your doctor’s approval.',
+      },
+    ],
+    sources: [
+      { label: 'National Center for Complementary and Integrative Health (NCCIH), updated 2025', title: 'Turmeric: usefulness and safety', url: 'https://www.nccih.nih.gov/health/turmeric' },
+      { label: 'LiverTox (NIDDK, National Institutes of Health)', title: 'Turmeric', url: 'https://www.ncbi.nlm.nih.gov/books/NBK548561/' },
+      { label: 'Tayyem RF et al. Nutrition and Cancer, 2006', title: 'Curcumin content of turmeric and curry powders', url: 'https://pubmed.ncbi.nlm.nih.gov/17044766/' },
+      { label: 'Shoba G et al. Planta Medica, 1998', title: 'Influence of piperine on the pharmacokinetics of curcumin in animals and human volunteers', url: 'https://pubmed.ncbi.nlm.nih.gov/9619120/' },
+      { label: 'Jäger R et al. Nutrition Journal, 2014', title: 'Comparative absorption of curcumin formulations', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3918227/' },
+      { label: 'Schiborr C et al. Molecular Nutrition & Food Research, 2014', title: 'The oral bioavailability of curcumin from micronized powder and liquid micelles is significantly increased in healthy humans and differs between sexes', url: 'https://pubmed.ncbi.nlm.nih.gov/24402825/' },
+      { label: 'Daily JW et al. Journal of Medicinal Food, 2016', title: 'Efficacy of turmeric extracts and curcumin for alleviating the symptoms of joint arthritis: a systematic review and meta-analysis of randomized clinical trials', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5003001/' },
+      { label: 'Wang Z et al. Annals of Internal Medicine, 2020', title: 'Effectiveness of Curcuma longa extract for the treatment of symptoms and effusion-synovitis of knee osteoarthritis: a randomized trial', url: 'https://pubmed.ncbi.nlm.nih.gov/32926799/' },
+      { label: 'Kuptniratsaikul V et al. Clinical Interventions in Aging, 2014', title: 'Efficacy and safety of Curcuma domestica extracts compared with ibuprofen in patients with knee osteoarthritis: a multicenter study', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3964021/' },
+      { label: 'Wai HS et al. BMC Complementary Medicine and Therapies, 2025', title: 'Effect of turmeric products on knee osteoarthritis: a systematic review and network meta-analysis', url: 'https://pubmed.ncbi.nlm.nih.gov/40731001/' },
+      { label: 'Beba M et al. Phytotherapy Research, 2022', title: 'The effect of curcumin supplementation on delayed-onset muscle soreness, inflammation, muscle strength, and joint flexibility: a systematic review and dose-response meta-analysis of randomized controlled trials', url: 'https://pubmed.ncbi.nlm.nih.gov/35574627/' },
+      { label: 'Fang W, Nasir Y. Phytotherapy Research, 2021', title: 'The effect of curcumin supplementation on recovery following exercise-induced muscle damage and delayed-onset muscle soreness: a systematic review and meta-analysis of randomized controlled trials', url: 'https://pubmed.ncbi.nlm.nih.gov/33174301/' },
+      { label: 'Dehzad MJ et al. Cytokine, 2023', title: 'Antioxidant and anti-inflammatory effects of curcumin/turmeric supplementation in adults: a GRADE-assessed systematic review and dose-response meta-analysis of randomized controlled trials', url: 'https://pubmed.ncbi.nlm.nih.gov/36804260/' },
+      { label: 'Wang Z et al. Journal of Affective Disorders, 2021', title: 'The efficacy and acceptability of curcumin for the treatment of depression or depressive symptoms: a systematic review and meta-analysis', url: 'https://pubmed.ncbi.nlm.nih.gov/33418373/' },
+      { label: 'Musazadeh V et al. Annals of General Psychiatry, 2026', title: 'Efficacy of curcumin in depression: a GRADE-assessed systematic review and meta-analysis of randomized controlled trials', url: 'https://pubmed.ncbi.nlm.nih.gov/42472817/' },
+      { label: 'Bahari H et al. Food Science & Nutrition, 2026', title: 'Curcumin/turmeric supplementation on glycemic control in adults with prediabetes and type 2 diabetes: a systematic review and dose-response meta-analysis', url: 'https://pubmed.ncbi.nlm.nih.gov/42005325/' },
+      { label: 'Bahari H et al. Lipids, 2026', title: 'Effects of curcumin/turmeric supplementation on lipid profile in subjects with prediabetes and diabetes: a systematic review and meta-analysis', url: 'https://pubmed.ncbi.nlm.nih.gov/41656101/' },
+      { label: 'Halegoua-DeMarzio D et al. American Journal of Medicine, 2023', title: 'Liver injury associated with turmeric: a growing problem. Ten cases from the Drug-Induced Liver Injury Network [DILIN]', url: 'https://pubmed.ncbi.nlm.nih.gov/36252717/' },
+      { label: 'Menniti-Ippolito F et al. Annali dell’Istituto Superiore di Sanità, 2020', title: 'Turmeric (Curcuma longa L.) food supplements and hepatotoxicity: an integrated evaluation approach', url: 'https://annali.iss.it/index.php/anna/article/view/1146' },
+      { label: 'Lombardi N et al. British Journal of Clinical Pharmacology, 2021', title: 'Acute liver injury following turmeric use in Tuscany: an analysis of the Italian Phytovigilance database and systematic review of case reports', url: 'https://pubmed.ncbi.nlm.nih.gov/32656820/' },
+      { label: 'Therapeutic Goods Administration (Australia), 2023', title: 'Medicines containing turmeric or curcumin: risk of liver injury', url: 'https://www.tga.gov.au/safety/safety-alerts/medicines-containing-turmeric-or-curcumin-risk-liver-injury' },
+      { label: 'Rasyid A et al. Asia Pacific Journal of Clinical Nutrition, 2002', title: 'Effect of different curcumin dosages on human gall bladder', url: 'https://pubmed.ncbi.nlm.nih.gov/12495265/' },
+      { label: 'Smith TJ, Ashar BH. Cureus, 2019', title: 'Iron deficiency anemia due to high-dose turmeric', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6414192/' },
+      { label: 'Tang M et al. American Journal of Clinical Nutrition, 2008', title: 'Effect of cinnamon and turmeric on urinary oxalate excretion, plasma lipids, and plasma glucose in healthy subjects', url: 'https://pubmed.ncbi.nlm.nih.gov/18469248/' },
+      { label: 'Medsafe (New Zealand Medicines and Medical Devices Safety Authority), 2018', title: 'Beware turmeric/curcumin containing products can interact with warfarin', url: 'https://www.medsafe.govt.nz/safety/ews/2018/Turmeric.asp' },
+      { label: 'Bhardwaj RK et al. Journal of Pharmacology and Experimental Therapeutics, 2002', title: 'Piperine, a major constituent of black pepper, inhibits human P-glycoprotein and CYP3A4', url: 'https://pubmed.ncbi.nlm.nih.gov/12130727/' },
+      { label: 'Memorial Sloan Kettering Cancer Center', title: 'Turmeric — About Herbs', url: 'https://www.mskcc.org/cancer-care/integrative-medicine/herbs/turmeric' },
+      { label: 'Forsyth JE et al. Environmental Research, 2019', title: 'Turmeric means "yellow" in Bengali: lead chromate pigments added to turmeric threaten public health across Bangladesh', url: 'https://pubmed.ncbi.nlm.nih.gov/31550596/' },
+      { label: 'Forsyth JE et al. Science of the Total Environment, 2024', title: 'Evidence of turmeric adulteration with lead chromate across South Asia', url: 'https://pubmed.ncbi.nlm.nih.gov/39053552/' },
+    ],
+    relatedProducts: ['turmeric-complex'],
+    relatedGoals: ['joints-mobility'],
+  },
 ];
 
 export const findGuide = (slug: string) => GUIDES.find((g) => g.slug === slug);
