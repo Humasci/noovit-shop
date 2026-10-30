@@ -50,4 +50,4 @@ export function proxy(req: NextRequest) {
 }
 
 // Runs on pages (not static assets, APIs or feeds) so it can see the secret entrance path.
-export const config = { matcher: ['/((?!_next/|api/|feeds/|product-image/|favicon).*)'] };
+export const config = { matcher: ['/((?!_next/|api/|feeds/|product-image/|guide-image/|favicon).*)'] };

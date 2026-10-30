@@ -3,8 +3,8 @@ import { notFound } from 'next/navigation';
 import { requireAdmin } from '@/lib/admin/auth';
 import { db } from '@/lib/db/server';
 import { dbConfigured } from '@/lib/config';
-import { saveCustomer } from '@/app/admin/customer-actions';
-import { Badge, Card, Flash, NotConfigured, PageTitle, Stat, Table, btnSm, date, dateTime, inputCls, money, td } from '@/components/admin/ui';
+import { eraseCustomer, saveCustomer } from '@/app/admin/customer-actions';
+import { Badge, Card, Flash, NotConfigured, PageTitle, Stat, Table, btnSm, btnSmOutline, date, dateTime, inputCls, money, td } from '@/components/admin/ui';
 
 const COUNTED = ['paid', 'fulfilling', 'shipped', 'delivered', 'partially_refunded'];
 
@@ -93,6 +93,23 @@ export default async function CustomerPage({ params, searchParams }: { params: P
             </label>
             <button className={btnSm}>Save</button>
           </form>
+          {/* Privacy requests (access / deletion), e.g. under the CCPA, Washington's health-data law or GDPR. */}
+          <div className="mt-8 border-t border-[var(--color-line)] pt-6">
+            <h2 className="text-base">Privacy requests</h2>
+            <a href={`/admin/customers/${c.id}/privacy-export`} className={`${btnSmOutline} mt-3 inline-block`}>Download their data (JSON)</a>
+            {c.email.endsWith('@deleted.invalid') ? (
+              <p className="mt-4 text-sm text-[var(--color-muted)]">Personal data already deleted.</p>
+            ) : (
+              <form action={eraseCustomer} className="mt-5 space-y-2">
+                <input type="hidden" name="id" value={c.id} />
+                <p className="text-sm text-[var(--color-muted)]">
+                  Delete personal data: removes name, email and address from their orders (orders are kept for accounting), and deletes their reviews, marketing sign-up and abandoned checkouts. Cancel any subscription first.
+                </p>
+                <input name="confirm" placeholder="Type their email to confirm" aria-label="Type the customer's email to confirm" className={`${inputCls} w-full`} />
+                <button className="rounded-lg bg-red-700 px-3 py-2 text-xs font-bold text-white hover:bg-red-800">Delete personal data</button>
+              </form>
+            )}
+          </div>
         </Card>
       </div>
     </>

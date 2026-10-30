@@ -5,6 +5,7 @@ import { LEGAL_NAME, SITE_URL } from '@/lib/site';
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 
 async function send(to: string, subject: string, html: string, headers?: Record<string, string>, replyTo?: string) {
+  if (to.endsWith('@deleted.invalid')) return false; // personal data deleted on request (Admin → Customers)
   const key = process.env.RESEND_API_KEY;
   const from = process.env.EMAIL_FROM || 'Noovit <orders@noovit.com>';
   if (!key) {

@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     '/product-image/[slug]': ['./assets/fonts/**/*', './assets/mockups/**/*'],
     '/product-image/[slug]/[file]': ['./assets/fonts/**/*', './assets/mockups/**/*'],
+    '/guide-image/[slug]': ['./assets/fonts/**/*'],
   },
   images: {
     // Bottle mockups are rendered by our own route and resized/converted by next/image.

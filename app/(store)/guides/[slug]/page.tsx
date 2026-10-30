@@ -23,7 +23,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: g.metaTitle,
     description: g.metaDescription,
     alternates: { canonical: `/guides/${g.slug}` },
-    openGraph: { type: 'article', title: g.metaTitle, description: g.metaDescription, url: `/guides/${g.slug}`, siteName: 'Noovit', locale: 'en_US' },
+    openGraph: {
+      type: 'article',
+      title: g.metaTitle,
+      description: g.metaDescription,
+      url: `/guides/${g.slug}`,
+      siteName: 'Noovit',
+      locale: 'en_US',
+      images: [{ url: `/guide-image/${g.slug}`, width: 1200, height: 630, alt: g.metaTitle }],
+    },
+    twitter: { card: 'summary_large_image', images: [`/guide-image/${g.slug}`] },
   };
 }
 
