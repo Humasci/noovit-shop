@@ -4,6 +4,29 @@ _One place for every Supliful product we've checked, with a verdict. Started 28 
 
 **Watch-out for every product:** Vitasy (store brands **Cortex, Compass and Fernwood**, plus Vitasy gummies) resells Supliful's catalogue and sells identical formulas at about $25–45 with free shipping. We differentiate on evidence, honesty, content, bundles and brand, not on formula.
 
+## 🔄 Mainstream re-check (31 Oct): what we held back for being too strict
+_The owner's call: we're a small mainstream brand, not a clinical lab. Products are fine if they're honest, safe, legal and
+match the market; we don't need trial-grade doses or strain codes to launch. Doses go on the label as they are._
+
+**Unlock (Supliful has them; only our own strictness held them back):**
+| Supliful product | Becomes | Note |
+|---|---|---|
+| Ashwagandha Plus | Ashwagandha Calm+ | Sell as is; list every ingredient. No need to hunt for a plain KSM-66 |
+| Probiotic 40B + prebiotic | Probiotic Gut+ | "40 billion CFU" is the mainstream spec; strain codes are a nice-to-have |
+| Joint Support (vegan glucosamine blend) | Glucosamine Joint+ | Add the willow bark warning (blood thinners, aspirin allergy) |
+| Collagen Peptides (bovine I & III) | Collagen Glow+ | Check grams per scoop on the facts panel |
+| Bone & Heart Support (calcium + D3 2,000 IU + K2) | Vitamin D3 & K2 slot | Check the facts panel |
+| Sleep Formula (melatonin 2 mg + herbs) | New: Sleep+ / "Deep Sleep" | Big mainstream category; melatonin warnings (drowsiness, not with sedatives, adults) |
+| Omega-3, Vitamin D3 | Staples / bundle add-ons | Low margin, but basket-builders and easy subscriptions |
+| Colostrum powder (2,300 mg) | New: Colostrum (gut & immunity) | Trending; "Contains: milk" |
+| Women's Vitality | Menopause Balance+ | Transparent doses; needs clear warnings (black cohosh, licorice, dong quai) |
+| NMN | New: NMN (healthy ageing) | Popular; lawful again since Sept 2025; Vitasy competes, price accordingly |
+| Gummies (ashwagandha, reishi, cordyceps…) | Phase 2 "easy" line | Low doses are normal for gummies; good for reach and gifting |
+
+**Still out, for real reasons (not strictness):** Methylene blue (drug status, SSRI/G6PD safety), Supliful "GLP-1 Support"
+(the name invites FDA/FTC action), anything with a **proprietary blend** (breaks our "doses on the front" brand promise).
+**Berberine:** sell only if the facts panel shows a dose near the market's 500 mg; the ~146 mg reading would be outsold.
+
 ## ⭐ Recap: what we can sell (28 Oct, after a sweep of all 189 Supliful products)
 _Supliful's catalogue sitemap lists 189 products (about 123 supplements; the rest are cosmetics, coffee and drinks). We checked every product that fits our range. **Caveat:** many pages show the Supplement Facts only as an image our tools can't read, so "amounts not stated" can mean "in the image". Screenshots of the facts panels settle it._
 

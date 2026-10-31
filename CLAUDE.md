@@ -17,7 +17,8 @@ Read this first. It is the standing context for any session working on this repo
 - **Core range:** Magnesium Sleep+ (275 mg elemental as glycinate, 90 caps), Ashwagandha Calm+ (KSM-66 600 mg),
   Lion's Mane (**hero**; Supliful's 1,000 mg organic fruiting body + mycelium, a normal mainstream spec — copy says
   "1,000 mg", never that it matches the trial doses of 1.8–3.2 g; a beta-glucan COA is a nice-to-have), Creatine (5 g per 5.6 g scoop, 50 servings, 281 g tub, 18+ only; Supliful $14.69 delivered, i.e. product + shipping + fulfilment), CoQ10 (200 mg). Plus Turmeric Complex. Ashwagandha: prefer a plain
-  KSM-66 600 mg (Supliful's "Plus" adds token extras that must then be listed).
+  KSM-66 600 mg: sell Supliful's "Plus" as is, listing every ingredient. Wider range unlocked 31 Oct
+  (probiotic, joint, collagen, D3/K2, sleep, omega-3, colostrum, menopause, NMN; see `SUPLIFUL_PRODUCT_SCREEN.md`).
   Competitor teardown: `docs/research/COMPETITORS_CORE5.md`.
 - **Prices (31 Oct 2026):** Mg $29, Ashwa $29, Lion's Mane $35, Creatine $32, CoQ10 $28; subscribe/3-pack −$5,
   6-pack −$10; Sleep & Calm Stack $49. Never above the Vitasy twins (Cortex/Compass/Fernwood/Kinetic) on identical
