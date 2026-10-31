@@ -228,7 +228,7 @@ const seeds: Seed[] = [
     ingredients: [{ name: 'Ashwagandha Root Extract (KSM-66®, 5% withanolides)', amount: '600mg' }],
     otherIngredients: 'Vegetable capsule (HPMC).',
     dosage: 'Take 2 capsules daily, together or split morning and evening.',
-    servings: 30, form: 'capsules', basePrice: 27, color: '#9C7A5B',
+    servings: 30, form: 'capsules', basePrice: 29, color: '#9C7A5B',
     productType: 'supplements', dietaryTags: ['vegan', 'gluten-free', 'sugar-free', 'low-fodmap'],
     audiences: ['women', 'men'], bestSeller: true, reviewCount: 2550,
   },
@@ -303,7 +303,7 @@ const seeds: Seed[] = [
     otherIngredients: 'None.',
     // Matches Supliful's label (Oct 2026): 1 scoop (5.6 g) = 5,000 mg creatine, 50 servings, 281 g.
     dosage: 'Mix 1 scoop (5.6 g) with 8 oz (237 ml) of water or juice. Take 4 times daily for the first 5 days (loading phase), then 1–2 times daily, or as directed by a healthcare professional.',
-    servings: 50, netWeight: '281 g (9.9 oz)', form: 'powder', basePrice: 29, color: '#2E8B57',
+    servings: 50, netWeight: '281 g (9.9 oz)', form: 'powder', basePrice: 32, color: '#2E8B57',
     productType: 'sports', dietaryTags: ['vegan', 'gluten-free', 'sugar-free'],
     audiences: ['men', 'women'], bestSeller: true, reviewCount: 3021, ageRestricted: true,
     faqs: [{ q: 'How many servings are in a tub?', a: '50 servings of 5 g creatine (one 5.6 g scoop), in a 281 g tub.' }],

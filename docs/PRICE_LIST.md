@@ -11,10 +11,10 @@ Core-5 prices cut on 30 Oct after the competitor teardown (`docs/research/COMPET
 | Product | 28 Oct | **Now (30 Oct)** | Subscribe / 3-pack | 6-pack | Why |
 |---|---|---|---|---|---|
 | Magnesium Sleep+ (275 mg glycinate, 90 caps) | $32 | **$29** | $24 | $19 | Fernwood (same formula) $39.99 / $31.99; our 275 mg is ~1.4× Momentous |
-| Ashwagandha Calm+ (KSM-66 600 mg) | $32 | **$27** | $22 | $17 | Cortex (same formula) $29.99; value brands sell 600 mg KSM-66 for $0.28–0.33/day |
+| Ashwagandha Calm+ (KSM-66 600 mg) | $32 | **$29** (31 Oct; was $27) | $24 | $19 | Cortex (same formula) $29.99; value brands sell 600 mg KSM-66 for $0.28–0.33/day |
 | Lion's Mane (1,000 mg organic) | $40 | **$35** | $30 | $25 | Cortex $44.99, Host Defense $33.95; median $0.57/day |
 | Turmeric Complex (Platinum Turmeric) | $36 | $36 | $31 | $26 | Unchanged (not in the core-5 teardown) |
-| Creatine (281 g, ~56 servings) | $34 | **$29** | $24 | $19 | Kinetic $44.99; Momentous/Thorne ~$0.48/day with NSF Sport |
+| Creatine (281 g, 50 servings) | $34 | **$32** (31 Oct; was $29) | $27 | $22 | Kinetic $44.99; Momentous/Thorne ~$0.48/day with NSF Sport |
 | CoQ10 200 mg (draft, hidden) | $32 | **$28** | $23 | $18 | Cortex $39.99; 2× Thorne's dose |
 
 ## Pending a second supplier (prices set to the market tier)
@@ -55,3 +55,11 @@ Pet products are unchanged (no market check yet).
 ## Applying on the live store
 1. Run `supabase/manual/2026-10-28-catalog-update.sql` (Part 4), then `supabase/manual/2026-10-30-core5-prices.sql` (the core-5 cut and the Sleep & Calm Stack).
 2. **Admin → Products → Sync to Stripe** (or `npm run stripe:sync`) so Stripe Checkout charges the new prices.
+
+## Margin check with Supliful's delivered costs (31 Oct)
+Supliful shows a range per product: **product cost – delivered cost** (product + shipping + fulfilment + processing).
+Creatine: $7.14 – $14.69; turmeric: $4.05 – $11.05. Left per order after the delivered cost and a ~3% + $0.30 card fee:
+- Creatine $32 → ~$16.30; subscribed $27 → ~$11.50 (at $29/$24 it was ~$13.20/~$8.30, too thin with marketing).
+- Ashwagandha $29 → ~$17 (est. $11 delivered); subscribed $24 → ~$12.
+- Extra items in the same order cost about the product price plus a little shipping, so packs and bundles earn most.
+Real delivered costs for magnesium, ashwagandha, lion's mane and CoQ10 still to come (screenshots from Supliful).
