@@ -204,7 +204,7 @@ await submit('button:has-text("Apply")');
 const bulk = await rest('products?slug=in.(zinc,iron-complex)&select=status');
 check('bulk set out of stock', bulk.every((x) => x.status === 'out_of_stock'), bulk);
 const pcsv = await (await p.request.get(`${base}/admin/products/export`)).text();
-check('product CSV export', pcsv.split('\n').length === 34 && pcsv.startsWith('"slug","name","status"'));
+check('product CSV export', pcsv.split('\n').length === 38 && pcsv.startsWith('"slug","name","status"'));
 const edited = pcsv.split('\n').map((l) => (l.startsWith('"zinc"') ? l.replace('"out_of_stock"', '"active"').replace('"22.00"', '"25.00"') : l)).join('\n')
   + '\n"no-such-product","X","active","supplements","20","30","capsules","","no","","",""\n"turmeric-complex","","","","5","","","","","","",""';
 writeFileSync(`${dir}import.csv`, edited);

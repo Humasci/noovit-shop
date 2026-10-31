@@ -63,3 +63,12 @@ Creatine: $7.14 – $14.69; turmeric: $4.05 – $11.05. Left per order after the
 - Ashwagandha $29 → ~$17 (est. $11 delivered); subscribed $24 → ~$12.
 - Extra items in the same order cost about the product price plus a little shipping, so packs and bundles earn most.
 Real delivered costs for magnesium, ashwagandha, lion's mane and CoQ10 still to come (screenshots from Supliful).
+
+## Trend products (31 Oct, hidden drafts until Supliful facts + costs are confirmed)
+| Product | Price | Subscribe | Delivered cost | Left per first order |
+|---|---|---|---|---|
+| NAD+ Complex (NAD+ 500 mg + quercetin 250 mg + resveratrol 150 mg, 60 caps) | **$38** | $33 | $12.99 | ~$23.60 (Cortex sells the same at $39.99; Supliful suggests $60) |
+| NMN 500 mg (30 caps) | **$39** | $34 | ? | send the range |
+| Colostrum+ powder (2,300 mg, 25% IgG, 69 g) | **$35** | $30 | ? | send the range |
+| Deep Sleep Complex (melatonin 2 mg + herbs, 60 caps) | **$27** | $22 | ? | send the range |
+

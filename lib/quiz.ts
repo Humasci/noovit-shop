@@ -81,6 +81,10 @@ const WEIGHTS: Record<string, Weights> = {
   'lions-mane': { goals: { brain: 3 }, symptoms: { fog: 2 } },
   'l-theanine': { goals: { brain: 2, sleep: 1 }, symptoms: { stress: 2 } },
   coq10: { goals: { heart: 3, energy: 1 }, symptoms: { tired: 1 }, bonus: (a) => (a.age === '45-59' || a.age === '60+' ? 1 : 0) },
+  nmn: { goals: { energy: 2, heart: 1 }, symptoms: { tired: 1 }, bonus: (a) => (a.age === '45-59' || a.age === '60+' ? 1 : 0) },
+  'nad-plus': { goals: { energy: 2, heart: 1 }, symptoms: { tired: 1 }, bonus: (a) => (a.age === '45-59' || a.age === '60+' ? 1 : 0) },
+  colostrum: { goals: { gut: 2, immunity: 2 }, symptoms: { bloating: 1, colds: 2 } },
+  'deep-sleep': { goals: { sleep: 3 }, symptoms: { sleep: 3 } },
 };
 
 export interface Recommendation {

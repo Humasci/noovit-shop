@@ -153,6 +153,10 @@ const SUBTITLES: Record<string, string> = {
   coq10: '200mg Coenzyme Q10 (Ubiquinone)',
   'l-theanine': '200mg Pure L-Theanine',
   nac: 'N-Acetyl Cysteine 600mg',
+  nmn: '500mg NMN, 99.9% Purity',
+  'nad-plus': '500mg NAD+, Quercetin & Resveratrol',
+  colostrum: '2,300mg Colostrum, 25% IgG',
+  'deep-sleep': 'Melatonin 2mg + Calming Herbs',
 };
 const shortName = (s: string) => s.replace(/\s*\(.*?\)/g, '').replace(/ Extract| Sulfate| Citrate| Glycinate| Bisglycinate| Picolinate| Malate/g, '');
 export function labelSubtitle(p: Product) {
@@ -223,6 +227,10 @@ const CATEGORIES: Record<string, string> = {
   'lions-mane': 'Focus · Clarity',
   creatine: 'Strength · Power',
   coq10: 'Heart · Energy',
+  nmn: 'Energy · Healthy Aging',
+  'nad-plus': 'Energy · Healthy Aging',
+  colostrum: 'Gut · Immunity',
+  'deep-sleep': 'Sleep · Rest',
 };
 function labelCategory(p: Product) {
   if (CATEGORIES[p.slug]) return CATEGORIES[p.slug];
@@ -237,6 +245,8 @@ const DOSE_LINES: Record<string, string> = {
   'lions-mane': "Organic lion's mane",
   creatine: 'Creatine monohydrate',
   coq10: 'Coenzyme Q10 (ubiquinone)',
+  nmn: 'Nicotinamide mononucleotide',
+  colostrum: 'Bovine colostrum, 25% IgG',
 };
 
 // Single-ingredient products lead with their dose ("275 mg"); blends keep a benefit line instead.

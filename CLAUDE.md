@@ -35,8 +35,11 @@ Read this first. It is the standing context for any session working on this repo
   dose comparison (Mg, CoQ10), label close-up, Supplement Facts. Bump `MOCKUP_VERSION` when images change.
 - **Analytics:** GTM `GTM-5LKW5HGS` built in; GA4 lives inside GTM (leave the site GA4 field empty). Consent is
   opt-out (banner; Decline = denied). GA4 ecommerce events + `generate_lead` with `lead_source`.
+- **Trend drafts (31 Oct, hidden until facts/costs confirmed):** NMN 500 mg ($39), NAD+ Complex (NAD+ 500 mg + quercetin +
+  resveratrol, $38, delivered cost $12.99; never claim "DNA repair"), Colostrum+ powder 2,300 mg ($35, contains milk),
+  Deep Sleep Complex (melatonin 2 mg + herbs, $27, 18+).
 - **Not selling (for now):** berberine (Supliful dose too low), methylene blue (legal status, SSRI/G6PD risks; guide only),
-  NAD+ (maybe later), Supliful's "GLP-1 Support". Draft bundle "Light Appetite Essentials" is hidden pending approval.
+  Supliful's "GLP-1 Support". Draft bundle "Light Appetite Essentials" is hidden pending approval.
 
 ## Rules for content and claims
 - **FDA structure/function language only:** never "treats/cures/prevents". Benefit claims carry * → disclaimer.
