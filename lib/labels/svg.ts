@@ -447,8 +447,8 @@ export function fullLabelSvg(p: Product, opts: { mode?: FontMode; guides?: boole
       <rect x="104" y="0" width="86" height="30" fill="#fff" stroke="#9ca3af" stroke-width="0.5" stroke-dasharray="2 2"/>
       <text x="147" y="18" text-anchor="middle" font-size="6.5" fill="#6b7280" ${f}>LOT / EXP</text>
       <text x="104" y="44" font-size="6.5" font-weight="700" fill="${NAVY}" ${f}>Distributed by ${LEGAL_NAME}</text>
-      <text x="104" y="53" font-size="6.5" fill="${NAVY}" ${f}>[Street address]</text>
-      <text x="104" y="62" font-size="6.5" fill="${NAVY}" ${f}>[City, ST ZIP] · noovit.com</text>
+      <text x="104" y="53" font-size="6.5" fill="${NAVY}" ${f}>30 N Gould St Ste R</text>
+      <text x="104" y="62" font-size="6.5" fill="${NAVY}" ${f}>Sheridan, WY 82801 · noovit.com</text>
     </g>
   </g>
   ${guides}

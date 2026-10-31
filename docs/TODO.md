@@ -12,7 +12,7 @@ _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only yo
 - [ ] **Accountant (budget path in `docs/COMPANY_SETUP.md`):** ask six3's accountant or use a free first call. Get the answer **within ~3 months of the first sale** (corporation-tax notice if HMRC sees it as a UK company). Self Assessment for 2026/27 is due 31 Jan 2028. **First Form 5472 due 15 Apr 2027** if the LLC is formed in 2026 (forming on or after 1 Jan 2027 moves it to 15 Apr 2028). HMRC usually treats a US LLC as a company, and one run from the UK can be UK tax-resident. Choose: LLC owned personally, LLC taxed as a C-corp, or a UK Ltd owning the LLC (see `docs/COMPANY_SETUP.md`).
 - [ ] **New EIN for Noovit LLC** once the LLC is filed. An EIN belongs to one entity, so the existing one (other company) can't be reused. Use the IRS international line (+1 267 941 1099) or an SS-4 fax; bank (Mercury or Wise Business); check that Stripe US accepts a UK-resident representative without an SSN.
 - [ ] **Noovit LLC: forming in the next few days** (Wyoming). Owner confirms the date and the suite address. Site already updated: footer ©, policies ("Who we are"), label "Distributed by Noovit LLC", email footer, Organization structured data (`LEGAL_NAME` in `lib/site.ts`).
-- [ ] **Label address (decided 29 Oct):** "Distributed by Noovit LLC" + the Wyoming Agents suite address (21 CFR 101.5: name and physical place of business; "Distributed by" because Supliful manufactures). It doubles as the US contact for adverse-event reports. Owner sends the address once the LLC is filed; then replace `[Street address]` / `[City, ST ZIP]` in `lib/labels/svg.ts` and set Admin → Settings → Business address.
+- [ ] **Label address (decided 29 Oct):** "Distributed by Noovit LLC" + the Wyoming Agents suite address (21 CFR 101.5: name and physical place of business; "Distributed by" because Supliful manufactures). It doubles as the US contact for adverse-event reports. Owner sends the address once the LLC is filed; then address is on the labels and in Settings (31 Oct): Noovit LLC, 30 N Gould St Ste R, Sheridan, WY 82801.
 - [ ] **Build (with Supliful's template):** side-panel type size. FDA requires ≥ 1/16" lowercase "o" (≈ 8–9 pt) for required text on the information panel (21 CFR 101.2(c)); our draft directions, cautions and distributor lines are ≈ 5 pt. Resize and shorten copy to fit; ask Supliful why their guide also says "nothing under 5 pt".
 - [ ] Operating Agreement (single-member template), then the EIN, bank and Stripe below. Put the registered/mailing suite address in Admin → Settings → Business address and in the label (`[Street address]`, `[City, ST ZIP]`).
 - [ ] Accountant: non-US owner → Form 5472 + pro forma 1120 every year ($25k penalty if missed); US tax and home-country tax position.
@@ -42,7 +42,7 @@ _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only yo
 - [ ] FDA structure/function notification within 30 days of first sale.
 - [ ] Prop 65 check (heavy metals in botanicals/powders); product liability insurance.
 - [ ] Trademark attorney: clear **NOOVIT** (US/UK, classes 5 and 35) and the "+" product names. Note the existing **CALM+** application.
-- [ ] Print labels: replace `[Street address]` / `[City, ST ZIP]`; buy **GS1 UPC** barcodes.
+- [ ] Print labels: address done (31 Oct); buy **GS1 UPC** barcodes.
 
 **Legal pages**
 - [ ] Full privacy policy, a Consumer Health Data policy (WA/NV) and a "Do Not Sell or Share" link.
