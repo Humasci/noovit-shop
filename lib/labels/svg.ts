@@ -83,6 +83,7 @@ export function labelCounts(p: Product) {
 
 export function netQuantity(p: Product) {
   const { units } = labelCounts(p);
+  if (p.netWeight) return `Net Wt ${p.netWeight}`;
   if (p.form === 'powder') {
     const grams = Number(p.dosage.match(/\((\d+)\s*g\)/)?.[1]);
     return grams ? `Net Wt ${grams * p.servings} g (${(grams * p.servings / 28.35).toFixed(1)} oz)` : `${p.servings} Servings`;
@@ -344,7 +345,7 @@ export function factsPanel(p: Product, mode: FontMode, w = 190) {
   y += 4;
   out.push(`<rect x="0" y="${y}" width="${w}" height="0.8" fill="#000"/>`);
   y += 11;
-  out.push(`<text x="0" y="${y}" font-size="8" fill="#000" ${f}>Serving Size: ${perServing} ${esc(unit)}${p.form === 'powder' ? ` (${esc(p.dosage.match(/\((\d+\s*g)\)/)?.[1] ?? 'see directions')})` : ''}</text>`);
+  out.push(`<text x="0" y="${y}" font-size="8" fill="#000" ${f}>Serving Size: ${perServing} ${esc(unit)}${p.form === 'powder' ? ` (${esc(p.dosage.match(/\(([\d.]+\s*g)\)/)?.[1] ?? 'see directions')})` : ''}</text>`);
   y += 11;
   out.push(`<text x="0" y="${y}" font-size="8" fill="#000" ${f}>Servings Per Container: ${servingsPerContainer}</text>`);
   y += 4;
@@ -401,7 +402,7 @@ function infoPanel(p: Product, mode: FontMode, w = 190) {
   };
   para('Directions:', p.dosage);
   const iron = p.ingredients.some((i) => /\biron\b/i.test(i.name));
-  para('Caution:', 'Consult your healthcare provider before use if you are pregnant, nursing, taking medication or have a medical condition.' + (iron ? '' : ' Keep out of reach of children.'));
+  para('Caution:', 'Do not exceed the recommended dose. Consult your healthcare provider before use if you are pregnant, nursing, taking medication or have a medical condition.' + (p.ageRestricted ? ' Not for use by anyone under 18.' : '') + (iron ? '' : ' Keep out of reach of children.'));
   if (iron) para('', IRON_WARNING, 6.2);
   para('Store', 'in a cool, dry place. Do not use if the seal under the cap is broken or missing.');
   para('', `${ORIGIN_CLAIM}.`);
@@ -559,4 +560,46 @@ export function bottleSvg(p: Product, variant: BottleVariant = 'front', opts: { 
   const size = opts.size ? `width="${opts.size}" height="${opts.size}"` : '';
   const backdrop = opts.backdrop === 'white' ? '<rect width="400" height="400" fill="#fff"/>' : scene(uid);
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" ${size}>${backdrop}${body}</svg>`;
+}
+
+// ---------- Supliful tub label (powders) ----------
+
+// Supliful's tub template: trim 11" × 3" with 0.125" bleed (1 unit = 0.01"). Same panels as their template:
+// directions and warnings on the left, our front panel in the middle (scaled to the full height), Supplement Facts on
+// the right. Text stays 0.25" inside the trim. Their editor adds a lot/QR code bottom-left, so that corner stays clear.
+export const TUB_LABEL = { trimW: 1100, trimH: 300, bleed: 12.5 };
+
+export function tubLabelSvg(p: Product, opts: { mode?: FontMode; guides?: boolean } = {}) {
+  const mode = opts.mode ?? 'print';
+  const { trimW, trimH, bleed } = TUB_LABEL;
+  const W = trimW + bleed * 2;
+  const H = trimH + bleed * 2;
+  const f = font('body', mode);
+  const s = trimH / FRONT.h; // front panel scale
+  const fw = FRONT.w * s;
+  const fx = bleed + (trimW - fw) / 2;
+  const info = infoPanel(p, mode, 250);
+  const is = Math.min(1.36, 205 / info.height);
+  const facts = factsPanel(p, mode, 210);
+  const fs = Math.min(1.3, 250 / facts.height);
+  const guides = opts.guides
+    ? `<g id="guides-do-not-print" fill="none" stroke-width="0.6">
+        <rect x="${bleed}" y="${bleed}" width="${trimW}" height="${trimH}" stroke="#e11d48"/>
+        <rect x="${bleed + 12.5}" y="${bleed + 12.5}" width="${trimW - 25}" height="${trimH - 25}" stroke="#2563eb" stroke-dasharray="3 3"/>
+        <rect x="${bleed + 12.5}" y="${bleed + trimH - 82}" width="70" height="70" stroke="#94a3b8" stroke-dasharray="2 4"/>
+      </g>`
+    : '';
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W / 100}in" height="${H / 100}in" viewBox="0 0 ${W} ${H}">
+  <title>Noovit tub label — ${esc(p.name)}</title>
+  <rect width="${W}" height="${H}" fill="#fff"/>
+  <g id="info" transform="translate(${bleed + 25} ${bleed + 22}) scale(${n(is)})">${info.svg}</g>
+  <g id="distributor" transform="translate(${bleed + 100} ${bleed + trimH - 58})">
+    <text x="0" y="0" font-size="9" font-weight="700" fill="${NAVY}" ${f}>Distributed by ${LEGAL_NAME}</text>
+    <text x="0" y="12" font-size="9" fill="${NAVY}" ${f}>30 N Gould St Ste R, Sheridan, WY 82801</text>
+    <text x="0" y="24" font-size="9" fill="${NAVY}" ${f}>hello@noovit.com · noovit.com</text>
+  </g>
+  <g id="front" transform="translate(${n(fx)} ${bleed}) scale(${n(s)})">${frontPanel(p, mode, bleed / s)}</g>
+  <g id="facts" transform="translate(${n(bleed + trimW - 25 - 210 * fs)} ${bleed + 25}) scale(${n(fs)})">${facts.svg}</g>
+  ${guides}
+</svg>`;
 }

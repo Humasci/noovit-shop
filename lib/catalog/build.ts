@@ -65,6 +65,7 @@ export function toProductData(p: Product): ProductData {
     otherIngredients: p.otherIngredients,
     dosage: p.dosage,
     servings: p.servings,
+    ...(p.netWeight ? { netWeight: p.netWeight } : {}),
     form: p.form,
     basePrice: p.basePrice,
     color: p.color,

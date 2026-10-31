@@ -16,7 +16,7 @@ Read this first. It is the standing context for any session working on this repo
 ## Product decisions (keep consistent everywhere)
 - **Core range:** Magnesium Sleep+ (275 mg elemental as glycinate, 90 caps), Ashwagandha Calm+ (KSM-66 600 mg),
   Lion's Mane (**hero**; Supliful's 1,000 mg organic fruiting body + mycelium, a normal mainstream spec — copy says
-  "1,000 mg", never that it matches the trial doses of 1.8–3.2 g; a beta-glucan COA is a nice-to-have), Creatine (5 g, 280 g tub, 18+ only), CoQ10 (200 mg). Plus Turmeric Complex. Ashwagandha: prefer a plain
+  "1,000 mg", never that it matches the trial doses of 1.8–3.2 g; a beta-glucan COA is a nice-to-have), Creatine (5 g per 5.6 g scoop, 50 servings, 281 g tub, 18+ only; Supliful cost $14.69 + shipping), CoQ10 (200 mg). Plus Turmeric Complex. Ashwagandha: prefer a plain
   KSM-66 600 mg (Supliful's "Plus" adds token extras that must then be listed).
   Competitor teardown: `docs/research/COMPETITORS_CORE5.md`.
 - **Prices (30 Oct 2026):** Mg $29, Ashwa $27, Lion's Mane $35, Creatine $29, CoQ10 $28; subscribe/3-pack −$5,
@@ -24,7 +24,8 @@ Read this first. It is the standing context for any session working on this repo
   Supliful formulas. No fake "was" prices. `docs/PRICE_LIST.md`.
 - **Label ("A3", 29 Oct):** colour block with category, name, benefit* and vertical "noovit" wordmark; white band with
   the dose per serving (single-ingredient products; blends show key ingredients) on the left and the net quantity at
-  legal size on the right; "Dietary supplement" + servings below. Origin claim on the info panel. Distributor line:
+  legal size on the right; "Dietary supplement" + servings below. Supliful tub template = 11" × 3" trim + 0.125" bleed
+  (`tubLabelSvg`, `npm run labels` → `design/labels/<slug>.tub.png`, the upload file); bottle template still to come. Origin claim on the info panel. Distributor line:
   **"Distributed by Noovit LLC" + Wyoming Agents suite address** (address pending). Creatine colour: emerald `#2E8B57`.
 - **Product images:** Supliful's blank bottle photo with the stock capsules edited out (`assets/mockups`,
   `scripts/remove-mockup-capsules.mjs`), framed tight (~90% height). Gallery: front, "In every serving" fact image,

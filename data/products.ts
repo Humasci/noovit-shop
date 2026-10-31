@@ -301,11 +301,12 @@ const seeds: Seed[] = [
     benefits: ['Increases physical performance', 'Supports strength and power', 'Unflavoured, mixes into anything', 'Single ingredient'],
     ingredients: [{ name: 'Creatine Monohydrate', amount: '5g' }],
     otherIngredients: 'None.',
-    dosage: 'Mix 1 scoop (5g) into water or a shake daily.',
-    servings: 56, form: 'powder', basePrice: 29, color: '#2E8B57',
-    productType: 'sports', dietaryTags: ['vegan', 'gluten-free', 'sugar-free', 'low-fodmap'],
+    // Matches Supliful's label (Oct 2026): 1 scoop (5.6 g) = 5,000 mg creatine, 50 servings, 281 g.
+    dosage: 'Mix 1 scoop (5.6 g) with 8 oz (237 ml) of water or juice. Take 4 times daily for the first 5 days (loading phase), then 1–2 times daily, or as directed by a healthcare professional.',
+    servings: 50, netWeight: '281 g (9.9 oz)', form: 'powder', basePrice: 29, color: '#2E8B57',
+    productType: 'sports', dietaryTags: ['vegan', 'gluten-free', 'sugar-free'],
     audiences: ['men', 'women'], bestSeller: true, reviewCount: 3021, ageRestricted: true,
-    faqs: [{ q: 'How many servings are in a jar?', a: 'About 56 servings of 5g (281g jar).' }],
+    faqs: [{ q: 'How many servings are in a tub?', a: '50 servings of 5 g creatine (one 5.6 g scoop), in a 281 g tub.' }],
   },
   {
     name: 'Mushroom Clarity+',

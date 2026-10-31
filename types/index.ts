@@ -40,6 +40,8 @@ export interface ProductData {
   otherIngredients: string;
   dosage: string;
   servings: number;
+  // Net weight exactly as on the supplier's label, for powders (e.g. "281 g (9.9 oz)"); otherwise computed.
+  netWeight?: string;
   form: ProductForm;
   basePrice: number;
   color: string;
