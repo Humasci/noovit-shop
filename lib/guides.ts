@@ -1124,9 +1124,9 @@ export const GUIDES: Guide[] = [
       'You are taking it to replace treatment for memory loss or dementia. See a doctor about memory problems',
     ],
     howToChoose: [
-      'Fruiting body stated on the label. Most memory and mood trials used fruiting body powder or extract [1][2][8]. US rules require botanical labels to say which part was used [16].',
-      'A beta-glucan percentage, ideally tested with the Megazyme (McCleary) method, rather than only “polysaccharides %” [14]. Ask for a certificate of analysis that lists beta-glucan and starch (alpha-glucan) separately.',
-      'Be cautious with “myceliated grain”, “mycelial biomass”, “full spectrum” or “fermented rice” in the ingredients. These usually mean mycelium grown on grain, and a high polysaccharide figure can include grain starch [14][15].',
+      'The part used stated on the label: fruiting body, mycelium or both. Most memory and mood trials used fruiting body powder or extract [1][2][8], and US rules require botanical labels to say which part was used [16].',
+      'A certificate of analysis on request. A beta-glucan figure, tested with the Megazyme (McCleary) method, tells you more than “polysaccharides %” alone [14].',
+      'If mycelium is included, check how it was grown. Mycelium grown on grain (“myceliated grain”, “mycelial biomass”) contains some leftover grain, so its polysaccharide figure can include starch [14][15].',
       'Real weight, not just “mg equivalent”. Look for the actual milligrams of extract per serving and its ratio [16].',
       'Third-party tested for identity, heavy metals and microbes, with a certificate of analysis available on request.',
       'No claims to treat dementia, Alzheimer’s, depression or nerve damage. Under US law supplements cannot make those claims.',
@@ -1187,7 +1187,7 @@ export const GUIDES: Guide[] = [
       { label: 'Mori K et al. Phytomedicine, 2010', title: 'Inhibitory effect of hericenone B from Hericium erinaceus on collagen-induced platelet aggregation', url: 'https://pubmed.ncbi.nlm.nih.gov/20637576/' },
       { label: 'Liang B et al. BMC Complementary and Alternative Medicine, 2013', title: 'Antihyperglycemic and antihyperlipidemic activities of aqueous extract of Hericium erinaceus in experimental diabetic rats', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3852124/' },
     ],
-    relatedProducts: [], // link 'lions-mane' once Supliful's beta-glucan COA backs the label (see TODO)
+    relatedProducts: ['lions-mane'],
     relatedGoals: ['brain-focus'],
   },
   {

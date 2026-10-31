@@ -36,10 +36,8 @@ forces. The full report is in the conversation; publish only what is verified (t
 - PAA ideas for the guide: fruiting body vs mycelium, polysaccharides vs beta-glucans, vivid dreams/insomnia, coffee
   stacks, the "Stamets stack" (no trials).
 
-## Decision (recommended)
-Keep Lion's Mane **off the launch** (it is hidden already) until we have either:
-1. a **fruiting-body extract** with a Megazyme beta-glucan COA (e.g. hot-water extract ≥25% beta-glucan, or a
-   standardized dual extract) from Supliful or another supplier, or
-2. Supliful's COA showing high beta-glucan / low alpha-glucan **and** a dose we can defend (e.g. 3 capsules = 1,500 mg,
-   still below the trials — honest copy needed).
-Don't add "vs placebo" bars to the product page: the trials used ~3× our dose and that would mislead.
+## Decision (owner, 31 Oct)
+Lion's Mane stays the **hero** and launches with Supliful's 1,000 mg fruiting body + mycelium: a normal mainstream spec.
+We're a mainstream evidence-led brand, not a clinical lab. Copy stays honest ("1,000 mg"; never "the dose used in
+trials"), the guide's buying advice was made neutral and the guide is linked from the product. A COA (ideally with
+beta-glucan) is still worth asking for; a fruiting-body extract is a possible later upgrade.

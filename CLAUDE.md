@@ -15,8 +15,8 @@ Read this first. It is the standing context for any session working on this repo
 
 ## Product decisions (keep consistent everywhere)
 - **Core range:** Magnesium Sleep+ (275 mg elemental as glycinate, 90 caps), Ashwagandha Calm+ (KSM-66 600 mg),
-  Lion's Mane (**on hold**: Supliful's 1,000 mg crude powder is ~⅓ of trial doses; needs a fruiting-body extract with a
-  beta-glucan COA), Creatine (5 g, 280 g tub, 18+ only), CoQ10 (200 mg). Plus Turmeric Complex. Ashwagandha: prefer a plain
+  Lion's Mane (**hero**; Supliful's 1,000 mg organic fruiting body + mycelium, a normal mainstream spec — copy says
+  "1,000 mg", never that it matches the trial doses of 1.8–3.2 g; a beta-glucan COA is a nice-to-have), Creatine (5 g, 280 g tub, 18+ only), CoQ10 (200 mg). Plus Turmeric Complex. Ashwagandha: prefer a plain
   KSM-66 600 mg (Supliful's "Plus" adds token extras that must then be listed).
   Competitor teardown: `docs/research/COMPETITORS_CORE5.md`.
 - **Prices (30 Oct 2026):** Mg $29, Ashwa $27, Lion's Mane $35, Creatine $29, CoQ10 $28; subscribe/3-pack −$5,
@@ -38,8 +38,7 @@ Read this first. It is the standing context for any session working on this repo
 - **FDA structure/function language only:** never "treats/cures/prevents". Benefit claims carry * → disclaimer.
 - **Guides:** every source opened and verified, evidence graded (Moderate / Limited / Early / Insufficient), null
   results included, no Noovit mention in the body. Brief: `docs/research/GUIDE_RESEARCH_BRIEF.md`. All guides need a
-  medical reviewer before launch. Don't link a guide from a product whose label contradicts it (lion's mane, until
-  Supliful's beta-glucan COA).
+  medical reviewer before launch. Guides stay neutral on product formats we sell (no "avoid X" for our own spec).
 - **No unverified trust claims** (GMP, third-party tested, Made in USA wording) until Supliful provides proof (TODO).
 - US spelling on the site. Plain, short sentences.
 
@@ -62,6 +61,8 @@ Read this first. It is the standing context for any session working on this repo
 - Never commit secrets (Stripe keys, service-role keys, `vercel-secrets`); never ask the owner to paste keys in chat.
 - Keep `docs/TODO.md` current after every batch (tick, add owner steps); add a line to `docs/PROGRESS.md`.
 - The owner prefers a clear recommendation over a menu of options, and plain explanations.
+- Positioning: a **mainstream** evidence-led brand, not a clinical lab. Be honest, but don't hold products to a stricter
+  bar than the market (e.g. a normal 1,000 mg lion's mane is fine); avoid self-defeating copy.
 
 ## Artifact index
 **Strategy & research (docs/)**
