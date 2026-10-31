@@ -13,6 +13,8 @@ import { Product } from '@/types';
 import { Stars } from '@/components/ui/Stars';
 import { PlaceholderNote } from '@/components/ui/Placeholder';
 import { guidesForProduct } from '@/lib/guides';
+import { evidenceFor } from '@/lib/evidence';
+import { EvidenceTimeline, EvidenceTrials } from '@/components/product/EvidencePanel';
 import { GOAL_PAGES } from '@/lib/goals';
 import { goalsForProduct, relatedByGoal } from '@/lib/quiz';
 import { getSettings, placeholdersOn } from '@/lib/settings';
@@ -87,6 +89,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const goals = goalsForProduct(product.slug).map((g) => GOAL_PAGES.find((x) => x.goal === g)).filter((x) => x !== undefined).slice(0, 3);
   const guides = guidesForProduct(product.slug);
   const guide = guides[0] ?? null;
+  const evidence = isBundle ? undefined : evidenceFor(product.slug);
 
   const dietary = PUBLIC_DIETARY_TAGS.filter((t) => product.dietaryTags.includes(t.value));
   // Stat strip: figures straight from the label and price, never marketing multipliers.
@@ -211,6 +214,12 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                 ))}
               </ul>
             </Panel>
+          ) : evidence ? (
+            <Panel id="research" title="The research: what changed vs placebo">
+              <div className="px-5 py-4">
+                <EvidenceTrials evidence={evidence} color={product.color} guideSlug={guide?.slug} />
+              </div>
+            </Panel>
           ) : guide ? (
             <Panel id="research" title={`The research on ${guide.ingredient.toLowerCase()}`}>
               <div className="px-5 py-4 text-sm">
@@ -247,7 +256,13 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             </Panel>
           )}
 
-          {placeholders && (
+          {evidence ? (
+            <Panel id="expect" title="What to expect">
+              <div className="px-5 py-4">
+                <EvidenceTimeline evidence={evidence} />
+              </div>
+            </Panel>
+          ) : placeholders && (
             <div className="rounded-lg border border-[var(--color-line)] bg-white p-5">
               <p className="label-caps">What to expect</p>
               <PlaceholderNote className="mt-3">
@@ -416,7 +431,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       </div>
 
       <div id="faq" className="scroll-mt-20">
-        <FAQSection faqs={product.faqs} />
+        <FAQSection faqs={[...product.faqs, ...(evidence?.faqs ?? [])]} />
       </div>
 
       {/* Bundles that include this product */}
