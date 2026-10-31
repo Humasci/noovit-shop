@@ -15,7 +15,9 @@ Read this first. It is the standing context for any session working on this repo
 
 ## Product decisions (keep consistent everywhere)
 - **Core range:** Magnesium Sleep+ (275 mg elemental as glycinate, 90 caps), Ashwagandha Calm+ (KSM-66 600 mg),
-  Lion's Mane (1,000 mg), Creatine (5 g, 280 g tub, 18+ only), CoQ10 (200 mg). Plus Turmeric Complex.
+  Lion's Mane (**on hold**: Supliful's 1,000 mg crude powder is ~⅓ of trial doses; needs a fruiting-body extract with a
+  beta-glucan COA), Creatine (5 g, 280 g tub, 18+ only), CoQ10 (200 mg). Plus Turmeric Complex. Ashwagandha: prefer a plain
+  KSM-66 600 mg (Supliful's "Plus" adds token extras that must then be listed).
   Competitor teardown: `docs/research/COMPETITORS_CORE5.md`.
 - **Prices (30 Oct 2026):** Mg $29, Ashwa $27, Lion's Mane $35, Creatine $29, CoQ10 $28; subscribe/3-pack −$5,
   6-pack −$10; Sleep & Calm Stack $49. Never above the Vitasy twins (Cortex/Compass/Fernwood/Kinetic) on identical
@@ -64,6 +66,7 @@ Read this first. It is the standing context for any session working on this repo
 ## Artifact index
 **Strategy & research (docs/)**
 - `research/COMPETITORS_CORE5.md` — core-5 competitors, prices, label patterns, Shopping screenshots, decisions.
+- `research/deep-research-*.md` — the owner's deep-research results, reviewed (what's usable, what isn't, decisions).
 - `SHOPPING_ANALYSIS_*.md` (ashwagandha, berberine, lion's mane, methylene blue, NAD+, turmeric) — Google Shopping teardowns.
 - `SUPLIFUL_PRODUCT_SCREEN.md` — every checked Supliful product with verdicts (recap at top).
 - `SUPPLIER_RESEARCH.md` — dropship/private-label suppliers incl. pets. `pricing/noovit-pricing.xlsx`, `PRICING_NOTES.md`, `PRICE_LIST.md`.
