@@ -47,7 +47,7 @@ export const EVIDENCE: Record<string, ProductEvidence> = {
       },
     ],
     caveat:
-      'These trials were small, short and mostly run in India, often with extract supplied by the manufacturer. A 2025 meta-analysis found cortisol fell, but the change in perceived stress was not statistically significant.',
+      'These trials tested KSM-66 on its own, not the full formula. They were small, short and mostly run in India, often with extract supplied by the manufacturer. A 2025 meta-analysis found cortisol fell, but the change in perceived stress was not statistically significant.',
     timeline: [
       { when: 'Weeks 1–2', text: 'Take 2 capsules a day with food. Most people notice little at first, which is expected.' },
       { when: 'Weeks 4–8', text: 'The stress and cortisol results above were measured after 60 days of daily use.' },

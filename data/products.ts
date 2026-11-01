@@ -89,6 +89,7 @@ const seeds: Seed[] = [
     audiences: ['women'], bestSeller: false, reviewCount: 1958,
   },
   {
+    // Matches Supliful's Magnesium Glycinate (facts panel checked 1 Nov 2026). Delivered cost $12.75 (product $3.95).
     name: 'Magnesium Sleep+',
     slug: 'magnesium-complex',
     tagline: 'Restful Sleep & Calm',
@@ -100,7 +101,7 @@ const seeds: Seed[] = [
     otherIngredients: 'Vegetable capsule (hypromellose), magnesium stearate, silicon dioxide, rice flour.',
     dosage: 'Take 3 capsules daily, ideally after an evening meal.',
     servings: 30, form: 'capsules', basePrice: 29, color: '#5C7FA8',
-    productType: 'supplements', dietaryTags: ['vegan', 'gluten-free', 'sugar-free', 'low-fodmap', 'pregnancy-safe', 'postpartum-safe'],
+    productType: 'supplements', dietaryTags: ['vegan', 'gluten-free', 'sugar-free', 'pregnancy-safe', 'postpartum-safe'],
     audiences: ['women', 'men'], bestSeller: true, reviewCount: 4486,
     faqs: [{ q: 'Why glycinate?', a: 'Magnesium glycinate is well absorbed and gentler on the stomach than forms like oxide or citrate, which can have a laxative effect.' }],
   },
@@ -222,14 +223,26 @@ const seeds: Seed[] = [
     slug: 'ashwagandha',
     tagline: 'Stress Resilience & Calm',
     shortBenefit: 'Supports calm, stress balance and sleep.',
-    description: 'KSM-66® ashwagandha root extract at 600 mg, the dose used in the main human studies on stress and sleep.',
+    // Supliful "Ashwagandha Plus" as sold (facts panel received 1 Nov 2026): every ingredient listed.
+    // Delivered cost $10.25 (product $4.65 + shipping from $5.29 + fulfilment $1.29). Vegetarian per Supliful (D3 source
+    // not stated, so no vegan tag). Manufacturer's country: USA (wording on site still needs Supliful's confirmation).
+    description: 'KSM-66® ashwagandha root extract at 600 mg, the dose used in the main human studies on stress and sleep, plus vitamins D3, B6 and B12, L-arginine, maca, Panax ginseng and shatavari.',
     whoFor: 'Busy people dealing with everyday stress, low energy, or restless sleep.',
-    benefits: ['Supports a healthy stress response', 'Supports restful sleep', 'Supports energy and focus', 'KSM-66®, a studied root extract'],
-    ingredients: [{ name: 'Ashwagandha Root Extract (KSM-66®, 5% withanolides)', amount: '600mg' }],
-    otherIngredients: 'Vegetable capsule (HPMC).',
-    dosage: 'Take 2 capsules daily, together or split morning and evening.',
-    servings: 30, form: 'capsules', basePrice: 29, color: '#9C7A5B',
-    productType: 'supplements', dietaryTags: ['vegan', 'gluten-free', 'sugar-free', 'low-fodmap'],
+    benefits: ['Supports a healthy stress response', 'Supports energy and vitality', 'With vitamins D3, B6 and B12', 'KSM-66®, a studied root extract'],
+    ingredients: [
+      { name: 'Vitamin D3 (as cholecalciferol)', amount: '20mcg' },
+      { name: 'Vitamin B6 (as pyridoxine hydrochloride)', amount: '2.5mg' },
+      { name: 'Vitamin B12 (as methylcobalamin 1%)', amount: '25mcg' },
+      { name: 'KSM-66® Ashwagandha Root Extract (5% withanolides)', amount: '600mg' },
+      { name: 'L-Arginine', amount: '300mg' },
+      { name: 'Maca Root Powder (Lepidium meyenii)', amount: '150mg' },
+      { name: 'Panax Ginseng Root Powder', amount: '100mg' },
+      { name: 'Shatavari Root Powder (Asparagus racemosus)', amount: '50mg' },
+    ],
+    otherIngredients: 'HPMC (vegetable capsule).',
+    dosage: 'Take 2 capsules daily, ideally with a meal and 6–8 oz of water.',
+    servings: 30, form: 'capsules', basePrice: 29, color: '#745799',
+    productType: 'supplements', dietaryTags: ['gluten-free', 'sugar-free'],
     audiences: ['women', 'men'], bestSeller: true, reviewCount: 2550,
   },
   {
@@ -436,23 +449,25 @@ const seeds: Seed[] = [
     ],
   },
   {
+    // Supliful Colostrum Powder (facts panel 1 Nov 2026): delivered cost $12.65 (product $6.95), suggested retail $39.95.
+    // Per scoop also: 10 calories, calcium 20 mg, sodium 5 mg, potassium 25 mg (use Supliful's panel on the label).
     name: 'Colostrum+',
     slug: 'colostrum',
     status: 'hidden',
     tagline: 'Gut & Immune Support',
     shortBenefit: 'Supports gut health and immune function.',
-    description: 'Bovine colostrum, the nutrient-rich first milk, at 2,300 mg per scoop and standardized to 25% IgG (immunoglobulins). Unflavored powder that mixes into water, smoothies or coffee.',
+    description: 'Bovine colostrum, the nutrient-rich first milk, at 2,300 mg per scoop and standardized to 25% IgG (immunoglobulins). Each scoop gives 575 mg of IgG. Unflavored powder that mixes into cold water or your favorite drink.',
     whoFor: 'Adults who want daily gut and immune support. Not for anyone with a milk allergy.',
     benefits: ['Supports a healthy gut', 'Supports immune function', '25% IgG immunoglobulins', 'Mixes into any drink'],
-    ingredients: [{ name: 'Bovine Colostrum (25% IgG)', amount: '2300mg' }],
+    ingredients: [{ name: 'Bovine Colostrum (25% IgG)', amount: '2300mg', description: 'Provides 575 mg immunoglobulin G (IgG)' }],
     otherIngredients: 'None. Contains: milk.',
-    dosage: 'Mix 1 scoop (2.3 g) into water, a smoothie or coffee daily.',
-    servings: 30, netWeight: '69 g (2.4 oz)', form: 'powder', basePrice: 35, color: '#8C9F5A',
-    productType: 'supplements', dietaryTags: ['gluten-free', 'sugar-free'],
+    dosage: 'Mix 1 scoop (2.3 g) into 6–8 oz (177–237 ml) of cold water or your favorite drink once a day. Drink within 10 minutes of mixing.',
+    servings: 30, netWeight: '69 g (2.4 oz)', form: 'powder', basePrice: 35, color: '#8C9F5A', ageRestricted: true,
+    productType: 'supplements', dietaryTags: ['gluten-free'],
     audiences: ['women', 'men'], bestSeller: false, reviewCount: 0,
     faqs: [
       { q: 'Is colostrum dairy?', a: 'Yes. Colostrum is milk, so it is not vegan or dairy-free and is not suitable for anyone with a milk allergy.' },
-      { q: 'How do I take it?', a: 'Mix one scoop into a cold or warm drink once a day. Many people add it to their morning coffee or smoothie.' },
+      { q: 'How do I take it?', a: 'Mix one scoop into 6–8 oz of cold water or your favorite drink once a day, and drink it within 10 minutes. It is for adults only.' },
     ],
   },
   {

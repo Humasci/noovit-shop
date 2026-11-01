@@ -15,7 +15,7 @@ export const HIGHLIGHTS: Record<string, [string, string][]> = {
   ],
   ashwagandha: [
     ['600 mg', 'KSM-66® ashwagandha root extract'],
-    ['5%', 'withanolides, standardised'],
+    ['+ D3, B6, B12', 'with maca, ginseng and shatavari'],
     ['2 a day', 'the daily amount used in KSM-66 studies'],
   ],
   'lions-mane': [

@@ -12,7 +12,7 @@ import { LEGAL_NAME } from '@/lib/site';
 export type FontMode = 'web' | 'print';
 
 // Bump when the photo mockup (lib/labels/photo.ts) changes, so cached product image URLs refresh.
-export const MOCKUP_VERSION = 'photo-v2';
+export const MOCKUP_VERSION = 'photo-v3';
 
 const NAVY = '#14213d';
 const INK = '#4b5563';
@@ -143,7 +143,7 @@ const SUBTITLES: Record<string, string> = {
   'vitamin-d3-k2': '2000 IU D3 + 75mcg K2 (MK-7)',
   'turmeric-complex': '95% Curcuminoids + Black Pepper',
   'berberine-complex': '500mg Berberine HCl + Chromium',
-  ashwagandha: 'KSM-66® 600mg, 5% Withanolides',
+  ashwagandha: 'KSM-66® 600mg + D3, B6, B12 & Maca',
   multivitamin: '23 Active Vitamins & Minerals',
   'biotin-complex': 'With Zinc & Selenium',
   creatine: 'Pure Monohydrate, 5g Serving',
@@ -250,18 +250,42 @@ const DOSE_LINES: Record<string, string> = {
 };
 
 // Single-ingredient products lead with their dose ("275 mg"); blends keep a benefit line instead.
+// Blends whose label still leads with one key ingredient's dose (the rest are listed in the facts panel).
+const HERO_INGREDIENT: Record<string, RegExp> = {
+  ashwagandha: /ksm-66/i,
+};
+
 export function heroDose(p: Product) {
-  if (p.ingredients.length !== 1 || p.bundleItems?.length) return null;
-  const m = p.ingredients[0].amount.match(/^([\d.,]+)\s*(mg|mcg|g|IU)$/i);
+  if (p.bundleItems?.length) return null;
+  const key = HERO_INGREDIENT[p.slug];
+  const ing = key ? p.ingredients.find((i) => key.test(i.name)) : p.ingredients.length === 1 ? p.ingredients[0] : undefined;
+  if (!ing) return null;
+  const m = ing.amount.match(/^([\d.,]+)\s*(mg|mcg|g|IU)$/i);
   if (!m) return null;
   const value = Number(m[1].replace(/,/g, ''));
-  return { value: value.toLocaleString('en-US'), unit: m[2].toUpperCase() === 'IU' ? 'IU' : m[2].toLowerCase(), line: DOSE_LINES[p.slug] ?? shortName(p.ingredients[0].name) };
+  return { value: value.toLocaleString('en-US'), unit: m[2].toUpperCase() === 'IU' ? 'IU' : m[2].toLowerCase(), line: DOSE_LINES[p.slug] ?? shortName(ing.name) };
 }
 
 // Drawn at (0,0); callers translate/scale it. `bleed` extends both colour areas past the trim.
 // Colour block: icon, category, product name, benefit; the vertical "noovit" wordmark is centred on the right edge.
 // White band (bottom third): the dose per serving on the left, the net quantity on the right at legal size
 // (21 CFR 101.105: bottom 30% of the panel, digits ≥ 1/8"), then the statement of identity and servings.
+// Optional diagonal gradient for a product's colour block (top-left → bottom-right). The site keeps p.color,
+// which should be the gradient's middle tone. White text needs both ends dark enough (≥ 3:1 for large type).
+export const LABEL_GRADIENTS: Record<string, [string, string]> = {
+  ashwagandha: ['#8E6FB4', '#5B3F7E'], // dusk violet → plum (1 Nov; replaced the brown)
+};
+
+function blockFill(p: Product) {
+  const g = LABEL_GRADIENTS[p.slug];
+  if (!g) return { defs: '', fill: p.color };
+  const id = `blk-${p.slug}-${g[0].slice(1)}${g[1].slice(1)}`;
+  return {
+    defs: `<defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${g[0]}"/><stop offset="1" stop-color="${g[1]}"/></linearGradient></defs>`,
+    fill: `url(#${id})`,
+  };
+}
+
 export function frontPanel(p: Product, mode: FontMode, bleed = 0, pattern: LabelPattern = 'top') {
   const shift = pattern === 'band' ? 10 : 0; // white-band content moves down to make room for the dissolve
   const vSize = 26;
@@ -287,8 +311,9 @@ export function frontPanel(p: Product, mode: FontMode, bleed = 0, pattern: Label
     ? `<text x="17" y="${y0 + 36}" font-size="30" font-weight="700" letter-spacing="-0.9" fill="${dark}" ${font('head', mode)}>${esc(dose.value)}<tspan font-size="12.6" font-weight="600" dx="1.8">${esc(dose.unit)}</tspan></text>
     ${caps(18, y0 + 48, dose.line, 5.8, INK, 'start', 500)}`
     : textBlock(balance(wrap(labelSubtitle(p), 118, 9.4, 0.5).slice(0, 2)), 18, y0 + 24, 9.4, 11.4, `font-weight="600" fill="${dark}" ${font('body', mode)}`);
-  return `<g>
-    <rect x="0" y="${-bleed}" width="${FRONT.w}" height="${BAND + bleed}" fill="${p.color}"/>
+  const block = blockFill(p);
+  return `<g>${block.defs}
+    <rect x="0" y="${-bleed}" width="${FRONT.w}" height="${BAND + bleed}" fill="${block.fill}"/>
     <rect x="0" y="${BAND}" width="${FRONT.w}" height="${FRONT.h - BAND + bleed}" fill="#fff"/>
     ${labelMosaic(p, pattern)}
     <g transform="translate(14 14) scale(0.32)">${icon('#fff')}</g>
@@ -368,7 +393,7 @@ export function factsPanel(p: Product, mode: FontMode, w = 190) {
   for (const ing of p.ingredients.slice(0, 10)) {
     const row = factsRow(ing.name, ing.amount);
     if (row.dv === '†') undeclared = true;
-    const name = wrap(ing.name, w - 105, 8);
+    const name = wrap(ing.name, w - 82, 8);
     y += 11;
     out.push(textBlock(name, 0, y, 8, 10, `fill="#000" ${f}`));
     out.push(`<text x="${w - 34}" y="${y}" text-anchor="end" font-size="8" fill="#000" ${f}>${esc(row.amount)}</text><text x="${w}" y="${y}" text-anchor="end" font-size="8" font-weight="700" fill="#000" ${f}>${esc(row.dv)}</text>`);
@@ -433,7 +458,15 @@ export function fullLabelSvg(p: Product, opts: { mode?: FontMode; guides?: boole
   const { trimW, trimH, bleed, factsW, frontW } = LABEL;
   const W = trimW + bleed * 2;
   const H = trimH + bleed * 2;
-  const facts = factsPanel(p, mode, factsW - 25);
+  // Long panels (blends) are laid out wider, then scaled down to fill the panel's width and fit its height, but
+  // never below 0.78: 8-unit type stays at least 1/16" tall (21 CFR 101.36(i)(1)). If that still overflows, the
+  // bottle needs Supliful's larger template.
+  let facts = factsPanel(p, mode, factsW - 25);
+  let factsScale = 1;
+  for (let i = 0; i < 3 && facts.height > trimH - 24; i++) {
+    factsScale = Math.max(0.78, factsScale * ((trimH - 24) / facts.height));
+    facts = factsPanel(p, mode, (factsW - 25) / factsScale);
+  }
   const info = infoPanel(p, mode, LABEL.infoW - 25);
   const fx = bleed + factsW;
   const ix = fx + frontW;
@@ -449,7 +482,7 @@ export function fullLabelSvg(p: Product, opts: { mode?: FontMode; guides?: boole
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W / 100}in" height="${H / 100}in" viewBox="0 0 ${W} ${H}">
   <title>Noovit label — ${esc(p.name)} (draft)</title>
   <rect width="${W}" height="${H}" fill="#fff"/>
-  <g id="facts" transform="translate(${bleed + 13} ${bleed + 12})">${facts.svg}</g>
+  <g id="facts" transform="translate(${bleed + 13} ${bleed + 12}) scale(${n(factsScale)})">${facts.svg}</g>
   <g id="front" transform="translate(${fx} ${bleed})">${frontPanel(p, mode, bleed)}</g>
   <g id="info" transform="translate(${ix + 12} ${bleed + 12})">${info.svg}
     <g transform="translate(0 ${trimH - 24 - 66})">
@@ -459,7 +492,7 @@ export function fullLabelSvg(p: Product, opts: { mode?: FontMode; guides?: boole
       <text x="147" y="18" text-anchor="middle" font-size="6.5" fill="#6b7280" ${f}>LOT / EXP</text>
       <text x="104" y="44" font-size="6.5" font-weight="700" fill="${NAVY}" ${f}>Distributed by ${LEGAL_NAME}</text>
       <text x="104" y="53" font-size="6.5" fill="${NAVY}" ${f}>30 N Gould St Ste R</text>
-      <text x="104" y="62" font-size="6.5" fill="${NAVY}" ${f}>Sheridan, WY 82801 · noovit.com</text>
+      <text x="104" y="62" font-size="6.5" fill="${NAVY}" ${f}>Sheridan, WY 82801</text>
     </g>
   </g>
   ${guides}

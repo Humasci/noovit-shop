@@ -24,7 +24,7 @@ export interface FeedItem {
 // "Noovit Magnesium Sleep+ – Magnesium Glycinate 275 mg – 90 Capsules". No promo words (Google disapproves them).
 const FEED_SPECS: Record<string, string> = {
   'magnesium-complex': 'Magnesium Glycinate 275 mg',
-  ashwagandha: 'KSM-66 Ashwagandha 600 mg',
+  ashwagandha: 'KSM-66 Ashwagandha 600 mg with Vitamins D3, B6 & B12',
   'lions-mane': "Organic Lion's Mane Mushroom 1,000 mg",
   creatine: 'Creatine Monohydrate Powder 5 g',
   coq10: 'CoQ10 Ubiquinone 200 mg',
