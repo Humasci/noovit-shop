@@ -36,6 +36,39 @@ update products set data = data
   ), updated_at = now()
 where slug = 'colostrum';
 
--- 4. Ashwagandha colour: violet replaces the brown (label uses a violet → plum gradient).
-update products set data = data || jsonb_build_object('color', '#745799'), updated_at = now()
+-- 4. Ashwagandha colour: coral → berry gradient on the label replaces the brown; site colour below.
+update products set data = data || jsonb_build_object('color', '#B6575E'), updated_at = now()
 where slug = 'ashwagandha';
+
+-- 5. Label colours (gradients on the label; these are the site colours): Lion's Mane teal, CoQ10 ruby.
+update products set data = data || jsonb_build_object('color', '#27798A'), updated_at = now() where slug = 'lions-mane';
+update products set data = data || jsonb_build_object('color', '#9B2B46'), updated_at = now() where slug = 'coq10';
+
+-- 6. Lion's Mane directions; Turmeric Complex = Supliful's Platinum Turmeric as sold (contains shellfish), price $29.
+update products set data = data || jsonb_build_object('dosage', 'Take 2 capsules daily, with or without food.'), updated_at = now()
+where slug = 'lions-mane';
+update products set data = data
+  || jsonb_build_object(
+    'shortBenefit', 'Supports joint comfort and a healthy inflammatory response.',
+    'description', 'Turmeric root with a 95% curcuminoid extract, plus glucosamine, chondroitin, boswellia, ginger and BioPerine® black pepper extract for absorption.',
+    'whoFor', 'Active people and anyone who wants daily joint support. Not for anyone with a shellfish allergy.',
+    'benefits', '["Supports joint comfort", "Supports a healthy inflammatory response", "With glucosamine and chondroitin", "BioPerine® for absorption"]'::jsonb,
+    'ingredients', '[
+      {"name": "Turmeric Root Powder (Curcuma longa)", "amount": "800mg"},
+      {"name": "Glucosamine Sulfate 2KCl", "amount": "200mg"},
+      {"name": "Turmeric 95% Curcuminoids (Curcuma longa root)", "amount": "100mg"},
+      {"name": "Ginger Root Extract (Zingiber officinale)", "amount": "100mg"},
+      {"name": "Chondroitin Sulfate", "amount": "50mg"},
+      {"name": "Boswellia Extract (Boswellia carteri resin)", "amount": "40mg"},
+      {"name": "MSM (methylsulfonylmethane)", "amount": "10mg"},
+      {"name": "BioPerine® (black pepper extract)", "amount": "10mg"},
+      {"name": "Quercetin Dihydrate (Sophora japonica flower)", "amount": "8mg"},
+      {"name": "L-Methionine", "amount": "8mg"},
+      {"name": "Bromelain (Ananas comosus stem)", "amount": "8mg"}
+    ]'::jsonb,
+    'otherIngredients', 'Hypromellose (vegetable capsule), rice flour. Contains: shellfish (crab, lobster, crawfish).',
+    'dosage', 'Take 2 capsules once a day, 20–30 minutes before a meal.',
+    'dietaryTags', '["gluten-free"]'::jsonb,
+    'basePrice', 29
+  ), updated_at = now()
+where slug = 'turmeric-complex';

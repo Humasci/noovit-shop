@@ -12,7 +12,7 @@ import { LEGAL_NAME } from '@/lib/site';
 export type FontMode = 'web' | 'print';
 
 // Bump when the photo mockup (lib/labels/photo.ts) changes, so cached product image URLs refresh.
-export const MOCKUP_VERSION = 'photo-v3';
+export const MOCKUP_VERSION = 'photo-v5';
 
 const NAVY = '#14213d';
 const INK = '#4b5563';
@@ -141,7 +141,7 @@ const SUBTITLES: Record<string, string> = {
   zinc: 'Zinc Picolinate 25mg + Copper',
   'iron-complex': 'Gentle Bisglycinate + Vitamin C',
   'vitamin-d3-k2': '2000 IU D3 + 75mcg K2 (MK-7)',
-  'turmeric-complex': '95% Curcuminoids + Black Pepper',
+  'turmeric-complex': 'Turmeric + Glucosamine, Boswellia & Ginger',
   'berberine-complex': '500mg Berberine HCl + Chromium',
   ashwagandha: 'KSM-66® 600mg + D3, B6, B12 & Maca',
   multivitamin: '23 Active Vitamins & Minerals',
@@ -273,13 +273,31 @@ export function heroDose(p: Product) {
 // Optional diagonal gradient for a product's colour block (top-left → bottom-right). The site keeps p.color,
 // which should be the gradient's middle tone. White text needs both ends dark enough (≥ 3:1 for large type).
 export const LABEL_GRADIENTS: Record<string, [string, string]> = {
-  ashwagandha: ['#8E6FB4', '#5B3F7E'], // dusk violet → plum (1 Nov; replaced the brown)
+  ashwagandha: ['#D0705A', '#9C3E62'], // coral → berry (owner's pick, 1 Nov; replaced the brown)
+  'lions-mane': ['#2E9C98', '#1F5675'], // teal → petrol (owner's pick, 1 Nov; replaced the tan)
+  coq10: ['#C63B4E', '#701C3E'], // ruby → wine (owner's pick, 1 Nov)
 };
 
+// Default gradient for every product: its own colour (top-left) into a deeper tone nudged ~16° round the colour wheel
+// (cool hues forward, warm hues back toward red).
+function hueShiftDarken(hex: string, deg: number, k: number) {
+  const [r, g, b] = (hex.match(/\w\w/g) ?? []).map((h) => parseInt(h, 16) / 255);
+  const max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2, d = max - min;
+  let h = 0;
+  const sat = d === 0 ? 0 : d / (1 - Math.abs(2 * l - 1));
+  if (d) h = max === r ? ((g - b) / d) % 6 : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
+  h = ((h * 60) % 360 + 360) % 360;
+  // Warm colours turn muddy toward yellow, so they shift toward red/magenta instead.
+  h = (((h + (h < 75 || h > 320 ? -deg : deg)) % 360) + 360) % 360;
+  const L = l * (1 - k), c = (1 - Math.abs(2 * L - 1)) * sat, x = c * (1 - Math.abs(((h / 60) % 2) - 1)), m = L - c / 2;
+  const [r1, g1, b1] = h < 60 ? [c, x, 0] : h < 120 ? [x, c, 0] : h < 180 ? [0, c, x] : h < 240 ? [0, x, c] : h < 300 ? [x, 0, c] : [c, 0, x];
+  return '#' + [r1, g1, b1].map((v) => Math.round((v + m) * 255).toString(16).padStart(2, '0')).join('');
+}
+export const labelGradient = (p: Product): [string, string] => LABEL_GRADIENTS[p.slug] ?? [p.color, hueShiftDarken(p.color, 16, 0.28)];
+
 function blockFill(p: Product) {
-  const g = LABEL_GRADIENTS[p.slug];
-  if (!g) return { defs: '', fill: p.color };
-  const id = `blk-${p.slug}-${g[0].slice(1)}${g[1].slice(1)}`;
+  const g = labelGradient(p);
+  const id = `blk-${p.slug}-${g[0].slice(1)}${g[1].slice(1)}`.replace(/[^\w-]/g, '');
   return {
     defs: `<defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${g[0]}"/><stop offset="1" stop-color="${g[1]}"/></linearGradient></defs>`,
     fill: `url(#${id})`,
@@ -390,14 +408,17 @@ export function factsPanel(p: Product, mode: FontMode, w = 190) {
   y += 3;
   out.push(`<rect x="0" y="${y}" width="${w}" height="1.5" fill="#000"/>`);
   let undeclared = false;
-  for (const ing of p.ingredients.slice(0, 10)) {
+  // Long blends (9+ rows) use tighter leading so the panel, allergen line included, fits the label at legal size.
+  const tight = p.ingredients.length > 8;
+  const lead = tight ? 8.8 : 10;
+  for (const ing of p.ingredients.slice(0, 14)) {
     const row = factsRow(ing.name, ing.amount);
     if (row.dv === '†') undeclared = true;
     const name = wrap(ing.name, w - 82, 8);
-    y += 11;
-    out.push(textBlock(name, 0, y, 8, 10, `fill="#000" ${f}`));
+    y += tight ? 9.8 : 11;
+    out.push(textBlock(name, 0, y, 8, lead, `fill="#000" ${f}`));
     out.push(`<text x="${w - 34}" y="${y}" text-anchor="end" font-size="8" fill="#000" ${f}>${esc(row.amount)}</text><text x="${w}" y="${y}" text-anchor="end" font-size="8" font-weight="700" fill="#000" ${f}>${esc(row.dv)}</text>`);
-    y += (name.length - 1) * 10 + 3;
+    y += (name.length - 1) * lead + (tight ? 2.4 : 3);
     out.push(`<rect x="0" y="${y}" width="${w}" height="0.6" fill="#000"/>`);
   }
   y += 2;

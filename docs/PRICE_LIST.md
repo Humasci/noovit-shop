@@ -13,7 +13,7 @@ Core-5 prices cut on 30 Oct after the competitor teardown (`docs/research/COMPET
 | Magnesium Sleep+ (275 mg glycinate, 90 caps) | $32 | **$29** | $24 | $19 | Fernwood (same formula) $39.99 / $31.99; our 275 mg is ~1.4× Momentous |
 | Ashwagandha Calm+ (KSM-66 600 mg) | $32 | **$29** (31 Oct; was $27) | $24 | $19 | Cortex (same formula) $29.99; value brands sell 600 mg KSM-66 for $0.28–0.33/day |
 | Lion's Mane (1,000 mg organic) | $40 | **$35** | $30 | $25 | Cortex $44.99, Host Defense $33.95; median $0.57/day |
-| Turmeric Complex (Platinum Turmeric) | $36 | $36 | $31 | $26 | Unchanged (not in the core-5 teardown) |
+| Turmeric Complex (Platinum Turmeric) | $36 | **$29** (1 Nov; was $36) | $24 | $19 | Supliful suggests $25.90; formula is mostly root powder + glucosamine (shellfish) |
 | Creatine (281 g, 50 servings) | $34 | **$32** (31 Oct; was $29) | $27 | $22 | Kinetic $44.99; Momentous/Thorne ~$0.48/day with NSF Sport |
 | CoQ10 200 mg (draft, hidden) | $32 | **$28** | $23 | $18 | Cortex $39.99; 2× Thorne's dose |
 
@@ -62,6 +62,8 @@ Creatine: $7.14 – $14.69; turmeric: $4.05 – $11.05. Left per order after the
 - Creatine $32 → ~$16.30; subscribed $27 → ~$11.50 (at $29/$24 it was ~$13.20/~$8.30, too thin with marketing).
 - Ashwagandha $29 → **$17.58** ($10.25 delivered, confirmed 1 Nov); subscribed $24 → $12.73.
 - Magnesium $29 → **$15.08** ($12.75 delivered, confirmed 1 Nov); subscribed $24 → $10.23. Right at the target: don't discount it further; it earns its keep in the Sleep & Calm Stack.
+- Lion's Mane $35 → **$19.86** ($13.79 delivered); subscribed $30 → $15.01.
+- Turmeric Complex **$29** (cut from $36: Supliful's Platinum Turmeric is mostly root powder; suggested $25.90) → **$16.78** ($11.05 delivered).
 - Colostrum+ $35 → **$21.00** ($12.65 delivered; Supliful suggests $39.95).
 - Extra items in the same order cost about the product price plus a little shipping, so packs and bundles earn most.
 Real delivered costs for lion's mane and CoQ10 still to come (screenshots from Supliful). Magnesium, ashwagandha, colostrum done 1 Nov.

@@ -16,7 +16,7 @@ Read this first. It is the standing context for any session working on this repo
 ## Product decisions (keep consistent everywhere)
 - **Core range:** Magnesium Sleep+ (275 mg elemental as glycinate, 90 caps), Ashwagandha Calm+ (KSM-66 600 mg),
   Lion's Mane (**hero**; Supliful's 1,000 mg organic fruiting body + mycelium, a normal mainstream spec — copy says
-  "1,000 mg", never that it matches the trial doses of 1.8–3.2 g; a beta-glucan COA is a nice-to-have), Creatine (5 g per 5.6 g scoop, 50 servings, 281 g tub, 18+ only; Supliful $14.69 delivered, i.e. product + shipping + fulfilment), CoQ10 (200 mg). Plus Turmeric Complex. Ashwagandha: Supliful's "Plus" sold as is, every
+  "1,000 mg", never that it matches the trial doses of 1.8–3.2 g; a beta-glucan COA is a nice-to-have), Creatine (5 g per 5.6 g scoop, 50 servings, 281 g tub, 18+ only; Supliful $14.69 delivered, i.e. product + shipping + fulfilment), CoQ10 (200 mg). Plus Turmeric Complex (= Supliful Platinum Turmeric: 800 mg root + 100 mg 95% curcuminoids + glucosamine/chondroitin, **contains shellfish**, $29). Ashwagandha: Supliful's "Plus" sold as is, every
   ingredient listed (KSM-66 600 mg + D3, B6, B12, L-arginine, maca, ginseng, shatavari; $10.25 delivered). Wider range unlocked 31 Oct
   (probiotic, joint, collagen, D3/K2, sleep, omega-3, colostrum, menopause, NMN; see `SUPLIFUL_PRODUCT_SCREEN.md`).
   Competitor teardown: `docs/research/COMPETITORS_CORE5.md`.
@@ -29,7 +29,7 @@ Read this first. It is the standing context for any session working on this repo
   the dose per serving (single-ingredient products; blends show key ingredients) on the left and the net quantity at
   legal size on the right; "Dietary supplement" + servings below. Supliful tub template = 11" × 3" trim + 0.125" bleed
   (`tubLabelSvg`, `npm run labels` → `design/labels/<slug>.tub.png`, the upload file); bottle template still to come. Origin claim on the info panel. Distributor line:
-  **"Distributed by Noovit LLC" + Wyoming Agents suite address** (address pending). Creatine colour: emerald `#2E8B57`. Ashwagandha: violet → plum gradient (`#8E6FB4`→`#5B3F7E`, site `#745799`; no brown). Colour blocks can take a gradient (`LABEL_GRADIENTS`). No website on the bottle label.
+  **"Distributed by Noovit LLC" + Wyoming Agents suite address** (address pending). Creatine colour: emerald `#2E8B57`. Every label colour block is a gradient (`labelGradient`: product colour → deeper tone; picks in `LABEL_GRADIENTS`): Ashwagandha coral → berry (site `#B6575E`), Lion's Mane teal → petrol (`#27798A`), CoQ10 ruby → wine (`#9B2B46`). No brown. No website on the bottle label.
 - **Product images:** Supliful's blank bottle photo with the stock capsules edited out (`assets/mockups`,
   `scripts/remove-mockup-capsules.mjs`), framed tight (~90% height). Gallery: front, "In every serving" fact image,
   dose comparison (Mg, CoQ10), label close-up, Supplement Facts. Bump `MOCKUP_VERSION` when images change.
