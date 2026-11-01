@@ -16,6 +16,9 @@ export interface Ingredient {
   name: string;
   amount: string;
   description?: string;
+  // Shorter name for the printed Supplement Facts when the full one won't fit (common name + plant part; FDA
+  // doesn't require the Latin name when the common name is standard).
+  label?: string;
 }
 
 export interface FAQ {

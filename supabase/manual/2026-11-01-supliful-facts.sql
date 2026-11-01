@@ -66,7 +66,7 @@ update products set data = data
       {"name": "L-Methionine", "amount": "8mg"},
       {"name": "Bromelain (Ananas comosus stem)", "amount": "8mg"}
     ]'::jsonb,
-    'otherIngredients', 'Hypromellose (vegetable capsule), rice flour. Contains: shellfish (crab, lobster, crawfish).',
+    'otherIngredients', 'Hypromellose capsule, rice flour. Contains: shellfish (crab, lobster, crawfish).',
     'dosage', 'Take 2 capsules once a day, 20–30 minutes before a meal.',
     'dietaryTags', '["gluten-free"]'::jsonb,
     'basePrice', 29

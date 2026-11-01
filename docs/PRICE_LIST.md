@@ -62,11 +62,12 @@ Creatine: $7.14 – $14.69; turmeric: $4.05 – $11.05. Left per order after the
 - Creatine $32 → ~$16.30; subscribed $27 → ~$11.50 (at $29/$24 it was ~$13.20/~$8.30, too thin with marketing).
 - Ashwagandha $29 → **$17.58** ($10.25 delivered, confirmed 1 Nov); subscribed $24 → $12.73.
 - Magnesium $29 → **$15.08** ($12.75 delivered, confirmed 1 Nov); subscribed $24 → $10.23. Right at the target: don't discount it further; it earns its keep in the Sleep & Calm Stack.
+- CoQ10 $28 → **$15.01** ($11.85 delivered, confirmed 1 Nov); subscribed $23 → $10.16. At the target: no extra discounts.
 - Lion's Mane $35 → **$19.86** ($13.79 delivered); subscribed $30 → $15.01.
 - Turmeric Complex **$29** (cut from $36: Supliful's Platinum Turmeric is mostly root powder; suggested $25.90) → **$16.78** ($11.05 delivered).
 - Colostrum+ $35 → **$21.00** ($12.65 delivered; Supliful suggests $39.95).
 - Extra items in the same order cost about the product price plus a little shipping, so packs and bundles earn most.
-Real delivered costs for lion's mane and CoQ10 still to come (screenshots from Supliful). Magnesium, ashwagandha, colostrum done 1 Nov.
+All core delivered costs confirmed 1 Nov (magnesium, ashwagandha, lion's mane, creatine, CoQ10, turmeric) plus colostrum and NAD+.
 
 ## Trend products (31 Oct, hidden drafts until Supliful facts + costs are confirmed)
 | Product | Price | Subscribe | Delivered cost | Left per first order |

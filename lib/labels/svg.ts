@@ -403,34 +403,34 @@ export function factsPanel(p: Product, mode: FontMode, w = 190) {
   out.push(`<text x="0" y="${y}" font-size="8" fill="#000" ${f}>Servings Per Container: ${servingsPerContainer}</text>`);
   y += 4;
   out.push(`<rect x="0" y="${y}" width="${w}" height="5" fill="#000"/>`);
-  y += 13;
-  out.push(`<text x="0" y="${y}" font-size="7" font-weight="700" fill="#000" ${f}>Amount Per Serving</text><text x="${w}" y="${y}" text-anchor="end" font-size="7" font-weight="700" fill="#000" ${f}>% Daily Value</text>`);
+  // Long blends (7+ rows) use tighter spacing so the panel, allergen line included, fits the label at 5 pt.
+  const tight = p.ingredients.length > 6;
+  y += tight ? 11.5 : 13;
+  out.push(`<text x="0" y="${y}" font-size="8" font-weight="700" fill="#000" ${f}>Amount Per Serving</text><text x="${w}" y="${y}" text-anchor="end" font-size="8" font-weight="700" fill="#000" ${f}>% Daily Value</text>`);
   y += 3;
   out.push(`<rect x="0" y="${y}" width="${w}" height="1.5" fill="#000"/>`);
   let undeclared = false;
-  // Long blends (9+ rows) use tighter leading so the panel, allergen line included, fits the label at legal size.
-  const tight = p.ingredients.length > 8;
   const lead = tight ? 8.8 : 10;
   for (const ing of p.ingredients.slice(0, 14)) {
     const row = factsRow(ing.name, ing.amount);
     if (row.dv === '†') undeclared = true;
-    const name = wrap(ing.name, w - 82, 8);
-    y += tight ? 9.8 : 11;
+    const name = wrap(ing.label ?? ing.name, w - 70, 8);
+    y += tight ? 8.9 : 11;
     out.push(textBlock(name, 0, y, 8, lead, `fill="#000" ${f}`));
     out.push(`<text x="${w - 34}" y="${y}" text-anchor="end" font-size="8" fill="#000" ${f}>${esc(row.amount)}</text><text x="${w}" y="${y}" text-anchor="end" font-size="8" font-weight="700" fill="#000" ${f}>${esc(row.dv)}</text>`);
-    y += (name.length - 1) * lead + (tight ? 2.4 : 3);
+    y += (name.length - 1) * lead + (tight ? 2.1 : 3);
     out.push(`<rect x="0" y="${y}" width="${w}" height="0.6" fill="#000"/>`);
   }
   y += 2;
   out.push(`<rect x="0" y="${y}" width="${w}" height="5" fill="#000"/>`);
   y += 12;
   if (undeclared) {
-    out.push(`<text x="0" y="${y}" font-size="7" fill="#000" ${f}>† Daily Value not established.</text>`);
-    y += 12;
+    out.push(`<text x="0" y="${y}" font-size="8" fill="#000" ${f}>† Daily Value not established.</text>`);
+    y += tight ? 10 : 12;
   }
-  const other = wrap(`Other ingredients: ${p.otherIngredients}`, w, 7, 0.5);
-  out.push(textBlock(other, 0, y, 7, 9, `fill="#000" ${f}`));
-  y += other.length * 9;
+  const other = wrap(`Other ingredients: ${p.otherIngredients}`, w, 8, 0.47);
+  out.push(textBlock(other, 0, y, 8, 10, `fill="#000" ${f}`));
+  y += other.length * 10;
   return { svg: `<g>${out.join('')}</g>`, height: y };
 }
 
@@ -444,6 +444,8 @@ function infoPanel(p: Product, mode: FontMode, w = 190) {
   const f = font('body', mode);
   const out: string[] = [];
   let y = 9;
+  // Iron products carry the mandatory poisoning warning, so their paragraphs sit a little closer.
+  const gap = p.ingredients.some((i) => /\biron\b/i.test(i.name)) ? 1.5 : 3;
   const para = (label: string, text: string, size = 7) => {
     const lines = wrap(label ? `${label} ${text}` : text, w, size, 0.5);
     out.push(
@@ -454,68 +456,80 @@ function infoPanel(p: Product, mode: FontMode, w = 190) {
         })
         .join('')
     );
-    y += lines.length * (size + 2) + 3;
+    y += lines.length * (size + 2) + gap;
   };
   para('Directions:', p.dosage);
   const iron = p.ingredients.some((i) => /\biron\b/i.test(i.name));
   para('Caution:', 'Do not exceed the recommended dose. Consult your healthcare provider before use if you are pregnant, nursing, taking medication or have a medical condition.' + (p.ageRestricted ? ' Not for use by anyone under 18.' : '') + (iron ? '' : ' Keep out of reach of children.'));
-  if (iron) para('', IRON_WARNING, 6.2);
+  if (iron) para('', IRON_WARNING, 7);
   para('Store', 'in a cool, dry place. Do not use if the seal under the cap is broken or missing.');
   para('', `${ORIGIN_CLAIM}.`);
-  const disc = wrap(DISCLAIMER, w - 8, 6.6, 0.52);
-  out.push(`<rect x="0" y="${n(y - 4)}" width="${w}" height="${n(disc.length * 8.4 + 7)}" fill="none" stroke="${NAVY}" stroke-width="0.6"/>`);
-  out.push(textBlock(disc, 4, y + 4, 6.6, 8.4, `font-weight="700" fill="${NAVY}" ${f}`));
-  y += disc.length * 8.4 + 10;
+  const disc = wrap(DISCLAIMER, w - 8, 7, 0.52);
+  out.push(`<rect x="0" y="${n(y - 4)}" width="${w}" height="${n(disc.length * 8.8 + 7)}" fill="none" stroke="${NAVY}" stroke-width="0.6"/>`);
+  out.push(textBlock(disc, 4, y + 4, 7, 8.8, `font-weight="700" fill="${NAVY}" ${f}`));
+  y += disc.length * 8.8 + 10;
   return { svg: `<g>${out.join('')}</g>`, height: y };
 }
 
 // ---------- Full wrap-around label ----------
 
-// Trim 6.5" × 2.25" (650 × 225) with 0.125" bleed. Panels: Supplement Facts | Front | Information.
-export const LABEL = { trimW: 650, trimH: 225, bleed: 12.5, factsW: 215, frontW: 220, infoW: 215 };
+// Supliful's bottle template (VOX4COQ1, Nov 2026): trim 6.0" × 2.25" (600 × 225) with 0.125" bleed, 1 unit = 0.01".
+// Panels in Supliful's order: Information | Front | Supplement Facts. No barcode or LOT/EXP area (Supliful prints neither).
+export const LABEL = { trimW: 600, trimH: 225, bleed: 12.5, infoW: 190, frontW: 220, factsW: 190 };
+
+function layoutPanels(p: Product, mode: FontMode) {
+  const { trimH, factsW, infoW } = LABEL;
+  let facts = factsPanel(p, mode, factsW - 22);
+  let factsScale = 1;
+  for (let i = 0; i < 3 && facts.height > trimH - 24; i++) {
+    factsScale = Math.max(0.875, factsScale * ((trimH - 24) / facts.height));
+    facts = factsPanel(p, mode, (factsW - 22) / factsScale);
+  }
+  return { facts, factsScale, info: infoPanel(p, mode, infoW - 22) };
+}
+
+// Which bottle-label panels run past the safe zone (heights include ~7 units of trailing space, so this is cautious).
+export function labelOverflow(p: Product) {
+  const { facts, factsScale, info } = layoutPanels(p, 'print');
+  const room = LABEL.trimH - 24 + 7;
+  return [
+    ...(facts.height * factsScale > room ? [`facts ${Math.round(facts.height * factsScale - room)} over`] : []),
+    ...(info.height > room - 30 ? [`info ${Math.round(info.height - (room - 30))} over`] : []),
+  ];
+}
 
 export function fullLabelSvg(p: Product, opts: { mode?: FontMode; guides?: boolean } = {}) {
   const mode = opts.mode ?? 'print';
-  const { trimW, trimH, bleed, factsW, frontW } = LABEL;
+  const { trimW, trimH, bleed, frontW, infoW } = LABEL;
   const W = trimW + bleed * 2;
   const H = trimH + bleed * 2;
   // Long panels (blends) are laid out wider, then scaled down to fill the panel's width and fit its height, but
-  // never below 0.78: 8-unit type stays at least 1/16" tall (21 CFR 101.36(i)(1)). If that still overflows, the
-  // bottle needs Supliful's larger template.
-  let facts = factsPanel(p, mode, factsW - 25);
-  let factsScale = 1;
-  for (let i = 0; i < 3 && facts.height > trimH - 24; i++) {
-    factsScale = Math.max(0.78, factsScale * ((trimH - 24) / facts.height));
-    facts = factsPanel(p, mode, (factsW - 25) / factsScale);
-  }
-  const info = infoPanel(p, mode, LABEL.infoW - 25);
-  const fx = bleed + factsW;
-  const ix = fx + frontW;
+  // never below 0.875, so the smallest (8-unit) facts type stays at 5 pt, Supliful's minimum (1 unit = 0.72 pt).
+  // The FDA type-size rules (101.2(c), 101.36(i)) still need checking against Supliful's guide: see docs/TODO.md.
+  const { facts, factsScale, info } = layoutPanels(p, mode);
+  const fx = bleed + infoW; // front panel's left edge
+  const sx = fx + frontW; // facts panel's left edge
   const f = font('body', mode);
   const guides = opts.guides
     ? `<g id="guides-do-not-print" fill="none" stroke-width="0.6">
         <rect x="${bleed}" y="${bleed}" width="${trimW}" height="${trimH}" stroke="#e11d48"/>
         <rect x="${bleed + 10}" y="${bleed + 10}" width="${trimW - 20}" height="${trimH - 20}" stroke="#2563eb" stroke-dasharray="3 3"/>
         <line x1="${fx}" y1="0" x2="${fx}" y2="${H}" stroke="#94a3b8" stroke-dasharray="2 4"/>
-        <line x1="${ix}" y1="0" x2="${ix}" y2="${H}" stroke="#94a3b8" stroke-dasharray="2 4"/>
+        <line x1="${sx}" y1="0" x2="${sx}" y2="${H}" stroke="#94a3b8" stroke-dasharray="2 4"/>
       </g>`
     : '';
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W / 100}in" height="${H / 100}in" viewBox="0 0 ${W} ${H}">
   <title>Noovit label — ${esc(p.name)} (draft)</title>
   <rect width="${W}" height="${H}" fill="#fff"/>
-  <g id="facts" transform="translate(${bleed + 13} ${bleed + 12}) scale(${n(factsScale)})">${facts.svg}</g>
-  <g id="front" transform="translate(${fx} ${bleed})">${frontPanel(p, mode, bleed)}</g>
-  <g id="info" transform="translate(${ix + 12} ${bleed + 12})">${info.svg}
-    <g transform="translate(0 ${trimH - 24 - 66})">
-      <rect width="96" height="66" fill="#fff" stroke="#9ca3af" stroke-width="0.5" stroke-dasharray="2 2"/>
-      <text x="48" y="36" text-anchor="middle" font-size="7" fill="#6b7280" ${f}>UPC barcode (GS1)</text>
-      <rect x="104" y="0" width="86" height="30" fill="#fff" stroke="#9ca3af" stroke-width="0.5" stroke-dasharray="2 2"/>
-      <text x="147" y="18" text-anchor="middle" font-size="6.5" fill="#6b7280" ${f}>LOT / EXP</text>
-      <text x="104" y="44" font-size="6.5" font-weight="700" fill="${NAVY}" ${f}>Distributed by ${LEGAL_NAME}</text>
-      <text x="104" y="53" font-size="6.5" fill="${NAVY}" ${f}>30 N Gould St Ste R</text>
-      <text x="104" y="62" font-size="6.5" fill="${NAVY}" ${f}>Sheridan, WY 82801</text>
+  <g id="info" transform="translate(${bleed + 12} ${bleed + 12})">${info.svg}
+    <g transform="translate(0 ${trimH - 24 - 28})">
+      <text x="0" y="6" font-size="7" font-weight="700" fill="${NAVY}" ${f}>Distributed by ${LEGAL_NAME}</text>
+      <text x="0" y="15.5" font-size="7" fill="${NAVY}" ${f}>30 N Gould St Ste R, Sheridan, WY 82801</text>
+      <text x="0" y="25" font-size="7" fill="${NAVY}" ${f}>hello@noovit.com</text>
     </g>
   </g>
+  <g id="front" transform="translate(${fx} ${bleed})">${frontPanel(p, mode, bleed)}</g>
+  <g id="facts" transform="translate(${sx + 10} ${bleed + 12}) scale(${n(factsScale)})">${facts.svg}</g>
   ${guides}
 </svg>`;
 }
