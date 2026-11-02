@@ -349,6 +349,69 @@ export function frontPanel(p: Product, mode: FontMode, bleed = 0, pattern: Label
   </g>`;
 }
 
+// ---------- Front panel v2 (2 Nov exploration, after an outside design review) ----------
+// Horizontal wordmark top-left (no vertical wordmark, no separate n⁺ icon: one orange cross only), half-density
+// pixel texture, ingredient-first name (descriptor such as "Sleep+" smaller underneath), every line ≥ 5 pt (7 units).
+const V2_DOSE_LINES: Record<string, string> = {
+  'magnesium-complex': 'Elemental magnesium',
+  creatine: 'Creatine per scoop',
+  coq10: 'CoQ10 (ubiquinone)',
+  ashwagandha: 'KSM-66® ashwagandha',
+};
+function v2Mosaic(p: Product) {
+  const rnd = hash(p.slug + 'v2');
+  const out: string[] = [];
+  const ts = 3.5, st = 4.2, depth = 34;
+  for (let y = 0; y < depth; y += st)
+    for (let x = 0.6; x < FRONT.w; x += st) {
+      let w = 1 - y / depth;
+      if (x < 92 && y > 8) w *= 0.35; // keep the wordmark clear
+      if (rnd() < w ** 1.8 * 0.6) out.push(`<rect x="${n(x)}" y="${n(y)}" width="${ts}" height="${ts}" rx="0.4" fill="#fff" opacity="${n((0.1 + 0.4 * rnd()) * w)}"/>`);
+    }
+  return out.join('');
+}
+export function frontPanelV2(p: Product, mode: FontMode, bleed = 0) {
+  const dark = shade(p.color);
+  const { units, servingsPerContainer } = labelCounts(p);
+  const qty = netQuantity(p);
+  const wt = qty.match(/^Net Wt (\d+ g) \((.+)\)$/);
+  const big = wt ? wt[1] : p.form === 'powder' ? qty.split(' ')[0] : String(units);
+  const unitWord = wt ? `Net Wt ${wt[2]}` : p.form === 'powder' ? qty.replace(/^\S+\s/, '') : UNITS[p.form][units === 1 ? 0 : 1];
+  const dose = heroDose(p);
+  const category = labelCategory(p);
+  const words = p.name.split(' ');
+  const descriptor = words.length > 1 && /\+$|^Complex$/.test(words[words.length - 1]) ? words.pop()! : '';
+  const main = words.join(' ');
+  const room = FRONT.w - 36;
+  const size = Math.min(30, room / (main.length * 0.56));
+  const benefit = balance(wrap(p.shortBenefit.replace(/\.$/, '') + '*', room, 8.4, 0.5).slice(0, 2));
+  const caps = (x: number, y: number, t: string, sz: number, fill: string, anchor = 'start', weight = 600) =>
+    `<text x="${n(x)}" y="${n(y)}" text-anchor="${anchor}" font-size="${sz}" font-weight="${weight}" letter-spacing="${n(sz * 0.12)}" fill="${fill}" ${font('body', mode)}>${esc(t.toUpperCase())}</text>`;
+  const nameY = descriptor ? 92 : 100;
+  const block = blockFill(p);
+  const doseLine = V2_DOSE_LINES[p.slug] ?? dose?.line ?? '';
+  const left = dose
+    ? `<text x="18" y="${BAND + 37}" font-size="31" font-weight="700" letter-spacing="-0.9" fill="${dark}" ${font('head', mode)}>${esc(dose.value)}<tspan font-size="13" font-weight="600" dx="1.8">${esc(dose.unit)}</tspan></text>
+    ${caps(18, BAND + 50, doseLine, 7, INK, 'start', 500)}`
+    : textBlock(balance(wrap(labelSubtitle(p), 120, 9.6, 0.5).slice(0, 2)), 18, BAND + 25, 9.6, 11.6, `font-weight="600" fill="${dark}" ${font('body', mode)}`);
+  return `<g>${block.defs}
+    <rect x="0" y="${-bleed}" width="${FRONT.w}" height="${BAND + bleed}" fill="${block.fill}"/>
+    <rect x="0" y="${BAND}" width="${FRONT.w}" height="${FRONT.h - BAND + bleed}" fill="#fff"/>
+    ${v2Mosaic(p)}
+    ${wordmarkRaw(18, 34, 17, mode, '#fff', '#fff')}
+    ${category ? caps(18, nameY - size - 8, category, 7, '#fff', 'start', 600) : ''}
+    <text x="18" y="${n(nameY)}" font-size="${n(size)}" font-weight="600" letter-spacing="${n(-0.02 * size)}" fill="#fff" ${font('head', mode)}>${esc(main)}</text>
+    ${descriptor ? `<text x="18" y="${n(nameY + 21)}" font-size="17" font-weight="500" fill="#fff" fill-opacity="0.88" ${font('head', mode)}>${esc(descriptor)}</text>` : ''}
+    ${textBlock(benefit, 18, BAND - 11 - (benefit.length - 1) * 10.2, 8.4, 10.2, `font-weight="500" fill="#fff" opacity="0.94" ${font('body', mode)}`)}
+    ${left}
+    <text x="${FRONT.w - 18}" y="${BAND + 33}" text-anchor="end" font-size="22" font-weight="600" fill="${dark}" ${font('head', mode)}>${esc(big)}</text>
+    ${caps(FRONT.w - 18, BAND + 45, unitWord, 7, dark, 'end')}
+    <rect x="18" y="${BAND + 56}" width="${FRONT.w - 36}" height="0.6" fill="#d9d4cb"/>
+    ${caps(18, FRONT.h - 12, 'Dietary supplement', 7, NAVY, 'start', 700)}
+    ${caps(FRONT.w - 18, FRONT.h - 12, `${servingsPerContainer} servings`, 7, INK, 'end', 500)}
+  </g>`;
+}
+
 // ---------- Supplement Facts (draft, from the catalog; replace with the supplier's panel) ----------
 
 // FDA reference Daily Values (21 CFR 101.9(c), adults and children 4+) for nutrients we use.
