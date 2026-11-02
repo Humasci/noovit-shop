@@ -370,7 +370,7 @@ function v2Mosaic(p: Product) {
     }
   return out.join('');
 }
-export function frontPanelV2(p: Product, mode: FontMode, bleed = 0) {
+export function frontPanelV2(p: Product, mode: FontMode, bleed = 0, opts: { doseInBlock?: boolean } = {}) {
   const dark = shade(p.color);
   const { units, servingsPerContainer } = labelCounts(p);
   const qty = netQuantity(p);
@@ -387,19 +387,38 @@ export function frontPanelV2(p: Product, mode: FontMode, bleed = 0) {
   const benefit = balance(wrap(p.shortBenefit.replace(/\.$/, '') + '*', room, 8.4, 0.5).slice(0, 2));
   const caps = (x: number, y: number, t: string, sz: number, fill: string, anchor = 'start', weight = 600) =>
     `<text x="${n(x)}" y="${n(y)}" text-anchor="${anchor}" font-size="${sz}" font-weight="${weight}" letter-spacing="${n(sz * 0.12)}" fill="${fill}" ${font('body', mode)}>${esc(t.toUpperCase())}</text>`;
-  const nameY = descriptor ? 92 : 100;
+  const nameY = descriptor ? 84 : 94;
   const block = blockFill(p);
   const doseLine = V2_DOSE_LINES[p.slug] ?? dose?.line ?? '';
   const left = dose
     ? `<text x="18" y="${BAND + 37}" font-size="31" font-weight="700" letter-spacing="-0.9" fill="${dark}" ${font('head', mode)}>${esc(dose.value)}<tspan font-size="13" font-weight="600" dx="1.8">${esc(dose.unit)}</tspan></text>
     ${caps(18, BAND + 50, doseLine, 7, INK, 'start', 500)}`
     : textBlock(balance(wrap(labelSubtitle(p), 120, 9.6, 0.5).slice(0, 2)), 18, BAND + 25, 9.6, 11.6, `font-weight="600" fill="${dark}" ${font('body', mode)}`);
+  if (opts.doseInBlock) {
+    return `<g>${block.defs}
+    <rect x="0" y="${-bleed}" width="${FRONT.w}" height="${BAND + bleed}" fill="${block.fill}"/>
+    <rect x="0" y="${BAND}" width="${FRONT.w}" height="${FRONT.h - BAND + bleed}" fill="#fff"/>
+    ${v2Mosaic(p)}
+    ${wordmarkRaw(18, 34, 17, mode, '#fff', '#fff')}
+    ${category ? caps(FRONT.w - 18, 33, category, 7, '#fff', 'end', 600) : ''}
+    <text x="18" y="${n(nameY - 6)}" font-size="${n(size)}" font-weight="600" letter-spacing="${n(-0.02 * size)}" fill="#fff" ${font('head', mode)}>${esc(main)}</text>
+    ${descriptor ? `<text x="18" y="${n(nameY + 15)}" font-size="17" font-weight="500" fill="#fff" fill-opacity="0.88" ${font('head', mode)}>${esc(descriptor)}</text>` : ''}
+    ${textBlock(benefit.slice(0, 1), 18, nameY + (descriptor ? 30 : 14), 8.4, 10.2, `font-weight="500" fill="#fff" opacity="0.94" ${font('body', mode)}`)}
+    ${dose ? caps(18, BAND - 12, doseLine, 7, '#fff', 'start', 600) + `<text x="${FRONT.w - 18}" y="${BAND - 11}" text-anchor="end" font-size="17" font-weight="700" fill="#fff" ${font('head', mode)}>${esc(dose.value)} ${esc(dose.unit)}</text>` : ''}
+    <text x="18" y="${BAND + 31}" font-size="24" font-weight="700" fill="${dark}" ${font('head', mode)}>${esc(big)}</text>
+    ${caps(18, BAND + 43, unitWord, 7, dark, 'start')}
+    <text x="${FRONT.w - 18}" y="${BAND + 31}" text-anchor="end" font-size="15" font-weight="600" fill="${dark}" ${font('head', mode)}>${servingsPerContainer}</text>
+    ${caps(FRONT.w - 18, BAND + 43, 'Servings', 7, INK, 'end', 500)}
+    <rect x="18" y="${BAND + 54}" width="${FRONT.w - 36}" height="0.6" fill="#d9d4cb"/>
+    ${caps(18, FRONT.h - 12, 'Dietary supplement', 7, NAVY, 'start', 700)}
+  </g>`;
+  }
   return `<g>${block.defs}
     <rect x="0" y="${-bleed}" width="${FRONT.w}" height="${BAND + bleed}" fill="${block.fill}"/>
     <rect x="0" y="${BAND}" width="${FRONT.w}" height="${FRONT.h - BAND + bleed}" fill="#fff"/>
     ${v2Mosaic(p)}
     ${wordmarkRaw(18, 34, 17, mode, '#fff', '#fff')}
-    ${category ? caps(18, nameY - size - 8, category, 7, '#fff', 'start', 600) : ''}
+    ${category ? caps(FRONT.w - 18, 33, category, 7, '#fff', 'end', 600) : ''}
     <text x="18" y="${n(nameY)}" font-size="${n(size)}" font-weight="600" letter-spacing="${n(-0.02 * size)}" fill="#fff" ${font('head', mode)}>${esc(main)}</text>
     ${descriptor ? `<text x="18" y="${n(nameY + 21)}" font-size="17" font-weight="500" fill="#fff" fill-opacity="0.88" ${font('head', mode)}>${esc(descriptor)}</text>` : ''}
     ${textBlock(benefit, 18, BAND - 11 - (benefit.length - 1) * 10.2, 8.4, 10.2, `font-weight="500" fill="#fff" opacity="0.94" ${font('body', mode)}`)}

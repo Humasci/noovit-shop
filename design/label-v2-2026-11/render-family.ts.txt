@@ -12,32 +12,32 @@ const MUTED: Record<string, string> = {
   creatine: '#2F6F4E', coq10: '#8E2E45', 'turmeric-complex': '#C27A2A',
 };
 const lum = (h: string) => { const c = [1,3,5].map(i => parseInt(h.slice(i,i+2),16)/255).map(v => v <= 0.03928 ? v/12.92 : ((v+0.055)/1.055)**2.4); return 0.2126*c[0]+0.7152*c[1]+0.0722*c[2]; };
-const v2Art = (p: any, ext: number) => {
+const mkArt = (o: { doseInBlock?: boolean }) => (p: any, ext: number) => {
   const [a, b] = labelGradient(p);
   return `<rect x="${-ext}" y="0" width="${ext + 1}" height="${BAND}" fill="${a}"/><rect x="${FRONT.w - 1}" y="0" width="${ext + 1}" height="${BAND}" fill="${b}"/>
-    <rect x="${-ext}" y="${BAND}" width="${FRONT.w + ext * 2}" height="${FRONT.h - BAND}" fill="#fff"/>${frontPanelV2(p, 'print')}`;
+    <rect x="${-ext}" y="${BAND}" width="${FRONT.w + ext * 2}" height="${FRONT.h - BAND}" fill="#fff"/>${frontPanelV2(p, 'print', 0, o)}`;
 };
 (async () => {
   const rows: Buffer[] = [];
-  for (const variant of ['A', 'B', 'C']) {
+  for (const variant of (process.argv[3] ?? 'A,B,C').split(',')) {
     const tiles: Buffer[] = [];
     for (const slug of SLUGS) {
       const p: any = { ...SEED_PRODUCTS.find((x) => x.slug === slug)! };
       const saved = LABEL_GRADIENTS[slug];
-      if (variant === 'C') { p.color = MUTED[slug]; LABEL_GRADIENTS[slug] = [MUTED[slug], MUTED[slug]]; }
-      const svg = variant === 'A' ? photoBottleSvg(p, 'white') : photoBottleSvg(p, 'white', false, v2Art);
-      if (variant === 'C') { if (saved) LABEL_GRADIENTS[slug] = saved; else delete LABEL_GRADIENTS[slug]; console.log(slug, MUTED[slug], 'white contrast', (1.05 / (lum(MUTED[slug]) + 0.05)).toFixed(1)); }
+      if (variant === 'C' || variant === 'D') { p.color = MUTED[slug]; LABEL_GRADIENTS[slug] = [MUTED[slug], MUTED[slug]]; }
+      const svg = variant === 'A' ? photoBottleSvg(p, 'white') : photoBottleSvg(p, 'white', false, mkArt({ doseInBlock: variant === 'D' }));
+      if (variant === 'C' || variant === 'D') { if (saved) LABEL_GRADIENTS[slug] = saved; else delete LABEL_GRADIENTS[slug]; console.log(slug, MUTED[slug], 'white contrast', (1.05 / (lum(MUTED[slug]) + 0.05)).toFixed(1)); }
       tiles.push(Buffer.from(new Resvg(svg, { fitTo: { mode: 'width', value: 420 }, font: { fontFiles, loadSystemFonts: false, defaultFontFamily: 'Inter' } }).render().asPng()));
     }
     const meta = await sharp(tiles[0]).metadata();
     const W = meta.width!, H = meta.height!;
-    const label = variant === 'A' ? 'A  Current' : variant === 'B' ? 'B  v2, your gradients' : 'C  v2, solid muted colours';
+    const label = ({ A: 'A  Current', B: 'B  v2, your gradients', C: 'C  v2, solid colours (recommended)', D: 'D  ChatGPT sketch: dose in the colour block' } as Record<string, string>)[variant];
     rows.push(await sharp({ create: { width: W * 6, height: H + 50, channels: 3, background: '#ffffff' } })
       .composite([...tiles.map((t, i) => ({ input: t, left: i * W, top: 50 })),
         { input: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${W * 6}" height="50"><text x="20" y="36" font-size="26" font-family="Inter" font-weight="600" fill="#111">${label}</text></svg>`), left: 0, top: 0 }])
       .png().toBuffer());
   }
   const m = await sharp(rows[0]).metadata();
-  await sharp({ create: { width: m.width!, height: m.height! * 3, channels: 3, background: '#ffffff' } })
+  await sharp({ create: { width: m.width!, height: m.height! * rows.length, channels: 3, background: '#ffffff' } })
     .composite(rows.map((r, i) => ({ input: r, left: 0, top: i * m.height! }))).png().toFile(out);
 })();
