@@ -370,8 +370,12 @@ function v2Mosaic(p: Product) {
     }
   return out.join('');
 }
-export function frontPanelV2(p: Product, mode: FontMode, bleed = 0, opts: { doseInBlock?: boolean } = {}) {
-  const dark = shade(p.color);
+// `fullColour`: the colour runs down the whole front (no white band); dose and count in white.
+export function frontPanelV2(p: Product, mode: FontMode, bleed = 0, opts: { doseInBlock?: boolean; fullColour?: boolean } = {}) {
+  const fc = !!opts.fullColour;
+  const dark = fc ? '#fff' : shade(p.color);
+  const ink = fc ? 'rgba(255,255,255,0.82)' : INK;
+  const navy = fc ? '#fff' : NAVY;
   const { units, servingsPerContainer } = labelCounts(p);
   const qty = netQuantity(p);
   const wt = qty.match(/^Net Wt (\d+ g) \((.+)\)$/);
@@ -392,7 +396,7 @@ export function frontPanelV2(p: Product, mode: FontMode, bleed = 0, opts: { dose
   const doseLine = V2_DOSE_LINES[p.slug] ?? dose?.line ?? '';
   const left = dose
     ? `<text x="18" y="${BAND + 37}" font-size="31" font-weight="700" letter-spacing="-0.9" fill="${dark}" ${font('head', mode)}>${esc(dose.value)}<tspan font-size="13" font-weight="600" dx="1.8">${esc(dose.unit)}</tspan></text>
-    ${caps(18, BAND + 50, doseLine, 7, INK, 'start', 500)}`
+    ${caps(18, BAND + 50, doseLine, 7, ink, 'start', 500)}`
     : textBlock(balance(wrap(labelSubtitle(p), 120, 9.6, 0.5).slice(0, 2)), 18, BAND + 25, 9.6, 11.6, `font-weight="600" fill="${dark}" ${font('body', mode)}`);
   if (opts.doseInBlock) {
     return `<g>${block.defs}
@@ -415,7 +419,7 @@ export function frontPanelV2(p: Product, mode: FontMode, bleed = 0, opts: { dose
   }
   return `<g>${block.defs}
     <rect x="0" y="${-bleed}" width="${FRONT.w}" height="${BAND + bleed}" fill="${block.fill}"/>
-    <rect x="0" y="${BAND}" width="${FRONT.w}" height="${FRONT.h - BAND + bleed}" fill="#fff"/>
+    <rect x="0" y="${BAND}" width="${FRONT.w}" height="${FRONT.h - BAND + bleed}" fill="${fc ? block.fill : '#fff'}"/>${fc ? `<rect x="18" y="${BAND - 1}" width="${FRONT.w - 36}" height="0.6" fill="rgba(255,255,255,0.45)"/>` : ''}
     ${v2Mosaic(p)}
     ${wordmarkRaw(18, 34, 17, mode, '#fff', '#fff')}
     ${category ? caps(FRONT.w - 18, 33, category, 7, '#fff', 'end', 600) : ''}
@@ -425,9 +429,9 @@ export function frontPanelV2(p: Product, mode: FontMode, bleed = 0, opts: { dose
     ${left}
     <text x="${FRONT.w - 18}" y="${BAND + 33}" text-anchor="end" font-size="22" font-weight="600" fill="${dark}" ${font('head', mode)}>${esc(big)}</text>
     ${caps(FRONT.w - 18, BAND + 45, unitWord, 7, dark, 'end')}
-    <rect x="18" y="${BAND + 56}" width="${FRONT.w - 36}" height="0.6" fill="#d9d4cb"/>
-    ${caps(18, FRONT.h - 12, 'Dietary supplement', 7, NAVY, 'start', 700)}
-    ${caps(FRONT.w - 18, FRONT.h - 12, `${servingsPerContainer} servings`, 7, INK, 'end', 500)}
+    <rect x="18" y="${BAND + 56}" width="${FRONT.w - 36}" height="0.6" fill="${fc ? 'rgba(255,255,255,0.45)' : '#d9d4cb'}"/>
+    ${caps(18, FRONT.h - 12, 'Dietary supplement', 7, navy, 'start', 700)}
+    ${caps(FRONT.w - 18, FRONT.h - 12, `${servingsPerContainer} servings`, 7, ink, 'end', 500)}
   </g>`;
 }
 
