@@ -47,7 +47,7 @@ const GOAL_TILES: { label: string; line: string; slug: string; href: string }[] 
 ];
 
 // The core range (docs/research/COMPETITORS_CORE5.md); hidden products drop out automatically. Up to four are shown.
-const ART_V = 5; // bump when the /art graphics change
+const ART_V = 6; // bump when the /art graphics change
 const SPOTLIGHT = ['magnesium-complex', 'ashwagandha', 'lions-mane', 'creatine', 'coq10', 'turmeric-complex'];
 
 export const metadata: Metadata = { alternates: { canonical: '/' } };
@@ -162,7 +162,7 @@ export default async function HomePage() {
       {ask && (
         <section className="pb-4">
           <div className="container px-6">
-            <div className="relative grid items-center gap-8 overflow-hidden rounded-[2rem] bg-[var(--color-navy)] p-10 text-white md:grid-cols-[1.3fr_1fr] md:p-16">
+            <div className="relative grid items-center gap-8 overflow-hidden rounded-[2rem] bg-[#141A4D] p-10 text-white md:grid-cols-[1.3fr_1fr] md:p-16">
               <img src={`/art/cells-dark-advisor.svg?v=${ART_V}`} alt="" aria-hidden className="pointer-events-none absolute inset-0 h-full w-full object-cover" />
               <div className="relative">
                 <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-white/60">New · Noovit AI</p>

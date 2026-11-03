@@ -42,7 +42,9 @@ Read this first. It is the standing context for any session working on this repo
   `/art/drift-<slug>.svg` (`lib/labels/web-art.ts`).
 - **Science palette (3 Nov, website art and accents only):** night `#141A4D`, indigo `#26307E`, cobalt `#3E5BD6`, violet
   `#7A5CE0`, lavender `#B9A9F2`, teal `#2DB6A8`, magenta `#C4458F`, haze `#D9DFF5` (CSS `--sci-*`). Microscopy-style cell
-  art: `/art/cells-dark[-seed].svg`, `/art/cells-light[-seed].svg` (evidence band, advisor promo, guides header).
+  art: `/art/cells-dark[-seed].svg`, `/art/cells-light[-seed].svg` (evidence band, advisor card, guides index + every guide
+  header, quiz); `/art/helix-dark[-seed].svg` bead DNA helix (About header); `/art/protein-<slug>.svg`. Social post
+  templates: `npm run social` → `design/social/` (evidence, dose, meet-the-molecule posts; Ask-AI and evidence stories).
 - **The cross:** only the five-tile mosaic cross, everywhere (logo, favicon, loader, brand name in text, emails, advisor icon).
 - **Product images:** Supliful's blank bottle photo with the stock capsules edited out (`assets/mockups`,
   `scripts/remove-mockup-capsules.mjs`), framed tight (~90% height). Gallery: front, "In every serving" fact image,

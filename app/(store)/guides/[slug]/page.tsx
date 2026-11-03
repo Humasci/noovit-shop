@@ -141,12 +141,20 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
   );
 
   return (
-    <article className="container max-w-3xl px-6 py-12">
+    <>
+    {/* Light science-palette header (cell artwork); each guide gets its own arrangement */}
+    <div className="relative overflow-hidden bg-[#EEF1FB]">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={`/art/cells-light-${g.slug}.svg?v=1`} alt="" aria-hidden className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-80" />
+      <div className="container relative max-w-3xl px-6 pb-10 pt-12">
+        <nav className="mb-4 text-xs text-[var(--color-muted)]">
+          <Link href="/">Home</Link> / <Link href="/guides">Supplement guides</Link> / <span className="text-[var(--color-ink)]">{g.ingredient}</span>
+        </nav>
+        <h1 className="max-w-2xl text-balance text-3xl sm:text-4xl md:text-5xl">{title}</h1>
+      </div>
+    </div>
+    <article className="container max-w-3xl px-6 pb-12 pt-6">
       <JsonLd data={structured} />
-      <nav className="mb-4 text-xs text-[var(--color-muted)]">
-        <Link href="/">Home</Link> / <Link href="/guides">Supplement guides</Link> / <span className="text-[var(--color-ink)]">{g.ingredient}</span>
-      </nav>
-      <h1 className="text-balance text-3xl sm:text-4xl md:text-5xl">{title}</h1>
       <p className="mt-4 text-sm text-[var(--color-muted)]">
         Updated {fmt(g.updated)}
         {g.reviewer && <> · Reviewed by <b className="text-[var(--color-ink)]">{g.reviewer.name}</b>, {g.reviewer.credentials}</>}
@@ -282,5 +290,6 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
         Administration. Supplements are not intended to diagnose, treat, cure, or prevent any disease.
       </p>
     </article>
+    </>
   );
 }

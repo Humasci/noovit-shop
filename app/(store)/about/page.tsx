@@ -29,8 +29,8 @@ export default async function AboutPage() {
   return (
     <>
       <section className="relative overflow-hidden">
-        <img src={IMAGES.support} alt="" className="absolute inset-0 h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-[var(--color-navy)]/70" />
+        <img src="/art/helix-dark-about.svg?v=1" alt="" aria-hidden className="absolute inset-0 h-full w-full object-cover" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(20,26,77,0.82)_25%,rgba(20,26,77,0.35)_70%)]" />
         <div className="container relative px-6 py-28 text-center text-white">
           <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-accent-light)]">About Noovit</p>
           <h1 className="mx-auto max-w-3xl text-balance text-4xl text-white md:text-6xl">Supplements you can actually understand.</h1>
@@ -54,7 +54,7 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      <section className="bg-[var(--color-navy)] py-14 text-white">
+      <section className="bg-[#141A4D] py-14 text-white">
         <div className="container grid grid-cols-2 gap-8 px-6 text-center md:grid-cols-4">
           {STATS.map((s) => (
             <div key={s.label}>

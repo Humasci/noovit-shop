@@ -13,7 +13,7 @@ export default function GuidesIndex() {
     <>
       <section className="relative overflow-hidden bg-[#EEF1FB] py-20">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/art/cells-light-guides.svg?v=2" alt="" aria-hidden className="pointer-events-none absolute inset-0 h-full w-full object-cover" />
+        <img src="/art/cells-light-guides.svg?v=3" alt="" aria-hidden className="pointer-events-none absolute inset-0 h-full w-full object-cover" />
         <div className="container relative px-6">
           <h1 className="text-4xl md:text-5xl">Supplement guides</h1>
           <p className="mt-3 max-w-2xl text-[var(--color-muted)]">

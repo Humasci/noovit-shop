@@ -10,7 +10,8 @@
     "stripe:sync": "tsx --env-file-if-exists=.env.local scripts/sync-stripe.ts",
     "catalog:seed": "tsx --env-file-if-exists=.env.local scripts/seed-catalog.ts",
     "labels": "tsx scripts/render-labels.ts",
-    "advisor:snapshot": "tsx scripts/advisor-snapshot.ts"
+    "advisor:snapshot": "tsx scripts/advisor-snapshot.ts",
+    "social": "tsx scripts/social-templates.ts"
   },
   "dependencies": {
     "@google/genai": "^2.32.0",

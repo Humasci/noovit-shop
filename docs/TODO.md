@@ -162,3 +162,4 @@ _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only yo
 
 - [ ] **Particle shapes for the other three products (3 Nov idea):** Ashwagandha (calm wave or the root), CoQ10 (heart or energy spark), Turmeric (joint or the root), in the same bead style as the brain / ore / triple spiral (`lib/labels/shapes.ts`). Owner to pick.
 - [ ] **Advisor sources still missing (3 Nov):** NIH ODS fact sheets (magnesium, ashwagandha, exercise supplements) block cloud servers: run `npm run advisor:snapshot` on your own computer to add them (optional; NCCIH/MedlinePlus cover the topics). No government page found for lion's mane or creatine: send any trusted pages to add to `data/advisor-sources.json`.
+- [ ] **Social templates (3 Nov):** `design/social/` has evidence, dose and meet-the-molecule posts + two stories (copy in `scripts/social-templates.ts`, structure/function wording only). **Owner + lawyer:** check the copy before posting; ask me for more topics.
