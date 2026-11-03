@@ -435,6 +435,59 @@ export function frontPanelV2(p: Product, mode: FontMode, bleed = 0, opts: { dose
   </g>`;
 }
 
+// ---------- Front panel "clinical" (3 Nov, owner: Thorne / Pure Encapsulations-like) ----------
+// White label, dark type, generous space, no texture. The product colour is a single accent:
+// `accent: 'band'` = a colour band along the bottom carrying the net quantity; 'top' = a thin colour bar at the top.
+export function frontPanelClinical(p: Product, mode: FontMode, bleed = 0, opts: { accent?: 'band' | 'top'; color?: string } = {}) {
+  const accent = opts.accent ?? 'band';
+  const col = opts.color ?? p.color;
+  const colText = shade(col, 0.18); // accent colour dark enough for small text on white
+  const { units, servingsPerContainer } = labelCounts(p);
+  const qty = netQuantity(p);
+  const wt = qty.match(/^Net Wt (\d+ g) \((.+)\)$/);
+  const big = wt ? wt[1] : p.form === 'powder' ? qty.split(' ')[0] : String(units);
+  const unitWord = wt ? `Net Wt ${wt[2]}` : p.form === 'powder' ? qty.replace(/^\S+\s/, '') : UNITS[p.form][units === 1 ? 0 : 1];
+  const dose = heroDose(p);
+  const category = labelCategory(p);
+  const words = p.name.split(' ');
+  const descriptor = words.length > 1 && /\+$|^Complex$/.test(words[words.length - 1]) ? words.pop()! : '';
+  const main = words.join(' ');
+  const room = FRONT.w - 36;
+  const size = Math.min(29, room / (main.length * 0.56));
+  const benefit = balance(wrap(p.shortBenefit.replace(/\.$/, '') + '*', room, 8.2, 0.5).slice(0, 2));
+  const caps = (x: number, y: number, t: string, sz: number, fill: string, anchor = 'start', weight = 600) =>
+    `<text x="${n(x)}" y="${n(y)}" text-anchor="${anchor}" font-size="${sz}" font-weight="${weight}" letter-spacing="${n(sz * 0.14)}" fill="${fill}" ${font('body', mode)}>${esc(t.toUpperCase())}</text>`;
+  const doseLine = V2_DOSE_LINES[p.slug] ?? dose?.line ?? '';
+  const top = accent === 'top' ? 12 : 0;
+  const nameY = 70 + top;
+  const bandY = 186;
+  const doseBlock = dose
+    ? `<text x="18" y="${accent === 'band' ? 162 : 170}" font-size="27" font-weight="600" letter-spacing="-0.8" fill="${NAVY}" ${font('head', mode)}>${esc(dose.value)}<tspan font-size="12" font-weight="500" dx="1.6">${esc(dose.unit)}</tspan></text>
+      ${caps(18, accent === 'band' ? 174 : 182, doseLine, 7, INK, 'start', 500)}`
+    : textBlock(balance(wrap(labelSubtitle(p), 130, 9.4, 0.5).slice(0, 2)), 18, accent === 'band' ? 152 : 160, 9.4, 11.4, `font-weight="600" fill="${NAVY}" ${font('body', mode)}`);
+  const qtyBand = `<rect x="0" y="${bandY}" width="${FRONT.w}" height="${FRONT.h - bandY + bleed}" fill="${col}"/>
+    ${caps(18, bandY + 23, 'Dietary supplement', 7, '#fff', 'start', 700)}
+    <text x="${FRONT.w - 18}" y="${bandY + 19}" text-anchor="end" font-size="16" font-weight="600" fill="#fff" ${font('head', mode)}>${esc(big)}</text>
+    ${caps(FRONT.w - 18, bandY + 30, unitWord, 7, '#fff', 'end', 600)}`;
+  const qtyWhite = `<rect x="18" y="${FRONT.h - 40}" width="${FRONT.w - 36}" height="0.6" fill="#d9d4cb"/>
+    ${caps(18, FRONT.h - 14, 'Dietary supplement', 7, NAVY, 'start', 700)}
+    <text x="${FRONT.w - 18}" y="${FRONT.h - 20}" text-anchor="end" font-size="16" font-weight="600" fill="${NAVY}" ${font('head', mode)}>${esc(big)}</text>
+    ${caps(FRONT.w - 18, FRONT.h - 10, unitWord, 7, NAVY, 'end', 600)}`;
+  return `<g>
+    <rect x="0" y="${-bleed}" width="${FRONT.w}" height="${FRONT.h + bleed * 2}" fill="#fff"/>
+    ${accent === 'top' ? `<rect x="0" y="${-bleed}" width="${FRONT.w}" height="${8 + bleed}" fill="${col}"/>` : ''}
+    ${wordmarkRaw(18, 27 + top, 15, mode, NAVY, NAVY)}
+    ${category ? caps(FRONT.w - 18, 26 + top, category, 7, colText, 'end', 700) : ''}
+    <rect x="18" y="${36 + top}" width="${FRONT.w - 36}" height="0.6" fill="#d9d4cb"/>
+    <text x="18" y="${n(nameY)}" font-size="${n(size)}" font-weight="600" letter-spacing="${n(-0.02 * size)}" fill="${NAVY}" ${font('head', mode)}>${esc(main)}</text>
+    ${descriptor ? `<text x="18" y="${n(nameY + 21)}" font-size="17" font-weight="500" fill="${colText}" ${font('head', mode)}>${esc(descriptor)}</text>` : ''}
+    ${textBlock(benefit, 18, nameY + (descriptor ? 40 : 22), 8.2, 10.2, `font-weight="400" fill="${INK}" ${font('body', mode)}`)}
+    ${doseBlock}
+    ${caps(FRONT.w - 18, accent === 'band' ? 174 : 182, `${servingsPerContainer} servings`, 7, INK, 'end', 500)}
+    ${accent === 'band' ? qtyBand : qtyWhite}
+  </g>`;
+}
+
 // ---------- Supplement Facts (draft, from the catalog; replace with the supplier's panel) ----------
 
 // FDA reference Daily Values (21 CFR 101.9(c), adults and children 4+) for nutrients we use.
