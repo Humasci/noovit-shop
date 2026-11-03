@@ -11,7 +11,7 @@ const COL: Record<string, string> = { 'magnesium-complex': '#4A6B94', ashwagandh
   for (const slug of Object.keys(COL)) {
     const c = COL[slug];
     const p: any = { ...SEED_PRODUCTS.find((x) => x.slug === slug)!, color: c };
-    const art = (pp: any, ext: number) => `<rect x="${-ext}" y="0" width="${FRONT.w + ext * 2}" height="${FRONT.h}" fill="#fff"/><rect x="${-ext}" y="186" width="${FRONT.w + ext * 2}" height="${FRONT.h - 186}" fill="${c}"/>${frontPanelClinical(pp, 'print', 0, { accent: 'band', color: c, form: true })}`;
+    const art = (pp: any, ext: number) => `<rect x="${-ext}" y="0" width="${FRONT.w + ext * 2}" height="${FRONT.h}" fill="#fff"/><rect x="${-ext}" y="186" width="${FRONT.w + ext * 2}" height="${FRONT.h - 186}" fill="${c}"/>${frontPanelClinical(pp, 'print', 0, { accent: 'band', color: c, form: (process.argv[3] as any) })}`;
     tiles.push(Buffer.from(new Resvg(photoBottleSvg(p, '#ebe7e0', false, art), { fitTo: { mode: 'width', value: 900 }, font: { fontFiles, loadSystemFonts: false, defaultFontFamily: 'Inter' } }).render().asPng()));
   }
   const m = await sharp(tiles[0]).metadata();

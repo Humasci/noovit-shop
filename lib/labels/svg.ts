@@ -449,7 +449,58 @@ function smoothClosed(pts: [number, number][]) {
   }
   return d + 'Z';
 }
-export function productForm(p: Product, cx: number, cy: number, r: number, color = p.color) {
+export type FormStyle = 'soft' | 'scientific' | 'organic';
+// One closed outline per product (seeded from the slug, lobes from the ingredient count), scaled about its centre.
+function formOutline(p: Product, cx: number, cy: number, r: number, salt: string, irregular = 0.3, extraLobes = 0) {
+  const rnd = hash(p.slug + salt);
+  const lobes = 6 + (Math.max(1, p.ingredients.length) % 4) + extraLobes;
+  const rot = rnd() * Math.PI * 2;
+  const radii = Array.from({ length: lobes }, () => 1 - irregular / 2 + irregular * rnd());
+  return (scale: number, dx = 0, dy = 0, wobble = 0) =>
+    smoothClosed(radii.map((k, i) => {
+      const a = rot + (i / lobes) * Math.PI * 2;
+      const rr = r * scale * (k + wobble * Math.sin(i * 2.3 + scale * 9));
+      return [cx + dx + Math.cos(a) * rr, cy + dy + Math.sin(a) * rr] as [number, number];
+    }));
+}
+// Scientific: concentric contour lines (like a topographic or microscope plot) with a few data-point dots.
+function formScientific(p: Product, cx: number, cy: number, r: number, color: string) {
+  const outline = formOutline(p, cx, cy, r, 'sci', 0.34);
+  const rnd = hash(p.slug + 'dots');
+  const rings = 9 + Math.min(5, p.ingredients.length);
+  const deep = hueShiftDarken(color, 0, 0.1);
+  const out: string[] = [];
+  for (let i = 0; i < rings; i++) {
+    const t = i / (rings - 1);
+    const sc = 1 - t * 0.86;
+    out.push(`<path d="${outline(sc, (t - 0.5) * r * 0.22, (t - 0.5) * r * -0.12)}" fill="none" stroke="${deep}" stroke-width="${n(0.45 + t * 0.35)}" stroke-opacity="${n(0.35 + t * 0.55)}"/>`);
+  }
+  const dots = 3 + Math.min(6, p.ingredients.length);
+  for (let i = 0; i < dots; i++) {
+    const a = rnd() * Math.PI * 2, d = r * (0.25 + 0.7 * rnd());
+    out.push(`<circle cx="${n(cx + Math.cos(a) * d)}" cy="${n(cy + Math.sin(a) * d)}" r="${n(1 + rnd() * 1.2)}" fill="${deep}"/>`);
+  }
+  out.push(`<circle cx="${n(cx + r * 0.08)}" cy="${n(cy - r * 0.04)}" r="2.4" fill="${ORANGE}"/>`);
+  return `<g>${out.join('')}</g>`;
+}
+// Organic: fluid, watercolour-like layers with soft edges and gentle colour drift.
+function formOrganic(p: Product, cx: number, cy: number, r: number, color: string) {
+  const id = `fo-${p.slug}`.replace(/[^\w-]/g, '');
+  const rnd = hash(p.slug + 'org');
+  const layers = Math.min(6, 3 + Math.floor(p.ingredients.length / 2));
+  const tones = [hueShiftDarken(color, -14, -0.75), hueShiftDarken(color, 10, -0.55), hueShiftDarken(color, -6, -0.4), hueShiftDarken(color, 6, -0.25), hueShiftDarken(color, -4, -0.1), color];
+  const out: string[] = [];
+  for (let L = 0; L < layers; L++) {
+    const outline = formOutline(p, cx, cy, r, 'org' + L, 0.55, 2);
+    const sc = 1 - L * (0.62 / layers);
+    out.push(`<path d="${outline(sc, (rnd() - 0.5) * r * 0.3, (rnd() - 0.5) * r * 0.3, 0.06)}" fill="${tones[L % tones.length]}" fill-opacity="${n(0.5 + L * 0.06)}" filter="url(#${id}-blur)"/>`);
+  }
+  return `<g><defs><filter id="${id}-blur" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="1.6"/></filter></defs><g style="isolation:isolate">${out.join('')}</g></g>`;
+}
+
+export function productForm(p: Product, cx: number, cy: number, r: number, color = p.color, style: FormStyle = 'soft') {
+  if (style === 'scientific') return formScientific(p, cx, cy, r, color);
+  if (style === 'organic') return formOrganic(p, cx, cy, r, color);
   const rnd = hash(p.slug + 'form');
   const ingr = Math.max(1, p.ingredients.length);
   const layers = Math.min(4, 2 + Math.floor(ingr / 3));
@@ -478,7 +529,7 @@ export function productForm(p: Product, cx: number, cy: number, r: number, color
 // ---------- Front panel "clinical" (3 Nov, owner: Thorne / Pure Encapsulations-like) ----------
 // White label, dark type, generous space, no texture. The product colour is a single accent:
 // `accent: 'band'` = a colour band along the bottom carrying the net quantity; 'top' = a thin colour bar at the top.
-export function frontPanelClinical(p: Product, mode: FontMode, bleed = 0, opts: { accent?: 'band' | 'top'; color?: string; form?: boolean } = {}) {
+export function frontPanelClinical(p: Product, mode: FontMode, bleed = 0, opts: { accent?: 'band' | 'top'; color?: string; form?: boolean | FormStyle } = {}) {
   const accent = opts.accent ?? 'band';
   const col = opts.color ?? p.color;
   const colText = shade(col, 0.18); // accent colour dark enough for small text on white
@@ -494,7 +545,7 @@ export function frontPanelClinical(p: Product, mode: FontMode, bleed = 0, opts: 
   const main = words.join(' ');
   const room = FRONT.w - 36;
   const size = Math.min(29, room / (main.length * 0.56));
-  const benefit = opts.form ? wrap(p.shortBenefit.replace(/\.$/, '') + '*', 104, 8.2, 0.5).slice(0, 3) : balance(wrap(p.shortBenefit.replace(/\.$/, '') + '*', room, 8.2, 0.5).slice(0, 2));
+  const benefit = opts.form ? wrap(p.shortBenefit.replace(/\.$/, '') + '*', 96, 8.2, 0.5).slice(0, 3) : balance(wrap(p.shortBenefit.replace(/\.$/, '') + '*', room, 8.2, 0.5).slice(0, 2));
   const caps = (x: number, y: number, t: string, sz: number, fill: string, anchor = 'start', weight = 600) =>
     `<text x="${n(x)}" y="${n(y)}" text-anchor="${anchor}" font-size="${sz}" font-weight="${weight}" letter-spacing="${n(sz * 0.14)}" fill="${fill}" ${font('body', mode)}>${esc(t.toUpperCase())}</text>`;
   const doseLine = V2_DOSE_LINES[p.slug] ?? dose?.line ?? '';
@@ -504,7 +555,7 @@ export function frontPanelClinical(p: Product, mode: FontMode, bleed = 0, opts: 
   const doseBlock = dose
     ? `<text x="18" y="${accent === 'band' ? 162 : 170}" font-size="27" font-weight="600" letter-spacing="-0.8" fill="${NAVY}" ${font('head', mode)}>${esc(dose.value)}<tspan font-size="12" font-weight="500" dx="1.6">${esc(dose.unit)}</tspan></text>
       ${caps(18, accent === 'band' ? 174 : 182, doseLine, 7, INK, 'start', 500)}`
-    : textBlock(balance(wrap(labelSubtitle(p), 130, 9.4, 0.5).slice(0, 2)), 18, accent === 'band' ? 152 : 160, 9.4, 11.4, `font-weight="600" fill="${NAVY}" ${font('body', mode)}`);
+    : textBlock(balance(wrap(labelSubtitle(p), opts.form ? 100 : 130, 9.4, 0.5).slice(0, 3)), 18, accent === 'band' ? 148 : 156, 9.4, 11.4, `font-weight="600" fill="${NAVY}" ${font('body', mode)}`);
   const qtyBand = `<rect x="0" y="${bandY}" width="${FRONT.w}" height="${FRONT.h - bandY + bleed}" fill="${col}"/>
     ${opts.form ? caps(18, bandY + 17, 'Dietary supplement', 7, '#fff', 'start', 700) + caps(18, bandY + 28, `${servingsPerContainer} servings`, 7, 'rgba(255,255,255,0.85)', 'start', 500) : caps(18, bandY + 23, 'Dietary supplement', 7, '#fff', 'start', 700)}
     <text x="${FRONT.w - 18}" y="${bandY + 19}" text-anchor="end" font-size="16" font-weight="600" fill="#fff" ${font('head', mode)}>${esc(big)}</text>
@@ -515,7 +566,7 @@ export function frontPanelClinical(p: Product, mode: FontMode, bleed = 0, opts: 
     ${caps(FRONT.w - 18, FRONT.h - 10, unitWord, 7, NAVY, 'end', 600)}`;
   return `<g>
     <rect x="0" y="${-bleed}" width="${FRONT.w}" height="${FRONT.h + bleed * 2}" fill="#fff"/>
-    ${opts.form ? `<clipPath id="fc-${p.slug}"><rect x="0" y="0" width="${FRONT.w + bleed}" height="186"/></clipPath><g clip-path="url(#fc-${p.slug})">${productForm(p, FRONT.w - 30, 126, 62, col)}</g>` : ''}
+    ${opts.form ? `<clipPath id="fc-${p.slug}"><rect x="0" y="0" width="${FRONT.w + bleed}" height="186"/></clipPath><g clip-path="url(#fc-${p.slug})">${productForm(p, FRONT.w - 26, 134, 56, col, typeof opts.form === 'string' ? opts.form : 'soft')}</g>` : ''}
     ${accent === 'top' ? `<rect x="0" y="${-bleed}" width="${FRONT.w}" height="${8 + bleed}" fill="${col}"/>` : ''}
     ${wordmarkRaw(18, 27 + top, 15, mode, NAVY, NAVY)}
     ${category ? caps(FRONT.w - 18, 26 + top, category, 7, colText, 'end', 700) : ''}

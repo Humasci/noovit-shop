@@ -11,7 +11,7 @@ const COL: Record<string, string> = {
   'magnesium-complex': '#4A6B94', ashwagandha: '#AE5559', 'lions-mane': '#2B7C82',
   creatine: '#2F6F4E', coq10: '#8E2E45', 'turmeric-complex': '#B56E1E',
 };
-const art = (accent: 'band' | 'top', form = false) => (p: any, ext: number) => {
+const art = (accent: 'band' | 'top', form: any = false) => (p: any, ext: number) => {
   const c = COL[p.slug];
   const wrapBand = accent === 'band'
     ? `<rect x="${-ext}" y="186" width="${FRONT.w + ext * 2}" height="${FRONT.h - 186}" fill="${c}"/>`
@@ -20,7 +20,7 @@ const art = (accent: 'band' | 'top', form = false) => (p: any, ext: number) => {
 };
 (async () => {
   const rows: Buffer[] = [];
-  for (const [accent, label, form] of [['band', 'T1  Clinical white, colour band', false], ['band', 'T3  T1 + a unique abstract form per product', true]] as const) {
+  for (const [accent, label, form] of [['band', 'S  Scientific: contour lines + data points', 'scientific'], ['band', 'O  Organic: fluid watercolour layers', 'organic']] as const) {
     const tiles: Buffer[] = [];
     for (const slug of SLUGS) {
       const p: any = { ...SEED_PRODUCTS.find((x) => x.slug === slug)!, color: COL[slug] };
