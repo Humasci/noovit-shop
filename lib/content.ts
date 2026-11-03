@@ -12,7 +12,7 @@ export const CONTENT_FIELDS = {
   trust_bar: { label: 'Trust bar items', hint: 'Up to 5, one per line.', max: 300, rows: 5, default: TRUST_BAR.join('\n') },
   hero_badge: { label: 'Hero badge', hint: 'Small line above the headline.', max: 80, rows: 1, default: 'Skip, change or cancel anytime' },
   hero_headline: { label: 'Hero headline', hint: '', max: 120, rows: 2, default: 'Feel the difference of supplements done right.' },
-  hero_subheadline: { label: 'Hero text', hint: '', max: 300, rows: 3, default: 'Clean, evidence-based supplements made in the USA and third-party tested — for gut health, sleep, joints, skin and energy.' },
+  hero_subheadline: { label: 'Hero text', hint: '', max: 300, rows: 3, default: 'Evidence-led supplements with the dose printed on the front of every bottle — for sleep, calm, focus, strength and energy.' },
   hero_cta_label: { label: 'Button label', hint: '', max: 30, rows: 1, default: 'Shop Now' },
   hero_cta_link: { label: 'Button link', hint: 'e.g. /shop or /collections/best-sellers', max: 200, rows: 1, default: '/shop' },
   hero_bullets: { label: 'Hero bullet points', hint: 'Up to 3, one per line.', max: 200, rows: 3, default: '90-day money-back guarantee\nFree delivery' },

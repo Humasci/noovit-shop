@@ -55,6 +55,11 @@ Read this first. It is the standing context for any session working on this repo
 ## Tech
 - Next.js 16 (App Router), React 19, Supabase (Postgres + PostgREST), Stripe (Checkout + subscriptions), Resend,
   Vercel. Fonts self-hosted (Inter, Manrope, Funnel Display for the wordmark).
+- **AI wellness advisor (3 Nov):** `lib/advisor.ts` (system prompt from the live catalog + guides; compliance rules),
+  `app/api/advisor/route.ts` (streams; Claude via `@anthropic-ai/sdk`, model `ADVISOR_MODEL` env, default
+  `claude-opus-5-5`, low effort, server-side refusal fallback), widget `components/advisor/Advisor.tsx` + header
+  "Ask Noovit" button. Shown only when `ANTHROPIC_API_KEY` is set. Site look: Thorne-like (white, pill buttons,
+  black announcement bar, shop-by-goal tiles).
 - Key paths: catalog seed `data/products.ts` (live catalog is the `products` table, jsonb `data`; `status` is a column);
   labels `lib/labels/{svg,photo,png,gallery,gallery-data}.ts`; guides `lib/guides.ts`; quiz `lib/quiz.ts`;
   settings `lib/settings.ts` (admin values > env > defaults); pre-launch gate `proxy.ts` + `lib/launch.ts`;

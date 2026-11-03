@@ -9,6 +9,8 @@ import { getContent, lines, safeLink } from '@/lib/content';
 import { autoDiscountFrom } from '@/lib/marketing/auto-discount';
 import { StoreConfigProvider } from '@/components/store/StoreConfig';
 import { NewsletterPopup } from '@/components/marketing/NewsletterPopup';
+import { Advisor } from '@/components/advisor/Advisor';
+import { advisorEnabled } from '@/lib/advisor';
 
 export default async function StoreLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const suggestions = bestSellers(await getStoreProducts()).filter((p) => p.status === 'active').slice(0, 6);
@@ -32,12 +34,14 @@ export default async function StoreLayout({ children }: Readonly<{ children: Rea
       <Header
         trustBar={lines(content.trust_bar, 5)}
         announcement={{ text: content.announcement_text, href: safeLink(content.announcement_link) }}
+        advisor={advisorEnabled()}
       />
       <main id="main" tabIndex={-1} className="min-h-screen outline-none">{children}</main>
       <Footer />
       <CartDrawer suggestions={suggestions} />
       <Analytics ids={{ gtm: settings.gtm_id, ga4: settings.ga4_id, meta: settings.meta_pixel_id, tiktok: settings.tiktok_pixel_id }} />
       <NewsletterPopup />
+      {advisorEnabled() && <Advisor />}
     </StoreConfigProvider>
   );
 }

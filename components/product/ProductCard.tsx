@@ -33,8 +33,8 @@ export function ProductCard({ product }: { product: Product }) {
 
   return (
     // Phones: one product per row (image left, details right). From sm up: the classic vertical card.
-    <div className="group flex flex-row overflow-hidden rounded-lg border border-[var(--color-line)] bg-white sm:flex-col">
-      <Link href={`/products/${product.slug}`} className="relative block w-[42%] shrink-0 overflow-hidden bg-[var(--color-soft)] sm:w-full">
+    <div className="group flex flex-row overflow-hidden bg-transparent sm:flex-col">
+      <Link href={`/products/${product.slug}`} className="relative block w-[42%] shrink-0 overflow-hidden rounded-2xl bg-[var(--color-soft)] sm:w-full">
         <ProductImage product={product} className="h-full w-full transition-transform duration-500 group-hover:scale-105 sm:aspect-square sm:h-auto" />
         <span aria-hidden className="pointer-events-none absolute right-3 top-3">
           {CORNER.map(([c, r, o], k) => (
@@ -56,7 +56,7 @@ export function ProductCard({ product }: { product: Product }) {
         </span>
       </Link>
 
-      <div className="flex min-w-0 flex-1 flex-col p-3 sm:p-4">
+      <div className="flex min-w-0 flex-1 flex-col px-3 py-2 sm:px-1 sm:pt-4">
         {product.reviewCount > 0 && (
           <div className="mb-1 flex items-center gap-2">
             <Stars rating={product.rating} size={13} />

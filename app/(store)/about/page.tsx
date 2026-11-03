@@ -46,7 +46,7 @@ export default async function AboutPage() {
             <SectionHeading eyebrow="Our story" title="Built on evidence, not marketing" center={false} />
             <div className="space-y-4 text-[var(--color-muted)]">
               <p>Every Noovit formula starts with the research: which forms absorb best, which doses were actually studied, and what can be left out.</p>
-              <p>We work with qualified nutrition professionals to design each product, manufacture in GMP-certified US facilities, and send every batch to independent labs for purity and potency testing.</p>
+              <p>We pick each formula from what the research supports, list every ingredient and amount on the label, and publish quality documents as we receive them, starting with purity and potency testing.</p>
               <p>The result is a focused range of supplements with clear labels, honest claims and a 90-day guarantee behind them.</p>
             </div>
           </div>

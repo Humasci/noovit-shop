@@ -92,7 +92,7 @@ export function ShopBrowser({
       <section className="bg-[var(--color-soft)] py-14">
         <div className="container px-6 text-center">
           <h1 className="mx-auto max-w-3xl text-balance text-3xl md:text-5xl">Clean, science-driven nutrition for every body.</h1>
-          <p className="mt-4 text-[var(--color-muted)]">Evidence-based doses · Third-party tested · Made in the USA</p>
+          <p className="mt-4 text-[var(--color-muted)]">Evidence-based doses · Dose on the front · Free US shipping</p>
           {collections.length > 0 && (
             <div className="mt-6 flex flex-wrap justify-center gap-2">
               {collections.map((c) => (

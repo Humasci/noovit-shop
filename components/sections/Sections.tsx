@@ -23,10 +23,12 @@ export function SectionHeading({ eyebrow, title, sub, center = true }: { eyebrow
 }
 
 export const TRUST_ITEMS = [
-  { icon: Award, label: 'GMP Certified' },
-  { icon: FlaskConical, label: 'Third Party Tested' },
+  // Only claims we can prove today. Add "Third-party tested" / "GMP" / "Made in the USA" back once Supliful's
+  // certificates and COAs are on file (docs/TODO.md), ideally linking to them.
   { icon: GraduationCap, label: 'Evidence-Based Doses' },
-  { icon: MapPin, label: 'Made in the USA' },
+  { icon: Award, label: 'Dose on the Front' },
+  { icon: FlaskConical, label: 'Every Ingredient Listed' },
+  { icon: MapPin, label: 'Free US Shipping' },
   { icon: ShieldCheck, label: '90-Day Money-Back Guarantee' },
 ];
 
@@ -37,7 +39,7 @@ export function TrustSection() {
         <SectionHeading
           eyebrow="Why Noovit"
           title="Quality you can check, not just trust"
-          sub="Made in certified facilities and tested by independent labs, with forms and doses chosen from published research."
+          sub="Forms and doses chosen from published research, every amount on the label, and no proprietary blends."
         />
         {/* Open row (minimal direction): icons and labels, thin dividers, no cards. */}
         <div className="grid grid-cols-2 gap-y-8 md:grid-cols-5 md:divide-x md:divide-[var(--color-line)]">

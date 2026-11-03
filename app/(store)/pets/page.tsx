@@ -21,10 +21,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const PET_TRUST = [
-  { icon: Stethoscope, label: 'Vet Formulated' },
+  { icon: Stethoscope, label: 'Simple Ingredients' },
   { icon: Scale, label: 'Dosed by Weight' },
-  { icon: MapPin, label: 'Made in the USA' },
-  { icon: FlaskConical, label: 'Third-Party Tested' },
+  { icon: MapPin, label: 'Free US Shipping' },
+  { icon: FlaskConical, label: 'Clear Labels' },
   { icon: Ban, label: 'No Artificial Colours' },
   { icon: ShieldCheck, label: 'Picky-Eater Guarantee' },
 ];

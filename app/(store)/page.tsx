@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Check, Microscope, Sprout, ArrowRight, PawPrint, BadgeDollarSign } from 'lucide-react';
+import { Check, Microscope, Sprout, ArrowRight, PawPrint, ScanText } from 'lucide-react';
 import { BestSellers } from '@/components/home/BestSellers';
 import {
   TrustSection,
@@ -24,10 +24,27 @@ import { getSettings, placeholdersOn } from '@/lib/settings';
 import { latestReviews } from '@/lib/reviews';
 import { unsplashSrcSet } from '@/lib/utils/format';
 import { Brand, brandify } from '@/components/brand/Brand';
-import { MosaicField } from '@/components/brand/MosaicField';
+import { AskButton } from '@/components/advisor/AskButton';
+import { advisorEnabled } from '@/lib/advisor';
 
-// PLACEHOLDER: swap these for press/retailer logos once you have them.
-const MARQUEE = ['Clean Ingredients', 'Third-Party Tested', 'GMP Certified', 'Evidence-Based Doses', 'Made in the USA', 'Vegan Options', '90-Day Guarantee'];
+// Value row under the hero (Thorne-like). Only claims we can stand behind today: no GMP / tested / Made in USA
+// wording until Supliful's paperwork arrives (docs/TODO.md).
+const VALUES = [
+  ['Doses on the front.', 'Every bottle shows how much is in each serving.'],
+  ['Evidence, graded.', 'Our guides rate the research honestly, nulls included.'],
+  ['Free US shipping.', 'On every order, subscription or not.'],
+  ['90-day guarantee.', "Not for you? We'll refund it."],
+];
+
+// Shop by goal: one tile per core product, tinted in its label colour.
+const GOAL_TILES: { label: string; line: string; slug: string; href: string }[] = [
+  { label: 'Sleep', line: 'Wind down and recover', slug: 'magnesium-complex', href: '/goals/sleep-stress' },
+  { label: 'Calm', line: 'Everyday stress balance', slug: 'ashwagandha', href: '/goals/sleep-stress' },
+  { label: 'Focus', line: 'Clear, steady thinking', slug: 'lions-mane', href: '/goals/brain-focus' },
+  { label: 'Strength', line: 'Power and performance', slug: 'creatine', href: '/goals/muscle-performance' },
+  { label: 'Energy', line: 'Cellular energy and heart', slug: 'coq10', href: '/goals/energy' },
+  { label: 'Mobility', line: 'Joint comfort', slug: 'turmeric-complex', href: '/goals/joints-mobility' },
+];
 
 // The core range (docs/research/COMPETITORS_CORE5.md); hidden products drop out automatically. Up to four are shown.
 const SPOTLIGHT = ['magnesium-complex', 'ashwagandha', 'lions-mane', 'creatine', 'coq10', 'turmeric-complex'];
@@ -43,89 +60,97 @@ export default async function HomePage() {
   const advisors = advisorPlaceholder ? PLACEHOLDER_EXPERTS : ADVISORS;
   const spotlight = SPOTLIGHT.map((s) => findProduct(products, s)).filter((p): p is NonNullable<typeof p> => p !== undefined && p.status !== 'hidden').slice(0, 4);
   const petsLive = petProducts(products).length > 0;
+  const hero = findProduct(products, 'lions-mane') ?? spotlight[0];
+  const tiles = GOAL_TILES.map((t) => ({ ...t, product: findProduct(products, t.slug) })).filter((t) => t.product && t.product.status !== 'hidden');
+  const ask = advisorEnabled();
 
   return (
     <>
       <JsonLd data={{ '@context': 'https://schema.org', '@type': 'Organization', name: 'Noovit', legalName: LEGAL_NAME, url: SITE_URL }} />
-      {/* Hero */}
-      <section className="relative overflow-hidden">
-        <img
-          src={content.hero_image}
-          srcSet={unsplashSrcSet(content.hero_image)}
-          sizes="100vw"
-          alt=""
-          fetchPriority="high"
-          className="absolute inset-0 h-full w-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-white via-white/85 to-white/10" />
-        {/* Brand mosaic: small orange tiles breaking in from the top-right, and the hero dissolving into the strip below */}
-        <MosaicField cols={30} rows={18} anchor="top-right" seed={3} className="right-0 top-0 hidden md:block" />
-        <MosaicField cols={140} rows={3} anchor="bottom" color="var(--color-soft)" density={1} maxOpacity={1} animate={false} seed={5} className="bottom-0 left-0" />
-        <div className="container relative px-6 py-20 md:py-32">
-          <div className="max-w-xl">
-            {content.hero_badge && (
-              <div className="mb-5 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold shadow-sm">
-                {brandify(content.hero_badge)}
-              </div>
-            )}
-            <h1 className="text-balance text-4xl md:text-6xl">{brandify(content.hero_headline)}</h1>
-            {content.hero_subheadline && <p className="mt-5 text-lg text-[var(--color-ink)]/80">{brandify(content.hero_subheadline)}</p>}
-            {content.hero_cta_label && (
-              <Link href={safeLink(content.hero_cta_link) || '/shop'} className="btn btn-primary mt-8">
-                {content.hero_cta_label}
-              </Link>
-            )}
-            <ul className="mt-6 flex flex-col gap-2 text-sm font-semibold sm:flex-row sm:gap-6">
+      {/* Hero: big quiet headline left, the hero product on a tinted panel right (Thorne-like) */}
+      <section className="pb-10 pt-10 md:pb-16 md:pt-16">
+        <div className="container grid items-center gap-10 px-6 md:grid-cols-[1.05fr_1fr] md:gap-16">
+          <div>
+            {content.hero_badge && <p className="mb-5 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-muted)]">{brandify(content.hero_badge)}</p>}
+            <h1 className="text-balance text-5xl leading-[1.02] md:text-7xl">{brandify(content.hero_headline)}</h1>
+            {content.hero_subheadline && <p className="mt-6 max-w-lg text-lg text-[var(--color-muted)] md:text-xl">{brandify(content.hero_subheadline)}</p>}
+            <div className="mt-9 flex flex-wrap gap-3">
+              <Link href={safeLink(content.hero_cta_link) || '/shop'} className="btn btn-primary">{content.hero_cta_label || 'Shop the range'}</Link>
+              {ask ? <AskButton label="Ask our AI advisor" className="btn-outline" /> : <Link href="/quiz" className="btn btn-outline">Take the quiz</Link>}
+            </div>
+            <ul className="mt-8 flex flex-col gap-2 text-sm text-[var(--color-muted)] sm:flex-row sm:gap-6">
               {lines(content.hero_bullets, 3).map((b) => (
-                <li key={b} className="flex items-center gap-2"><Check className="h-4 w-4 text-[var(--color-green)]" /> {brandify(b)}</li>
+                <li key={b} className="flex items-center gap-2"><Check className="h-4 w-4 text-[var(--color-navy)]" /> {brandify(b)}</li>
               ))}
             </ul>
           </div>
+          {hero && (
+            <Link href={`/products/${hero.slug}`} className="group relative block overflow-hidden rounded-[2rem]" style={{ background: `linear-gradient(160deg, ${hero.color}22, ${hero.color}45)` }}>
+              <ProductImage product={hero} priority sizes="(min-width: 768px) 45vw, 100vw" className="aspect-[4/5] w-full transition-transform duration-700 group-hover:scale-[1.03] md:aspect-square" />
+              <span className="absolute bottom-5 left-5 rounded-full bg-white/90 px-4 py-2 text-sm font-semibold text-[var(--color-navy)]">{hero.name} · ${hero.basePrice}</span>
+            </Link>
+          )}
         </div>
       </section>
 
-      {/* Marquee */}
-      <div className="overflow-hidden border-y border-[var(--color-line)] bg-[var(--color-soft)] py-5">
-        <div className="animate-marquee flex w-max gap-12 whitespace-nowrap text-sm font-bold uppercase tracking-[0.2em] text-[var(--color-navy)]/60">
-          {[...MARQUEE, ...MARQUEE].map((m, i) => (
-            <span key={i}>{m} ✦</span>
+      {/* Value row */}
+      <section className="border-y border-[var(--color-line)]">
+        <div className="container grid gap-8 px-6 py-12 sm:grid-cols-2 lg:grid-cols-4">
+          {VALUES.map(([title, text]) => (
+            <div key={title}>
+              <p className="font-display text-2xl text-[var(--color-navy)]">{title}</p>
+              <p className="mt-2 text-[var(--color-muted)]">{text}</p>
+            </div>
           ))}
         </div>
-      </div>
+      </section>
+
+      {/* Shop by goal */}
+      {tiles.length > 0 && (
+        <section className="section">
+          <div className="container px-6">
+            <div className="mb-10 flex items-end justify-between gap-4">
+              <h2 className="text-4xl md:text-5xl">Shop by goal</h2>
+              <Link href="/shop" className="hidden items-center gap-1 text-sm font-semibold text-[var(--color-navy)] hover:underline sm:inline-flex">Shop all <ArrowRight className="h-4 w-4" /></Link>
+            </div>
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
+              {tiles.map((t) => (
+                <Link key={t.label} href={t.href} className="group relative overflow-hidden rounded-3xl p-6 md:p-8" style={{ background: `${t.product!.color}1f` }}>
+                  <p className="font-display text-2xl text-[var(--color-navy)] md:text-3xl">{t.label}</p>
+                  <p className="mt-1 text-sm text-[var(--color-muted)]">{t.line}</p>
+                  <ProductImage product={t.product!} sizes="(min-width: 768px) 25vw, 45vw" className="mx-auto mt-4 aspect-square w-4/5 transition-transform duration-500 group-hover:scale-105" />
+                  <span className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-[var(--color-navy)]">{t.product!.name} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       <BestSellers products={products} />
 
       <TrustSection />
 
-      {/* Product spotlight */}
-      <section className="section">
-        <div className="container px-6">
-          <div className="grid items-center gap-10 border-y border-[var(--color-line)] py-10 md:grid-cols-2 md:py-14">
-            <div>
-              <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-accent)]">Where to start</p>
-              <h2 className="text-3xl md:text-4xl">Our core formulas</h2>
-              <p className="mt-3 max-w-md text-[var(--color-muted)]">One ingredient each, at the dose used in research, printed on the front of the bottle.</p>
-              <ul className="mt-6 space-y-3">
-                {spotlight.map((p) => (
-                  <li key={p.slug}>
-                    <Link href={`/products/${p.slug}`} className="flex items-center gap-3 text-lg font-semibold text-[var(--color-navy)] hover:text-[var(--color-accent)]">
-                      <ArrowRight className="h-4 w-4 text-[var(--color-accent)]" /> {p.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-              <Link href="/shop" className="btn btn-primary mt-8">
-                Shop Now
-              </Link>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              {spotlight.map((p) => (
-                <ProductImage key={p.slug} product={p} sizes="(min-width: 768px) 22vw, 45vw" className="aspect-square w-full rounded-2xl" />
-              ))}
+      {/* AI advisor promo */}
+      {ask && (
+        <section className="pb-4">
+          <div className="container px-6">
+            <div className="grid items-center gap-8 overflow-hidden rounded-[2rem] bg-[var(--color-navy)] p-10 text-white md:grid-cols-[1.3fr_1fr] md:p-16">
+              <div>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-white/60">New · AI wellness advisor</p>
+                <h2 className="text-4xl text-white md:text-5xl">Questions? Ask Noovit.</h2>
+                <p className="mt-4 max-w-lg text-lg text-white/75">Sleep, stress, focus or energy: describe your goal and get plain answers about ingredients, doses and which formula may suit you, any time.</p>
+                <AskButton label="Start a conversation" className="mt-8 bg-white text-[var(--color-navy)] hover:bg-white/90" />
+                <p className="mt-4 text-xs text-white/50">AI answers can be wrong and aren&apos;t medical advice.</p>
+              </div>
+              <div className="space-y-3 text-[15px]">
+                <p className="ml-auto max-w-[85%] rounded-2xl rounded-br-sm bg-white/10 px-4 py-3">Can I take magnesium and ashwagandha together?</p>
+                <p className="max-w-[90%] rounded-2xl rounded-bl-sm bg-white px-4 py-3 text-[var(--color-ink)]">Many people do: they&apos;re often paired in the evening. If you take medicine for thyroid, blood pressure or sleep, check with your doctor first…</p>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Noovit Pets teaser */}
       <section className="pb-4">
@@ -219,10 +244,10 @@ export default async function HomePage() {
                 </div>
               </div>
               <div className="flex gap-4">
-                <BadgeDollarSign className="h-8 w-8 shrink-0 text-[var(--color-accent)]" strokeWidth={1.5} />
+                <ScanText className="h-8 w-8 shrink-0 text-[var(--color-accent)]" strokeWidth={1.5} />
                 <div>
-                  <h3 className="text-lg">Fair prices, no brand tax</h3>
-                  <p className="text-[var(--color-muted)]">We spend on the formula, not on hype or celebrity faces, and subscribers save on every delivery.</p>
+                  <h3 className="text-lg">Labels you can read</h3>
+                  <p className="text-[var(--color-muted)]">Every ingredient and amount listed, the key dose on the front, and no proprietary blends.</p>
                 </div>
               </div>
             </div>

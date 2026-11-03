@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { Menu, X, ShoppingBag, Leaf, Star, FlaskConical, ShieldCheck, BadgeCheck, ChevronDown, PawPrint, User } from 'lucide-react';
+import { Menu, X, ShoppingBag, ChevronDown, PawPrint, User, Sparkles } from 'lucide-react';
 import { useCart, cartCount } from '@/lib/store/cart';
 import { useHydrated } from '@/lib/useHydrated';
 import { Logo } from '@/components/layout/Logo';
@@ -49,9 +49,7 @@ const NAV: NavItem[] = [
   },
 ];
 
-const TRUST_ICONS = [Leaf, Star, FlaskConical, ShieldCheck, BadgeCheck];
-
-export function Header({ trustBar, announcement }: { trustBar: string[]; announcement?: { text: string; href: string } }) {
+export function Header({ trustBar, announcement, advisor = false }: { trustBar: string[]; announcement?: { text: string; href: string }; advisor?: boolean }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
   const onPets = pathname.startsWith('/pets');
@@ -74,33 +72,25 @@ export function Header({ trustBar, announcement }: { trustBar: string[]; announc
 
   return (
     <>
-      {announcement?.text && (
-        <div className="bg-[var(--color-accent)] px-4 py-2 text-center text-sm font-semibold text-white">
-          {announcement.href ? (
+      {/* One black announcement bar (Thorne-like); falls back to the first two trust lines. */}
+      <div className="bg-[#111] px-4 py-2.5 text-center text-sm font-semibold text-white">
+        {announcement?.text ? (
+          announcement.href ? (
             <Link href={announcement.href} className="underline-offset-4 hover:underline">{brandify(announcement.text)} →</Link>
           ) : (
             brandify(announcement.text)
-          )}
-        </div>
-      )}
-      {/* Light, quiet trust line (minimal direction): no dark bar above the header. */}
-      <div className="border-b border-[var(--color-line)] py-1.5 text-[var(--color-muted)]" role="region" aria-label="Why shop with Noovit">
-        <div tabIndex={0} className="no-scrollbar flex justify-start gap-8 overflow-x-auto px-4 text-[11px] font-medium tracking-wide md:justify-center">
-          {trustBar.map((label, i) => {
-            const Icon = TRUST_ICONS[i % TRUST_ICONS.length];
-            return (
-              <span key={label} className="flex shrink-0 items-center gap-1.5">
-                <Icon className="h-3 w-3 text-[var(--color-accent)]" aria-hidden />
-                {brandify(label)}
-              </span>
-            );
-          })}
-        </div>
+          )
+        ) : (
+          brandify(trustBar.slice(0, 2).join('  ·  ') || 'Free US shipping  ·  90-day money-back guarantee')
+        )}
       </div>
 
-      <header className="sticky top-0 z-40 border-b border-[var(--color-line)] bg-[var(--color-canvas)]/95 backdrop-blur">
-        <div className="container grid grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 py-4 md:px-6">
-          <nav aria-label="Main" className="hidden items-center gap-6 whitespace-nowrap font-logo text-[15px] font-medium lg:flex">
+      <header className="sticky top-0 z-40 border-b border-[var(--color-line)] bg-white/95 backdrop-blur">
+        <div className="container flex items-center gap-4 px-4 py-3.5 md:px-6 lg:gap-8">
+          <Link href="/" className="order-2 mx-auto text-[1.6rem] text-[var(--color-navy)] md:text-[1.85rem] lg:order-none lg:mx-0">
+            <Logo />
+          </Link>
+          <nav aria-label="Main" className="hidden items-center gap-7 whitespace-nowrap text-[15px] font-medium lg:flex">
             {NAV.filter((n) => !n.pets).map((n) => {
               const tone = n.pets ? 'text-[var(--color-pets)] hover:text-[var(--color-pets-dark)]' : 'hover:text-[var(--color-accent)]';
               if (!n.children) return <Link key={n.href} href={n.href} className={tone}>{n.name}</Link>;
@@ -146,7 +136,7 @@ export function Header({ trustBar, announcement }: { trustBar: string[]; announc
             })}
           </nav>
           <button
-            className="-m-2.5 justify-self-start p-2.5 lg:hidden"
+            className="-m-2.5 order-1 p-2.5 lg:hidden"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label={menuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={menuOpen}
@@ -155,29 +145,35 @@ export function Header({ trustBar, announcement }: { trustBar: string[]; announc
             {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
 
-          <Link href="/" className="justify-self-center text-[1.75rem] text-[var(--color-navy)] md:text-[2rem]">
-            <Logo />
-          </Link>
 
-          <div className="flex items-center justify-self-end gap-5 text-sm font-semibold">
+          <div className="order-3 flex items-center gap-4 text-sm font-semibold lg:ml-auto">
+            {advisor && (
+              <button
+                type="button"
+                onClick={() => window.dispatchEvent(new Event('noovit:advisor'))}
+                className="hidden items-center gap-2 rounded-full bg-gradient-to-r from-[var(--color-navy)] to-[#3b4f7a] px-4 py-2 text-[14px] font-semibold text-white shadow-sm transition hover:brightness-110 md:flex"
+              >
+                <Sparkles className="h-4 w-4 text-[var(--color-orange)]" aria-hidden /> Ask Noovit
+              </button>
+            )}
             {/* Noovit Pets sits apart from the human range as its own button; on the Pets pages it leads back to the human shop. */}
             {onPets ? (
               <Link
                 href="/shop"
-                className="hidden items-center gap-1.5 rounded bg-[var(--color-opal)] px-4 py-1.5 font-logo text-[15px] font-medium text-[var(--color-navy)] transition-colors hover:bg-[var(--color-accent-light)] lg:flex"
+                className="hidden items-center gap-1.5 rounded-full bg-[var(--color-opal)] px-4 py-1.5 text-[14px] font-medium text-[var(--color-navy)] transition-colors hover:bg-[var(--color-accent-light)] lg:flex"
               >
                 <User className="h-4 w-4" /> Humans
               </Link>
             ) : (
               <Link
                 href="/pets"
-                className="hidden items-center gap-1.5 rounded bg-[var(--color-pets)] px-4 py-1.5 font-logo text-[15px] font-medium text-[var(--color-navy)] transition-colors hover:brightness-95 lg:flex"
+                className="hidden items-center gap-1.5 rounded-full border border-[var(--color-line)] px-4 py-1.5 text-[14px] font-medium text-[var(--color-navy)] transition-colors hover:brightness-95 lg:flex"
               >
                 <PawPrint className="h-4 w-4" /> Pets
               </Link>
             )}
-            <Link href="/account" className="hidden font-logo text-[15px] font-medium hover:text-[var(--color-accent)] sm:block">
-              My Subscriptions
+            <Link href="/account" className="hidden rounded-full border border-[var(--color-line)] px-4 py-1.5 text-[14px] font-medium hover:border-[var(--color-navy)] sm:block">
+              Sign in
             </Link>
             <button onClick={openCart} className="relative -m-2 p-2" aria-label={`Cart, ${count} ${count === 1 ? 'item' : 'items'}`}>
               <ShoppingBag className="h-6 w-6" aria-hidden />

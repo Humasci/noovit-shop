@@ -23,6 +23,11 @@ phase1 47/47, phase2 60/60, aff 55/55, batch3 15/15.
    - `ADMIN_PASSWORD=test-admin-pass` (the suites sign in with it), `SITE_LIVE=true`, `NEXT_PUBLIC_SITE_URL=http://localhost:3100`
    - any random strings for `APP_SECRET` and `CRON_SECRET`; `KLAVIYO_PRIVATE_KEY` any value, `KLAVIYO_API_BASE` = the fake server URL.
 
+## AI advisor
+The advisor (`/api/advisor`) is tested against `fake-anthropic.mjs` (a fake streaming Messages API on port 4610):
+add `ANTHROPIC_API_KEY=sk-ant-test` and `ANTHROPIC_BASE_URL=http://127.0.0.1:4610` to `test.env`, start it with
+`node tests/e2e/fake-anthropic.mjs &`, then `curl -N -X POST localhost:3100/api/advisor -d '{"messages":[{"role":"user","content":"hi"}]}'`.
+
 ## Running
 Each suite needs a fresh database, so start and stop around every run:
 ```
