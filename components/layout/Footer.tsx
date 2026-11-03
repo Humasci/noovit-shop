@@ -78,7 +78,9 @@ export function Footer() {
     <footer className="bg-[var(--color-navy)] text-white">
       <div className="container grid gap-10 px-6 py-14 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
         <div>
-          {/* One logo only: the giant wordmark below. */}
+          <Link href="/" aria-label="Noovit home" className="mb-4 inline-block text-[2rem] leading-none text-white">
+            <Logo />
+          </Link>
           <p className="max-w-xs text-sm text-white/70">Clean, science-driven supplements for everyday health.</p>
           <SocialLinks className="mt-5 text-white/80" />
         </div>

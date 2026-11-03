@@ -1,0 +1,15 @@
+import { readdirSync } from 'fs';
+import { Resvg } from '@resvg/resvg-js';
+import sharp from 'sharp';
+import { SEED_PRODUCTS } from '@/data/products';
+import { photoBottleSvg } from '@/lib/labels/photo';
+const fontFiles = readdirSync('assets/fonts').filter((f) => f.endsWith('.ttf')).map((f) => `assets/fonts/${f}`);
+(async () => {
+  const tiles: Buffer[] = [];
+  for (const s of ['lions-mane', 'magnesium-complex', 'creatine']) {
+    const p = SEED_PRODUCTS.find((x) => x.slug === s)! as never;
+    tiles.push(Buffer.from(new Resvg(photoBottleSvg(p, '#ebe7e0'), { fitTo: { mode: 'width', value: 900 }, font: { fontFiles, loadSystemFonts: false, defaultFontFamily: 'Inter' } }).render().asPng()));
+  }
+  const m = await sharp(tiles[0]).metadata();
+  await sharp({ create: { width: 2700, height: m.height!, channels: 3, background: '#fff' } }).composite(tiles.map((t, i) => ({ input: t, left: i * 900, top: 0 }))).png().toFile(process.argv[2]);
+})();

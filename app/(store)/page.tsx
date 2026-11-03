@@ -47,7 +47,7 @@ const GOAL_TILES: { label: string; line: string; slug: string; href: string }[] 
 ];
 
 // The core range (docs/research/COMPETITORS_CORE5.md); hidden products drop out automatically. Up to four are shown.
-const ART_V = 2; // bump when the /art graphics change
+const ART_V = 3; // bump when the /art graphics change
 const SPOTLIGHT = ['magnesium-complex', 'ashwagandha', 'lions-mane', 'creatine', 'coq10', 'turmeric-complex'];
 
 export const metadata: Metadata = { alternates: { canonical: '/' } };

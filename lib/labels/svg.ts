@@ -1,5 +1,6 @@
 import { moleculeArt, hasMolecule, moleculeField } from './molecule';
 import { illustrationField, hasIllustration } from './illustration';
+import { particleShape, hasShape } from './shapes';
 import { Product } from '@/types';
 import { CROSS_GAP, MARK_CROSS, crossTile } from '@/lib/brand/cross';
 import { GOALS, goalsForProduct } from '@/lib/quiz';
@@ -14,7 +15,7 @@ import { LEGAL_NAME } from '@/lib/site';
 export type FontMode = 'web' | 'print';
 
 // Bump when the photo mockup (lib/labels/photo.ts) changes, so cached product image URLs refresh.
-export const MOCKUP_VERSION = 'photo-v6-label2';
+export const MOCKUP_VERSION = 'photo-v7-shapes';
 
 const NAVY = '#14213d';
 const INK = '#4b5563';
@@ -501,6 +502,9 @@ function formOrganic(p: Product, cx: number, cy: number, r: number, color: strin
 }
 
 export function productForm(p: Product, cx: number, cy: number, r: number, color = p.color, style: FormStyle = 'soft') {
+  // Symbolic particle shapes replace the molecule for three products (brain, ore, triple spiral).
+  if ((style === 'molecule' || style === 'molecule-spectrum') && hasShape(p.slug))
+    return particleShape(p, cx - 88, cy - 54, 104, color, { spectrum: style === 'molecule-spectrum', disperse: style === 'molecule-spectrum' });
   if ((style === 'molecule' || style === 'molecule-spectrum') && hasMolecule(p.slug))
     return moleculeArt(p, cx - 34, cy - 2, r * 1.85, r * 1.55, color, style === 'molecule-spectrum' ? { palette: 'spectrum', disperse: true } : {});
   if (style === 'scientific') return formScientific(p, cx, cy, r, color);

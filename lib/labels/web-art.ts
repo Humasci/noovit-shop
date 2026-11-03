@@ -1,5 +1,6 @@
 import { Product } from '@/types';
 import { moleculeArt } from './molecule';
+import { particleShape, hasShape } from './shapes';
 
 // Website graphics in the V2 label style (3 Nov): the product's key molecule built from fine glossy beads,
 // dissolving into loose particles, and a free "particle drift" for section backgrounds. Served as SVG by
@@ -18,7 +19,9 @@ export function moleculeSvg(p: Product, w = 800, h = 800, style: 'spectrum' | 'f
   // Drawn in a small 220-unit box (the bead size is tuned for label units) and scaled up by the viewBox, so the
   // beads stay visible at web sizes. Molecule lower-left; the dissolve trail drifts up and to the right.
   const S = 220;
-  const art = moleculeArt(p, S * 0.42, S * 0.56, S * 0.72, S * 0.56, p.color, style === 'spectrum' ? { palette: 'spectrum', disperse: true } : {});
+  const art = hasShape(p.slug)
+    ? particleShape(p, S * 0.08, S * 0.2, S * 0.72, p.color, { spectrum: style === 'spectrum', disperse: style === 'spectrum', bead: 1.15 })
+    : moleculeArt(p, S * 0.42, S * 0.56, S * 0.72, S * 0.56, p.color, style === 'spectrum' ? { palette: 'spectrum', disperse: true } : {});
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${S} ${S}" width="${w}" height="${h}">${art}</svg>`;
 }
 
