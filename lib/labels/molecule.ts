@@ -56,36 +56,49 @@ function axes(pts: number[][]) {
   return { q, e1: e1.v, e2, e3 };
 }
 
-// Draws the molecule centred on (cx, cy), its longest axis vertical and fitted to `height`, at most `width` wide.
 // Brand spectrum for the 'spectrum' palette: glossy pink, teal, blue and violet, with the product colour leading.
 const SPECTRUM = ['#E57AB5', '#33BFA8', '#4C8DE0', '#8C6AD6'];
 export interface MoleculeOpts { palette?: 'family' | 'spectrum'; disperse?: boolean }
 
-// Draws the molecule centred on (cx, cy) inside a width × height box, its long axis on a diagonal.
-// Small molecules (creatine, magnesium bisglycinate) appear as a few copies at different depths, like a cluster.
-// `disperse`: the upper-right end dissolves into loose spheres drifting off round the bottle (away from the text).
+// Draws the molecule centred on (cx, cy) inside a width × height box. Each atom is built from many small beads
+// on its visible surface (the "made of particles" look), not one big ball. Long molecules (CoQ10, curcumin) are
+// bent into an arc so they read as a shape rather than a stick; tiny ones (creatine, Mg bisglycinate) appear as a
+// small cluster of copies at different depths. `disperse`: one end dissolves into loose beads drifting away.
 export function moleculeArt(p: Product, cx: number, cy: number, height: number, width: number, color = p.color, opts: MoleculeOpts = {}) {
   const atoms = DATA[p.slug];
   if (!atoms) return '';
   const rnd = seeded(p.slug + 'mol');
   const { q, e1, e2, e3 } = axes(atoms.map((a) => [a[1], a[2], a[3]]));
   const dot = (a: number[], b: number[]) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
-  const project = (tx: number, ty: number, rz: number) =>
-    q.map((v) => {
-      let x = dot(v, e2), y = dot(v, e1), z = dot(v, e3);
+  // Local frame: y = longest axis. Bend long molecules round an arc (up to ~220°).
+  let local = q.map((v) => [dot(v, e2), dot(v, e1), dot(v, e3)]);
+  const len = Math.max(...local.map((v) => v[1])) - Math.min(...local.map((v) => v[1]));
+  const thick = (Math.max(...local.map((v) => v[0])) - Math.min(...local.map((v) => v[0]))) || 1;
+  const aspect = len / thick;
+  if (aspect > 2.2) {
+    const sweep = Math.min(3.8, (aspect - 1.6) * 0.75);
+    const Rb = len / sweep;
+    const yMid = (Math.max(...local.map((v) => v[1])) + Math.min(...local.map((v) => v[1]))) / 2;
+    local = local.map(([x, y, z]) => {
+      const t = (y - yMid) / Rb;
+      return [(Rb + x) * Math.cos(t) - Rb, (Rb + x) * Math.sin(t), z + 0.6 * Math.sin(t * 1.7)];
+    });
+  }
+  const view = (tx: number, ty: number, rz: number) =>
+    local.map(([x0, y0, z0]) => {
+      let x = x0, y = y0, z = z0;
       [y, z] = [y * Math.cos(tx) - z * Math.sin(tx), y * Math.sin(tx) + z * Math.cos(tx)];
       [x, z] = [x * Math.cos(ty) + z * Math.sin(ty), -x * Math.sin(ty) + z * Math.cos(ty)];
       [x, y] = [x * Math.cos(rz) - y * Math.sin(rz), x * Math.sin(rz) + y * Math.cos(rz)];
       return [x, y, z];
     });
-  const span = Math.max(...q.map((v) => Math.hypot(...v))) * 2;
+  const span = Math.max(...local.map((v) => Math.hypot(...v))) * 2;
   const copies = atoms.length < 30
     ? [{ tx: 0.4, ty: 0.3, rz: -0.6, dx: 0.1, dy: 0.15, sc: 1, dz: 0 }, { tx: 1.3, ty: -0.6, rz: 0.9, dx: -0.42, dy: -0.5, sc: 0.72, dz: -6 }, { tx: -0.7, ty: 1.1, rz: 2.2, dx: 0.48, dy: -0.62, sc: 0.58, dz: -10 }]
-    : [{ tx: 0.42, ty: 0.32, rz: -0.62, dx: 0, dy: 0, sc: 1, dz: 0 }];
+    : [{ tx: 0.42, ty: 0.32, rz: aspect > 2.2 ? 0.25 : -0.62, dx: 0, dy: 0, sc: 1, dz: 0 }];
   const el: string[] = [], P: number[][] = [], R: number[] = [];
   for (const c of copies) {
-    const pts = project(c.tx, c.ty, c.rz);
-    pts.forEach(([x, y, z], i) => {
+    view(c.tx, c.ty, c.rz).forEach(([x, y, z], i) => {
       el.push(atoms[i][0]);
       P.push([x * c.sc + c.dx * span, y * c.sc + c.dy * span, z * c.sc + c.dz]);
       R.push((RADIUS[atoms[i][0]] ?? 1.7) * 0.9 * c.sc);
@@ -94,82 +107,77 @@ export function moleculeArt(p: Product, cx: number, cy: number, height: number, 
   const ext = (k: number) => [Math.min(...P.map((pt, i) => pt[k] - R[i])), Math.max(...P.map((pt, i) => pt[k] + R[i]))];
   const [x0, x1] = ext(0), [y0, y1] = ext(1), [z0, z1] = ext(2);
   const s = Math.min(height / (y1 - y0), width / (x1 - x0));
-  let pts = P.map(([x, y, z]) => [cx + (x - (x0 + x1) / 2) * s, cy + (y - (y0 + y1) / 2) * s, (z - z0) / (z1 - z0 || 1)]);
+  // Screen space; z kept in the same units for occlusion, and as 0..1 depth for shading.
+  const S = P.map(([x, y, z]) => [cx + (x - (x0 + x1) / 2) * s, cy + (y - (y0 + y1) / 2) * s, (z - z0) * s]);
   const rad = R.map((v) => v * s);
+  const zMax = (z1 - z0) * s || 1;
 
-  // Element tones in the product's colour family (carbon = the product colour), plus an orange mineral accent.
   const base: Record<string, string> = {
-    C: tone(color, 0, 0.05),
+    C: tone(color, 0, 0.04),
     O: tone(color, -26, 0.16, 0.05),
     N: tone(color, 28, 0.08),
-    H: tone(color, -8, 0.32, -0.15),
+    H: tone(color, -8, 0.3, -0.15),
     Mg: '#ff7a2b',
     S: tone(color, 60, 0.1),
   };
   const defs: string[] = [];
   const grads = new Set<string>();
-  const grad = (e: string, depth: number) => {
-    const b = Math.min(3, Math.floor(depth * 4)); // 4 depth buckets: back atoms darker and flatter
-    const id = `mg-${p.slug}-${e}-${b}`.replace(/[^\w-]/g, '');
+  // Bead shading: lit from the upper left; 5 depth buckets so the back of the molecule falls into shadow.
+  const beadGrad = (c: string, depth: number) => {
+    const b = Math.max(0, Math.min(4, Math.floor(depth * 5)));
+    const id = `mb-${p.slug}-${c.slice(1)}-${b}`.replace(/[^\w-]/g, '');
     if (!grads.has(id)) {
       grads.add(id);
-      const c = tone(base[e] ?? color, 0, -0.14 * (3 - b) / 3, -0.1 * (3 - b) / 3);
-      defs.push(`<radialGradient id="${id}" cx="0.36" cy="0.3" r="0.75"><stop offset="0" stop-color="${tone(c, 0, 0.2)}"/><stop offset="0.55" stop-color="${c}"/><stop offset="1" stop-color="${tone(c, 0, -0.18, 0.05)}"/></radialGradient>`);
+      const cc = tone(c, 0, -0.18 * (4 - b) / 4, -0.08 * (4 - b) / 4);
+      defs.push(`<radialGradient id="${id}" cx="0.35" cy="0.3" r="0.75"><stop offset="0" stop-color="${tone(cc, 0, 0.26)}"/><stop offset="0.5" stop-color="${cc}"/><stop offset="1" stop-color="${tone(cc, 0, -0.22, 0.05)}"/></radialGradient>`);
     }
     return id;
   };
-  // Glossy gradient for spectrum spheres: bright core, saturated body, deep rim.
-  const specGrad = (c: string, depth: number) => {
-    const b = Math.min(3, Math.floor(depth * 4));
-    const id = `ms-${p.slug}-${c.slice(1)}-${b}`.replace(/[^\w-]/g, '');
-    if (!grads.has(id)) {
-      grads.add(id);
-      const cc = tone(c, 0, -0.1 * (3 - b) / 3);
-      defs.push(`<radialGradient id="${id}" cx="0.38" cy="0.32" r="0.72"><stop offset="0" stop-color="${tone(cc, 0, 0.24)}"/><stop offset="0.5" stop-color="${cc}"/><stop offset="1" stop-color="${tone(cc, 0, -0.2, 0.05)}"/></radialGradient>`);
-    }
-    return id;
-  };
-  // Spectrum: each atom takes the product colour (about half) or one of the brand hues; hydrogens stay pale.
   const pick = seeded(p.slug + 'hue');
-  const hue = el.map((e) => (e === 'H' ? '' : pick() < 0.5 ? color : SPECTRUM[Math.floor(pick() * SPECTRUM.length)]));
-  const extra: { x: number; y: number; r: number; c: string; z: number }[] = [];
+  const bead = Math.max(0.75, Math.min(1.35, Math.min(width, height) / 70)); // bead radius in label units
+  type B = { x: number; y: number; z: number; r: number; c: string };
+  const beads: B[] = [];
+  for (let i = 0; i < S.length; i++) {
+    const [ax, ay, az] = S[i];
+    const rr = rad[i];
+    const count = Math.max(3, Math.min(60, Math.round(((rr * rr) / (bead * bead)) * 1.5)));
+    for (let k = 0; k < count; k++) {
+      // Random direction on the hemisphere facing the viewer.
+      const u = rnd(), v = rnd();
+      const th = 2 * Math.PI * u, ph = Math.acos(v);
+      const dx = Math.sin(ph) * Math.cos(th), dy = Math.sin(ph) * Math.sin(th), dz = Math.cos(ph);
+      const bx = ax + dx * rr * 0.9, by = ay + dy * rr * 0.9, bz = az + dz * rr * 0.9;
+      let hidden = false;
+      for (let j = 0; j < S.length && !hidden; j++) {
+        if (j === i) continue;
+        const ddx = bx - S[j][0], ddy = by - S[j][1], ddz = bz - S[j][2];
+        if (ddx * ddx + ddy * ddy + ddz * ddz < (rad[j] * 0.88) ** 2) hidden = true;
+      }
+      if (hidden) continue;
+      const e = el[i];
+      const c = opts.palette === 'spectrum'
+        ? (e === 'H' ? tone(color, 0, 0.3, -0.2) : pick() < 0.45 ? color : SPECTRUM[Math.floor(pick() * SPECTRUM.length)])
+        : tone(base[e] ?? color, (pick() - 0.5) * 8, (pick() - 0.5) * 0.08);
+      beads.push({ x: bx, y: by, z: bz, r: bead * (0.75 + 0.5 * rnd()) * (0.85 + 0.3 * (az / zMax)), c });
+    }
+  }
+  // Dissolve: beads near the far end drift away, and a trail of loose beads continues past it.
   if (opts.disperse) {
     const dr = seeded(p.slug + 'drift');
-    const along = (x: number, y: number) => (x - cx) * 0.7 - (y - cy) * 0.7; // up-right
-    const vals = pts.map(([x, y]) => along(x, y));
+    const along = (b: B) => (b.x - cx) * 0.7 - (b.y - cy) * 0.7; // up-right
+    const vals = beads.map(along);
     const lo = Math.min(...vals), hi = Math.max(...vals);
-    pts = pts.map(([x, y, z], i) => {
+    beads.forEach((b, i) => {
       const t = (vals[i] - lo) / (hi - lo || 1);
-      if (t > 0.6 && dr() < (t - 0.6) * 2) { const d = dr() * width * 0.35 * t; return [x + d * 0.8, y - d * 0.6, z]; }
-      return [x, y, z];
+      if (t > 0.65 && dr() < (t - 0.65) * 2.4) { const d = dr() * width * 0.3 * t; b.x += d * 0.8; b.y -= d * 0.6; }
     });
-    const tip = pts.reduce((b, pt, i) => (vals[i] > vals[b] ? i : b), 0);
-    const loose = 18 + Math.min(24, el.length / 6);
-    for (let k = 0; k < loose; k++) {
+    const tip = beads[vals.indexOf(hi)];
+    for (let k = 0; k < 40; k++) {
       const u = dr();
-      extra.push({ x: pts[tip][0] + u * width * 0.55 + (dr() - 0.5) * 14, y: pts[tip][1] - u * height * 0.45 + (dr() - 0.5) * 18, r: (0.8 + dr() * 2.2) * (1 - u * 0.5), c: dr() < 0.45 ? color : SPECTRUM[Math.floor(dr() * SPECTRUM.length)], z: dr() });
+      beads.push({ x: tip.x + u * width * 0.45 + (dr() - 0.5) * 10, y: tip.y - u * height * 0.35 + (dr() - 0.5) * 14, z: dr() * zMax, r: bead * (0.6 + dr() * 0.8) * (1 - u * 0.4), c: beads[Math.floor(dr() * beads.length)].c });
     }
   }
-  const out: string[] = [];
-  for (const e of extra.sort((a, b) => a.z - b.z)) {
-    out.push(`<circle cx="${n(e.x)}" cy="${n(e.y)}" r="${n(e.r)}" fill="url(#${opts.palette === 'spectrum' ? specGrad(e.c, e.z) : grad('C', e.z)})" fill-opacity="${n(0.5 + 0.5 * e.z)}"/>`);
-  }
-  const order = pts.map((_, i) => i).sort((a, b) => pts[a][2] - pts[b][2]);
-  for (const i of order) {
-    const e = el[i];
-    const [x, y, z] = pts[i];
-    const rr = rad[i];
-    const spec = opts.palette === 'spectrum' && hue[i];
-    const fill = spec ? `url(#${specGrad(hue[i], z)})` : `url(#${grad(e, z)})`;
-    out.push(`<circle cx="${n(x)}" cy="${n(y)}" r="${n(rr)}" fill="${fill}" stroke="${tone(spec ? hue[i] : base[e] ?? color, 0, -0.28)}" stroke-width="${n(Math.max(0.15, rr * 0.05))}" stroke-opacity="0.45"/>`);
-    if (spec && rr > 1.6) out.push(`<circle cx="${n(x - rr * 0.32)}" cy="${n(y - rr * 0.36)}" r="${n(rr * 0.2)}" fill="#fff" fill-opacity="0.55"/>`);
-    // Grain: a few tiny speckles on the larger atoms (the "molecular surface" texture).
-    if (!spec && e !== 'H' && rr > 2.2) {
-      for (let k = 0; k < 4; k++) {
-        const a = rnd() * Math.PI * 2, d = rr * 0.6 * Math.sqrt(rnd());
-        out.push(`<circle cx="${n(x + Math.cos(a) * d)}" cy="${n(y + Math.sin(a) * d)}" r="${n(rr * (0.07 + 0.06 * rnd()))}" fill="${rnd() < 0.5 ? '#fff' : tone(base[e] ?? color, 0, -0.25)}" fill-opacity="${n(0.18 + 0.2 * z)}"/>`);
-      }
-    }
-  }
+  beads.sort((a, b) => a.z - b.z);
+  const out = beads.map((b) => `<circle cx="${n(b.x)}" cy="${n(b.y)}" r="${n(b.r)}" fill="url(#${beadGrad(b.c, b.z / zMax)})"/>`);
   return `<g><defs>${defs.join('')}</defs>${out.join('')}</g>`;
 }

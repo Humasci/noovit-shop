@@ -5,7 +5,7 @@ import { SEED_PRODUCTS } from '@/data/products';
 import { frontPanelClinical, FRONT } from '@/lib/labels/svg';
 import { photoBottleSvg } from '@/lib/labels/photo';
 const fontFiles = readdirSync('assets/fonts').filter((f) => f.endsWith('.ttf')).map((f) => `assets/fonts/${f}`);
-const COL: Record<string, string> = { 'magnesium-complex': '#4A6B94', ashwagandha: '#AE5559', 'turmeric-complex': '#B56E1E' };
+const COL: Record<string, string> = { 'lions-mane': '#2B7C82', coq10: '#8E2E45', 'turmeric-complex': '#B56E1E' };
 (async () => {
   const tiles: Buffer[] = [];
   for (const slug of Object.keys(COL)) {
