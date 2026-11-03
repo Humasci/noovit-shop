@@ -20,7 +20,7 @@ const art = (accent: 'band' | 'top', form: any = false) => (p: any, ext: number)
 };
 (async () => {
   const rows: Buffer[] = [];
-  for (const [accent, label, form] of [['band', 'S  Scientific: contour lines + data points', 'scientific'], ['band', 'O  Organic: fluid watercolour layers', 'organic']] as const) {
+  for (const [accent, label, form] of [['band', 'M1  Key molecule, colour family', 'molecule'], ['band', 'M2  Key molecule, glossy spectrum + dissolve', 'molecule-spectrum']] as const) {
     const tiles: Buffer[] = [];
     for (const slug of SLUGS) {
       const p: any = { ...SEED_PRODUCTS.find((x) => x.slug === slug)!, color: COL[slug] };

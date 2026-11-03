@@ -1,3 +1,4 @@
+import { moleculeArt, hasMolecule } from './molecule';
 import { Product } from '@/types';
 import { CROSS_GAP, MARK_CROSS, crossTile } from '@/lib/brand/cross';
 import { GOALS, goalsForProduct } from '@/lib/quiz';
@@ -449,7 +450,7 @@ function smoothClosed(pts: [number, number][]) {
   }
   return d + 'Z';
 }
-export type FormStyle = 'soft' | 'scientific' | 'organic';
+export type FormStyle = 'soft' | 'scientific' | 'organic' | 'molecule' | 'molecule-spectrum';
 // One closed outline per product (seeded from the slug, lobes from the ingredient count), scaled about its centre.
 function formOutline(p: Product, cx: number, cy: number, r: number, salt: string, irregular = 0.3, extraLobes = 0) {
   const rnd = hash(p.slug + salt);
@@ -499,6 +500,8 @@ function formOrganic(p: Product, cx: number, cy: number, r: number, color: strin
 }
 
 export function productForm(p: Product, cx: number, cy: number, r: number, color = p.color, style: FormStyle = 'soft') {
+  if ((style === 'molecule' || style === 'molecule-spectrum') && hasMolecule(p.slug))
+    return moleculeArt(p, cx - 34, cy - 2, r * 1.85, r * 1.55, color, style === 'molecule-spectrum' ? { palette: 'spectrum', disperse: true } : {});
   if (style === 'scientific') return formScientific(p, cx, cy, r, color);
   if (style === 'organic') return formOrganic(p, cx, cy, r, color);
   const rnd = hash(p.slug + 'form');
