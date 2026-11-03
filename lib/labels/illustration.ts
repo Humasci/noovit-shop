@@ -1,11 +1,12 @@
 import { Product } from '@/types';
 import SKELETONS from '@/data/skeletons.json';
+export const MOLECULE_SKELETONS = SKELETONS as unknown as Record<string, { atoms: [string, number, number][]; bonds: [number, number, number][] }>; // creatine, CoQ10 (kept for web art)
 
 // Particle illustrations (3 Nov): each product's subject drawn from thousands of fine beads inside the same
 // square-ish block in the label's top-right corner (bleeding off the top and right edges, ragged inner edges).
 //   magnesium-complex → mineral crystal cluster      ashwagandha → the plant with its roots visible
-//   lions-mane → the mushroom with hanging spines     creatine → molecular structure (+ faint lattice)
-//   coq10 → molecular structure coiled in a spiral    turmeric-complex → the rhizome (root)
+//   lions-mane → the mushroom with hanging spines     creatine → isometric crystal of stacked cubes
+//   coq10 → faceted brilliant-cut gem                 turmeric-complex → the rhizome (root)
 // Shapes are simple primitives in a 0–1 box; beads take the top-most shape's tone with soft directional light.
 
 const n = (v: number) => Math.round(v * 100) / 100;
@@ -146,8 +147,48 @@ function turmeric(): Shape[] {
   );
   return out;
 }
-type Skel = { atoms: [string, number, number][]; bonds: [number, number, number][] };
-function skeleton(sk: Skel, box: [number, number, number], atomR: number, bondR: number, dl = 0): Shape[] {
+// Creatine: isometric stack of cubes ("building blocks"): a stepped crystal pyramid, distinct from magnesium's prisms.
+function cubes(): Shape[] {
+  const out: Shape[] = [];
+  const a = 0.25, cos30 = Math.cos(Math.PI / 6);
+  const P = (x: number, y: number, z: number): Pt => [0.5 + (x - y) * a * cos30, 0.97 - (x + y) * a * 0.5 - z * a];
+  const cells: [number, number, number][] = [];
+  for (let x = 0; x < 2; x++) for (let y = 0; y < 2; y++) cells.push([x, y, 0]);
+  cells.push([0.5, 0.5, 1], [1.5, 1.5, 1]); // stepped: one centred, one at the back
+  cells.push([2.35, 0.1, 0]); // a loose block
+  // Painter's order: far (high x+y) first, then low z first.
+  cells.sort((p, q) => q[0] + q[1] - (p[0] + p[1]) || p[2] - q[2]);
+  for (const [x, y, z] of cells) {
+    const g = 0.09, x0 = x + g, y0 = y + g, x1 = x + 1 - g, y1 = y + 1 - g, z0 = z + g, z1 = z + 1 - g;
+    const shade = -0.04 * z;
+    out.push(poly([P(x0, y0, z0), P(x1, y0, z0), P(x1, y0, z1), P(x0, y0, z1)], 4, 0.02 + shade)); // right (front) face
+    out.push(poly([P(x0, y0, z0), P(x0, y1, z0), P(x0, y1, z1), P(x0, y0, z1)], -6, -0.2 + shade)); // left (front) face
+    out.push(poly([P(x0, y0, z1), P(x1, y0, z1), P(x1, y1, z1), P(x0, y1, z1)], 0, 0.26 + shade)); // top
+  }
+  return out;
+}
+// CoQ10: a faceted, brilliant-cut gem (cellular "energy"), plus two small satellites.
+function gem(cx = 0.5, cy = 0.52, s = 1, tilt = 0): Shape[] {
+  const out: Shape[] = [];
+  const R = (u: number, v: number): Pt => {
+    const x = (u - 0.5) * s, y = (v - 0.5) * s;
+    return [cx + x * Math.cos(tilt) - y * Math.sin(tilt), cy + x * Math.sin(tilt) + y * Math.cos(tilt)];
+  };
+  const g = [0.04, 0.18, 0.34, 0.5, 0.66, 0.82, 0.96].map((u) => R(u, 0.36));
+  const t = [0.24, 0.41, 0.59, 0.76].map((u) => R(u, 0.2));
+  const culet = R(0.5, 1.0);
+  out.push(poly([t[0], t[1], t[2], t[3]], 0, 0.28)); // table
+  const crown: [Pt, Pt, Pt, Pt?][] = [[g[0], g[1], t[0]], [t[0], g[1], g[2], t[1]], [t[1], g[2], g[3], g[4], ] as unknown as [Pt, Pt, Pt, Pt], [t[1], g[4], t[2]], [t[2], g[4], g[5], t[3]], [t[3], g[5], g[6]]];
+  crown.forEach((f, i) => out.push(poly(f.filter(Boolean) as Pt[], i % 2 ? 6 : -6, i % 2 ? 0.16 : 0.04)));
+  for (let i = 0; i < g.length - 1; i++) {
+    const mid = R(0.04 + (i + 0.5) * (0.92 / 6) * 0.7 + 0.5 * 0.92 * 0.3 - 0.46 * 0.3 + 0.0, 0.6);
+    out.push(poly([g[i], mid, culet], -4, -0.14 + (i / 6) * 0.1));
+    out.push(poly([mid, g[i + 1], culet], 4, -0.02 + (i / 6) * 0.12));
+  }
+  return out;
+}
+export type Skel = { atoms: [string, number, number][]; bonds: [number, number, number][] };
+export function skeleton(sk: Skel, box: [number, number, number], atomR: number, bondR: number, dl = 0): Shape[] {
   const [ox, oy, sc] = box;
   const P = sk.atoms.map(([, x, y]) => [ox + (x - 0.5) * sc + 0.5, oy + (y - 0.5) * sc + 0.5] as Pt);
   const out: Shape[] = [];
@@ -165,17 +206,13 @@ function skeleton(sk: Skel, box: [number, number, number], atomR: number, bondR:
   return out;
 }
 function subject(slug: string): Shape[] | null {
-  const S = SKELETONS as unknown as Record<string, Skel>;
   switch (slug) {
     case 'magnesium-complex': return crystal();
     case 'ashwagandha': return ashwagandha();
     case 'lions-mane': return lionsMane();
     case 'turmeric-complex': return turmeric();
-    case 'creatine': return [
-      ...skeleton(S.creatine, [-0.28, -0.3, 0.32], 0.04, 0.012, 0.18), ...skeleton(S.creatine, [0.3, 0.32, 0.28], 0.035, 0.011, 0.18),
-      ...skeleton(S.creatine, [0.02, 0.04, 0.78], 0.055, 0.016),
-    ];
-    case 'coq10': return skeleton(S.coq10, [0.02, 0.02, 0.92], 0.024, 0.008);
+    case 'creatine': return cubes();
+    case 'coq10': return [...gem(0.84, 0.82, 0.2, 0.5), ...gem(0.5, 0.46, 0.86, 0)];
     default: return null;
   }
 }
