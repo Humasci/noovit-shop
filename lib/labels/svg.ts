@@ -1,4 +1,5 @@
-import { moleculeArt, hasMolecule } from './molecule';
+import { moleculeArt, hasMolecule, moleculeField } from './molecule';
+import { illustrationField, hasIllustration } from './illustration';
 import { Product } from '@/types';
 import { CROSS_GAP, MARK_CROSS, crossTile } from '@/lib/brand/cross';
 import { GOALS, goalsForProduct } from '@/lib/quiz';
@@ -580,6 +581,53 @@ export function frontPanelClinical(p: Product, mode: FontMode, bleed = 0, opts: 
     ${doseBlock}
     ${opts.form ? '' : caps(FRONT.w - 18, accent === 'band' ? 174 : 182, `${servingsPerContainer} servings`, 7, INK, 'end', 500)}
     ${accent === 'band' ? qtyBand : qtyWhite}
+  </g>`;
+}
+
+// ---------- Front panel "field" (3 Nov): clinical white + a square molecule field in the top-right corner ----------
+// Left column under the wordmark: category and the dose; the field fills the top-right block (bleeding off the
+// top and right edges); the name, descriptor and benefit sit below it; the colour band carries the quantity.
+export function frontPanelField(p: Product, mode: FontMode, bleed = 0, opts: { color?: string; art?: 'molecule' | 'illustration' } = {}) {
+  const col = opts.color ?? p.color;
+  const colText = shade(col, 0.18);
+  const { units, servingsPerContainer } = labelCounts(p);
+  const qty = netQuantity(p);
+  const wt = qty.match(/^Net Wt (\d+ g) \((.+)\)$/);
+  const big = wt ? wt[1] : p.form === 'powder' ? qty.split(' ')[0] : String(units);
+  const unitWord = wt ? `Net Wt ${wt[2]}` : p.form === 'powder' ? qty.replace(/^\S+\s/, '') : UNITS[p.form][units === 1 ? 0 : 1];
+  const dose = heroDose(p);
+  const category = labelCategory(p);
+  const words = p.name.split(' ');
+  const descriptor = words.length > 1 && /\+$|^Complex$/.test(words[words.length - 1]) ? words.pop()! : '';
+  const main = words.join(' ');
+  const size = Math.min(27, (FRONT.w - 36) / (main.length * 0.56));
+  const caps = (x: number, y: number, t: string, sz: number, fill: string, anchor = 'start', weight = 600) =>
+    `<text x="${n(x)}" y="${n(y)}" text-anchor="${anchor}" font-size="${sz}" font-weight="${weight}" letter-spacing="${n(sz * 0.14)}" fill="${fill}" ${font('body', mode)}>${esc(t.toUpperCase())}</text>`;
+  const doseLine = V2_DOSE_LINES[p.slug] ?? dose?.line ?? '';
+  const fieldX = 98, fieldBottom = 106;
+  const left = dose
+    ? `<text x="18" y="84" font-size="25" font-weight="600" letter-spacing="-0.8" fill="${NAVY}" ${font('head', mode)}>${esc(dose.value)}<tspan font-size="11" font-weight="500" dx="1.4">${esc(dose.unit)}</tspan></text>
+      ${wrap(doseLine.toUpperCase(), 74, 7, 0.68).slice(0, 2).map((l, i) => caps(18, 96 + i * 9, l, 7, INK, 'start', 500)).join('')}`
+    : textBlock(wrap(labelSubtitle(p), 76, 8.6, 0.5).slice(0, 4), 18, 68, 8.6, 10.4, `font-weight="600" fill="${NAVY}" ${font('body', mode)}`);
+  const nameY = 134;
+  const benefit = wrap(p.shortBenefit.replace(/\.$/, '') + '*', FRONT.w - 36, 7.6, 0.5).slice(0, 2);
+  const benY = descriptor ? nameY + 30 : nameY + 16;
+  const bandY = 186;
+  return `<g>
+    <rect x="0" y="${-bleed}" width="${FRONT.w}" height="${FRONT.h + bleed * 2}" fill="#fff"/>
+    <clipPath id="ff-${p.slug}"><rect x="0" y="${-bleed}" width="${FRONT.w + bleed}" height="${fieldBottom + 20 + bleed}"/></clipPath>
+    <g clip-path="url(#ff-${p.slug})">${opts.art === 'illustration' && hasIllustration(p.slug) ? illustrationField(p, fieldX, -bleed, FRONT.w + bleed, fieldBottom, col) : moleculeField(p, fieldX, -bleed, FRONT.w + bleed, fieldBottom, col)}</g>
+    ${wordmarkRaw(18, 27, 15, mode, NAVY, NAVY)}
+    ${category ? caps(18, 44, category, 7, colText, 'start', 700) : ''}
+    ${left}
+    <text x="18" y="${nameY}" font-size="${n(size)}" font-weight="600" letter-spacing="${n(-0.02 * size)}" fill="${NAVY}" ${font('head', mode)}>${esc(main)}</text>
+    ${descriptor ? `<text x="18" y="${nameY + 18}" font-size="15" font-weight="500" fill="${colText}" ${font('head', mode)}>${esc(descriptor)}</text>` : ''}
+    ${textBlock(benefit, 18, benY, 7.6, 9.4, `font-weight="400" fill="${INK}" ${font('body', mode)}`)}
+    <rect x="0" y="${bandY}" width="${FRONT.w}" height="${FRONT.h - bandY + bleed}" fill="${col}"/>
+    ${caps(18, bandY + 17, 'Dietary supplement', 7, '#fff', 'start', 700)}
+    ${caps(18, bandY + 28, `${servingsPerContainer} servings`, 7, 'rgba(255,255,255,0.85)', 'start', 500)}
+    <text x="${FRONT.w - 18}" y="${bandY + 19}" text-anchor="end" font-size="16" font-weight="600" fill="#fff" ${font('head', mode)}>${esc(big)}</text>
+    ${caps(FRONT.w - 18, bandY + 30, unitWord, 7, '#fff', 'end', 600)}
   </g>`;
 }
 

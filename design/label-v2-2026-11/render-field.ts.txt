@@ -1,0 +1,28 @@
+import { readdirSync } from 'fs';
+import { Resvg } from '@resvg/resvg-js';
+import sharp from 'sharp';
+import { SEED_PRODUCTS } from '@/data/products';
+import { frontPanelField, FRONT } from '@/lib/labels/svg';
+import { photoBottleSvg } from '@/lib/labels/photo';
+const fontFiles = readdirSync('assets/fonts').filter((f) => f.endsWith('.ttf')).map((f) => `assets/fonts/${f}`);
+const COL: Record<string, string> = { 'magnesium-complex': '#4A6B94', ashwagandha: '#AE5559', 'lions-mane': '#2B7C82', creatine: '#2F6F4E', coq10: '#8E2E45', 'turmeric-complex': '#B56E1E' };
+const slugs = (process.argv[4] ?? Object.keys(COL).join(',')).split(',');
+const width = Number(process.argv[5] ?? 420);
+(async () => {
+  const rows: Buffer[] = [];
+  for (const [art, label] of (process.argv[3] === 'both' ? [['molecule', 'F1  Molecule field'], ['illustration', 'F2  Particle illustrations']] : [[process.argv[3], '']]) as [any, string][]) {
+    const tiles: Buffer[] = [];
+    for (const slug of slugs) {
+      const c = COL[slug];
+      const p: any = { ...SEED_PRODUCTS.find((x) => x.slug === slug)!, color: c };
+      const fn = (pp: any, ext: number) => `<rect x="${-ext}" y="0" width="${FRONT.w + ext * 2}" height="${FRONT.h}" fill="#fff"/><rect x="${-ext}" y="186" width="${FRONT.w + ext * 2}" height="${FRONT.h - 186}" fill="${c}"/>${frontPanelField(pp, 'print', 0, { color: c, art })}`;
+      tiles.push(Buffer.from(new Resvg(photoBottleSvg(p, '#ebe7e0', false, fn), { fitTo: { mode: 'width', value: width }, font: { fontFiles, loadSystemFonts: false, defaultFontFamily: 'Inter' } }).render().asPng()));
+    }
+    const m = await sharp(tiles[0]).metadata();
+    const H = label ? 50 : 0;
+    rows.push(await sharp({ create: { width: m.width! * slugs.length, height: m.height! + H, channels: 3, background: '#ffffff' } })
+      .composite([...tiles.map((t, i) => ({ input: t, left: i * m.width!, top: H })), ...(label ? [{ input: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${m.width! * slugs.length}" height="50"><text x="20" y="36" font-size="26" font-family="Inter" font-weight="600" fill="#111">${label}</text></svg>`), left: 0, top: 0 }] : [])]).png().toBuffer());
+  }
+  const m = await sharp(rows[0]).metadata();
+  await sharp({ create: { width: m.width!, height: m.height! * rows.length, channels: 3, background: '#ffffff' } }).composite(rows.map((r, i) => ({ input: r, left: 0, top: i * m.height! }))).png().toFile(process.argv[2]);
+})();

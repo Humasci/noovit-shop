@@ -181,3 +181,60 @@ export function moleculeArt(p: Product, cx: number, cy: number, height: number, 
   const out = beads.map((b) => `<circle cx="${n(b.x)}" cy="${n(b.y)}" r="${n(b.r)}" fill="url(#${beadGrad(b.c, b.z / zMax)})"/>`);
   return `<g><defs>${defs.join('')}</defs>${out.join('')}</g>`;
 }
+
+
+// ---------- Molecule field (3 Nov): a square-ish block of fine beads in the label's top-right corner ----------
+// The block's outline is the same kind of shape on every product (bleeds off the top and right edges, ragged
+// inner edges with a few stray beads), so the range reads as one family. Inside, the product's real molecule
+// shows through as denser, deeper beads over a light tinted ground; a few accent beads mark "data points".
+export function moleculeField(p: Product, x0: number, y0: number, x1: number, y1: number, color = p.color) {
+  const atoms = DATA[p.slug];
+  const rnd = seeded(p.slug + 'field');
+  // Molecule silhouette laid out inside the block (reuse the bead renderer's geometry via a hidden pass).
+  const mol: { x: number; y: number; r: number; z: number }[] = [];
+  if (atoms) {
+    const w = x1 - x0, h = y1 - y0;
+    const svg = moleculeArt(p, x0 + w * 0.56, y0 + h * 0.52, h * 0.8, w * 0.72, color);
+    for (const m of svg.matchAll(/<circle cx="([\d.-]+)" cy="([\d.-]+)" r="([\d.]+)" fill="url\(#mb-[^"]*-(\d)\)"/g))
+      mol.push({ x: +m[1], y: +m[2], r: +m[3], z: +m[4] / 4 });
+  }
+  // Ragged edges: smooth noise along the left and bottom boundaries.
+  const wave = (t: number, seed: number) => Math.sin(t * 0.09 + seed) * 6 + Math.sin(t * 0.23 + seed * 2.1) * 3.5 + Math.sin(t * 0.51 + seed * 3.7) * 1.8;
+  const sL = rnd() * 10, sB = rnd() * 10;
+  const inMask = (x: number, y: number) => {
+    const left = x0 + 6 + wave(y, sL), bottom = y1 - 6 + wave(x, sB);
+    const dl = x - left, db = bottom - y;
+    if (dl > 0 && db > 0) return Math.min(1, Math.min(dl, db) / 7); // soft rim
+    return Math.min(dl, db) > -9 && rnd() < 0.06 ? 0.4 : 0; // stray beads just outside
+  };
+  const light = tone(color, -18, 0.3, -0.05);
+  const mid = tone(color, 12, 0.14);
+  const defs = new Map<string, string>();
+  const grad = (c: string) => {
+    const id = `mf-${p.slug}-${c.slice(1)}`.replace(/[^\w-]/g, '');
+    if (!defs.has(id)) defs.set(id, `<radialGradient id="${id}" cx="0.35" cy="0.3" r="0.75"><stop offset="0" stop-color="${tone(c, 0, 0.22)}"/><stop offset="0.55" stop-color="${c}"/><stop offset="1" stop-color="${tone(c, 0, -0.2, 0.05)}"/></radialGradient>`);
+    return id;
+  };
+  const beads: { x: number; y: number; r: number; c: string; o: number; z: number }[] = [];
+  const step = 2.5;
+  for (let y = y0 - 4; y < y1 + 12; y += step * 0.87)
+    for (let x = x0 - 12; x < x1 + 4; x += step) {
+      const bx = x + (rnd() - 0.5) * 1.6, by = y + (rnd() - 0.5) * 1.6;
+      const m = inMask(bx, by);
+      if (m <= 0 || rnd() > 0.35 + 0.6 * m) continue;
+      // Inside the molecule silhouette?
+      let hit: { z: number } | null = null;
+      for (const a of mol) if ((bx - a.x) ** 2 + (by - a.y) ** 2 < (a.r * 1.6) ** 2 && (!hit || a.z > hit.z)) hit = a;
+      // Ground colour drifts from a light, cooler tint (top-left) to the product's mid tone (bottom-right).
+      const t = Math.max(0, Math.min(1, ((bx - x0) / (x1 - x0)) * 0.5 + ((by - y0) / (y1 - y0)) * 0.5));
+      const c = hit ? tone(color, (rnd() - 0.5) * 10, -0.14 * (1 - hit.z) + (rnd() - 0.5) * 0.06) : rnd() < t * 0.7 ? mid : light;
+      beads.push({ x: bx, y: by, r: (hit ? 1.05 : 0.8) * (0.75 + 0.5 * rnd()) * (0.6 + 0.4 * m), c, o: hit ? 1 : 0.55 + 0.4 * m, z: hit ? 1 + hit.z : rnd() });
+    }
+  // Accent "data points": a few small deep beads and one orange, over the lower half of the block.
+  const deep = tone(color, 0, -0.3);
+  for (let k = 0; k < 14; k++) beads.push({ x: x0 + (x1 - x0) * (0.25 + 0.7 * rnd()), y: y0 + (y1 - y0) * (0.5 + 0.45 * rnd()), r: 0.7 + rnd() * 0.5, c: deep, o: 0.9, z: 3 });
+  beads.push({ x: x0 + (x1 - x0) * 0.62, y: y0 + (y1 - y0) * 0.7, r: 1.4, c: '#ff7a2b', o: 1, z: 4 });
+  beads.sort((a, b) => a.z - b.z);
+  const out = beads.map((b) => `<circle cx="${n(b.x)}" cy="${n(b.y)}" r="${n(b.r)}" fill="url(#${grad(b.c)})"${b.o < 1 ? ` fill-opacity="${n(b.o)}"` : ''}/>`);
+  return `<g><defs>${[...defs.values()].join('')}</defs>${out.join('')}</g>`;
+}
