@@ -3,10 +3,10 @@
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { Menu, X, ShoppingBag, ChevronDown, PawPrint, User, Sparkles } from 'lucide-react';
+import { Menu, X, ShoppingBag, ChevronDown, PawPrint, User } from 'lucide-react';
 import { useCart, cartCount } from '@/lib/store/cart';
 import { useHydrated } from '@/lib/useHydrated';
-import { Logo } from '@/components/layout/Logo';
+import { Logo, CrossIcon } from '@/components/layout/Logo';
 import { brandify } from '@/components/brand/Brand';
 import { GOAL_PAGES } from '@/lib/goals';
 
@@ -153,7 +153,7 @@ export function Header({ trustBar, announcement, advisor = false }: { trustBar: 
                 onClick={() => window.dispatchEvent(new Event('noovit:advisor'))}
                 className="hidden items-center gap-2 rounded-full bg-gradient-to-r from-[var(--color-navy)] to-[#3b4f7a] px-4 py-2 text-[14px] font-semibold text-white shadow-sm transition hover:brightness-110 md:flex"
               >
-                <Sparkles className="h-4 w-4 text-[var(--color-orange)]" aria-hidden /> Ask Noovit
+                <CrossIcon className="h-3.5 w-3.5" /> Ask Noovit AI
               </button>
             )}
             {/* Noovit Pets sits apart from the human range as its own button; on the Pets pages it leads back to the human shop. */}

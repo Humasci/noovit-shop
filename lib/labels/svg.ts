@@ -14,7 +14,7 @@ import { LEGAL_NAME } from '@/lib/site';
 export type FontMode = 'web' | 'print';
 
 // Bump when the photo mockup (lib/labels/photo.ts) changes, so cached product image URLs refresh.
-export const MOCKUP_VERSION = 'photo-v5';
+export const MOCKUP_VERSION = 'photo-v6-label2';
 
 const NAVY = '#14213d';
 const INK = '#4b5563';

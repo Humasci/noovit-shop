@@ -1,8 +1,5 @@
-// The noovit mosaic cross comes in two versions, one definition each:
-//  - MARK: five tiles on a 3×3 grid. The logo mark: the noovit wordmark, the n⁺ icon and the bottle labels.
-//    Bold enough to read as a "+" at small sizes.
-//  - LARGE: nine tiles on a 5×5 grid (a centre and two per arm), fading outwards. For the breathing loader and
-//    large graphics, where the extra detail shows.
+// The noovit mosaic cross: five tiles on a 3×3 grid. The ONLY cross used anywhere (owner, 3 Nov): logo, icon,
+// labels, loader, favicon, the advisor button and website graphics.
 export interface CrossTile {
   c: number; // column
   r: number; // row
@@ -24,21 +21,6 @@ export const MARK_CROSS: Cross = {
     { c: 2, r: 1, o: 0.8, arm: 'right', ring: 1 },
     { c: 1, r: 2, o: 0.5, arm: 'bottom', ring: 1 },
     { c: 0, r: 1, o: 0.4, arm: 'left', ring: 1 },
-  ],
-};
-
-export const LARGE_CROSS: Cross = {
-  grid: 5,
-  tiles: [
-    { c: 2, r: 2, o: 1, arm: 'core', ring: 0 },
-    { c: 2, r: 1, o: 0.75, arm: 'top', ring: 1 },
-    { c: 2, r: 0, o: 0.45, arm: 'top', ring: 2 },
-    { c: 3, r: 2, o: 0.9, arm: 'right', ring: 1 },
-    { c: 4, r: 2, o: 0.6, arm: 'right', ring: 2 },
-    { c: 2, r: 3, o: 0.65, arm: 'bottom', ring: 1 },
-    { c: 2, r: 4, o: 0.35, arm: 'bottom', ring: 2 },
-    { c: 1, r: 2, o: 0.55, arm: 'left', ring: 1 },
-    { c: 0, r: 2, o: 0.3, arm: 'left', ring: 2 },
   ],
 };
 

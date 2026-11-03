@@ -23,3 +23,14 @@ export function Logo({ plusColor }: { plusColor?: string }) {
     </span>
   );
 }
+
+// The five-tile cross on its own, sized by className (e.g. h-4 w-4). Used as the "Ask Noovit AI" icon.
+export function CrossIcon({ className = 'h-4 w-4', color = 'var(--color-orange)' }: { className?: string; color?: string }) {
+  return (
+    <svg aria-hidden viewBox="0 0 100 100" className={`inline-block shrink-0 ${className}`} fill={color}>
+      {MARK_CROSS.tiles.map(({ c, r, o }) => (
+        <rect key={`${c}${r}`} x={c * T * (1 + CROSS_GAP)} y={r * T * (1 + CROSS_GAP)} width={T} height={T} rx={T * 0.12} opacity={o} />
+      ))}
+    </svg>
+  );
+}

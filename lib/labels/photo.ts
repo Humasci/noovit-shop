@@ -2,7 +2,7 @@ import 'server-only';
 import { readFileSync } from 'fs';
 import path from 'path';
 import { Product } from '@/types';
-import { BAND, FRONT, frontPanel, scene } from './svg';
+import { FRONT, frontPanelClinical, scene } from './svg';
 
 // Photo mockup: our label wrapped onto Supliful's blank bottle photo (assets/mockups, 1024×1024).
 // The label is sliced into thin vertical strips placed on a cylinder,
@@ -30,11 +30,13 @@ const r = (v: number) => Math.round(v * 100) / 100;
 // `closeUp` crops to the label for a detail shot (the second gallery image).
 // `art` draws a custom label (label units, x from -ext to FRONT.w + ext so it wraps round the bottle); default is the standard front panel.
 export type LabelArt = (p: Product, ext: number) => string;
+// V2 label (3 Nov, owner's pick): clinical white, product-colour band, the key molecule in fine glossy beads
+// dissolving at one end ("molecule-spectrum"). The band and white wrap round to the bottle's sides.
+const BAND_Y = 186;
 const defaultArt: LabelArt = (p, ext) => `
-      <rect x="${r(-ext)}" y="0" width="${r(ext + 1)}" height="${BAND}" fill="${p.color}"/>
-      <rect x="${FRONT.w - 1}" y="0" width="${r(ext + 1)}" height="${BAND}" fill="${p.color}"/>
-      <rect x="${r(-ext)}" y="${BAND}" width="${r(FRONT.w + ext * 2)}" height="${FRONT.h - BAND}" fill="#fff"/>
-      ${frontPanel(p, 'print')}`;
+      <rect x="${r(-ext)}" y="0" width="${r(FRONT.w + ext * 2)}" height="${FRONT.h}" fill="#fff"/>
+      <rect x="${r(-ext)}" y="${BAND_Y}" width="${r(FRONT.w + ext * 2)}" height="${FRONT.h - BAND_Y}" fill="${p.color}"/>
+      ${frontPanelClinical(p, 'print', 0, { accent: 'band', color: p.color, form: 'molecule-spectrum' })}`;
 
 // `backdrop`: the cream scene, plain white (feeds), or a hex tint (gallery images), multiplied under the photo.
 export function photoBottleSvg(p: Product, backdrop: 'scene' | 'white' | `#${string}` = 'scene', closeUp = false, artFn: LabelArt = defaultArt) {

@@ -27,7 +27,7 @@ async function send(to: string, subject: string, html: string, headers?: Record<
 
 const layout = (body: string) => `
 <div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;color:#1f2937">
-  <p style="font-size:24px;font-weight:600;color:#14213d">noovit<sup style="color:#ff5f00;font-size:14px">+</sup></p>
+  <p style="font-size:24px;font-weight:600;color:#14213d;margin:0 0 16px">noovit<table role="presentation" cellpadding="0" cellspacing="1" style="display:inline-table;vertical-align:top;margin-left:2px;margin-top:2px;border-collapse:separate"><tr><td style="width:4px;height:4px;padding:0;background:transparent;border-radius:1px"></td><td style="width:4px;height:4px;padding:0;background:#ff9f66;border-radius:1px"></td><td style="width:4px;height:4px;padding:0;background:transparent;border-radius:1px"></td></tr><tr><td style="width:4px;height:4px;padding:0;background:#ffbf99;border-radius:1px"></td><td style="width:4px;height:4px;padding:0;background:#ff5f00;border-radius:1px"></td><td style="width:4px;height:4px;padding:0;background:#ff7f33;border-radius:1px"></td></tr><tr><td style="width:4px;height:4px;padding:0;background:transparent;border-radius:1px"></td><td style="width:4px;height:4px;padding:0;background:#ffaf80;border-radius:1px"></td><td style="width:4px;height:4px;padding:0;background:transparent;border-radius:1px"></td></tr></table></p>
   ${body}
   <p style="margin-top:32px;font-size:12px;color:#6b7280">Questions? Just reply to this email.<br/>Noovit · Clean, science-driven supplements<br/>${LEGAL_NAME}</p>
 </div>`;

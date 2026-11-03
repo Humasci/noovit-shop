@@ -33,6 +33,13 @@ Read this first. It is the standing context for any session working on this repo
   (text outlined). All label text ≥ 5 pt (Supliful's minimum; 1 unit = 0.72 pt); `npm run labels` warns on overflow;
   long ingredient names can take a shorter `label` for the printed panel. Origin claim on the info panel. Distributor line:
   **"Distributed by Noovit LLC" + Wyoming Agents suite address** (address pending). Creatine colour: emerald `#2E8B57`. Every label colour block is a gradient (`labelGradient`: product colour → deeper tone; picks in `LABEL_GRADIENTS`): Ashwagandha coral → berry (site `#B6575E`), Lion's Mane teal → petrol (`#27798A`), CoQ10 ruby → wine (`#9B2B46`). No brown. No website on the bottle label.
+- **Label V2 (3 Nov, the owner's restart point):** "M2" = clinical white, product-colour band with the quantity, and the
+  product's key molecule in fine glossy beads dissolving at one end (`frontPanelClinical(..., { form: 'molecule-spectrum' })`,
+  `lib/labels/molecule.ts`, data `data/molecules.json`). Used for the website product photos now; the print PDFs
+  (`fullLabelSvg`) still use the old front until converted. Core colours: Mg `#4A6B94`, Ashwa `#AE5559`, Lion's Mane
+  `#2B7C82`, Creatine `#2F6F4E`, CoQ10 `#8E2E45`, Turmeric `#B56E1E`. Website graphics in the same style: `/art/molecule-<slug>.svg`,
+  `/art/drift-<slug>.svg` (`lib/labels/web-art.ts`).
+- **The cross:** only the five-tile mosaic cross, everywhere (logo, favicon, loader, brand name in text, emails, advisor icon).
 - **Product images:** Supliful's blank bottle photo with the stock capsules edited out (`assets/mockups`,
   `scripts/remove-mockup-capsules.mjs`), framed tight (~90% height). Gallery: front, "In every serving" fact image,
   dose comparison (Mg, CoQ10), label close-up, Supplement Facts. Bump `MOCKUP_VERSION` when images change.

@@ -2,9 +2,10 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { Sparkles, X, ArrowUp } from 'lucide-react';
+import { X, ArrowUp } from 'lucide-react';
+import { CrossIcon } from '@/components/layout/Logo';
 
-// Floating "Ask Noovit" chat: the AI wellness advisor (app/api/advisor). History stays in this tab only.
+// Floating "Ask Noovit AI" chat: the AI wellness advisor (app/api/advisor). History stays in this tab only.
 type Msg = { role: 'user' | 'assistant'; content: string };
 const STARTERS = ['What helps me sleep better?', 'Which product is right for focus?', 'Can I take magnesium and ashwagandha together?', 'What does "1,000 mg" lion\'s mane mean?'];
 
@@ -47,7 +48,7 @@ export function Advisor() {
   useEffect(() => { if (open) inputRef.current?.focus(); }, [open]);
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false); };
-    const onOpen = () => setOpen(true); // the header's "Ask Noovit" button
+    const onOpen = () => setOpen(true); // the header's "Ask Noovit AI" button
     window.addEventListener('keydown', onKey);
     window.addEventListener('noovit:advisor', onOpen);
     return () => { window.removeEventListener('keydown', onKey); window.removeEventListener('noovit:advisor', onOpen); };
@@ -92,8 +93,8 @@ export function Advisor() {
           onClick={() => setOpen(true)}
           className="fixed bottom-24 right-4 z-[55] flex items-center gap-2 rounded-full bg-[var(--color-navy)] px-5 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-[var(--color-primary-dark)] sm:bottom-6 sm:right-6 md:hidden"
         >
-          <Sparkles aria-hidden className="h-4 w-4 text-[var(--color-orange)]" />
-          Ask Noovit
+          <CrossIcon className="h-3.5 w-3.5" />
+          Ask Noovit AI
         </button>
       )}
       {open && (
@@ -104,7 +105,7 @@ export function Advisor() {
         >
           <header className="flex items-center justify-between bg-[var(--color-navy)] px-5 py-3.5 text-white">
             <div className="flex items-center gap-2 text-sm font-semibold tracking-wide">
-              <Sparkles aria-hidden className="h-4 w-4 text-[var(--color-orange)]" /> Noovit Wellness Advisor
+              <CrossIcon className="h-3.5 w-3.5" /> Noovit AI Wellness Advisor
             </div>
             <button type="button" onClick={() => setOpen(false)} aria-label="Close advisor" className="rounded p-1 hover:bg-white/10">
               <X className="h-5 w-5" />

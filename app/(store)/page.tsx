@@ -47,6 +47,7 @@ const GOAL_TILES: { label: string; line: string; slug: string; href: string }[] 
 ];
 
 // The core range (docs/research/COMPETITORS_CORE5.md); hidden products drop out automatically. Up to four are shown.
+const ART_V = 2; // bump when the /art graphics change
 const SPOTLIGHT = ['magnesium-complex', 'ashwagandha', 'lions-mane', 'creatine', 'coq10', 'turmeric-complex'];
 
 export const metadata: Metadata = { alternates: { canonical: '/' } };
@@ -86,7 +87,9 @@ export default async function HomePage() {
           </div>
           {hero && (
             <Link href={`/products/${hero.slug}`} className="group relative block overflow-hidden rounded-[2rem]" style={{ background: `linear-gradient(160deg, ${hero.color}22, ${hero.color}45)` }}>
+              {/* V2 artwork: the key molecule dissolving into particles, behind the bottle */}
               <ProductImage product={hero} priority sizes="(min-width: 768px) 45vw, 100vw" className="aspect-[4/5] w-full transition-transform duration-700 group-hover:scale-[1.03] md:aspect-square" />
+              <img src={`/art/molecule-${hero.slug}.svg?v=${ART_V}`} alt="" aria-hidden className="pointer-events-none absolute -left-[6%] -top-[4%] w-[46%] mix-blend-multiply" />
               <span className="absolute bottom-5 left-5 rounded-full bg-white/90 px-4 py-2 text-sm font-semibold text-[var(--color-navy)]">{hero.name} · ${hero.basePrice}</span>
             </Link>
           )}
@@ -94,8 +97,9 @@ export default async function HomePage() {
       </section>
 
       {/* Value row */}
-      <section className="border-y border-[var(--color-line)]">
-        <div className="container grid gap-8 px-6 py-12 sm:grid-cols-2 lg:grid-cols-4">
+      <section className="relative overflow-hidden border-y border-[var(--color-line)]">
+        <img src={`/art/drift-${hero?.slug ?? 'lions-mane'}.svg?from=right&v=${ART_V}`} alt="" aria-hidden className="pointer-events-none absolute inset-y-0 right-0 hidden h-full w-1/2 object-cover opacity-40 lg:block" />
+        <div className="container relative grid gap-8 px-6 py-12 sm:grid-cols-2 lg:grid-cols-4">
           {VALUES.map(([title, text]) => (
             <div key={title}>
               <p className="font-display text-2xl text-[var(--color-navy)]">{title}</p>
@@ -115,10 +119,11 @@ export default async function HomePage() {
             </div>
             <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
               {tiles.map((t) => (
-                <Link key={t.label} href={t.href} className="group relative overflow-hidden rounded-3xl p-6 md:p-8" style={{ background: `${t.product!.color}1f` }}>
+                <Link key={t.label} href={t.href} className="group relative overflow-hidden rounded-3xl p-6 md:p-8" style={{ background: `${t.product!.color}14` }}>
                   <p className="font-display text-2xl text-[var(--color-navy)] md:text-3xl">{t.label}</p>
                   <p className="mt-1 text-sm text-[var(--color-muted)]">{t.line}</p>
-                  <ProductImage product={t.product!} sizes="(min-width: 768px) 25vw, 45vw" className="mx-auto mt-4 aspect-square w-4/5 transition-transform duration-500 group-hover:scale-105" />
+                  {/* The product's key molecule, in the V2 particle style */}
+                  <img src={`/art/molecule-${t.slug}.svg?v=${ART_V}`} alt="" aria-hidden loading="lazy" className="mx-auto mt-2 aspect-square w-[88%] transition-transform duration-700 group-hover:scale-105 group-hover:rotate-2" />
                   <span className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-[var(--color-navy)]">{t.product!.name} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
                 </Link>
               ))}
@@ -135,15 +140,16 @@ export default async function HomePage() {
       {ask && (
         <section className="pb-4">
           <div className="container px-6">
-            <div className="grid items-center gap-8 overflow-hidden rounded-[2rem] bg-[var(--color-navy)] p-10 text-white md:grid-cols-[1.3fr_1fr] md:p-16">
-              <div>
-                <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-white/60">New · AI wellness advisor</p>
-                <h2 className="text-4xl text-white md:text-5xl">Questions? Ask Noovit.</h2>
+            <div className="relative grid items-center gap-8 overflow-hidden rounded-[2rem] bg-[var(--color-navy)] p-10 text-white md:grid-cols-[1.3fr_1fr] md:p-16">
+              <img src={`/art/drift-coq10.svg?from=right&v=${ART_V}`} alt="" aria-hidden className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-30" />
+              <div className="relative">
+                <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-white/60">New · Noovit AI</p>
+                <h2 className="text-4xl text-white md:text-5xl">Questions? Ask Noovit AI.</h2>
                 <p className="mt-4 max-w-lg text-lg text-white/75">Sleep, stress, focus or energy: describe your goal and get plain answers about ingredients, doses and which formula may suit you, any time.</p>
                 <AskButton label="Start a conversation" className="mt-8 bg-white text-[var(--color-navy)] hover:bg-white/90" />
                 <p className="mt-4 text-xs text-white/50">AI answers can be wrong and aren&apos;t medical advice.</p>
               </div>
-              <div className="space-y-3 text-[15px]">
+              <div className="relative space-y-3 text-[15px]">
                 <p className="ml-auto max-w-[85%] rounded-2xl rounded-br-sm bg-white/10 px-4 py-3">Can I take magnesium and ashwagandha together?</p>
                 <p className="max-w-[90%] rounded-2xl rounded-bl-sm bg-white px-4 py-3 text-[var(--color-ink)]">Many people do: they&apos;re often paired in the evening. If you take medicine for thyroid, blood pressure or sleep, check with your doctor first…</p>
               </div>

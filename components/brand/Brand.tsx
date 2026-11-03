@@ -1,11 +1,11 @@
 import { Fragment, type ReactNode } from 'react';
 
-// The brand name in running text: "noovit" + a small raised opal "+", in the surrounding font.
-// The plus is drawn with CSS (::after), so search engines and screen readers read plain "noovit".
+// The brand name in running text: "noovit" + the small raised five-tile cross, in the surrounding font.
+// The cross is drawn with CSS (.brand-word::after in globals.css), so search engines and screen readers read plain "noovit".
 // Always lowercase; inside uppercase, letter-spaced eyebrows it switches to the logo font with normal spacing (globals.css).
 export function Brand() {
   return (
-    <span className="brand-word whitespace-nowrap normal-case after:relative after:-top-[0.5em] after:ml-[0.04em] after:text-[0.62em] after:font-bold after:text-[var(--color-logo-plus)] after:content-['+']">
+    <span className="brand-word whitespace-nowrap normal-case">
       noovit
     </span>
   );

@@ -98,18 +98,16 @@ export function Footer() {
         ))}
       </div>
 
-      {/* Giant wordmark, The Absorption Company style. */}
-      <div aria-hidden className="container overflow-hidden px-6 pb-4">
-        <p className="select-none whitespace-nowrap text-center text-[19vw] leading-[0.9] text-white xl:text-[15rem]">
-          <Logo />
-        </p>
-      </div>
-
       <div className="border-t border-white/10">
         <div className="container flex flex-col items-center justify-between gap-4 px-6 py-6 text-xs text-white/60 md:flex-row">
-          <p>
-            © {new Date().getFullYear()} {LEGAL_NAME}. All rights reserved. · <CookiePreferencesLink />
-          </p>
+          <div className="flex flex-col items-center gap-3 md:flex-row md:gap-5">
+            <Link href="/" aria-label="Noovit home" className="text-[1.6rem] leading-none text-white">
+              <Logo />
+            </Link>
+            <p>
+              © {new Date().getFullYear()} {LEGAL_NAME}. All rights reserved. · <CookiePreferencesLink />
+            </p>
+          </div>
           <div className="flex flex-wrap items-center justify-center gap-2">
             <span className="mr-2 flex items-center gap-1"><Lock className="h-3 w-3" /> Secure checkout</span>
             {PAYMENT_METHODS.map((m) => (
