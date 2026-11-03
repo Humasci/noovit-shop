@@ -63,11 +63,14 @@ Read this first. It is the standing context for any session working on this repo
 ## Tech
 - Next.js 16 (App Router), React 19, Supabase (Postgres + PostgREST), Stripe (Checkout + subscriptions), Resend,
   Vercel. Fonts self-hosted (Inter, Manrope, Funnel Display for the wordmark).
-- **AI wellness advisor (3 Nov):** `lib/advisor.ts` (system prompt from the live catalog + guides; compliance rules),
-  `app/api/advisor/route.ts` (streams; Claude via `@anthropic-ai/sdk`, model `ADVISOR_MODEL` env, default
-  `claude-opus-5-5`, low effort, server-side refusal fallback), widget `components/advisor/Advisor.tsx` + header
-  "Ask Noovit" button. Shown only when `ANTHROPIC_API_KEY` is set. Site look: Thorne-like (white, pill buttons,
-  black announcement bar, shop-by-goal tiles).
+- **AI wellness advisor (3 Nov, Gemini):** model `gemini-3.1-flash-lite` (`ADVISOR_MODEL`), key `GEMINI_API_KEY`, via
+  `@google/genai`; minimal thinking. **RAG** (`lib/advisor-rag.ts`, BM25 in memory): guides, products, FAQs, published
+  Journal posts, and snapshots of outside pages (`data/advisor-sources.json` → `npm run advisor:snapshot` →
+  `data/advisor-snapshots.json`, commit it). **Google Search grounding** for questions those don't cover
+  (`ADVISOR_SEARCH=off` disables); Google's Search Suggestions chip must be shown unmodified under grounded answers
+  (done in the widget). Rules + compliance in `lib/advisor.ts`; route `app/api/advisor/route.ts`; widget
+  `components/advisor/Advisor.tsx`; shown only when the key is set. Tests: `tests/e2e/fake-gemini.mjs`.
+- Site look: Thorne-like (white, pill buttons, black announcement bar, shop-by-goal tiles).
 - Key paths: catalog seed `data/products.ts` (live catalog is the `products` table, jsonb `data`; `status` is a column);
   labels `lib/labels/{svg,photo,png,gallery,gallery-data}.ts`; guides `lib/guides.ts`; quiz `lib/quiz.ts`;
   settings `lib/settings.ts` (admin values > env > defaults); pre-launch gate `proxy.ts` + `lib/launch.ts`;

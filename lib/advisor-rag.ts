@@ -2,10 +2,16 @@ import 'server-only';
 import { Product } from '@/types';
 import { GUIDES } from '@/lib/guides';
 import { GENERAL_FAQS } from '@/data/content';
+import type { Post } from '@/lib/blog';
+import SNAPSHOTS from '@/data/advisor-snapshots.json';
 
-// Retrieval for the AI advisor: the model answers only from passages of our own reviewed content (evidence guides
-// with their verified sources, product data, FAQs), retrieved per question with BM25 keyword search. No vector DB,
-// no extra service: the corpus is a few hundred short passages and lives in memory.
+// Retrieval for the AI advisor (RAG): before each answer we pick the most relevant passages from (1) our own site:
+// evidence guides with their verified sources, product data, FAQs and published Journal posts, and (2) snapshots
+// of outside pages the owner chose (data/advisor-sources.json → `npm run advisor:snapshot` → data/advisor-snapshots.json).
+// BM25 keyword search in memory: no vector DB, no extra service.
+
+interface Snapshot { url: string; title: string; publisher?: string; chunks: string[] }
+const SNAPS = (SNAPSHOTS as unknown as { sources: Snapshot[] }).sources ?? [];
 
 export interface Passage { id: string; title: string; url: string; text: string }
 
@@ -26,7 +32,7 @@ function tokens(text: string) {
   return text.toLowerCase().replace(/[’']/g, '').split(/[^a-z0-9]+/).filter((w) => w.length > 1 && !STOP.has(w)).map(stem);
 }
 
-function buildCorpus(products: Product[]): Passage[] {
+function buildCorpus(products: Product[], posts: Post[]): Passage[] {
   const out: Passage[] = [];
   for (const g of GUIDES) {
     const url = `/guides/${g.slug}`;
@@ -48,15 +54,21 @@ function buildCorpus(products: Product[]): Passage[] {
     });
   }
   for (const f of GENERAL_FAQS) out.push({ id: `faq-${f.q}`, title: `Noovit FAQ: ${f.q}`, url: '/faq', text: f.a });
+  for (const post of posts) {
+    const plain = post.body.replace(/<[^>]+>/g, ' ').replace(/[#*_>`]/g, ' ').replace(/\s+/g, ' ');
+    for (let i = 0; i < plain.length; i += 1000) out.push({ id: `blog-${post.slug}-${i}`, title: `Journal: ${post.title}`, url: `/blog/${post.slug}`, text: (i ? '' : `${post.excerpt} `) + plain.slice(i, i + 1100) });
+  }
+  for (const snap of SNAPS)
+    snap.chunks.forEach((c, i) => out.push({ id: `snap-${snap.url}-${i}`, title: `${snap.title}${snap.publisher ? ` (${snap.publisher})` : ''}`, url: snap.url, text: c }));
   return out;
 }
 
 // BM25 index, rebuilt when the catalog changes (keyed on the product slugs + prices).
 let cache: { key: string; docs: Passage[]; tf: Map<string, number>[]; df: Map<string, number>; len: number[]; avg: number } | null = null;
-function index(products: Product[]) {
-  const key = products.map((p) => `${p.slug}:${p.status}:${p.basePrice}`).join('|');
+function index(products: Product[], posts: Post[]) {
+  const key = products.map((p) => `${p.slug}:${p.status}:${p.basePrice}`).join('|') + posts.map((p) => p.updatedAt).join('|');
   if (cache?.key === key) return cache;
-  const docs = buildCorpus(products);
+  const docs = buildCorpus(products, posts);
   const df = new Map<string, number>();
   const tf = docs.map((d) => {
     const m = new Map<string, number>();
@@ -69,8 +81,8 @@ function index(products: Product[]) {
   return cache;
 }
 
-export function retrieve(products: Product[], query: string, k = 6): Passage[] {
-  const ix = index(products);
+export function retrieve(products: Product[], posts: Post[], query: string, k = 6): Passage[] {
+  const ix = index(products, posts);
   const q = new Set<string>();
   for (const w of tokens(query)) { q.add(w); for (const s of SYNONYMS[w] ?? []) q.add(stem(s)); }
   const N = ix.docs.length, k1 = 1.4, b = 0.75;

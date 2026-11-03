@@ -9,7 +9,21 @@ import { CrossIcon } from '@/components/layout/Logo';
 type Msg = { role: 'user' | 'assistant'; content: string };
 const STARTERS = ['What helps me sleep better?', 'Which product is right for focus?', 'Can I take magnesium and ashwagandha together?', 'What does "1,000 mg" lion\'s mane mean?'];
 
-// Minimal, safe rendering: paragraphs, bullets, **bold** and internal links only (/products, /guides, /quiz).
+// The server appends "\u0000" + JSON after the answer: web citations and Google's Search Suggestions chip.
+type Meta = { citations?: { url: string; title: string }[]; suggestions?: string };
+function splitMeta(content: string): { text: string; meta: Meta | null } {
+  const i = content.indexOf('\u0000');
+  if (i < 0) return { text: content, meta: null };
+  try { return { text: content.slice(0, i).trimEnd(), meta: JSON.parse(content.slice(i + 1)) as Meta }; } catch { return { text: content.slice(0, i), meta: null }; }
+}
+
+// Google's Search Suggestions, shown exactly as returned (Google's terms), in a sandboxed frame; links open Google.
+function SearchSuggestions({ html }: { html: string }) {
+  return <iframe title="Google Search suggestions" srcDoc={html} sandbox="allow-popups allow-popups-to-escape-sandbox" className="mt-2 h-[52px] w-full border-0" />;
+}
+
+// Minimal, safe rendering: paragraphs, bullets, **bold**, internal links (/products, /guides, /quiz…) and https links
+// to outside sources (new tab, nofollow).
 function Rich({ text }: { text: string }) {
   const inline = (s: string, key: string) =>
     s.split(/(\[[^\]]+\]\([^)]+\)|\*\*[^*]+\*\*)/g).map((part, i) => {
@@ -18,7 +32,9 @@ function Rich({ text }: { text: string }) {
         const href = link[2].trim();
         return /^\/(products|guides|quiz|shop|goals)(\/[\w-]*)?$/.test(href)
           ? <Link key={`${key}-${i}`} href={href} className="font-semibold text-[var(--color-accent)] underline underline-offset-2">{link[1]}</Link>
-          : <span key={`${key}-${i}`}>{link[1]}</span>;
+          : /^https:\/\/[^\s]+$/.test(href)
+            ? <a key={`${key}-${i}`} href={href} target="_blank" rel="noopener noreferrer nofollow" className="font-semibold text-[var(--color-accent)] underline underline-offset-2">{link[1]}</a>
+            : <span key={`${key}-${i}`}>{link[1]}</span>;
       }
       const bold = part.match(/^\*\*([^*]+)\*\*$/);
       return bold ? <strong key={`${key}-${i}`}>{bold[1]}</strong> : <span key={`${key}-${i}`}>{part}</span>;
@@ -63,7 +79,8 @@ export function Advisor() {
     setBusy(true);
     (window as unknown as { dataLayer?: unknown[] }).dataLayer?.push({ event: 'advisor_message' });
     try {
-      const res = await fetch('/api/advisor', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: next }) });
+      const history = next.map((m) => ({ role: m.role, content: splitMeta(m.content).text }));
+      const res = await fetch('/api/advisor', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messages: history }) });
       if (!res.ok || !res.body) {
         const err = await res.json().catch(() => ({}));
         setMsgs([...next, { role: 'assistant', content: err.error ?? 'Sorry, something went wrong. Please try again.' }]);
@@ -130,7 +147,25 @@ export function Advisor() {
                 {m.role === 'user' ? (
                   <p className="max-w-[85%] rounded-2xl rounded-br-sm bg-[var(--color-soft)] px-4 py-2.5">{m.content}</p>
                 ) : m.content ? (
-                  <div><Rich text={m.content} /></div>
+                  (() => {
+                    const { text, meta } = splitMeta(m.content);
+                    return (
+                      <div>
+                        <Rich text={text} />
+                        {!!meta?.citations?.length && (
+                          <div className="mt-2 text-xs text-[var(--color-muted)]">
+                            <p className="font-semibold">Web sources</p>
+                            <ul className="mt-1 space-y-0.5">
+                              {meta.citations.map((c) => (
+                                <li key={c.url}><a href={c.url} target="_blank" rel="noopener noreferrer nofollow" className="underline underline-offset-2">{c.title}</a></li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                        {meta?.suggestions && <SearchSuggestions html={meta.suggestions} />}
+                      </div>
+                    );
+                  })()
                 ) : (
                   <p className="text-[var(--color-muted)]">Thinking…</p>
                 )}

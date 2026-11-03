@@ -24,9 +24,11 @@ phase1 47/47, phase2 60/60, aff 55/55, batch3 15/15.
    - any random strings for `APP_SECRET` and `CRON_SECRET`; `KLAVIYO_PRIVATE_KEY` any value, `KLAVIYO_API_BASE` = the fake server URL.
 
 ## AI advisor
-The advisor (`/api/advisor`) is tested against `fake-anthropic.mjs` (a fake streaming Messages API on port 4610):
-add `ANTHROPIC_API_KEY=sk-ant-test` and `ANTHROPIC_BASE_URL=http://127.0.0.1:4610` to `test.env`, start it with
-`node tests/e2e/fake-anthropic.mjs &`, then `curl -N -X POST localhost:3100/api/advisor -d '{"messages":[{"role":"user","content":"hi"}]}'`.
+The advisor (`/api/advisor`, Gemini) is tested against `fake-gemini.mjs` (fake streaming `streamGenerateContent` on
+port 4611, with grounding metadata): add `GEMINI_API_KEY=test-key` and `GEMINI_BASE_URL=http://127.0.0.1:4611` to
+`test.env`, start it with `node tests/e2e/fake-gemini.mjs &`, then
+`curl -N -X POST localhost:3100/api/advisor -d '{"messages":[{"role":"user","content":"hi"}]}'`. The request it received
+is saved next to it as `gemini-last.json` (check the retrieved `<sources>` there).
 
 ## Running
 Each suite needs a fresh database, so start and stop around every run:

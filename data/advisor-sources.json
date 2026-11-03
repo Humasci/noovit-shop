@@ -1,0 +1,40 @@
+{
+  "_comment": "Outside pages the AI advisor may quote. Add trusted health sources only (government, medical bodies, peer-reviewed reviews). Then run `npm run advisor:snapshot` to refresh data/advisor-snapshots.json and commit it.",
+  "sources": [
+    {
+      "url": "https://ods.od.nih.gov/factsheets/Magnesium-Consumer/",
+      "title": "Magnesium fact sheet",
+      "publisher": "NIH Office of Dietary Supplements"
+    },
+    {
+      "url": "https://ods.od.nih.gov/factsheets/Ashwagandha-Consumer/",
+      "title": "Ashwagandha fact sheet",
+      "publisher": "NIH Office of Dietary Supplements"
+    },
+    {
+      "url": "https://www.nccih.nih.gov/health/ashwagandha",
+      "title": "Ashwagandha",
+      "publisher": "NIH NCCIH"
+    },
+    {
+      "url": "https://www.nccih.nih.gov/health/turmeric",
+      "title": "Turmeric",
+      "publisher": "NIH NCCIH"
+    },
+    {
+      "url": "https://www.nccih.nih.gov/health/coenzyme-q10",
+      "title": "Coenzyme Q10",
+      "publisher": "NIH NCCIH"
+    },
+    {
+      "url": "https://ods.od.nih.gov/factsheets/ExerciseAndAthleticPerformance-Consumer/",
+      "title": "Dietary supplements for exercise and athletic performance",
+      "publisher": "NIH Office of Dietary Supplements"
+    },
+    {
+      "url": "https://www.nccih.nih.gov/health/melatonin-what-you-need-to-know",
+      "title": "Melatonin: what you need to know",
+      "publisher": "NIH NCCIH"
+    }
+  ]
+}
