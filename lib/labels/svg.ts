@@ -15,7 +15,7 @@ import { LEGAL_NAME } from '@/lib/site';
 export type FontMode = 'web' | 'print';
 
 // Bump when the photo mockup (lib/labels/photo.ts) changes, so cached product image URLs refresh.
-export const MOCKUP_VERSION = 'photo-v7-shapes';
+export const MOCKUP_VERSION = 'photo-v8';
 
 const NAVY = '#14213d';
 const INK = '#4b5563';
@@ -565,9 +565,9 @@ export function frontPanelClinical(p: Product, mode: FontMode, bleed = 0, opts: 
       ${caps(18, accent === 'band' ? 174 : 182, doseLine, 7, INK, 'start', 500)}`
     : textBlock(balance(wrap(labelSubtitle(p), opts.form ? 100 : 130, 9.4, 0.5).slice(0, 3)), 18, accent === 'band' ? 148 : 156, 9.4, 11.4, `font-weight="600" fill="${NAVY}" ${font('body', mode)}`);
   const qtyBand = `<rect x="0" y="${bandY}" width="${FRONT.w}" height="${FRONT.h - bandY + bleed}" fill="${col}"/>
-    ${opts.form ? caps(18, bandY + 17, 'Dietary supplement', 7, '#fff', 'start', 700) + caps(18, bandY + 28, `${servingsPerContainer} servings`, 7, 'rgba(255,255,255,0.85)', 'start', 500) : caps(18, bandY + 23, 'Dietary supplement', 7, '#fff', 'start', 700)}
-    <text x="${FRONT.w - 18}" y="${bandY + 19}" text-anchor="end" font-size="16" font-weight="600" fill="#fff" ${font('head', mode)}>${esc(big)}</text>
-    ${caps(FRONT.w - 18, bandY + 30, unitWord, 7, '#fff', 'end', 600)}`;
+    ${opts.form ? caps(18, bandY + 15, 'Dietary supplement', 7, '#fff', 'start', 700) + caps(18, bandY + 25, `${servingsPerContainer} servings`, 7, 'rgba(255,255,255,0.85)', 'start', 500) : caps(18, bandY + 23, 'Dietary supplement', 7, '#fff', 'start', 700)}
+    <text x="${FRONT.w - 18}" y="${bandY + 16}" text-anchor="end" font-size="16" font-weight="600" fill="#fff" ${font('head', mode)}>${esc(big)}</text>
+    ${caps(FRONT.w - 18, bandY + 26, unitWord, 7, '#fff', 'end', 600)}`;
   const qtyWhite = `<rect x="18" y="${FRONT.h - 40}" width="${FRONT.w - 36}" height="0.6" fill="#d9d4cb"/>
     ${caps(18, FRONT.h - 14, 'Dietary supplement', 7, NAVY, 'start', 700)}
     <text x="${FRONT.w - 18}" y="${FRONT.h - 20}" text-anchor="end" font-size="16" font-weight="600" fill="${NAVY}" ${font('head', mode)}>${esc(big)}</text>
@@ -784,7 +784,8 @@ export function labelOverflow(p: Product) {
   ];
 }
 
-export function fullLabelSvg(p: Product, opts: { mode?: FontMode; guides?: boolean } = {}) {
+// `v2`: the V2 front (clinical white, colour band, particle molecule/shape), clipped to the front panel.
+export function fullLabelSvg(p: Product, opts: { mode?: FontMode; guides?: boolean; v2?: boolean } = {}) {
   const mode = opts.mode ?? 'print';
   const { trimW, trimH, bleed, frontW, infoW } = LABEL;
   const W = trimW + bleed * 2;
@@ -814,7 +815,9 @@ export function fullLabelSvg(p: Product, opts: { mode?: FontMode; guides?: boole
       <text x="0" y="25" font-size="7" fill="${NAVY}" ${f}>hello@noovit.com</text>
     </g>
   </g>
-  <g id="front" transform="translate(${fx} ${bleed})">${frontPanel(p, mode, bleed)}</g>
+  ${opts.v2
+    ? `<clipPath id="v2front-${p.slug}"><rect x="${fx}" y="0" width="${FRONT.w}" height="${H}"/></clipPath><g clip-path="url(#v2front-${p.slug})"><g id="front" transform="translate(${fx} ${bleed})">${frontPanelClinical(p, mode, bleed, { accent: 'band', color: p.color, form: 'molecule-spectrum' })}</g></g>`
+    : `<g id="front" transform="translate(${fx} ${bleed})">${frontPanel(p, mode, bleed)}</g>`}
   <g id="facts" transform="translate(${sx + 10} ${bleed + 12}) scale(${n(factsScale)})">${facts.svg}</g>
   ${guides}
 </svg>`;

@@ -174,3 +174,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 3 Nov (8): advisor moved to Gemini 3.1 Flash-Lite (owner's budget pick) with RAG over guides, products, FAQs, Journal posts and saved NIH NCCIH pages, plus Google Search grounding with citations and Google's Search Suggestions chip; Anthropic SDK removed; fake Gemini API for tests. Tests: phase1 47/47, phase2 60/60, aff 55/55, batch3 15/15.
 - [x] 3 Nov (9): science palette + microscopy-style cell artwork (`/art/cells-*`): homepage evidence band, advisor promo, guides header; TODO items for the remaining particle shapes and missing advisor sources.
 - [x] 3 Nov (10): science look extended: advisor card, every guide header, quiz, About (DNA helix); realistic nuclei; social templates (`npm run social`, 15 PNGs in design/social).
+- [x] 3 Nov (11): V2 test print labels (`fullLabelSvg({ v2: true })`, 5 bottle PDFs); CoQ10 infographic in the molecular-city style (`npm run infographic`).

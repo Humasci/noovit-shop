@@ -11,7 +11,8 @@
     "catalog:seed": "tsx --env-file-if-exists=.env.local scripts/seed-catalog.ts",
     "labels": "tsx scripts/render-labels.ts",
     "advisor:snapshot": "tsx scripts/advisor-snapshot.ts",
-    "social": "tsx scripts/social-templates.ts"
+    "social": "tsx scripts/social-templates.ts",
+    "infographic": "tsx scripts/infographic.ts"
   },
   "dependencies": {
     "@google/genai": "^2.32.0",
