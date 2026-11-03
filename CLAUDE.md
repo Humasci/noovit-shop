@@ -71,6 +71,11 @@ Read this first. It is the standing context for any session working on this repo
 - Never commit secrets (Stripe keys, service-role keys, `vercel-secrets`); never ask the owner to paste keys in chat.
 - Keep `docs/TODO.md` current after every batch (tick, add owner steps); add a line to `docs/PROGRESS.md`.
 - The owner prefers a clear recommendation over a menu of options, and plain explanations.
+- **Brand ambition (3 Nov):** become a premium, Thorne-level brand over time. Today's prices are **launch prices**;
+  raise them as proof builds (reviews, COAs/third-party testing, own formulas). Never show a fake "was"/"regular" price
+  that wasn't really charged (FTC 16 CFR 233): say "launch price" and raise prices for real. Label system: clinical white,
+  dark type, product-colour band, particle illustration in a square top-right block (`frontPanelField`, F2; brief in
+  `docs/ILLUSTRATION_BRIEF.md`). Branding is the owner's focus while the EIN is pending.
 - Positioning: a **mainstream** evidence-led brand, not a clinical lab. Be honest, but don't hold products to a stricter
   bar than the market (e.g. a normal 1,000 mg lion's mane is fine); avoid self-defeating copy.
 

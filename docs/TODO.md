@@ -155,3 +155,4 @@ _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only yo
 - [ ] Replace or self-host the Unsplash photos; real product photography; feed images without text overlays.
 - [x] Admin privacy tools (30 Oct): Customer → "Download their data (JSON)" and "Delete personal data" (orders kept without personal details). Still to do: disputes and failed renewals view.
 - [ ] Re-measure mobile Lighthouse on production.
+- [ ] **Owner: commission the six label illustrations** (brief: `docs/ILLUSTRATION_BRIEF.md`; quotes for $300–800). They drop into the F2 label system unchanged.

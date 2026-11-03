@@ -4,6 +4,17 @@ _How prices work: the **one-time price** is per bottle. **Subscribe** and the **
 
 _Rule of thumb from the Google Shopping analyses (`docs/SHOPPING_ANALYSIS_*.md`, `docs/pricing/noovit-pricing.xlsx`): sit in the premium-DTC band, but **never above a competitor selling the identical Supliful formula** (Vitasy's Cortex/Compass/Fernwood brands), and win on evidence, content and bundles._
 
+## Price strategy (3 Nov): launch prices now, premium later
+The owner's goal is a premium, Thorne-level brand. The prices below are **launch prices**.
+- **Honest framing only:** "Launch price" or "Founding customer price" is fine. A struck-through "regular" price is only
+  allowed if that price was really charged for a meaningful period (FTC 16 CFR 233.1). So: launch at these prices, then
+  raise them for real; existing subscribers can keep theirs ("founding member pricing"), which is also a good retention hook.
+- **What earns the premium (in this order):** reviews and repeat buyers; published COAs / third-party testing; the brand
+  and packaging; own formulas that differ from the identical Supliful products Vitasy sells at $29.99 (with identical
+  formulas next to each other on Google Shopping, a big premium won't hold).
+- **Target step-up:** about +$5–10 per product once there are 50+ reviews and COAs on the pages (e.g. magnesium $29 → $36,
+  lion's mane $35 → $42). Thorne sits around $25–60 per bottle.
+
 ## Launch products (Supliful formulas confirmed)
 Core-5 prices cut on 30 Oct after the competitor teardown (`docs/research/COMPETITORS_CORE5.md`): under the Vitasy twins
 (Fernwood/Cortex/Kinetic) on identical bottles, and closer to the premium median per day.
