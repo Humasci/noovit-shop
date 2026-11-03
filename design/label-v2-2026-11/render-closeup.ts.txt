@@ -1,0 +1,19 @@
+import { readdirSync } from 'fs';
+import { Resvg } from '@resvg/resvg-js';
+import sharp from 'sharp';
+import { SEED_PRODUCTS } from '@/data/products';
+import { frontPanelClinical, FRONT } from '@/lib/labels/svg';
+import { photoBottleSvg } from '@/lib/labels/photo';
+const fontFiles = readdirSync('assets/fonts').filter((f) => f.endsWith('.ttf')).map((f) => `assets/fonts/${f}`);
+const COL: Record<string, string> = { 'magnesium-complex': '#4A6B94', ashwagandha: '#AE5559', 'turmeric-complex': '#B56E1E' };
+(async () => {
+  const tiles: Buffer[] = [];
+  for (const slug of Object.keys(COL)) {
+    const c = COL[slug];
+    const p: any = { ...SEED_PRODUCTS.find((x) => x.slug === slug)!, color: c };
+    const art = (pp: any, ext: number) => `<rect x="${-ext}" y="0" width="${FRONT.w + ext * 2}" height="${FRONT.h}" fill="#fff"/><rect x="${-ext}" y="186" width="${FRONT.w + ext * 2}" height="${FRONT.h - 186}" fill="${c}"/>${frontPanelClinical(pp, 'print', 0, { accent: 'band', color: c, form: true })}`;
+    tiles.push(Buffer.from(new Resvg(photoBottleSvg(p, '#ebe7e0', false, art), { fitTo: { mode: 'width', value: 900 }, font: { fontFiles, loadSystemFonts: false, defaultFontFamily: 'Inter' } }).render().asPng()));
+  }
+  const m = await sharp(tiles[0]).metadata();
+  await sharp({ create: { width: m.width! * 3, height: m.height!, channels: 3, background: '#ebe7e0' } }).composite(tiles.map((t, i) => ({ input: t, left: i * m.width!, top: 0 }))).png().toFile(process.argv[2]);
+})();

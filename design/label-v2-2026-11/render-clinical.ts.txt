@@ -11,20 +11,20 @@ const COL: Record<string, string> = {
   'magnesium-complex': '#4A6B94', ashwagandha: '#AE5559', 'lions-mane': '#2B7C82',
   creatine: '#2F6F4E', coq10: '#8E2E45', 'turmeric-complex': '#B56E1E',
 };
-const art = (accent: 'band' | 'top') => (p: any, ext: number) => {
+const art = (accent: 'band' | 'top', form = false) => (p: any, ext: number) => {
   const c = COL[p.slug];
   const wrapBand = accent === 'band'
     ? `<rect x="${-ext}" y="186" width="${FRONT.w + ext * 2}" height="${FRONT.h - 186}" fill="${c}"/>`
     : `<rect x="${-ext}" y="0" width="${FRONT.w + ext * 2}" height="8" fill="${c}"/>`;
-  return `<rect x="${-ext}" y="0" width="${FRONT.w + ext * 2}" height="${FRONT.h}" fill="#fff"/>${wrapBand}${frontPanelClinical(p, 'print', 0, { accent, color: c })}`;
+  return `<rect x="${-ext}" y="0" width="${FRONT.w + ext * 2}" height="${FRONT.h}" fill="#fff"/>${wrapBand}${frontPanelClinical(p, 'print', 0, { accent, color: c, form })}`;
 };
 (async () => {
   const rows: Buffer[] = [];
-  for (const [accent, label] of [['band', 'T1  Clinical white, colour band at the bottom'], ['top', 'T2  Clinical white, thin colour bar at the top']] as const) {
+  for (const [accent, label, form] of [['band', 'T1  Clinical white, colour band', false], ['band', 'T3  T1 + a unique abstract form per product', true]] as const) {
     const tiles: Buffer[] = [];
     for (const slug of SLUGS) {
       const p: any = { ...SEED_PRODUCTS.find((x) => x.slug === slug)!, color: COL[slug] };
-      tiles.push(Buffer.from(new Resvg(photoBottleSvg(p, '#ebe7e0', false, art(accent)), { fitTo: { mode: 'width', value: 420 }, font: { fontFiles, loadSystemFonts: false, defaultFontFamily: 'Inter' } }).render().asPng()));
+      tiles.push(Buffer.from(new Resvg(photoBottleSvg(p, '#ebe7e0', false, art(accent, form)), { fitTo: { mode: 'width', value: 420 }, font: { fontFiles, loadSystemFonts: false, defaultFontFamily: 'Inter' } }).render().asPng()));
     }
     const meta = await sharp(tiles[0]).metadata();
     const W = meta.width!, H = meta.height!;

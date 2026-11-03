@@ -435,10 +435,50 @@ export function frontPanelV2(p: Product, mode: FontMode, bleed = 0, opts: { dose
   </g>`;
 }
 
+// Product "form": a soft abstract shape unique to each product, generated from its formula (lobes and layers
+// follow the ingredient count; the seed is the slug), in the product's colour family. Our own take on the
+// one-graphic-per-product idea, not a copy of anyone's artwork.
+function smoothClosed(pts: [number, number][]) {
+  const k = pts.length;
+  let d = `M${n(pts[0][0])} ${n(pts[0][1])}`;
+  for (let i = 0; i < k; i++) {
+    const p0 = pts[(i - 1 + k) % k], p1 = pts[i], p2 = pts[(i + 1) % k], p3 = pts[(i + 2) % k];
+    const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+    const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+    d += ` C${n(c1[0])} ${n(c1[1])} ${n(c2[0])} ${n(c2[1])} ${n(p2[0])} ${n(p2[1])}`;
+  }
+  return d + 'Z';
+}
+export function productForm(p: Product, cx: number, cy: number, r: number, color = p.color) {
+  const rnd = hash(p.slug + 'form');
+  const ingr = Math.max(1, p.ingredients.length);
+  const layers = Math.min(4, 2 + Math.floor(ingr / 3));
+  const lobes = 6 + (ingr % 4);
+  // Light-to-deep tones of the product colour, with only a small hue drift (no muddy mixes).
+  const tones = [hueShiftDarken(color, -10, -0.55), hueShiftDarken(color, 8, -0.3), color, hueShiftDarken(color, -6, 0.15)];
+  const id = `pf-${p.slug}`.replace(/[^\w-]/g, '');
+  const defs: string[] = [];
+  const out: string[] = [];
+  for (let L = 0; L < layers; L++) {
+    const rr = r * (1 - L * 0.2);
+    const ox = cx + (rnd() - 0.5) * r * 0.4, oy = cy + (rnd() - 0.5) * r * 0.4;
+    const rot = rnd() * Math.PI * 2;
+    const pts: [number, number][] = [];
+    for (let i = 0; i < lobes; i++) {
+      const a = rot + (i / lobes) * Math.PI * 2;
+      pts.push([ox + Math.cos(a) * rr * (0.78 + 0.3 * rnd()), oy + Math.sin(a) * rr * (0.78 + 0.3 * rnd())]);
+    }
+    const t = tones[L % tones.length];
+    defs.push(`<radialGradient id="${id}-${L}" cx="0.35" cy="0.3" r="0.85"><stop offset="0" stop-color="${hueShiftDarken(t, 0, -0.25)}"/><stop offset="1" stop-color="${t}"/></radialGradient>`);
+    out.push(`<path d="${smoothClosed(pts)}" fill="url(#${id}-${L})" fill-opacity="${n(0.5 + L * 0.13)}" style="mix-blend-mode:multiply"/>`);
+  }
+  return `<g><defs>${defs.join('')}</defs><g style="isolation:isolate">${out.join('')}</g></g>`;
+}
+
 // ---------- Front panel "clinical" (3 Nov, owner: Thorne / Pure Encapsulations-like) ----------
 // White label, dark type, generous space, no texture. The product colour is a single accent:
 // `accent: 'band'` = a colour band along the bottom carrying the net quantity; 'top' = a thin colour bar at the top.
-export function frontPanelClinical(p: Product, mode: FontMode, bleed = 0, opts: { accent?: 'band' | 'top'; color?: string } = {}) {
+export function frontPanelClinical(p: Product, mode: FontMode, bleed = 0, opts: { accent?: 'band' | 'top'; color?: string; form?: boolean } = {}) {
   const accent = opts.accent ?? 'band';
   const col = opts.color ?? p.color;
   const colText = shade(col, 0.18); // accent colour dark enough for small text on white
@@ -454,7 +494,7 @@ export function frontPanelClinical(p: Product, mode: FontMode, bleed = 0, opts: 
   const main = words.join(' ');
   const room = FRONT.w - 36;
   const size = Math.min(29, room / (main.length * 0.56));
-  const benefit = balance(wrap(p.shortBenefit.replace(/\.$/, '') + '*', room, 8.2, 0.5).slice(0, 2));
+  const benefit = opts.form ? wrap(p.shortBenefit.replace(/\.$/, '') + '*', 104, 8.2, 0.5).slice(0, 3) : balance(wrap(p.shortBenefit.replace(/\.$/, '') + '*', room, 8.2, 0.5).slice(0, 2));
   const caps = (x: number, y: number, t: string, sz: number, fill: string, anchor = 'start', weight = 600) =>
     `<text x="${n(x)}" y="${n(y)}" text-anchor="${anchor}" font-size="${sz}" font-weight="${weight}" letter-spacing="${n(sz * 0.14)}" fill="${fill}" ${font('body', mode)}>${esc(t.toUpperCase())}</text>`;
   const doseLine = V2_DOSE_LINES[p.slug] ?? dose?.line ?? '';
@@ -466,7 +506,7 @@ export function frontPanelClinical(p: Product, mode: FontMode, bleed = 0, opts: 
       ${caps(18, accent === 'band' ? 174 : 182, doseLine, 7, INK, 'start', 500)}`
     : textBlock(balance(wrap(labelSubtitle(p), 130, 9.4, 0.5).slice(0, 2)), 18, accent === 'band' ? 152 : 160, 9.4, 11.4, `font-weight="600" fill="${NAVY}" ${font('body', mode)}`);
   const qtyBand = `<rect x="0" y="${bandY}" width="${FRONT.w}" height="${FRONT.h - bandY + bleed}" fill="${col}"/>
-    ${caps(18, bandY + 23, 'Dietary supplement', 7, '#fff', 'start', 700)}
+    ${opts.form ? caps(18, bandY + 17, 'Dietary supplement', 7, '#fff', 'start', 700) + caps(18, bandY + 28, `${servingsPerContainer} servings`, 7, 'rgba(255,255,255,0.85)', 'start', 500) : caps(18, bandY + 23, 'Dietary supplement', 7, '#fff', 'start', 700)}
     <text x="${FRONT.w - 18}" y="${bandY + 19}" text-anchor="end" font-size="16" font-weight="600" fill="#fff" ${font('head', mode)}>${esc(big)}</text>
     ${caps(FRONT.w - 18, bandY + 30, unitWord, 7, '#fff', 'end', 600)}`;
   const qtyWhite = `<rect x="18" y="${FRONT.h - 40}" width="${FRONT.w - 36}" height="0.6" fill="#d9d4cb"/>
@@ -475,6 +515,7 @@ export function frontPanelClinical(p: Product, mode: FontMode, bleed = 0, opts: 
     ${caps(FRONT.w - 18, FRONT.h - 10, unitWord, 7, NAVY, 'end', 600)}`;
   return `<g>
     <rect x="0" y="${-bleed}" width="${FRONT.w}" height="${FRONT.h + bleed * 2}" fill="#fff"/>
+    ${opts.form ? `<clipPath id="fc-${p.slug}"><rect x="0" y="0" width="${FRONT.w + bleed}" height="186"/></clipPath><g clip-path="url(#fc-${p.slug})">${productForm(p, FRONT.w - 30, 126, 62, col)}</g>` : ''}
     ${accent === 'top' ? `<rect x="0" y="${-bleed}" width="${FRONT.w}" height="${8 + bleed}" fill="${col}"/>` : ''}
     ${wordmarkRaw(18, 27 + top, 15, mode, NAVY, NAVY)}
     ${category ? caps(FRONT.w - 18, 26 + top, category, 7, colText, 'end', 700) : ''}
@@ -483,7 +524,7 @@ export function frontPanelClinical(p: Product, mode: FontMode, bleed = 0, opts: 
     ${descriptor ? `<text x="18" y="${n(nameY + 21)}" font-size="17" font-weight="500" fill="${colText}" ${font('head', mode)}>${esc(descriptor)}</text>` : ''}
     ${textBlock(benefit, 18, nameY + (descriptor ? 40 : 22), 8.2, 10.2, `font-weight="400" fill="${INK}" ${font('body', mode)}`)}
     ${doseBlock}
-    ${caps(FRONT.w - 18, accent === 'band' ? 174 : 182, `${servingsPerContainer} servings`, 7, INK, 'end', 500)}
+    ${opts.form ? '' : caps(FRONT.w - 18, accent === 'band' ? 174 : 182, `${servingsPerContainer} servings`, 7, INK, 'end', 500)}
     ${accent === 'band' ? qtyBand : qtyWhite}
   </g>`;
 }
