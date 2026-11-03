@@ -1,5 +1,7 @@
 import { Product } from '@/types';
 import MOLECULES from '@/data/molecules.json';
+import SKELETONS from '@/data/skeletons.json';
+
 
 // Space-filling ("CPK") illustration of each product's key molecule, drawn from real coordinates
 // (PubChem 3D conformers; CoQ10 from its 2D layout with added depth; magnesium bisglycinate assembled from
@@ -238,3 +240,51 @@ export function moleculeField(p: Product, x0: number, y0: number, x1: number, y1
   const out = beads.map((b) => `<circle cx="${n(b.x)}" cy="${n(b.y)}" r="${n(b.r)}" fill="url(#${grad(b.c)})"${b.o < 1 ? ` fill-opacity="${n(b.o)}"` : ''}/>`);
   return `<g><defs>${[...defs.values()].join('')}</defs>${out.join('')}</g>`;
 }
+
+// ---------- Ball-and-stick in beads (flat 2D layout) ----------
+// For molecules people recognise from their textbook shape (curcumin): atoms as glossy beads, bonds as short bead
+// chains, double bonds doubled. Data: data/skeletons.json (PubChem 2D, built by scripts/build-skeletons.py).
+type Skel2D = { atoms: [string, number, number][]; bonds: [number, number, number][] };
+const SK = SKELETONS as unknown as Record<string, Skel2D>;
+export const hasBallStick = (slug: string) => slug === 'turmeric-complex' && !!SK[slug];
+
+export function ballStickArt(p: Product, cx: number, cy: number, width: number, height: number, color = p.color, opts: { spectrum?: boolean; rotate?: number; oxygen?: string } = {}) {
+  const sk = SK[p.slug];
+  if (!sk) return '';
+  const rot = opts.rotate ?? -0.42;
+  const pts0 = sk.atoms.map(([, x, y]) => [x - 0.5, y - 0.5]);
+  const rotd = pts0.map(([x, y]) => [x * Math.cos(rot) - y * Math.sin(rot), x * Math.sin(rot) + y * Math.cos(rot)]);
+  const xs = rotd.map((q) => q[0]), ys = rotd.map((q) => q[1]);
+  const sx = Math.max(...xs) - Math.min(...xs) || 1, sy = Math.max(...ys) - Math.min(...ys) || 1;
+  const s = Math.min(width / sx, height / sy) * 0.92;
+  const mx = (Math.max(...xs) + Math.min(...xs)) / 2, my = (Math.max(...ys) + Math.min(...ys)) / 2;
+  const P = rotd.map(([x, y]) => [cx + (x - mx) * s, cy + (y - my) * s]);
+  const bondLen = s * 0.035; // typical 2D bond ≈ 0.035 of the normalised box
+  const atomR = { C: bondLen * 0.44, O: bondLen * 0.46, N: bondLen * 0.42, H: bondLen * 0.28 } as Record<string, number>;
+  const spec = opts.spectrum;
+  const col = (e: string) => (e === 'O' ? (opts.oxygen ?? (spec ? '#E5484D' : tone(color, -30, 0.1, 0.1))) : e === 'H' ? '#EEF0F6' : spec ? '#2B2F45' : tone(color, 0, -0.12));
+  const defs = new Map<string, string>();
+  const g = (c: string) => {
+    const id = `bs-${p.slug}-${c.slice(1)}`;
+    if (!defs.has(id)) defs.set(id, `<radialGradient id="${id}" cx="0.35" cy="0.3" r="0.75"><stop offset="0" stop-color="${tone(c, 0, 0.3)}"/><stop offset="0.5" stop-color="${c}"/><stop offset="1" stop-color="${tone(c, 0, -0.25)}"/></radialGradient>`);
+    return `url(#${id})`;
+  };
+  const out: string[] = [];
+  const stickC = spec ? '#8A90A8' : tone(color, 0, 0.15, -0.2);
+  for (const [a, b, order] of sk.bonds) {
+    const [x1, y1] = P[a], [x2, y2] = P[b];
+    const L = Math.hypot(x2 - x1, y2 - y1) || 1, nx = -(y2 - y1) / L, ny = (x2 - x1) / L;
+    const offs = order === 2 ? [-1, 1] : [0];
+    const r = bondLen * (order === 2 ? 0.1 : 0.13);
+    for (const o of offs) {
+      const k = steps(L, r * 1.6);
+      for (let i = 0; i <= k; i++) {
+        const t = i / k;
+        out.push(`<circle cx="${n(x1 + (x2 - x1) * t + nx * o * bondLen * 0.15)}" cy="${n(y1 + (y2 - y1) * t + ny * o * bondLen * 0.15)}" r="${n(r)}" fill="${stickC}"/>`);
+      }
+    }
+  }
+  sk.atoms.forEach(([e], i) => out.push(`<circle cx="${n(P[i][0])}" cy="${n(P[i][1])}" r="${n(atomR[e] ?? atomR.C)}" fill="${g(col(e))}"/>`));
+  return `<g><defs>${[...defs.values()].join('')}</defs>${out.join('')}</g>`;
+}
+const steps = (L: number, d: number) => Math.max(1, Math.round(L / d));

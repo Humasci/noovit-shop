@@ -1,5 +1,5 @@
 import { Product } from '@/types';
-import { moleculeArt } from './molecule';
+import { moleculeArt, ballStickArt, hasBallStick } from './molecule';
 import { particleShape, hasShape } from './shapes';
 
 // Website graphics in the V2 label style (3 Nov): the product's key molecule built from fine glossy beads,
@@ -19,7 +19,9 @@ export function moleculeSvg(p: Product, w = 800, h = 800, style: 'spectrum' | 'f
   // Drawn in a small 220-unit box (the bead size is tuned for label units) and scaled up by the viewBox, so the
   // beads stay visible at web sizes. Molecule lower-left; the dissolve trail drifts up and to the right.
   const S = 220;
-  const art = hasShape(p.slug)
+  const art = hasBallStick(p.slug)
+    ? ballStickArt(p, S * 0.5, S * 0.52, S * 0.9, S * 0.8, p.color, { spectrum: style === 'spectrum' })
+    : hasShape(p.slug)
     ? particleShape(p, S * 0.08, S * 0.2, S * 0.72, p.color, { spectrum: style === 'spectrum', disperse: style === 'spectrum', bead: 1.15 })
     : moleculeArt(p, S * 0.42, S * 0.56, S * 0.72, S * 0.56, p.color, style === 'spectrum' ? { palette: 'spectrum', disperse: true } : {});
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${S} ${S}" width="${w}" height="${h}">${art}</svg>`;
@@ -124,6 +126,7 @@ export function helixSvg(seed = 'helix', w = 1600, h = 700, dark = true, ground 
 // "Protein render": the product's molecule as a dense cluster in teal / magenta / lavender / gold on night blue.
 export function proteinSvg(p: Product, w = 800, h = 800) {
   const S2 = 220;
+  if (hasBallStick(p.slug)) return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${S2} ${S2}" width="${w}" height="${h}"><rect width="${S2}" height="${S2}" fill="${SCIENCE.night}"/>${ballStickArt(p, S2 * 0.5, S2 * 0.5, S2 * 0.92, S2 * 0.8, '#1FA6A0', { rotate: -1.0, oxygen: '#E5484D' })}</svg>`;
   const art = moleculeArt({ ...p, color: '#1FA6A0' }, S2 * 0.5, S2 * 0.52, S2 * 0.8, S2 * 0.8, '#1FA6A0', { palette: 'spectrum' });
   const recol = art.replace(/#E57AB5/g, '#C4458F').replace(/#33BFA8/g, '#E8C547').replace(/#4C8DE0/g, '#B9A9F2').replace(/#8C6AD6/g, '#A44FA0');
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${S2} ${S2}" width="${w}" height="${h}"><rect width="${S2}" height="${S2}" fill="${SCIENCE.night}"/>${recol}</svg>`;

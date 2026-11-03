@@ -1,4 +1,4 @@
-import { moleculeArt, hasMolecule, moleculeField } from './molecule';
+import { moleculeArt, hasMolecule, moleculeField, ballStickArt, hasBallStick } from './molecule';
 import { illustrationField, hasIllustration } from './illustration';
 import { particleShape, hasShape } from './shapes';
 import { Product } from '@/types';
@@ -15,7 +15,7 @@ import { LEGAL_NAME } from '@/lib/site';
 export type FontMode = 'web' | 'print';
 
 // Bump when the photo mockup (lib/labels/photo.ts) changes, so cached product image URLs refresh.
-export const MOCKUP_VERSION = 'photo-v8';
+export const MOCKUP_VERSION = 'photo-v9';
 
 const NAVY = '#14213d';
 const INK = '#4b5563';
@@ -505,6 +505,9 @@ export function productForm(p: Product, cx: number, cy: number, r: number, color
   // Symbolic particle shapes replace the molecule for three products (brain, ore, triple spiral).
   if ((style === 'molecule' || style === 'molecule-spectrum') && hasShape(p.slug))
     return particleShape(p, cx - 88, cy - 54, 104, color, { spectrum: style === 'molecule-spectrum', disperse: style === 'molecule-spectrum' });
+  // Curcumin reads best as its flat ball-and-stick shape (two rings and the long chain), drawn diagonally.
+  if ((style === 'molecule' || style === 'molecule-spectrum') && hasBallStick(p.slug))
+    return ballStickArt(p, cx - 34, cy - 4, r * 1.75, r * 2.05, color, { spectrum: style === 'molecule-spectrum', rotate: -1.05 });
   if ((style === 'molecule' || style === 'molecule-spectrum') && hasMolecule(p.slug))
     return moleculeArt(p, cx - 34, cy - 2, r * 1.85, r * 1.55, color, style === 'molecule-spectrum' ? { palette: 'spectrum', disperse: true } : {});
   if (style === 'scientific') return formScientific(p, cx, cy, r, color);

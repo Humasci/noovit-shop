@@ -36,7 +36,8 @@ Read this first. It is the standing context for any session working on this repo
 - **Label V2 (3 Nov, the owner's restart point):** "M2" = clinical white, product-colour band with the quantity, and the
   product's key molecule in fine glossy beads dissolving at one end (`frontPanelClinical(..., { form: 'molecule-spectrum' })`,
   `lib/labels/molecule.ts`, data `data/molecules.json`). Three products use symbolic particle shapes instead
-  (`lib/labels/shapes.ts`): Lion's Mane = brain, Magnesium = wave-shaped mineral ore, Creatine = triple spiral (strength). Used for the website product photos now; the print PDFs
+  (`lib/labels/shapes.ts`): Lion's Mane = brain, Magnesium = wave-shaped mineral ore, Creatine = triple spiral (strength); Turmeric = curcumin as a flat bead ball-and-stick (`ballStickArt`, PubChem 2D in
+  `data/skeletons.json`), because its 3D model reads as a blob. Used for the website product photos now; the print PDFs
   (`fullLabelSvg`) still use the old front until converted. Core colours: Mg `#4A6B94`, Ashwa `#AE5559`, Lion's Mane
   `#2B7C82`, Creatine `#2F6F4E`, CoQ10 `#8E2E45`, Turmeric `#B56E1E`. Website graphics in the same style: `/art/molecule-<slug>.svg`,
   `/art/drift-<slug>.svg` (`lib/labels/web-art.ts`).

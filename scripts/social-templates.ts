@@ -67,9 +67,9 @@ function dosePost(p: (typeof POSTS)[number]) {
 </svg>`;
 }
 
-const MOLECULES: { slug: string; product: string; name: string; line: string }[] = [
+const MOLECULES: { slug: string; product: string; name: string; line: string; note?: string }[] = [
   { slug: 'ashwagandha', product: 'ashwagandha', name: 'Withaferin A', line: 'One of the withanolides, the compounds ashwagandha extracts like KSM-66 are standardized for.' },
-  { slug: 'turmeric', product: 'turmeric-complex', name: 'Curcumin', line: "Turmeric's main active compound, and the reason a 95% curcuminoid extract is on the label." },
+  { slug: 'turmeric', product: 'turmeric-complex', name: 'Curcumin', line: "Turmeric's main active compound, and the reason a 95% curcuminoid extract is on the label.", note: 'Drawn from its structure in PubChem (ball-and-stick).' },
   { slug: 'coq10', product: 'coq10', name: 'Coenzyme Q10', line: 'A compound your body makes and uses to produce energy in cells. Levels fall with age.' },
 ];
 function moleculePost(m: (typeof MOLECULES)[number]) {
@@ -81,7 +81,7 @@ function moleculePost(m: (typeof MOLECULES)[number]) {
   ${text(80, 130, 'MEET THE MOLECULE', 24, '#fff', 'font-weight="600" letter-spacing="5" opacity="0.7"')}
   ${head(76, 240, wrap(m.name, 640, 84, 0.55).slice(0, 2), 84, '#fff')}
   ${head(80, 820, wrap(m.line, 900, 34, 0.5).slice(0, 3), 34, '#fff')}
-  ${text(80, 980, 'Built from its real 3D structure (PubChem).', 24, '#fff', 'opacity="0.6"')}
+  ${text(80, 980, m.note ?? 'Built from its real 3D structure (PubChem).', 24, '#fff', 'opacity="0.6"')}
   ${wordmark(1000 - (3.46 * 38) / 2, 990, 38, 'print', '#ffffff')}
 </svg>`;
 }

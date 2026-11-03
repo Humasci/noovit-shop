@@ -1,11 +1,11 @@
 import sys, json, math
 D, out = sys.argv[1], sys.argv[2]
-def read(path):
+def read(path, keep_h=False):
     L = open(path).read().splitlines()
     na, nb = int(L[3][:3]), int(L[3][3:6])
     atoms = [[l[31:34].strip(), float(l[0:10]), float(l[10:20])] for l in L[4:4+na]]
     bonds = [(int(l[0:3])-1, int(l[3:6])-1, int(l[6:9])) for l in L[4+na:4+na+nb]]
-    keep = [i for i, a in enumerate(atoms) if a[0] != 'H']
+    keep = [i for i, a in enumerate(atoms) if keep_h or a[0] != 'H']
     idx = {k: n for n, k in enumerate(keep)}
     return [atoms[i] for i in keep], [(idx[a], idx[b], o) for a, b, o in bonds if a in idx and b in idx]
 def pca(atoms):
@@ -30,5 +30,7 @@ for e, x, y in a:
     th = t * sweep; R = R0 * (1 - 0.55 * t) + y
     sp.append([e, R * math.cos(th), R * math.sin(th)])
 res['coq10'] = {'atoms': norm(sp), 'bonds': b}
+# Curcumin, flat 2D layout with hydrogens (the familiar ball-and-stick shape)
+a, b = read(f"{D}/curcumin.2d.sdf", keep_h=True); res['turmeric-complex'] = {'atoms': norm(pca(a)), 'bonds': b}
 json.dump(res, open(out, 'w'))
 print({k: (len(v['atoms']), len(v['bonds'])) for k, v in res.items()})
