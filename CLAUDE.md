@@ -40,6 +40,9 @@ Read this first. It is the standing context for any session working on this repo
   (`fullLabelSvg`) still use the old front until converted. Core colours: Mg `#4A6B94`, Ashwa `#AE5559`, Lion's Mane
   `#2B7C82`, Creatine `#2F6F4E`, CoQ10 `#8E2E45`, Turmeric `#B56E1E`. Website graphics in the same style: `/art/molecule-<slug>.svg`,
   `/art/drift-<slug>.svg` (`lib/labels/web-art.ts`).
+- **Science palette (3 Nov, website art and accents only):** night `#141A4D`, indigo `#26307E`, cobalt `#3E5BD6`, violet
+  `#7A5CE0`, lavender `#B9A9F2`, teal `#2DB6A8`, magenta `#C4458F`, haze `#D9DFF5` (CSS `--sci-*`). Microscopy-style cell
+  art: `/art/cells-dark[-seed].svg`, `/art/cells-light[-seed].svg` (evidence band, advisor promo, guides header).
 - **The cross:** only the five-tile mosaic cross, everywhere (logo, favicon, loader, brand name in text, emails, advisor icon).
 - **Product images:** Supliful's blank bottle photo with the stock capsules edited out (`assets/mockups`,
   `scripts/remove-mockup-capsules.mjs`), framed tight (~90% height). Gallery: front, "In every serving" fact image,

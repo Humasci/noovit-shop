@@ -47,7 +47,7 @@ const GOAL_TILES: { label: string; line: string; slug: string; href: string }[] 
 ];
 
 // The core range (docs/research/COMPETITORS_CORE5.md); hidden products drop out automatically. Up to four are shown.
-const ART_V = 3; // bump when the /art graphics change
+const ART_V = 5; // bump when the /art graphics change
 const SPOTLIGHT = ['magnesium-complex', 'ashwagandha', 'lions-mane', 'creatine', 'coq10', 'turmeric-complex'];
 
 export const metadata: Metadata = { alternates: { canonical: '/' } };
@@ -132,6 +132,28 @@ export default async function HomePage() {
         </section>
       )}
 
+      {/* Evidence band: microscopy-style artwork in the science palette, linking to the graded guides */}
+      <section className="relative overflow-hidden bg-[#141A4D] text-white">
+        <img src={`/art/cells-dark.svg?v=${ART_V}`} alt="" aria-hidden loading="lazy" className="pointer-events-none absolute inset-0 h-full w-full object-cover" />
+        <div className="container relative grid gap-10 px-6 py-20 md:grid-cols-[1.1fr_1fr] md:py-28">
+          <div>
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-white/60">The evidence</p>
+            <h2 className="text-4xl text-white md:text-5xl">What the research actually shows.</h2>
+            <p className="mt-4 max-w-lg text-lg text-white/75">Every ingredient has a guide: the studies, the doses they used, who should avoid it, and an honest grade for how strong the evidence is, including the studies that found nothing.</p>
+            <Link href="/guides" className="btn mt-8 bg-white text-[var(--color-navy)] hover:bg-white/90">Read the guides</Link>
+          </div>
+          <ul className="grid content-center gap-3 sm:grid-cols-2">
+            {[['magnesium', 'Magnesium'], ['ashwagandha', 'Ashwagandha'], ['lions-mane', "Lion's mane"], ['creatine', 'Creatine'], ['coq10', 'CoQ10'], ['turmeric', 'Turmeric']].map(([slug, name]) => (
+              <li key={slug}>
+                <Link href={`/guides/${slug}`} className="flex items-center justify-between rounded-2xl border border-white/15 bg-white/5 px-5 py-4 backdrop-blur-sm transition hover:bg-white/10">
+                  <span className="font-semibold">{name}</span> <ArrowRight className="h-4 w-4 text-white/70" />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
       <BestSellers products={products} />
 
       <TrustSection />
@@ -141,7 +163,7 @@ export default async function HomePage() {
         <section className="pb-4">
           <div className="container px-6">
             <div className="relative grid items-center gap-8 overflow-hidden rounded-[2rem] bg-[var(--color-navy)] p-10 text-white md:grid-cols-[1.3fr_1fr] md:p-16">
-              <img src={`/art/drift-coq10.svg?from=right&v=${ART_V}`} alt="" aria-hidden className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-30" />
+              <img src={`/art/cells-dark-advisor.svg?v=${ART_V}`} alt="" aria-hidden className="pointer-events-none absolute inset-0 h-full w-full object-cover" />
               <div className="relative">
                 <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-white/60">New · Noovit AI</p>
                 <h2 className="text-4xl text-white md:text-5xl">Questions? Ask Noovit AI.</h2>

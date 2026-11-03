@@ -40,3 +40,48 @@ export function driftSvg(seed: string, color: string, w = 1600, h = 500, from: '
   }
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid slice"><defs>${grads}</defs>${beads.join('')}</svg>`;
 }
+
+// "Science" palette for website artwork (3 Nov, from the owner's microscopy references): deep indigo → cobalt →
+// violet → lavender, with teal and magenta accents. Product colours stay on the bottles.
+export const SCIENCE = { night: '#141A4D', indigo: '#26307E', cobalt: '#3E5BD6', violet: '#7A5CE0', lavender: '#B9A9F2', teal: '#2DB6A8', magenta: '#C4458F', haze: '#D9DFF5' };
+
+// Cell field: translucent cells with bead-built nuclei, floating at different depths (back ones soft and blurred).
+// `dark` for immersive bands (indigo ground), light for page headers (lavender haze).
+export function cellsSvg(seed: string, dark = true, w = 1600, h = 700) {
+  const rnd = seeded(seed + (dark ? 'd' : 'l'));
+  const S = SCIENCE;
+  const ground = dark
+    ? `<linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${S.night}"/><stop offset="0.55" stop-color="${S.indigo}"/><stop offset="1" stop-color="#3A3F9E"/></linearGradient>`
+    : `<linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#EEF1FB"/><stop offset="1" stop-color="${S.haze}"/></linearGradient>`;
+  const nucleusCols = [S.cobalt, S.violet, S.indigo, S.lavender, S.cobalt];
+  const beadGrads = nucleusCols.map((c, i) => `<radialGradient id="b${i}" cx="0.36" cy="0.32" r="0.72"><stop offset="0" stop-color="#fff" stop-opacity="0.9"/><stop offset="0.4" stop-color="${c}"/><stop offset="1" stop-color="${S.night}" stop-opacity="0.85"/></radialGradient>`).join('');
+  const membrane = `<radialGradient id="m" cx="0.5" cy="0.5" r="0.5"><stop offset="0.6" stop-color="#fff" stop-opacity="0.03"/><stop offset="0.9" stop-color="${dark ? S.lavender : '#fff'}" stop-opacity="${dark ? 0.22 : 0.65}"/><stop offset="1" stop-color="#fff" stop-opacity="${dark ? 0.45 : 0.9}"/></radialGradient>
+    <radialGradient id="mg" cx="0.35" cy="0.3" r="0.6"><stop offset="0" stop-color="#fff" stop-opacity="0.35"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>`;
+  const cell = (cx: number, cy: number, r: number, beads: boolean) => {
+    const parts = [`<circle cx="${n(cx)}" cy="${n(cy)}" r="${n(r)}" fill="url(#m)"/>`];
+    const nr = r * 0.56, nx = cx + (rnd() - 0.5) * r * 0.2, ny = cy + (rnd() - 0.5) * r * 0.2;
+    if (beads) {
+      const count = Math.round((nr * nr) / 9);
+      const pts: [number, number, number][] = [];
+      for (let i = 0; i < count; i++) {
+        const a = rnd() * Math.PI * 2, d = nr * Math.sqrt(rnd());
+        const bx = nx + Math.cos(a) * d, by = ny + Math.sin(a) * d;
+        pts.push([bx, by, 1 - d / nr]);
+      }
+      pts.sort((p, q) => p[2] - q[2]);
+      for (const [bx, by, depth] of pts) parts.push(`<circle cx="${n(bx)}" cy="${n(by)}" r="${n(2.2 + depth * 2.4)}" fill="url(#b${Math.floor(rnd() * nucleusCols.length)})"/>`);
+    } else parts.push(`<circle cx="${n(nx)}" cy="${n(ny)}" r="${n(nr)}" fill="${S.cobalt}" opacity="0.55"/>`);
+    parts.push(`<circle cx="${n(cx)}" cy="${n(cy)}" r="${n(r)}" fill="url(#mg)"/>`);
+    return parts.join('');
+  };
+  const back: string[] = [], mid: string[] = [], front: string[] = [];
+  // Keep the left 45% (where page copy sits) to soft, out-of-focus cells only.
+  for (let i = 0; i < 7; i++) back.push(cell(rnd() * w, rnd() * h, 50 + rnd() * 70, false));
+  for (let i = 0; i < 5; i++) mid.push(cell(w * (0.55 + rnd() * 0.42), h * (0.1 + rnd() * 0.8), 50 + rnd() * 40, true));
+  for (let i = 0; i < 2; i++) front.push(cell(w * (0.78 + rnd() * 0.2), h * (0.15 + rnd() * 0.7), 110 + rnd() * 50, true));
+  const specks: string[] = [];
+  for (let i = 0; i < 70; i++) specks.push(`<circle cx="${n(rnd() * w)}" cy="${n(rnd() * h)}" r="${n(1 + rnd() * 3)}" fill="${[S.lavender, S.teal, S.magenta, '#fff'][Math.floor(rnd() * 4)]}" opacity="${n(0.25 + rnd() * 0.5)}"/>`);
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid slice"><defs>${ground}${beadGrads}${membrane}
+    <filter id="far" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="9"/></filter><filter id="near" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="2.5"/></filter></defs>
+    <rect width="${w}" height="${h}" fill="url(#g)"/><g filter="url(#far)" opacity="0.7">${back.join('')}</g>${specks.join('')}<g>${mid.join('')}</g><g filter="url(#near)">${front.join('')}</g></svg>`;
+}
