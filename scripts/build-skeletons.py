@@ -19,17 +19,11 @@ def norm(atoms):
     return [[a[0], round(0.5+(a[1]-mx)/s, 4), round(0.5+(a[2]-my)/s, 4)] for a in atoms]
 res = {}
 a, b = read(f"{D}/creatine.2d.sdf"); res['creatine'] = {'atoms': norm(pca(a)), 'bonds': b}
-a, b = read(f"{D}/coq10.2d.sdf"); a = pca(a)
-# ring end at t=0 (outside of the spiral), tail winds inwards
-xs = [p[1] for p in a]; x0, x1 = min(xs), max(xs)
-ring_left = sum(1 for p in a if p[1] < (x0+x1)/2 and p[0] == 'O') >= 2
-L = x1 - x0; sweep = 1.75 * math.pi; R0 = L / (sweep * 0.78)
-sp = []
-for e, x, y in a:
-    t = (x - x0) / L if ring_left else (x1 - x) / L
-    th = t * sweep; R = R0 * (1 - 0.55 * t) + y
-    sp.append([e, R * math.cos(th), R * math.sin(th)])
-res['coq10'] = {'atoms': norm(sp), 'bonds': b}
+# Every structure is PubChem's own 2D layout, only rotated to its long axis and scaled (never bent or edited).
+a, b = read(f"{D}/coq10.2d.sdf"); res['coq10'] = {'atoms': norm(pca(a)), 'bonds': b}  # hydrogens omitted
+a, b = read(f"{D}/atp.2d.sdf"); res['atp'] = {'atoms': norm(pca(a)), 'bonds': b}
+a, b = read(f"{D}/phosphocreatine.2d.sdf"); res['phosphocreatine'] = {'atoms': norm(pca(a)), 'bonds': b}
+a, b = read(f"{D}/creatine.2d.sdf", keep_h=True); res['creatine-h'] = {'atoms': norm(pca(a)), 'bonds': b}
 # Curcumin, flat 2D layout with hydrogens (the familiar ball-and-stick shape)
 a, b = read(f"{D}/curcumin.2d.sdf", keep_h=True); res['turmeric-complex'] = {'atoms': norm(pca(a)), 'bonds': b}
 json.dump(res, open(out, 'w'))

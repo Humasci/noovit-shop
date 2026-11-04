@@ -15,7 +15,7 @@ import { LEGAL_NAME } from '@/lib/site';
 export type FontMode = 'web' | 'print';
 
 // Bump when the photo mockup (lib/labels/photo.ts) changes, so cached product image URLs refresh.
-export const MOCKUP_VERSION = 'photo-v9';
+export const MOCKUP_VERSION = 'photo-v10';
 
 const NAVY = '#14213d';
 const INK = '#4b5563';
@@ -98,7 +98,7 @@ export function netQuantity(p: Product) {
 // ---------- Brand marks ----------
 
 // Funnel Display Medium "n" outline at 100 units (x 3.25–57.75, baseline 0, x-height 50.9), so the icon needs no font.
-const N_PATH =
+export const N_PATH =
   'M20.33 0L9.00 0L9.00-38.58L3.25-38.58L3.25-50.00L15.08-50.00L15.08-42.08L18.58-42.08Q21.25-46.33 25.71-48.63Q30.17-50.92 36.50-50.92L36.50-50.92Q46.50-50.92 52.13-45.29Q57.75-39.67 57.75-30.25L57.75-30.25L57.75 0L46.42 0L46.42-28.25Q46.42-34.42 43.13-37.67Q39.83-40.92 33.42-40.92L33.42-40.92Q27.00-40.92 23.67-37.67Q20.33-34.42 20.33-28.25L20.33-28.25L20.33 0Z';
 
 // The logo mark's mosaic cross (five tiles, lib/brand/cross.ts). (x, y) = top-left, `size` = overall width.
@@ -507,7 +507,11 @@ export function productForm(p: Product, cx: number, cy: number, r: number, color
     return particleShape(p, cx - 88, cy - 54, 104, color, { spectrum: style === 'molecule-spectrum', disperse: style === 'molecule-spectrum' });
   // Curcumin reads best as its flat ball-and-stick shape (two rings and the long chain), drawn diagonally.
   if ((style === 'molecule' || style === 'molecule-spectrum') && hasBallStick(p.slug))
-    return ballStickArt(p, cx - 34, cy - 4, r * 1.75, r * 2.05, color, { spectrum: style === 'molecule-spectrum', rotate: -1.05 });
+    // Centred in the open area right of the copy: between the top rule (y≈48) and the band (186).
+    return p.slug === 'coq10'
+      ? // CoQ10's tail is ~10× longer than its ring: show the ring end close up, the tail running off the panel.
+        ballStickArt(p, FRONT.w - 78, 118, 92, 128, color, { spectrum: style === 'molecule-spectrum', rotate: -0.25, zoom: 3.2 })
+      : ballStickArt(p, FRONT.w - 58, 116, 92, 128, color, { spectrum: style === 'molecule-spectrum', rotate: -1.05 });
   if ((style === 'molecule' || style === 'molecule-spectrum') && hasMolecule(p.slug))
     return moleculeArt(p, cx - 34, cy - 2, r * 1.85, r * 1.55, color, style === 'molecule-spectrum' ? { palette: 'spectrum', disperse: true } : {});
   if (style === 'scientific') return formScientific(p, cx, cy, r, color);

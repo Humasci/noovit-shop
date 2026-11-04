@@ -176,3 +176,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 3 Nov (10): science look extended: advisor card, every guide header, quiz, About (DNA helix); realistic nuclei; social templates (`npm run social`, 15 PNGs in design/social).
 - [x] 3 Nov (11): V2 test print labels (`fullLabelSvg({ v2: true })`, 5 bottle PDFs); CoQ10 infographic in the molecular-city style (`npm run infographic`).
 - [x] 3 Nov (12): turmeric art redrawn as the recognisable curcumin ball-and-stick (labels, website, social).
+- [x] 4 Nov (13): ball-and-stick atoms as rounded tiles (cross language) with CPK oxygen/nitrogen/phosphorus colours; turmeric V2 label re-centred; CoQ10 V2 label shows a ring close-up; magnesium and creatine infographics; ATP / phosphocreatine / creatine skeletons from PubChem 2D; orange-spur logo mockup.

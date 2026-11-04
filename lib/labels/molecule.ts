@@ -246,45 +246,73 @@ export function moleculeField(p: Product, x0: number, y0: number, x1: number, y1
 // chains, double bonds doubled. Data: data/skeletons.json (PubChem 2D, built by scripts/build-skeletons.py).
 type Skel2D = { atoms: [string, number, number][]; bonds: [number, number, number][] };
 const SK = SKELETONS as unknown as Record<string, Skel2D>;
-export const hasBallStick = (slug: string) => slug === 'turmeric-complex' && !!SK[slug];
+// Products drawn as ball-and-stick (their textbook 2D shape) instead of the 3D bead cloud.
+const BALL_STICK = ['turmeric-complex', 'coq10'];
+export const hasBallStick = (slug: string) => BALL_STICK.includes(slug) && !!SK[slug];
+export const ballStickArt = (p: Product, cx: number, cy: number, width: number, height: number, color = p.color, opts: BallStickOpts = {}) =>
+  ballStick(p.slug, cx, cy, width, height, color, opts);
 
-export function ballStickArt(p: Product, cx: number, cy: number, width: number, height: number, color = p.color, opts: { spectrum?: boolean; rotate?: number; oxygen?: string } = {}) {
-  const sk = SK[p.slug];
+// Element colours follow the standard CPK convention (O red, N blue, P orange, H white); carbon takes the product
+// colour. Atoms are rounded square tiles, the shape of the tiles in the noovit cross: accurate structure, our style.
+// `zoom`: a close-up (crop) centred on the oxygens' centroid; the rest of the molecule runs off the edge (clip it).
+export interface BallStickOpts { spectrum?: boolean; rotate?: number; oxygen?: string; tiles?: boolean; carbon?: string; zoom?: number }
+export function ballStick(key: string, cx: number, cy: number, width: number, height: number, color: string, opts: BallStickOpts = {}) {
+  const sk = SK[key];
   if (!sk) return '';
   const rot = opts.rotate ?? -0.42;
+  const tiles = opts.tiles ?? true;
   const pts0 = sk.atoms.map(([, x, y]) => [x - 0.5, y - 0.5]);
   const rotd = pts0.map(([x, y]) => [x * Math.cos(rot) - y * Math.sin(rot), x * Math.sin(rot) + y * Math.cos(rot)]);
   const xs = rotd.map((q) => q[0]), ys = rotd.map((q) => q[1]);
   const sx = Math.max(...xs) - Math.min(...xs) || 1, sy = Math.max(...ys) - Math.min(...ys) || 1;
-  const s = Math.min(width / sx, height / sy) * 0.92;
-  const mx = (Math.max(...xs) + Math.min(...xs)) / 2, my = (Math.max(...ys) + Math.min(...ys)) / 2;
+  let s = Math.min(width / sx, height / sy) * 0.92;
+  let mx = (Math.max(...xs) + Math.min(...xs)) / 2, my = (Math.max(...ys) + Math.min(...ys)) / 2;
+  if (opts.zoom) {
+    const oi = sk.atoms.map((a, i) => (a[0] === 'O' ? i : -1)).filter((i) => i >= 0);
+    mx = oi.reduce((t, i) => t + rotd[i][0], 0) / oi.length;
+    my = oi.reduce((t, i) => t + rotd[i][1], 0) / oi.length;
+    s *= opts.zoom;
+  }
   const P = rotd.map(([x, y]) => [cx + (x - mx) * s, cy + (y - my) * s]);
-  const bondLen = s * 0.035; // typical 2D bond ≈ 0.035 of the normalised box
-  const atomR = { C: bondLen * 0.44, O: bondLen * 0.46, N: bondLen * 0.42, H: bondLen * 0.28 } as Record<string, number>;
-  const spec = opts.spectrum;
-  const col = (e: string) => (e === 'O' ? (opts.oxygen ?? (spec ? '#E5484D' : tone(color, -30, 0.1, 0.1))) : e === 'H' ? '#EEF0F6' : spec ? '#2B2F45' : tone(color, 0, -0.12));
+  // Real bond length in this drawing: the median distance between bonded atoms.
+  const lens = sk.bonds.map(([a, b]) => Math.hypot(P[a][0] - P[b][0], P[a][1] - P[b][1])).sort((a, b) => a - b);
+  const bondLen = lens[Math.floor(lens.length / 2)] || 1;
+  const atomR: Record<string, number> = { C: 0.3, O: 0.32, N: 0.31, P: 0.34, H: 0.19 };
+  const col = (e: string) => {
+    if (e === 'O') return opts.oxygen ?? '#E0443E';
+    if (e === 'N') return '#3E6FD8';
+    if (e === 'P') return '#F08A24';
+    if (e === 'H') return '#EEF0F6';
+    return opts.carbon ?? (opts.spectrum ? '#2B2F45' : tone(color, 0, -0.12));
+  };
   const defs = new Map<string, string>();
   const g = (c: string) => {
-    const id = `bs-${p.slug}-${c.slice(1)}`;
-    if (!defs.has(id)) defs.set(id, `<radialGradient id="${id}" cx="0.35" cy="0.3" r="0.75"><stop offset="0" stop-color="${tone(c, 0, 0.3)}"/><stop offset="0.5" stop-color="${c}"/><stop offset="1" stop-color="${tone(c, 0, -0.25)}"/></radialGradient>`);
+    const id = `bs-${key}-${c.slice(1)}`;
+    if (!defs.has(id)) defs.set(id, `<radialGradient id="${id}" cx="0.35" cy="0.3" r="0.8"><stop offset="0" stop-color="${tone(c, 0, 0.3)}"/><stop offset="0.5" stop-color="${c}"/><stop offset="1" stop-color="${tone(c, 0, -0.25)}"/></radialGradient>`);
     return `url(#${id})`;
   };
   const out: string[] = [];
-  const stickC = spec ? '#8A90A8' : tone(color, 0, 0.15, -0.2);
+  const stickC = opts.spectrum ? '#8A90A8' : tone(color, 0, 0.15, -0.2);
   for (const [a, b, order] of sk.bonds) {
     const [x1, y1] = P[a], [x2, y2] = P[b];
     const L = Math.hypot(x2 - x1, y2 - y1) || 1, nx = -(y2 - y1) / L, ny = (x2 - x1) / L;
-    const offs = order === 2 ? [-1, 1] : [0];
-    const r = bondLen * (order === 2 ? 0.1 : 0.13);
+    const offs = order === 2 ? [-1, 1] : order === 3 ? [-1, 0, 1] : [0];
+    const r = bondLen * (order >= 2 ? 0.07 : 0.09);
     for (const o of offs) {
       const k = steps(L, r * 1.6);
       for (let i = 0; i <= k; i++) {
         const t = i / k;
-        out.push(`<circle cx="${n(x1 + (x2 - x1) * t + nx * o * bondLen * 0.15)}" cy="${n(y1 + (y2 - y1) * t + ny * o * bondLen * 0.15)}" r="${n(r)}" fill="${stickC}"/>`);
+        out.push(`<circle cx="${n(x1 + (x2 - x1) * t + nx * o * bondLen * 0.11)}" cy="${n(y1 + (y2 - y1) * t + ny * o * bondLen * 0.11)}" r="${n(r)}" fill="${stickC}"/>`);
       }
     }
   }
-  sk.atoms.forEach(([e], i) => out.push(`<circle cx="${n(P[i][0])}" cy="${n(P[i][1])}" r="${n(atomR[e] ?? atomR.C)}" fill="${g(col(e))}"/>`));
+  sk.atoms.forEach(([e], i) => {
+    const r = bondLen * (atomR[e] ?? atomR.C);
+    const [x, y] = P[i];
+    out.push(tiles
+      ? `<rect x="${n(x - r)}" y="${n(y - r)}" width="${n(2 * r)}" height="${n(2 * r)}" rx="${n(r * 0.3)}" fill="${g(col(e))}"/>`
+      : `<circle cx="${n(x)}" cy="${n(y)}" r="${n(r)}" fill="${g(col(e))}"/>`);
+  });
   return `<g><defs>${[...defs.values()].join('')}</defs>${out.join('')}</g>`;
 }
 const steps = (L: number, d: number) => Math.max(1, Math.round(L / d));

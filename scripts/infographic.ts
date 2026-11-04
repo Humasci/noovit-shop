@@ -1,11 +1,13 @@
-// Educational infographic in the "molecular city" style (3 Nov): a central bead-built cell, hexagon close-ups
-// joined by thin lines, and short captions. Facts only (from lib/guides.ts and the NIH NCCIH page), no claims.
-// Writes design/social/infographic-coq10.png (1800×1200, web/social). Usage: npm run infographic
+// Educational infographics in the "molecular city" style (3–4 Nov): a central bead-built illustration, hexagon
+// close-ups joined by thin lines, and short captions. Accuracy rules: captions are facts from NIH pages and our
+// verified guides (no product claims); every molecule is PubChem's own 2D structure (data/skeletons.json), drawn as
+// is or cropped, never bent; schematic parts (cells, fibres, bone) are labelled "illustration, not to scale".
+// Writes design/social/infographic-<topic>.png (1800×1200). Usage: npm run infographic
 import { mkdirSync, readdirSync, writeFileSync } from 'fs';
 import { Resvg } from '@resvg/resvg-js';
 import { SEED_PRODUCTS } from '@/data/products';
-import { helixSvg } from '@/lib/labels/web-art';
-import { moleculeArt } from '@/lib/labels/molecule';
+import { ballStick } from '@/lib/labels/molecule';
+import { particleShape } from '@/lib/labels/shapes';
 import { wordmark, wrap } from '@/lib/labels/svg';
 
 const W = 1800, H = 1200;
@@ -71,10 +73,12 @@ function hex(id: string, cx: number, cy: number, inner: string) {
   defs.push(`<clipPath id="${id}"><polygon points="${hexPath(cx, cy, r)}"/></clipPath>`);
   return `<g clip-path="url(#${id})"><polygon points="${hexPath(cx, cy, r)}" fill="#141A4D"/>${inner}</g><polygon points="${hexPath(cx, cy, r)}" fill="none" stroke="#fff" stroke-width="4"/>`;
 }
-const coq = SEED_PRODUCTS.find((p) => p.slug === 'coq10')!;
-const coqArt = (cx: number, cy: number) => `<g transform="translate(${cx - 110} ${cy - 110}) scale(1)">${moleculeArt(coq as never, 110, 110, 200, 180, '#2DB6A8', { palette: 'spectrum' })}</g>`;
+
+// ---- hexagon contents (all drawn in the hexagon's own box, ~210 px across) ----
+const mol = (key: string, cx: number, cy: number, w: number, h: number, opts: { rotate?: number; zoom?: number } = {}) =>
+  ballStick(key, cx, cy, w, h, '#7FD6CC', { carbon: '#3A4466', rotate: opts.rotate ?? 0, zoom: opts.zoom });
 const atpSynthase = (cx: number, cy: number) => {
-  const out: string[] = [blob(cx, cy + 55, 70, 10, [LAV, COBALT], 3.5, 1.2)]; // membrane
+  const out: string[] = [blob(cx, cy + 55, 70, 10, [LAV, COBALT], 3.5, 1.2)];
   for (let k = 0; k < 9; k++) { const a = (k / 9) * Math.PI * 2; out.push(blob(cx + Math.cos(a) * 30, cy - 20 + Math.sin(a) * 30, 13, 13, [GOLD, '#F2D97A', '#C9A227'], 3.2)); }
   out.push(blob(cx, cy + 22, 7, 30, [TEAL, '#7FE0D6'], 3, 1.4));
   return out.join('');
@@ -83,42 +87,101 @@ const bilayer = (cx: number, cy: number) => {
   const out: string[] = [];
   for (let row = 0; row < 2; row++) for (let x = -110; x <= 110; x += 13) {
     const y = cy + (row ? 26 : -26);
-    out.push(`<line x1="${cx + x}" y1="${y}" x2="${cx + x + (rnd() - 0.5) * 4}" y2="${cy + (row ? 4 : -4)}" stroke="${LAV}" stroke-width="2" stroke-opacity="0.6"/>`, dot(cx + x, y, 6, row ? COBALT : '#6E7BE8'));
+    out.push(`<line x1="${cx + x}" y1="${y}" x2="${cx + x}" y2="${cy + (row ? 4 : -4)}" stroke="${LAV}" stroke-width="2" stroke-opacity="0.6"/>`, dot(cx + x, y, 6, row ? COBALT : '#6E7BE8'));
   }
-  for (let i = 0; i < 5; i++) out.push(blob(cx - 80 + i * 40, cy, 10, 3, [TEAL, GOLD], 2.4, 1.5));
   return out.join('');
 };
-const helixBit = (cx: number, cy: number) => `<svg x="${cx - 150}" y="${cy - 80}" width="300" height="160" viewBox="300 100 900 500">${helixSvg('info', 1600, 700, true, false).replace(/^<svg[^>]*>/, '').replace(/<\/svg>$/, '')}</svg>`;
+const miniCells = (cx: number, cy: number) =>
+  [[-45, -25, 42], [40, -35, 36], [-10, 40, 46], [60, 40, 30]].map(([x, y, r]) =>
+    `<circle cx="${cx + x}" cy="${cy + y}" r="${r}" fill="#24308A" fill-opacity="0.6" stroke="#AFC2FF" stroke-opacity="0.5" stroke-width="2"/>` + blob(cx + x, cy + y, r * 0.45, r * 0.45, [CREAM, '#E9D6B4'], 2.6, 1.2)).join('');
+const enzyme = (cx: number, cy: number) => blob(cx, cy, 80, 62, [TEAL, '#1F8C83', LAV, COBALT], 4, 1.2) + dot(cx + 18, cy - 8, 11, '#B9C7D6') + `<circle cx="${cx + 18}" cy="${cy - 8}" r="17" fill="none" stroke="#fff" stroke-opacity="0.7" stroke-dasharray="3 3"/>`;
+const fibre = (cx: number, cy: number, w = 200) => {
+  const out: string[] = [];
+  for (let row = -2; row <= 2; row++) for (let x = -w / 2; x <= w / 2; x += 7) {
+    const band = Math.floor((x + w / 2) / 28) % 2;
+    out.push(dot(cx + x, cy + row * 15 + Math.sin(x / 30) * 2, 4.2, band ? '#D25A9C' : '#F2B6D4'));
+  }
+  return out.join('');
+};
+const bone = (cx: number, cy: number) => {
+  const out: string[] = [];
+  for (let gy = -3; gy <= 3; gy++) for (let gx = -4; gx <= 4; gx++) {
+    const x = cx + gx * 24 + (gy % 2) * 12, y = cy + gy * 21;
+    if ((x - cx) ** 2 / 110 ** 2 + (y - cy) ** 2 / 80 ** 2 > 1) continue;
+    out.push(`<circle cx="${x}" cy="${y}" r="9" fill="none" stroke="#EFE6D2" stroke-width="5" stroke-opacity="0.85"/>`);
+  }
+  return out.join('');
+};
+const brandShape = (slug: string, cx: number, cy: number, size: number) =>
+  particleShape(SEED_PRODUCTS.find((p) => p.slug === slug)! as never, cx - size / 2, cy - size / 2, size, '#7FA6D8', { spectrum: true, bead: 2.4 });
 
-const HEX: { cx: number; cy: number; ax: number; ay: number; inner: string; title: string; text: string; side: 'l' | 'r' }[] = [
-  { cx: 560, cy: 330, ax: CX - 250, ay: CY - 60, inner: mito(560, 330, 170, 0.35, 5), title: 'Mitochondria', side: 'l', text: 'Most of the energy your cells use is made inside mitochondria, often called the power plants of the cell.' },
-  { cx: 1240, cy: 290, ax: CX + 180, ay: CY - 160, inner: coqArt(1240, 290), title: 'Coenzyme Q10', side: 'r', text: 'CoQ10 sits in the inner membrane of mitochondria and passes electrons along the chain that powers energy production.' },
-  { cx: 1360, cy: 650, ax: CX + 300, ay: CY + 60, inner: atpSynthase(1360, 650), title: 'ATP synthase', side: 'r', text: 'That flow drives ATP synthase, a tiny molecular motor that makes ATP, the energy currency your cells run on.' },
-  { cx: 1240, cy: 980, ax: CX + 220, ay: CY + 200, inner: bilayer(1240, 980), title: 'Cell membranes', side: 'r', text: 'In its reduced form (ubiquinol), CoQ10 also works as an antioxidant inside cell membranes.' },
-  { cx: 560, cy: 980, ax: CX - 40, ay: CY + 40, inner: helixBit(560, 980), title: 'Made by your body', side: 'l', text: 'Your body makes its own CoQ10. Levels are highest in the heart, liver, kidneys and pancreas, and tend to fall with age.' },
+// ---- central illustrations ----
+function muscle() {
+  const out: string[] = [`<ellipse cx="${CX}" cy="${CY}" rx="400" ry="230" fill="url(#mem)" stroke="#AFC2FF" stroke-opacity="0.3" stroke-width="3"/>`];
+  for (let k = -2; k <= 2; k++) out.push(fibre(CX, CY + k * 82, 640 - Math.abs(k) * 90));
+  for (const [x, y] of [[-200, -42], [120, -40], [-60, 40], [230, 42], [-260, 124], [40, -124]]) out.push(mito(CX + x, CY + y, 60, 0, 2.4));
+  return out.join('');
+}
+
+interface Hex { cx: number; cy: number; ax: number; ay: number; inner: string; title: string; text: string; side: 'l' | 'r' }
+interface Topic { slug: string; title: string; subtitle: string; centre: () => string; hexes: Hex[]; sources: string }
+const POS = { tl: [560, 330], tr: [1240, 290], r: [1360, 650], br: [1240, 980], bl: [560, 980] } as const;
+const at = (k: keyof typeof POS) => ({ cx: POS[k][0], cy: POS[k][1] });
+
+const TOPICS: Topic[] = [
+  {
+    slug: 'coq10', title: 'CoQ10', subtitle: 'Where your cells make energy', centre: cell, sources: 'NIH NCCIH; noovit.com/guides/coq10',
+    hexes: [
+      { ...at('tl'), ax: CX - 250, ay: CY - 60, side: 'l', inner: mito(560, 330, 170, 0.35, 5), title: 'Mitochondria', text: 'Most of the energy your cells use is made inside mitochondria, often called the power plants of the cell.' },
+      { ...at('tr'), ax: CX + 180, ay: CY - 160, side: 'r', inner: mol('coq10', 1240, 290, 190, 190, { rotate: -0.25, zoom: 3 }), title: 'Coenzyme Q10', text: 'Its ring end carries electrons; its long fatty tail anchors it in the inner membrane of mitochondria, along the chain that powers energy production.' },
+      { ...at('r'), ax: CX + 300, ay: CY + 60, side: 'r', inner: atpSynthase(1360, 650), title: 'ATP synthase', text: 'That flow drives ATP synthase, a tiny molecular motor that makes ATP, the energy currency your cells run on.' },
+      { ...at('br'), ax: CX + 220, ay: CY + 200, side: 'r', inner: bilayer(1240, 980), title: 'Cell membranes', text: 'In its reduced form (ubiquinol), CoQ10 also works as an antioxidant inside cell membranes.' },
+      { ...at('bl'), ax: CX - 40, ay: CY + 40, side: 'l', inner: miniCells(560, 980), title: 'Made by your body', text: 'Your body makes its own CoQ10. Levels are highest in the heart, liver, kidneys and pancreas, and tend to fall with age.' },
+    ],
+  },
+  {
+    slug: 'magnesium', title: 'Magnesium', subtitle: 'A mineral at work in every cell', centre: cell, sources: 'NIH Office of Dietary Supplements; noovit.com/guides/magnesium',
+    hexes: [
+      { ...at('tl'), ax: CX - 250, ay: CY - 60, side: 'l', inner: enzyme(560, 330), title: '300+ enzymes', text: 'Magnesium is a helper (cofactor) for more than 300 enzyme systems, including those that make protein and run muscle and nerve function.' },
+      { ...at('tr'), ax: CX + 180, ay: CY - 160, side: 'r', inner: mol('atp', 1240, 290, 190, 150, { rotate: 0 }), title: 'Magnesium and ATP', text: 'Inside cells, most ATP, the energy molecule, is bound to magnesium. The Mg–ATP pair is the form many enzymes use.' },
+      { ...at('r'), ax: CX + 300, ay: CY + 60, side: 'r', inner: fibre(1360, 650, 190), title: 'Muscles and nerves', text: 'Magnesium helps control muscle contraction and nerve signals, working alongside calcium and potassium.' },
+      { ...at('br'), ax: CX + 220, ay: CY + 200, side: 'r', inner: bone(1240, 980), title: 'Stored in bone', text: 'About 50–60% of the body’s magnesium is in bone. Most of the rest is inside soft tissues; less than 1% is in the blood.' },
+      { ...at('bl'), ax: CX - 40, ay: CY + 40, side: 'l', inner: brandShape('magnesium-complex', 560, 980, 190), title: 'How much you need', text: 'Adults need 310–420 mg a day. About half of US adults get less than that from food.' },
+    ],
+  },
+  {
+    slug: 'creatine', title: 'Creatine', subtitle: 'Fast energy for working muscle', centre: muscle, sources: 'Peer-reviewed reviews cited at noovit.com/guides/creatine',
+    hexes: [
+      { ...at('tl'), ax: CX - 300, ay: CY - 82, side: 'l', inner: mol('creatine-h', 560, 330, 180, 170, { rotate: 0.4 }), title: 'Made by your body', text: 'Your kidneys and liver make about 1 g of creatine a day from three amino acids: arginine, glycine and methionine.' },
+      { ...at('tr'), ax: CX + 200, ay: CY - 82, side: 'r', inner: fibre(1240, 290, 190), title: 'Stored in muscle', text: 'About 95% of the body’s creatine is in skeletal muscle, roughly two-thirds of it as phosphocreatine.' },
+      { ...at('r'), ax: CX + 330, ay: CY, side: 'r', inner: mol('phosphocreatine', 1360, 650, 180, 170, { rotate: 0.2 }), title: 'Phosphocreatine', text: 'Phosphocreatine is creatine carrying a phosphate group: a quick-release store of energy.' },
+      { ...at('br'), ax: CX + 230, ay: CY + 82, side: 'r', inner: mol('atp', 1240, 980, 190, 150, { rotate: 0 }), title: 'Rebuilding ATP', text: 'In short, intense efforts, the enzyme creatine kinase hands that phosphate to ADP, rebuilding ATP within seconds.' },
+      { ...at('bl'), ax: CX - 60, ay: CY + 164, side: 'l', inner: brandShape('creatine', 560, 980, 180), title: 'Food and supplements', text: 'Meat and fish provide around 1 g a day. Studies of creatine monohydrate typically use 3–5 g a day.' },
+    ],
+  },
 ];
 
-function caption(h: (typeof HEX)[number]) {
-  const lines = wrap(h.text, 300, 22, 0.5).slice(0, 5);
+function caption(h: Hex) {
+  const lines = wrap(h.text, 300, 22, 0.5).slice(0, 6);
   const x = h.side === 'l' ? h.cx - 130 - 320 : h.cx + 130;
   const y = h.cy - 60;
   return `<text x="${x}" y="${y}" font-size="26" font-weight="700" fill="#fff" font-family="Inter">${esc(h.title)}</text>` +
     lines.map((l, i) => `<text x="${x}" y="${y + 34 + i * 30}" font-size="22" fill="#fff" fill-opacity="0.78" font-family="Inter">${esc(l)}</text>`).join('');
 }
 
-const body = [
-  `<rect width="${W}" height="${H}" fill="${NIGHT}"/>`,
-  cell(),
-  ...HEX.map((h) => `<line x1="${h.cx}" y1="${h.cy}" x2="${h.ax}" y2="${h.ay}" stroke="#fff" stroke-opacity="0.7" stroke-width="2"/><circle cx="${h.ax}" cy="${h.ay}" r="7" fill="none" stroke="#fff" stroke-width="2.5"/>`),
-  ...HEX.map((h, i) => hex(`hx${i}`, h.cx, h.cy, h.inner) + caption(h)),
-  `<text x="70" y="110" font-size="72" font-weight="300" fill="#fff" font-family="Manrope">CoQ10</text>`,
-  `<text x="70" y="160" font-size="34" font-weight="300" fill="#fff" fill-opacity="0.85" font-family="Manrope">Where your cells make energy</text>`,
-  `<text x="70" y="1170" font-size="18" fill="#fff" fill-opacity="0.55" font-family="Inter">Educational illustration, not to scale. Sources: NIH NCCIH; noovit.com/guides/coq10</text>`,
-  wordmark(1660, 1165, 40, 'print', '#ffffff'),
-].join('');
-const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}"><defs><radialGradient id="mem" cx="0.42" cy="0.38" r="0.7"><stop offset="0" stop-color="#3B4DB8" stop-opacity="0.35"/><stop offset="0.85" stop-color="#1B2470" stop-opacity="0.55"/><stop offset="1" stop-color="#AFC2FF" stop-opacity="0.35"/></radialGradient>${defs.join('')}</defs>${body}</svg>`;
-
 const fontFiles = readdirSync('assets/fonts').filter((f) => f.endsWith('.ttf')).map((f) => `assets/fonts/${f}`);
 mkdirSync('design/social', { recursive: true });
-writeFileSync('design/social/infographic-coq10.png', new Resvg(svg, { fitTo: { mode: 'width', value: W }, font: { fontFiles, loadSystemFonts: false, defaultFontFamily: 'Inter' } }).render().asPng());
-console.log('design/social/infographic-coq10.png');
+for (const t of TOPICS) {
+  seed = 7; // colour gradients are shared across topics (their close-ups are built up front)
+  const centre = t.centre();
+  const hexes = t.hexes.map((h, i) => `<line x1="${h.cx}" y1="${h.cy}" x2="${h.ax}" y2="${h.ay}" stroke="#fff" stroke-opacity="0.7" stroke-width="2"/><circle cx="${h.ax}" cy="${h.ay}" r="7" fill="none" stroke="#fff" stroke-width="2.5"/>` + hex(`hx-${t.slug}-${i}`, h.cx, h.cy, h.inner) + caption(h)).join('');
+  const body = `<rect width="${W}" height="${H}" fill="${NIGHT}"/>${centre}${hexes}
+    <text x="70" y="110" font-size="72" font-weight="300" fill="#fff" font-family="Manrope">${esc(t.title)}</text>
+    <text x="70" y="160" font-size="34" font-weight="300" fill="#fff" fill-opacity="0.85" font-family="Manrope">${esc(t.subtitle)}</text>
+    <text x="70" y="1170" font-size="18" fill="#fff" fill-opacity="0.55" font-family="Inter">${esc(`Educational illustration, not to scale. Molecules: PubChem 2D structures. Sources: ${t.sources}`)}</text>
+    ${wordmark(1660, 1165, 40, 'print', '#ffffff')}`;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}"><defs><radialGradient id="mem" cx="0.42" cy="0.38" r="0.7"><stop offset="0" stop-color="#3B4DB8" stop-opacity="0.35"/><stop offset="0.85" stop-color="#1B2470" stop-opacity="0.55"/><stop offset="1" stop-color="#AFC2FF" stop-opacity="0.35"/></radialGradient>${defs.join('')}</defs>${body}</svg>`;
+  const file = `design/social/infographic-${t.slug}.png`;
+  writeFileSync(file, new Resvg(svg, { fitTo: { mode: 'width', value: W }, font: { fontFiles, loadSystemFonts: false, defaultFontFamily: 'Inter' } }).render().asPng());
+  console.log(file);
+}
