@@ -36,6 +36,8 @@ Later batch: "How long does lion's mane take to work?", "CoQ10 and statins: what
 reviewer, drug topic), "Is creatine safe for your kidneys?", "Magnesium for muscle cramps: the evidence", "Why we print
 the dose on the front of the bottle" (brand story).
 
+**Status (7 Nov):** posts 1–4 written in `content/journal/` (drafts SQL: `supabase/manual/2026-11-07-journal-drafts.sql`).
+
 **Pace:** 2 posts a week from launch → all 12 in 6 weeks. Each one feeds a social pack (section 3).
 
 ## 3. Social: the first 4 weeks

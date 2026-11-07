@@ -179,6 +179,11 @@
 .prose-noovit code { background: var(--color-soft); padding: 0.1em 0.35em; border-radius: 0.3em; font-size: 0.9em; }
 .prose-noovit table { width: 100%; border-collapse: collapse; font-size: 0.95em; }
 .prose-noovit th, .prose-noovit td { border-bottom: 1px solid var(--color-line); padding: 0.5em; text-align: left; }
+/* Phones: wide tables scroll sideways inside the article instead of being cut off. */
+@media (max-width: 640px) {
+  .prose-noovit table { display: block; overflow-x: auto; font-size: 0.85em; -webkit-overflow-scrolling: touch; }
+  .prose-noovit th, .prose-noovit td { min-width: 8.5em; }
+}
 
 /* Breathing mosaic cross (components/brand/MosaicLoader.tsx): 1.8s cycle, eased, clockwise via staggered delays. */
 @keyframes mosaic-breathe {
