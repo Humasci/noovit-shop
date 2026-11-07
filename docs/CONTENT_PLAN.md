@@ -38,7 +38,7 @@ the dose on the front of the bottle" (brand story).
 
 **Status (7 Nov):** all 12 written in `content/journal/` and scheduled 16 Nov – 28 Dec (`supabase/manual/2026-11-07-journal-schedule.sql`).
 
-**Proposed next two (for owner pre-approval), January:** (13) "Is creatine safe for your kidneys?" (search: "is creatine bad for your kidneys"; research already verified in the creatine guide: kidney meta-analysis, creatinine vs kidney function, the 1998 case); (14) "Magnesium for leg cramps: what the evidence shows" (search: "magnesium for leg cramps"; honest answer from the Cochrane review: unlikely to help typical cramps in older adults). Both link to active products.
+**Approved and scheduled (7 Nov), January:** (13) "Is creatine safe for your kidneys?" (search: "is creatine bad for your kidneys"; research already verified in the creatine guide: kidney meta-analysis, creatinine vs kidney function, the 1998 case); (14) "Magnesium for leg cramps: what the evidence shows" (search: "magnesium for leg cramps"; honest answer from the Cochrane review: unlikely to help typical cramps in older adults). Both link to active products.
 
 **Pace:** 2 posts a week from launch → all 12 in 6 weeks. Each one feeds a social pack (section 3).
 

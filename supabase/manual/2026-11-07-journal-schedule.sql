@@ -1,4 +1,4 @@
--- Journal posts generated from content/journal/*.md by scripts/journal-sql.ts (12 posts).
+-- Journal posts generated from content/journal/*.md by scripts/journal-sql.ts (14 posts).
 
 -- Posts with a date are SCHEDULED: they go live on their own at that time (within an hour). Others load as drafts.
 
@@ -345,6 +345,59 @@ on conflict (slug) do update set
   published_at = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.published_at else posts.published_at end,
   seo_title = excluded.seo_title, seo_description = excluded.seo_description;
 
+-- Mon, 04 Jan 2027 14:00:00 GMT
+insert into posts (slug, title, excerpt, body, author, status, published_at, seo_title, seo_description)
+values ($jr$is-creatine-safe-for-your-kidneys$jr$, $jr$Is creatine safe for your kidneys?$jr$, $jr$In healthy people, studied doses haven't been shown to harm the kidneys. But creatine can make a common kidney blood test look worse when your kidneys are fine. Here's why, and who should check first.$jr$, $jr$**Short answer:** for healthy adults, the research is reassuring. At recommended doses, creatine **hasn't been shown to harm kidney function** [1][2], and a 2019 meta-analysis concluded it **didn't cause kidney damage** at the doses and durations studied [3]. The catch: creatine can **raise creatinine**, the marker doctors use to estimate kidney function, so a blood test can look worse when your kidneys are fine [2][4]. If you already have kidney disease, don't take it unless your doctor approves.
+
+## Creatine vs creatinine: why blood tests get confusing
+
+They sound alike but they're different things [2]:
+
+- **Creatine** is the compound in your muscles (and the supplement).
+- **Creatinine** is the waste product your body makes when it breaks creatine down. Your kidneys filter it out.
+
+Doctors measure creatinine in your blood to **estimate** how well your kidneys filter (often reported as eGFR). Taking creatine means there's more creatine to break down, so blood creatinine can rise **without any change in how your kidneys work**. In one trial, creatinine rose by 0.1–0.2 mg/dL and stayed within the normal range [4].
+
+**Practical tip:** tell your doctor and the lab that you take creatine before any kidney blood test, so a higher number isn't misread [2][4].
+
+## What the research shows
+
+- **Position of sports-nutrition experts:** the International Society of Sports Nutrition concluded that creatine at recommended doses hasn't been shown to harm kidney function in healthy people. Studies have used up to 30 g a day for up to 5 years without clear evidence of harm, though 3–5 g a day is all most people need [1].
+- **Meta-analysis:** a 2019 review screened 290 studies, included 15, and pooled 6. The authors concluded that creatine does not cause kidney damage in the amounts and durations studied [3].
+- **Limits of the evidence:** most studies were in healthy, mostly young people, over weeks to a few years. That's why people with kidney problems are told to check first.
+
+## Where the worry came from
+
+Much of the concern traces back to a 1998 case report of kidney problems in a person taking creatine. That person **already had kidney disease** and was also taking **cyclosporine**, a transplant drug that can affect the kidneys [2]. Healthy people haven't shown the same problem in controlled studies [1][3].
+
+## Who should check with a doctor first
+
+- **Kidney disease** or reduced kidney function: don't take creatine unless your doctor approves [1].
+- **Diabetes, high blood pressure** or another condition that affects the kidneys.
+- **Medicines that can affect the kidneys**, such as long-term or high-dose NSAIDs (ibuprofen, naproxen), lithium, some diuretics, or cyclosporine: ask your doctor first, as a precaution [2].
+- **Under 18:** we sell creatine for adults only.
+
+## Keeping it simple
+
+- **Stick to the usual dose:** 3–5 g of creatine monohydrate a day [1].
+- **Loading is optional.** It uses 20 g a day for 5–7 days; a steady 3–5 g a day gets to the same place in 3–4 weeks. See [do you need a creatine loading phase?](/blog/creatine-loading-phase)
+
+Other myths? See [does creatine cause hair loss?](/blog/does-creatine-cause-hair-loss) and our full [creatine guide](/guides/creatine).
+
+Our [Creatine](/products/creatine) is pure creatine monohydrate: 5 g per scoop, for adults 18 and over.
+
+## Sources
+
+1. Kreider RB et al. Journal of the International Society of Sports Nutrition, 2017. [International Society of Sports Nutrition position stand: safety and efficacy of creatine supplementation in exercise, sport, and medicine](https://pmc.ncbi.nlm.nih.gov/articles/PMC5469049/).
+2. Antonio J et al. Journal of the International Society of Sports Nutrition, 2021. [Common questions and misconceptions about creatine supplementation: what does the scientific evidence really show?](https://pmc.ncbi.nlm.nih.gov/articles/PMC7871530/)
+3. de Souza e Silva A et al. Journal of Renal Nutrition, 2019. [Effects of creatine supplementation on renal function: a systematic review and meta-analysis](https://pubmed.ncbi.nlm.nih.gov/31375416/).
+4. Jagim AR et al. Journal of the International Society of Sports Nutrition, 2012. [A buffered form of creatine does not promote greater changes in muscle creatine content, body composition, or training adaptations than creatine monohydrate](https://pmc.ncbi.nlm.nih.gov/articles/PMC3479057/).
+$jr$, 'Noovit', 'published', '2027-01-04T14:00:00.000Z', $jr$Is Creatine Bad for Your Kidneys? What Studies Show | Noovit$jr$, $jr$In healthy people, studied doses of creatine haven't harmed the kidneys, but it can raise creatinine on blood tests. Why, and who should ask a doctor first.$jr$)
+on conflict (slug) do update set
+  status = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.status else posts.status end,
+  published_at = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.published_at else posts.published_at end,
+  seo_title = excluded.seo_title, seo_description = excluded.seo_description;
+
 -- Mon, 14 Dec 2026 14:00:00 GMT
 insert into posts (slug, title, excerpt, body, author, status, published_at, seo_title, seo_description)
 values ($jr$ksm-66-vs-sensoril$jr$, $jr$KSM-66 vs Sensoril: what's the difference?$jr$, $jr$Both are branded ashwagandha extracts with human trials behind them. One uses the root only, the other root and leaf, at very different doses. No trial has compared them head to head. Here's how they differ.$jr$, $jr$**Short answer:** KSM-66 and Sensoril are the two most-studied branded ashwagandha extracts. **KSM-66** is made from the **root only** and was usually studied at **600 mg a day**. **Sensoril** is made from **root and leaf** and was studied at lower doses, **125–500 mg a day**. Both have positive trials for stress, but **no trial has compared them directly**, so neither has been shown to be better [1][2][3].
@@ -565,6 +618,57 @@ Our [Sleep & Calm Stack](/products/sleep-calm-stack) pairs [Magnesium Sleep+](/p
 9. LiverTox (NIDDK, National Institutes of Health). [Ashwagandha](https://www.ncbi.nlm.nih.gov/books/NBK548536/).
 10. Björnsson HK et al. Liver International, 2020. [Ashwagandha-induced liver injury: a case series from Iceland and the US Drug-Induced Liver Injury Network](https://pmc.ncbi.nlm.nih.gov/articles/PMC8041491/).
 $jr$, 'Noovit', 'published', '2026-11-30T14:00:00.000Z', $jr$Can You Take Magnesium and Ashwagandha Together? | Noovit$jr$, $jr$Magnesium and ashwagandha have no known interaction, but the only trial that combined them found no extra benefit. Timing, doses, and who should check first.$jr$)
+on conflict (slug) do update set
+  status = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.status else posts.status end,
+  published_at = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.published_at else posts.published_at end,
+  seo_title = excluded.seo_title, seo_description = excluded.seo_description;
+
+-- Thu, 07 Jan 2027 14:00:00 GMT
+insert into posts (slug, title, excerpt, body, author, status, published_at, seo_title, seo_description)
+values ($jr$magnesium-for-leg-cramps$jr$, $jr$Magnesium for leg cramps: what the evidence shows$jr$, $jr$Magnesium is the go-to remedy for night-time leg cramps, but the best review of the trials found it's unlikely to help most people. What the studies found, and where the evidence is still open.$jr$, $jr$**Short answer:** probably not, for the most common kind. A 2020 Cochrane review, which pooled the randomized trials, concluded that magnesium is **unlikely to provide meaningful relief** for typical leg cramps in older adults. People taking it had almost the same number of cramps as people taking placebo [1]. For cramps in **pregnancy**, the evidence is conflicting, and for **exercise-related cramps**, no trials exist [1].
+
+We sell magnesium, and we think you should know this before you buy it for cramps.
+
+## What the trials found
+
+The Cochrane review included 11 randomized trials with 735 people [1]:
+
+- **Night-time leg cramps with no obvious cause** (mostly adults in their 60s): magnesium cut cramps by just **0.18 cramps a week** more than placebo, a difference that wasn't statistically significant (5 trials, 307 people). The share of people whose cramps fell by at least a quarter was the same in both groups. The reviewers rated this evidence moderate to high certainty [1].
+- **Cramp intensity and duration:** no significant difference from placebo [1].
+- **Pregnancy:** five trials, all judged at high risk of bias. Of the three that compared magnesium with placebo, one found no benefit, one found benefit, and one had inconsistent results [1].
+- **Exercise-related cramps:** the reviewers found **no randomized trials** at all [1].
+
+## A closer look at one trial
+
+In a 2017 trial in Israel, 94 adults with frequent night-time leg cramps took magnesium oxide or a placebo at bedtime for 4 weeks [2]:
+
+| | Magnesium | Placebo |
+|---|---|---|
+| Cramps per week, before | 7.8 | 8.5 |
+| Cramps per week, after 4 weeks | 4.4 | 5.5 |
+| Change | −3.4 | −3.0 |
+
+Both groups improved by about the same amount, and the difference wasn't significant. Sleep and quality of life didn't differ either [2]. The authors suggest the drop in both groups was **probably a placebo effect**, which may explain why magnesium feels like it works for so many people [2].
+
+## Side effects to weigh
+
+In the Cochrane review, stomach side effects such as diarrhea affected **11% to 37%** of people taking magnesium, compared with **10% to 14%** on placebo [1]. Serious side effects weren't more common than with placebo [1]. Keep supplements at or below **350 mg a day** unless your doctor advises more, and don't take magnesium supplements if you have kidney disease unless your doctor prescribes them [3].
+
+## So what should you do?
+
+- **For cramps alone, magnesium is unlikely to be worth it** for most adults, based on the current evidence [1].
+- **If you're pregnant,** talk to your doctor or midwife: the research is unsettled [1].
+- **If cramps are frequent, severe, or come with weakness, swelling or numbness,** see a doctor to look for a cause.
+- **Magnesium may still make sense for other reasons:** about half of US adults get less than they need from food, and it's studied for sleep and other uses [3]. See [when to take magnesium for sleep](/blog/when-to-take-magnesium-for-sleep) and our [magnesium guide](/guides/magnesium).
+
+If you do take magnesium for general intake, glycinate is less likely to upset your stomach than oxide: see [magnesium glycinate vs citrate vs oxide](/blog/magnesium-glycinate-vs-citrate-vs-oxide). Our [Magnesium Sleep+](/products/magnesium-complex) gives 275 mg as glycinate, and we don't sell it as a cramp remedy.
+
+## Sources
+
+1. Garrison SR et al. Cochrane Database of Systematic Reviews, 2020. [Magnesium for skeletal muscle cramps](https://pubmed.ncbi.nlm.nih.gov/32956536/).
+2. Roguin Maor N et al. JAMA Internal Medicine, 2017. [Effect of magnesium oxide supplementation on nocturnal leg cramps: a randomized clinical trial](https://pubmed.ncbi.nlm.nih.gov/28241153/).
+3. NIH Office of Dietary Supplements. [Magnesium: fact sheet for health professionals](https://ods.od.nih.gov/factsheets/Magnesium-HealthProfessional/).
+$jr$, 'Noovit', 'published', '2027-01-07T14:00:00.000Z', $jr$Does Magnesium Help Leg Cramps? The Evidence | Noovit$jr$, $jr$A Cochrane review found magnesium is unlikely to ease typical night-time leg cramps in older adults. What the trials found, plus pregnancy and exercise cramps.$jr$)
 on conflict (slug) do update set
   status = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.status else posts.status end,
   published_at = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.published_at else posts.published_at end,
