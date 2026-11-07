@@ -1,8 +1,10 @@
--- Journal posts generated from content/journal/*.md by scripts/journal-sql.ts (8 posts).
+-- Journal posts generated from content/journal/*.md by scripts/journal-sql.ts (12 posts).
 
 -- Posts with a date are SCHEDULED: they go live on their own at that time (within an hour). Others load as drafts.
 
 -- Existing post text is never overwritten; an existing unscheduled draft only gets its schedule.
+
+-- SEO title and description always follow content/journal (edit them there, not in Admin).
 
 -- To hold a post: Admin → Blog → set it to Draft. The medical reviewer should read each post before its date.
 
@@ -70,9 +72,11 @@ Our [Creatine](/products/creatine) is pure creatine monohydrate: 5 g per scoop, 
 6. Benton D, Donohoe R. British Journal of Nutrition, 2011. [The influence of creatine supplementation on the cognitive functioning of vegetarians and omnivores](https://pubmed.ncbi.nlm.nih.gov/21118604/).
 7. Kreider RB et al. Journal of the International Society of Sports Nutrition, 2017. [International Society of Sports Nutrition position stand: safety and efficacy of creatine supplementation in exercise, sport, and medicine](https://pmc.ncbi.nlm.nih.gov/articles/PMC5469049/).
 8. Antonio J et al. Journal of the International Society of Sports Nutrition, 2021. [Common questions and misconceptions about creatine supplementation: what does the scientific evidence really show?](https://pmc.ncbi.nlm.nih.gov/articles/PMC7871530/)
-$jr$, 'Noovit', 'published', '2026-12-07T14:00:00.000Z', $jr$Creatine for Women: What the Research Shows | Noovit$jr$, $jr$Does creatine work for women? What trials show for strength, lean muscle, menopause and memory, why results differ from men's, and how to avoid water-weight gain.$jr$)
-on conflict (slug) do update set status = excluded.status, published_at = excluded.published_at
-  where posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null;
+$jr$, 'Noovit', 'published', '2026-12-07T14:00:00.000Z', $jr$Creatine for Women: What the Research Shows | Noovit$jr$, $jr$Does creatine work for women? What trials show for strength, lean muscle, menopause and memory, and how to avoid water-weight gain.$jr$)
+on conflict (slug) do update set
+  status = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.status else posts.status end,
+  published_at = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.published_at else posts.published_at end,
+  seo_title = excluded.seo_title, seo_description = excluded.seo_description;
 
 -- Thu, 19 Nov 2026 14:00:00 GMT
 insert into posts (slug, title, excerpt, body, author, status, published_at, seo_title, seo_description)
@@ -134,8 +138,10 @@ Our [Creatine](/products/creatine) is pure creatine monohydrate: 5 g of creatine
 7. Jagim AR et al. Journal of the International Society of Sports Nutrition, 2012. [A buffered form of creatine does not promote greater changes in muscle creatine content, body composition, or training adaptations than creatine monohydrate](https://pmc.ncbi.nlm.nih.gov/articles/PMC3479057/).
 8. de Souza e Silva A et al. Journal of Renal Nutrition, 2019. [Effects of creatine supplementation on renal function: a systematic review and meta-analysis](https://pubmed.ncbi.nlm.nih.gov/31375416/).
 $jr$, 'Noovit', 'published', '2026-11-19T14:00:00.000Z', $jr$Do You Need a Creatine Loading Phase? | Noovit$jr$, $jr$A creatine loading phase fills muscle stores in about a week; 3 g a day reaches the same level in about 4 weeks. Doses, trade-offs and how to do either.$jr$)
-on conflict (slug) do update set status = excluded.status, published_at = excluded.published_at
-  where posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null;
+on conflict (slug) do update set
+  status = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.status else posts.status end,
+  published_at = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.published_at else posts.published_at end,
+  seo_title = excluded.seo_title, seo_description = excluded.seo_description;
 
 -- Wed, 25 Nov 2026 14:00:00 GMT
 insert into posts (slug, title, excerpt, body, author, status, published_at, seo_title, seo_description)
@@ -183,9 +189,11 @@ Our [Creatine](/products/creatine) is pure creatine monohydrate, 5 g per scoop, 
 2. Antonio J et al. Journal of the International Society of Sports Nutrition, 2021. [Common questions and misconceptions about creatine supplementation: what does the scientific evidence really show?](https://pmc.ncbi.nlm.nih.gov/articles/PMC7871530/)
 3. Lak M et al. Journal of the International Society of Sports Nutrition, 2025. [Does creatine cause hair loss? A 12-week randomized controlled trial](https://pubmed.ncbi.nlm.nih.gov/40265319/).
 4. de Souza e Silva A et al. Journal of Renal Nutrition, 2019. [Effects of creatine supplementation on renal function: a systematic review and meta-analysis](https://pubmed.ncbi.nlm.nih.gov/31375416/).
-$jr$, 'Noovit', 'published', '2026-11-25T14:00:00.000Z', $jr$Does Creatine Cause Hair Loss? What the Research Shows | Noovit$jr$, $jr$The creatine hair-loss worry comes from one 2009 study that never measured hair. A 2025 trial that did found no change in hair or DHT. The details.$jr$)
-on conflict (slug) do update set status = excluded.status, published_at = excluded.published_at
-  where posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null;
+$jr$, 'Noovit', 'published', '2026-11-25T14:00:00.000Z', $jr$Does Creatine Cause Hair Loss? The Evidence | Noovit$jr$, $jr$The creatine hair-loss worry comes from one 2009 study that never measured hair. A 2025 trial that did found no change in hair or DHT. The details.$jr$)
+on conflict (slug) do update set
+  status = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.status else posts.status end,
+  published_at = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.published_at else posts.published_at end,
+  seo_title = excluded.seo_title, seo_description = excluded.seo_description;
 
 -- Thu, 03 Dec 2026 14:00:00 GMT
 insert into posts (slug, title, excerpt, body, author, status, published_at, seo_title, seo_description)
@@ -247,8 +255,174 @@ Stop and see a doctor if you notice yellowing of the skin or eyes, itching, naus
 9. LiverTox (NIDDK, National Institutes of Health). [Ashwagandha](https://www.ncbi.nlm.nih.gov/books/NBK548536/).
 10. Sharma AK et al. Journal of Alternative and Complementary Medicine, 2018. [Efficacy and safety of ashwagandha root extract in subclinical hypothyroid patients: a double-blind, randomized placebo-controlled trial](https://pubmed.ncbi.nlm.nih.gov/28829155/).
 $jr$, 'Noovit', 'published', '2026-12-03T14:00:00.000Z', $jr$How Long Does Ashwagandha Take to Work? | Noovit$jr$, $jr$In trials, ashwagandha's effects on stress and sleep showed up after 8–10 weeks, not days. What each study measured, and how long it's safe to take.$jr$)
-on conflict (slug) do update set status = excluded.status, published_at = excluded.published_at
-  where posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null;
+on conflict (slug) do update set
+  status = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.status else posts.status end,
+  published_at = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.published_at else posts.published_at end,
+  seo_title = excluded.seo_title, seo_description = excluded.seo_description;
+
+-- Mon, 21 Dec 2026 14:00:00 GMT
+insert into posts (slug, title, excerpt, body, author, status, published_at, seo_title, seo_description)
+values ($jr$how-to-read-a-supplement-facts-label$jr$, $jr$How to read a Supplement Facts label$jr$, $jr$Serving size, "as" in brackets, % Daily Value, proprietary blends, plant parts and the asterisk disclaimer. A line-by-line guide to what US law requires on the panel, and what to check before you buy.$jr$, $jr$**Short answer:** start with the **serving size**, then read each ingredient's **amount per serving**, check whether it's the ingredient itself or a compound ("as" in brackets), look for **proprietary blends** that hide individual amounts, and note the **plant part** for herbs. The rules come from the FDA's labeling regulation for dietary supplements [1].
+
+## A real example
+
+Here's the panel from our own Magnesium Sleep+, simplified:
+
+| Supplement Facts | |
+|---|---|
+| Serving Size: 3 Capsules | Servings Per Container: 30 |
+| **Amount Per Serving** | **% Daily Value** |
+| Magnesium (as Magnesium Glycinate) 275 mg | 65% |
+
+Every line tells you something. Let's go through them.
+
+## 1. Serving size
+
+The **Serving Size** comes first, in a unit that fits the product: capsules, scoops, gummies [1]. Every amount below it is **per serving, not per capsule**. A product listing 275 mg in a 3-capsule serving gives about 92 mg per capsule. Always check how many units make a serving before comparing products.
+
+**Servings Per Container** sits underneath, and tells you how long the bottle lasts [1].
+
+## 2. "As" in brackets: the ingredient vs the compound
+
+Amounts must show **the dietary ingredient itself**, not the compound it comes in. The source can be named in brackets with "as" or "from", such as "Calcium (as calcium carbonate)" [1].
+
+This matters most for minerals. Magnesium is bound to another molecule, and the share of magnesium varies widely: magnesium oxide is about 60% magnesium, bisglycinate only about 14% [3][5]. So "275 mg magnesium (as glycinate)" means 275 mg of actual magnesium, which takes roughly 2 g of the glycinate compound. If a label lists a large number for a compound without the elemental amount, you can't tell how much mineral you're getting. More in [magnesium glycinate vs citrate vs oxide](/blog/magnesium-glycinate-vs-citrate-vs-oxide) and our [magnesium guide](/guides/magnesium).
+
+## 3. % Daily Value
+
+**% Daily Value (%DV)** compares the amount to a reference intake set by the FDA, rounded to the nearest whole percent [1]. For magnesium, the Daily Value is 420 mg, so 275 mg is 65% [2].
+
+Ingredients with no Daily Value, such as herbs, mushrooms, creatine or CoQ10, get a symbol (often an asterisk or dagger) instead, with a footnote saying **"Daily Value not established"** [1]. That doesn't mean the dose is too high or too low, just that no official reference exists.
+
+## 4. Proprietary blends
+
+A **"Proprietary Blend"** (or a branded name like "Focus Matrix") lists its ingredients in **descending order by weight** and the **total weight of the blend**, but not how much of each ingredient it contains [1].
+
+So a 500 mg blend of eight ingredients could contain 490 mg of the first and tiny amounts of the rest. If you want to match a product to the doses used in research, blends make that impossible. Prefer labels that list every ingredient with its own amount.
+
+## 5. Plant part and extracts
+
+For herbs and mushrooms, the label must say **which part** was used: root, leaf, fruiting body and so on [1]. This matters: ashwagandha root and leaf extracts were studied at different doses (see [KSM-66 vs Sensoril](/blog/ksm-66-vs-sensoril)), and lion's mane fruiting body and mycelium contain different compounds.
+
+For a dried extract, the amount shown must be **the weight of the extract itself** [1]. Watch for marketing like "4,000 mg equivalent" next to a 500 mg 8:1 extract: the capsule still holds 500 mg.
+
+## 6. Other ingredients
+
+Ingredients that aren't listed in the panel, such as the capsule shell, fillers and flow agents, appear in an ingredient statement just below it, usually headed "Other ingredients" [1]. This is also where you'll typically find allergen information, such as "contains shellfish".
+
+## 7. The asterisk and the FDA disclaimer
+
+Supplements can make **structure/function claims**, such as "supports restful sleep". When they do, the claim must be linked, usually by an asterisk, to this exact disclaimer [4]:
+
+> *This statement has not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.*
+
+A supplement label that claims to treat or cure a disease is breaking the rules. Treat that as a red flag.
+
+## A 30-second checklist
+
+1. **Serving size:** how many capsules or scoops make the amounts shown?
+2. **Each amount:** is it the ingredient itself (with "as ..." in brackets)?
+3. **Dose:** does it match what studies used? Our ingredient [guides](/guides) list studied doses.
+4. **Blends:** are any amounts hidden in a proprietary blend?
+5. **Plant part:** is it named for herbs and mushrooms?
+6. **Other ingredients and allergens:** anything you need to avoid?
+7. **Claims:** only "supports" language, with the FDA disclaimer?
+
+## Why we print the dose on the front
+
+Every Noovit bottle shows the main dose per serving on the front, not just in the panel on the back, so you can see what you're getting at a glance. You can see each full panel on our [shop](/shop) pages.
+
+## Sources
+
+1. US Code of Federal Regulations, 21 CFR 101.36. [Nutrition labeling of dietary supplements](https://www.law.cornell.edu/cfr/text/21/101.36).
+2. NIH Office of Dietary Supplements. [Magnesium: fact sheet for health professionals](https://ods.od.nih.gov/factsheets/Magnesium-HealthProfessional/).
+3. Schuster J et al. Nature and Science of Sleep, 2025. [Magnesium bisglycinate supplementation in healthy adults reporting poor sleep: a randomized, placebo-controlled trial](https://pmc.ncbi.nlm.nih.gov/articles/PMC12412596/).
+4. US Code of Federal Regulations, 21 CFR 101.93. [Certain types of statements for dietary supplements](https://www.law.cornell.edu/cfr/text/21/101.93).
+5. Blancquaert L et al. Nutrients, 2019. [Predicting and testing bioavailability of magnesium supplements](https://pmc.ncbi.nlm.nih.gov/articles/PMC6683096/).
+$jr$, 'Noovit', 'published', '2026-12-21T14:00:00.000Z', $jr$How to Read a Supplement Facts Label (Line by Line) | Noovit$jr$, $jr$What every line of a Supplement Facts panel means: serving size, elemental amounts, % Daily Value, proprietary blends, plant parts and the FDA disclaimer.$jr$)
+on conflict (slug) do update set
+  status = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.status else posts.status end,
+  published_at = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.published_at else posts.published_at end,
+  seo_title = excluded.seo_title, seo_description = excluded.seo_description;
+
+-- Mon, 14 Dec 2026 14:00:00 GMT
+insert into posts (slug, title, excerpt, body, author, status, published_at, seo_title, seo_description)
+values ($jr$ksm-66-vs-sensoril$jr$, $jr$KSM-66 vs Sensoril: what's the difference?$jr$, $jr$Both are branded ashwagandha extracts with human trials behind them. One uses the root only, the other root and leaf, at very different doses. No trial has compared them head to head. Here's how they differ.$jr$, $jr$**Short answer:** KSM-66 and Sensoril are the two most-studied branded ashwagandha extracts. **KSM-66** is made from the **root only** and was usually studied at **600 mg a day**. **Sensoril** is made from **root and leaf** and was studied at lower doses, **125–500 mg a day**. Both have positive trials for stress, but **no trial has compared them directly**, so neither has been shown to be better [1][2][3].
+
+## Side by side
+
+| | KSM-66 | Sensoril |
+|---|---|---|
+| Plant part | Root only | Root and leaf |
+| Made with | A water-based process | Water extraction |
+| Standardized to | At least 5% withanolides | At least 10% withanolide glycosides |
+| Typical dose in trials | 600 mg a day (often 300 mg twice a day) [1][4] | 125–500 mg a day [2][5] |
+| Main trials | Stress and cortisol, sleep, strength [1][4][6] | Stress, strength, reaction time [2][5][7] |
+
+Source for the extract descriptions: our [ashwagandha guide](/guides/ashwagandha), which lists every study.
+
+## What the trials found
+
+### KSM-66
+
+- **Stress:** in a 60-day trial of 64 adults with chronic stress, 600 mg a day lowered perceived stress scores by 44% (versus 5.5% with placebo) and blood cortisol by 27.9% (versus 7.9%) [1].
+- **Sleep:** in a 10-week trial of adults with insomnia, 300 mg twice a day cut the time to fall asleep from about 42 to 29 minutes, versus 42 to 34 minutes on placebo [4].
+- **Strength:** in an 8-week trial of 57 young men starting weight training, 600 mg a day increased bench-press strength by 46.0 kg versus 26.4 kg on placebo [6].
+
+### Sensoril
+
+- **Stress:** in an 8-week trial of chronically stressed adults, 125–500 mg a day of the root-and-leaf extract improved stress measures compared with placebo [2].
+- **Strength:** in a 12-week trial of 38 recreationally active men, 500 mg a day increased squat strength by 19.1 kg versus 10.0 kg, and bench press by 12.8 kg versus 8.0 kg [5].
+- **Reaction time:** in a 14-day crossover study of 20 healthy men, 1,000 mg a day improved reaction times on several computer tests [7].
+
+Most trials of both extracts were small, short and run in India, often with extract supplied by the manufacturer [1][8].
+
+## Why the percentages can't be compared
+
+KSM-66 says "5% withanolides"; Sensoril says "10% withanolide glycosides". It's tempting to think Sensoril is twice as strong. It isn't that simple:
+
+- **They measure different groups of compounds**, with different lab methods.
+- A 2024 analysis of the root-and-leaf extract measured each of its 10 main compounds at just 0.4–1% [2].
+- The doses studied already account for each extract's makeup. That's why Sensoril trials used less.
+
+So compare each extract at **the dose used in its own trials**, not by the percentage on the front.
+
+## Root vs leaf: the safety angle
+
+Root is the part traditionally used in Ayurveda. Safety data on leaf preparations are more limited [9]. Some European regulators have been cautious about ashwagandha in general; critics note their reviews didn't consistently separate root products from leaf products [9][10]. For most healthy adults, either extract at its studied dose has been well tolerated in short trials [1][2], but the safety cautions below apply to both.
+
+## How to choose
+
+1. **Pick a named extract**, so you can match it to the research.
+2. **Check the dose matches that extract's trials:** about 600 mg a day for KSM-66, 125–500 mg for Sensoril.
+3. **Check the plant part** on the label (root, or root and leaf).
+4. **Give it time:** most trials measured results after 8 weeks or more. See [how long does ashwagandha take to work?](/blog/how-long-does-ashwagandha-take-to-work)
+
+## Safety for both
+
+Ashwagandha may be safe for up to 3 months; long-term safety isn't known. Avoid it if you're pregnant or breastfeeding. Talk to your doctor first if you have a thyroid condition or take thyroid medication, take sedatives, anti-seizure, diabetes, blood-pressure or immune-suppressing medicines, or have liver disease or an autoimmune condition. Rare but serious liver injury has been reported [11][12].
+
+Our [Ashwagandha Calm+](/products/ashwagandha) uses KSM-66: 600 mg of root extract in two capsules a day. It also contains vitamins D3, B6 and B12, L-arginine, maca, Panax ginseng and shatavari, which weren't part of the KSM-66 trials, so read the full label.
+
+## Sources
+
+1. Chandrasekhar K et al. Indian Journal of Psychological Medicine, 2012. [A prospective, randomized double-blind, placebo-controlled study of safety and efficacy of a high-concentration full-spectrum extract of ashwagandha root in reducing stress and anxiety in adults](https://pmc.ncbi.nlm.nih.gov/articles/PMC3573577/).
+2. Pandit S et al. Nutrients, 2024. [Effects of Withania somnifera extract in chronically stressed adults: a randomized controlled trial](https://pmc.ncbi.nlm.nih.gov/articles/PMC11085552/).
+3. National Center for Complementary and Integrative Health (NCCIH). [Ashwagandha: usefulness and safety](https://www.nccih.nih.gov/health/ashwagandha).
+4. Langade D et al. Cureus, 2019. [Efficacy and safety of ashwagandha (Withania somnifera) root extract in insomnia and anxiety: a double-blind, randomized, placebo-controlled study](https://pmc.ncbi.nlm.nih.gov/articles/PMC6827862/).
+5. Ziegenfuss TN et al. Nutrients, 2018. [Effects of an aqueous extract of Withania somnifera on strength training adaptations and recovery: the STAR trial](https://pmc.ncbi.nlm.nih.gov/articles/PMC6266766/).
+6. Wankhede S et al. Journal of the International Society of Sports Nutrition, 2015. [Examining the effect of Withania somnifera supplementation on muscle strength and recovery: a randomized controlled trial](https://pmc.ncbi.nlm.nih.gov/articles/PMC4658772/).
+7. Pingali U et al. Pharmacognosy Research, 2014. [Effect of standardized aqueous extract of Withania somnifera on tests of cognitive and psychomotor performance in healthy human participants](https://pmc.ncbi.nlm.nih.gov/articles/PMC3897003/).
+8. Salve J et al. Cureus, 2019. [Adaptogenic and anxiolytic effects of ashwagandha root extract in healthy adults: a double-blind, randomized, placebo-controlled clinical study](https://pmc.ncbi.nlm.nih.gov/articles/PMC6979308/).
+9. Dutta A et al. Food Science & Nutrition, 2026. [Plant part-specific differences in ashwagandha (Withania somnifera): a comparative evaluation of root and leaf evidence for safety and regulation](https://pmc.ncbi.nlm.nih.gov/articles/PMC13635981/).
+10. BfR (German Federal Institute for Risk Assessment), 2024. [Ashwagandha: food supplements with potential health risks](https://www.bfr.bund.de/cm/349/ashwagandha-food-supplements-with-potential-health-risks.pdf).
+11. LiverTox (NIDDK, National Institutes of Health). [Ashwagandha](https://www.ncbi.nlm.nih.gov/books/NBK548536/).
+12. Sharma AK et al. Journal of Alternative and Complementary Medicine, 2018. [Efficacy and safety of ashwagandha root extract in subclinical hypothyroid patients: a double-blind, randomized placebo-controlled trial](https://pubmed.ncbi.nlm.nih.gov/28829155/).
+$jr$, 'Noovit', 'published', '2026-12-14T14:00:00.000Z', $jr$KSM-66 vs Sensoril: Ashwagandha Extracts Compared | Noovit$jr$, $jr$KSM-66 is a root-only ashwagandha extract studied at 600 mg; Sensoril uses root and leaf at 125–500 mg. How they differ, what trials found, and how to choose.$jr$)
+on conflict (slug) do update set
+  status = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.status else posts.status end,
+  published_at = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.published_at else posts.published_at end,
+  seo_title = excluded.seo_title, seo_description = excluded.seo_description;
 
 -- Thu, 10 Dec 2026 14:00:00 GMT
 insert into posts (slug, title, excerpt, body, author, status, published_at, seo_title, seo_description)
@@ -314,9 +488,11 @@ Our [Lion's Mane](/products/lions-mane) contains 1,000 mg of organic lion's mane
 10. Nakatsugawa M et al. Internal Medicine, 2003. [Hericium erinaceum (yamabushitake) extract-induced acute respiratory distress syndrome monitored by serum surfactant proteins](https://pubmed.ncbi.nlm.nih.gov/14714963/).
 11. Mori K et al. Phytomedicine, 2010. [Inhibitory effect of hericenone B from Hericium erinaceus on collagen-induced platelet aggregation](https://pubmed.ncbi.nlm.nih.gov/20637576/).
 12. Docherty S et al. Nutrients, 2023. [The acute and chronic effects of lion's mane mushroom supplementation on cognitive function, stress and mood in young adults: a double-blind, parallel groups, pilot study](https://pmc.ncbi.nlm.nih.gov/articles/PMC10675414/).
-$jr$, 'Noovit', 'published', '2026-12-10T14:00:00.000Z', $jr$Lion's Mane Fruiting Body vs Mycelium: How to Read the Label | Noovit$jr$, $jr$Fruiting body or mycelium? What each part contains, what the lion's mane studies used, and how to read extract ratios, "mg equivalent" and beta-glucan figures.$jr$)
-on conflict (slug) do update set status = excluded.status, published_at = excluded.published_at
-  where posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null;
+$jr$, 'Noovit', 'published', '2026-12-10T14:00:00.000Z', $jr$Lion's Mane: Fruiting Body vs Mycelium | Noovit$jr$, $jr$Fruiting body or mycelium? What each part contains, what the lion's mane studies used, and how to read extract ratios, "mg equivalent" and beta-glucan figures.$jr$)
+on conflict (slug) do update set
+  status = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.status else posts.status end,
+  published_at = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.published_at else posts.published_at end,
+  seo_title = excluded.seo_title, seo_description = excluded.seo_description;
 
 -- Mon, 30 Nov 2026 14:00:00 GMT
 insert into posts (slug, title, excerpt, body, author, status, published_at, seo_title, seo_description)
@@ -389,8 +565,10 @@ Our [Sleep & Calm Stack](/products/sleep-calm-stack) pairs [Magnesium Sleep+](/p
 9. LiverTox (NIDDK, National Institutes of Health). [Ashwagandha](https://www.ncbi.nlm.nih.gov/books/NBK548536/).
 10. Björnsson HK et al. Liver International, 2020. [Ashwagandha-induced liver injury: a case series from Iceland and the US Drug-Induced Liver Injury Network](https://pmc.ncbi.nlm.nih.gov/articles/PMC8041491/).
 $jr$, 'Noovit', 'published', '2026-11-30T14:00:00.000Z', $jr$Can You Take Magnesium and Ashwagandha Together? | Noovit$jr$, $jr$Magnesium and ashwagandha have no known interaction, but the only trial that combined them found no extra benefit. Timing, doses, and who should check first.$jr$)
-on conflict (slug) do update set status = excluded.status, published_at = excluded.published_at
-  where posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null;
+on conflict (slug) do update set
+  status = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.status else posts.status end,
+  published_at = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.published_at else posts.published_at end,
+  seo_title = excluded.seo_title, seo_description = excluded.seo_description;
 
 -- Mon, 16 Nov 2026 14:00:00 GMT
 insert into posts (slug, title, excerpt, body, author, status, published_at, seo_title, seo_description)
@@ -462,8 +640,141 @@ Our [Magnesium Sleep+](/products/magnesium-complex) uses magnesium glycinate: 27
 13. Veronese N et al. Nutrients, 2021. [Oral magnesium supplementation for treating glucose metabolism parameters in people with or at risk of diabetes: a systematic review and meta-analysis of double-blind randomized controlled trials](https://pmc.ncbi.nlm.nih.gov/articles/PMC8619199/).
 14. Lopresti AL, Smith SJ. Frontiers in Nutrition, 2026. [The effects of magnesium L-threonate (Magtein) on cognitive performance and sleep quality in adults: a randomised, double-blind, placebo-controlled trial](https://pubmed.ncbi.nlm.nih.gov/41601871/).
 $jr$, 'Noovit', 'published', '2026-11-16T14:00:00.000Z', $jr$Magnesium Glycinate vs Citrate vs Oxide | Noovit$jr$, $jr$Glycinate, citrate or oxide? How much magnesium each gives, what absorption studies show, which ones loosen stools, and how to pick by goal.$jr$)
-on conflict (slug) do update set status = excluded.status, published_at = excluded.published_at
-  where posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null;
+on conflict (slug) do update set
+  status = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.status else posts.status end,
+  published_at = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.published_at else posts.published_at end,
+  seo_title = excluded.seo_title, seo_description = excluded.seo_description;
+
+-- Thu, 17 Dec 2026 14:00:00 GMT
+insert into posts (slug, title, excerpt, body, author, status, published_at, seo_title, seo_description)
+values ($jr$turmeric-vs-curcumin$jr$, $jr$Turmeric vs curcumin: what's on the label and why it matters$jr$, $jr$Turmeric is the spice; curcumin is its main active compound, and it makes up only about 3% of the powder. How to read "turmeric", "curcuminoids" and "95% extract" on a label, and what black pepper adds.$jr$, $jr$**Short answer:** **turmeric** is the yellow spice root; **curcumin** is its best-known active compound. Plain turmeric powder is only about **3% curcumin** by weight, so a gram of spice gives roughly 30 mg [1]. Most supplements use an extract **standardized to 95% curcuminoids**, and studies mostly used about **1,000 mg a day** of extract or curcuminoids [2][3]. When you compare products, look for the **mg of curcuminoids**, not just "mg of turmeric".
+
+## Turmeric, curcumin, curcuminoids
+
+- **Turmeric** (*Curcuma longa*) is a plant in the ginger family. Its underground stem is dried and ground into the spice used in curries [4].
+- **Curcumin** is the compound that gives turmeric its yellow color [4].
+- **Curcuminoids** are a group of three related compounds: curcumin, demethoxycurcumin and bisdemethoxycurcumin. A "95% curcuminoids" extract contains all three [5].
+
+## The numbers that matter on a label
+
+| On the label | What it gives you |
+|---|---|
+| 1,000 mg turmeric root powder | About 30 mg of curcumin (about 3%) [1] |
+| 500 mg turmeric extract, 95% curcuminoids | About 475 mg of curcuminoids, roughly the amount in 15 g of turmeric powder |
+| Curry powder | Usually much less curcumin than turmeric itself [1] |
+
+So "1,000 mg turmeric" and "1,000 mg turmeric extract (95%)" are very different products. The second contains about 30 times more curcuminoids.
+
+## Why black pepper is added
+
+Curcumin on its own is **poorly absorbed**: it dissolves badly in water and is broken down quickly in the gut and liver, so very little reaches the blood [5]. Italian regulators put its oral bioavailability at about 1% [6].
+
+**Piperine**, the compound that makes black pepper hot, is the most common add-on. In a small 1998 study, 20 mg of piperine taken with 2 g of curcumin raised blood curcumin levels by about **2,000% (20 times)** [7]. That single study is still the main human evidence behind the "20 times" claim.
+
+Other "enhanced" forms use phospholipids (phytosomes), micelles or other carriers, and raised blood levels many times over in small studies [5][8]. But higher blood levels haven't been shown to mean better results: in a 2025 analysis, enhanced forms did not lower knee pain more than standard curcuminoids [9].
+
+## What studies used, and found
+
+- **Knee osteoarthritis:** a meta-analysis of 8 trials found that about 1,000 mg a day of turmeric extract or curcumin lowered pain scores by about 2 points on a visual pain scale compared with placebo, over 4–12 weeks. Trials were small and varied in quality [2].
+- **Muscle soreness after exercise:** a meta-analysis of 10 trials found small drops in soreness and a muscle-damage marker [10].
+- **Doses:** about 1,000 mg a day of curcuminoids or extract (range 1,000–1,500 mg), often split into 2–4 doses. Enhanced-absorption forms used less, for example 180–500 mg [2][3].
+
+Doses are specific to the form: a dose studied for a phytosome product doesn't apply to a plain 95% extract.
+
+## The safety caveat
+
+Turmeric as a spice in food is not the concern. Supplements are different:
+
+- **Liver injury is rare but can be serious.** LiverTox estimates roughly 1 in 10,000 to 1 in 100,000 people exposed. Most people recover after stopping, but some cases led to liver failure [11].
+- **The risk appears higher with high doses and enhanced-absorption products, including those with piperine** [6][12]. In Italy's 2019 cases, two-thirds of people had taken high-strength curcumin with piperine [6].
+- **Stop and see a doctor** if you notice yellowing of the skin or eyes, dark urine, unusual tiredness, nausea or loss of appetite [4].
+- **Avoid it** if you have liver or gallbladder disease or gallstones [6]. **Talk to your doctor first** if you take blood thinners such as warfarin, diabetes medicines, or are pregnant [4][13].
+
+Full details in our [turmeric guide](/guides/turmeric).
+
+## Our turmeric
+
+Our [Turmeric Complex](/products/turmeric-complex) combines 800 mg of turmeric root powder with 100 mg of a 95% curcuminoid extract, plus glucosamine, chondroitin, ginger, boswellia and BioPerine® black pepper extract. It **contains shellfish** (crab, lobster, crawfish), as the label states, so it isn't suitable if you have a shellfish allergy.
+
+## Sources
+
+1. Tayyem RF et al. Nutrition and Cancer, 2006. [Curcumin content of turmeric and curry powders](https://pubmed.ncbi.nlm.nih.gov/17044766/).
+2. Daily JW et al. Journal of Medicinal Food, 2016. [Efficacy of turmeric extracts and curcumin for alleviating the symptoms of joint arthritis: a systematic review and meta-analysis of randomized clinical trials](https://pmc.ncbi.nlm.nih.gov/articles/PMC5003001/).
+3. Kuptniratsaikul V et al. Clinical Interventions in Aging, 2014. [Efficacy and safety of Curcuma domestica extracts compared with ibuprofen in patients with knee osteoarthritis: a multicenter study](https://pmc.ncbi.nlm.nih.gov/articles/PMC3964021/).
+4. National Center for Complementary and Integrative Health (NCCIH). [Turmeric: usefulness and safety](https://www.nccih.nih.gov/health/turmeric).
+5. Jäger R et al. Nutrition Journal, 2014. [Comparative absorption of curcumin formulations](https://pmc.ncbi.nlm.nih.gov/articles/PMC3918227/).
+6. Menniti-Ippolito F et al. Annali dell'Istituto Superiore di Sanità, 2020. [Turmeric (Curcuma longa L.) food supplements and hepatotoxicity: an integrated evaluation approach](https://annali.iss.it/index.php/anna/article/view/1146).
+7. Shoba G et al. Planta Medica, 1998. [Influence of piperine on the pharmacokinetics of curcumin in animals and human volunteers](https://pubmed.ncbi.nlm.nih.gov/9619120/).
+8. Schiborr C et al. Molecular Nutrition & Food Research, 2014. [The oral bioavailability of curcumin from micronized powder and liquid micelles is significantly increased in healthy humans and differs between sexes](https://pubmed.ncbi.nlm.nih.gov/24402825/).
+9. Wai HS et al. BMC Complementary Medicine and Therapies, 2025. [Effect of turmeric products on knee osteoarthritis: a systematic review and network meta-analysis](https://pubmed.ncbi.nlm.nih.gov/40731001/).
+10. Beba M et al. Phytotherapy Research, 2022. [The effect of curcumin supplementation on delayed-onset muscle soreness, inflammation, muscle strength, and joint flexibility: a systematic review and dose-response meta-analysis of randomized controlled trials](https://pubmed.ncbi.nlm.nih.gov/35574627/).
+11. LiverTox (NIDDK, National Institutes of Health). [Turmeric](https://www.ncbi.nlm.nih.gov/books/NBK548561/).
+12. Therapeutic Goods Administration (Australia), 2023. [Medicines containing turmeric or curcumin: risk of liver injury](https://www.tga.gov.au/safety/safety-alerts/medicines-containing-turmeric-or-curcumin-risk-liver-injury).
+13. Medsafe (New Zealand), 2018. [Beware turmeric/curcumin containing products can interact with warfarin](https://www.medsafe.govt.nz/safety/ews/2018/Turmeric.asp).
+$jr$, 'Noovit', 'published', '2026-12-17T14:00:00.000Z', $jr$Turmeric vs Curcumin: What's the Difference? | Noovit$jr$, $jr$Turmeric powder is only about 3% curcumin. What "95% curcuminoids" means, how black pepper boosts absorption, and what doses studies used.$jr$)
+on conflict (slug) do update set
+  status = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.status else posts.status end,
+  published_at = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.published_at else posts.published_at end,
+  seo_title = excluded.seo_title, seo_description = excluded.seo_description;
+
+-- Mon, 28 Dec 2026 14:00:00 GMT
+insert into posts (slug, title, excerpt, body, author, status, published_at, seo_title, seo_description)
+values ($jr$ubiquinol-vs-ubiquinone$jr$, $jr$Ubiquinol vs ubiquinone (CoQ10): does the form matter?$jr$, $jr$Ubiquinol is sold as the "active", better-absorbed CoQ10. But your body converts between the two forms, most research used ubiquinone, and how you take it may matter more. Here's the evidence.$jr$, $jr$**Short answer:** for most people, the form matters less than the label suggests. **Ubiquinone** is the form used in most CoQ10 research, including the largest heart trial, and it usually costs less [1][2]. **Ubiquinol** is often sold as better absorbed, but in a head-to-head study it **wasn't significantly better absorbed**, and your body converts one form into the other anyway [3]. Taking either **with a meal that contains fat** makes a bigger difference [2][4].
+
+## Two forms of the same molecule
+
+CoQ10 (coenzyme Q10) is a compound your body makes and uses to produce energy inside cells. It shuttles electrons in the chain of reactions that makes ATP, the cell's energy currency [5]. To do that job, it constantly switches between two states:
+
+- **Ubiquinone:** the oxidized form (it has given up electrons).
+- **Ubiquinol:** the reduced form (it's carrying electrons). This is the form that also acts as an antioxidant [5].
+
+Your body moves CoQ10 back and forth between the two all the time. In a study of older adults, CoQ10 showed up in the blood **mostly as ubiquinol even when people swallowed ubiquinone** [3].
+
+## What the absorption studies show
+
+- **Head to head:** in a crossover study in healthy older adults that compared several CoQ10 products, ubiquinol was **not significantly better absorbed** than ubiquinone [3].
+- **How it's dissolved matters:** CoQ10 crystals that aren't dispersed in oil were absorbed about **75% less** in one comparison. That's why oil-based softgels tend to do better than dry powders [2].
+- **Fat helps:** CoQ10 is fat-soluble and is absorbed best with fat, so taking it with a meal is the simplest way to improve absorption, whatever the form [4].
+
+## Which form did the trials use?
+
+| Trial | Form | Daily dose |
+|---|---|---|
+| Heart failure, 2 years (the most-cited CoQ10 trial) [1] | Ubiquinone | 300 mg |
+| Older adults, 4 years (with selenium) [6] | Ubiquinone | 200 mg |
+| Statin muscle aches, confirmed by a blinded statin challenge [7] | Ubiquinol | 600 mg |
+
+Most research used ubiquinone [2]. A few studies used ubiquinol, and one of the most careful statin trials found **no benefit** for muscle pain even at 600 mg of ubiquinol a day [7].
+
+## So which should you buy?
+
+- **Either form can raise blood CoQ10 levels.** Ubiquinone has the most research behind it and usually costs less [2][3].
+- **Take it with a meal that contains some fat**, whichever form you choose [4].
+- **Doses in trials:** mostly 100–300 mg a day [1][6].
+- **Ubiquinol may suit you** if you'd rather pay more for the reduced form, but it hasn't been shown to work better [3].
+
+## Safety
+
+CoQ10 is well tolerated in trials. Mild stomach upset is the most common complaint [4]. **Warfarin:** CoQ10 is chemically similar to vitamin K and may reduce warfarin's effect, so don't start or stop it without your doctor [8][9]. **Cancer treatment:** as an antioxidant, it may make some treatments less effective; check with your oncologist [8]. **Statins** lower your body's CoQ10, but never stop a statin because of muscle pain without talking to your doctor [8]. More in our [CoQ10 guide](/guides/coq10).
+
+Our [CoQ10](/products/coq10) is ubiquinone, 200 mg per capsule. Take one capsule a day with a meal that contains some fat.
+
+## Sources
+
+1. Mortensen SA et al. JACC: Heart Failure, 2014. [The effect of coenzyme Q10 on morbidity and mortality in chronic heart failure: results from Q-SYMBIO: a randomized double-blind trial](https://pubmed.ncbi.nlm.nih.gov/25282031/).
+2. Mantle D, Dybring A. Antioxidants, 2020. [Bioavailability of coenzyme Q10: an overview of the absorption process and subsequent metabolism](https://pmc.ncbi.nlm.nih.gov/articles/PMC7278738/).
+3. Pravst I et al. Nutrients, 2020. [Comparative bioavailability of different coenzyme Q10 formulations in healthy elderly individuals](https://pmc.ncbi.nlm.nih.gov/articles/PMC7146408/).
+4. National Cancer Institute. [Coenzyme Q10 (PDQ®): health professional version](https://www.cancer.gov/about-cancer/treatment/cam/hp/coenzyme-q10-pdq).
+5. Al Saadi T et al. Cochrane Database of Systematic Reviews, 2021. [Coenzyme Q10 for heart failure](https://pubmed.ncbi.nlm.nih.gov/35608922/).
+6. Alehagen U et al. International Journal of Cardiology, 2013. [Cardiovascular mortality and N-terminal-proBNP reduced after combined selenium and coenzyme Q10 supplementation: a 5-year prospective randomized double-blind placebo-controlled trial among elderly Swedish citizens](https://pubmed.ncbi.nlm.nih.gov/22626835/).
+7. Taylor BA et al. Atherosclerosis, 2015. [A randomized trial of coenzyme Q10 in patients with confirmed statin myopathy](https://pmc.ncbi.nlm.nih.gov/articles/PMC4298455/).
+8. Memorial Sloan Kettering Cancer Center. [Coenzyme Q10 — About Herbs](https://www.mskcc.org/cancer-care/integrative-medicine/herbs/coenzyme-q10).
+9. Spigset O. The Lancet, 1994. [Reduced effect of warfarin caused by ubidecarenone](https://pubmed.ncbi.nlm.nih.gov/7968059/).
+$jr$, 'Noovit', 'published', '2026-12-28T14:00:00.000Z', $jr$Ubiquinol vs Ubiquinone: Which CoQ10 Form? | Noovit$jr$, $jr$Ubiquinol or ubiquinone? Your body converts between the two CoQ10 forms, and most trials used ubiquinone. What absorption studies show, and how to take either.$jr$)
+on conflict (slug) do update set
+  status = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.status else posts.status end,
+  published_at = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.published_at else posts.published_at end,
+  seo_title = excluded.seo_title, seo_description = excluded.seo_description;
 
 -- Mon, 23 Nov 2026 14:00:00 GMT
 insert into posts (slug, title, excerpt, body, author, status, published_at, seo_title, seo_description)
@@ -520,5 +831,7 @@ Our [Magnesium Sleep+](/products/magnesium-complex) gives 275 mg of elemental ma
 5. Hausenblas HA et al. Sleep Medicine: X, 2024. [Magnesium-L-threonate improves sleep quality and daytime functioning in adults with self-reported sleep problems: a randomized controlled trial](https://pmc.ncbi.nlm.nih.gov/articles/PMC11381753/).
 6. Abbasi B et al. Journal of Research in Medical Sciences, 2012. [The effect of magnesium supplementation on primary insomnia in elderly: a double-blind placebo-controlled clinical trial](https://pmc.ncbi.nlm.nih.gov/articles/PMC3703169/).
 $jr$, 'Noovit', 'published', '2026-11-23T14:00:00.000Z', $jr$When to Take Magnesium for Sleep, and How Much | Noovit$jr$, $jr$Sleep trials gave about 250 mg of magnesium 30–60 minutes before bed. What they found, how soon to expect a change, and the 350 mg supplement limit.$jr$)
-on conflict (slug) do update set status = excluded.status, published_at = excluded.published_at
-  where posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null;
+on conflict (slug) do update set
+  status = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.status else posts.status end,
+  published_at = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.published_at else posts.published_at end,
+  seo_title = excluded.seo_title, seo_description = excluded.seo_description;

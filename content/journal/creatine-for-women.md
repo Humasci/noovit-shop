@@ -3,7 +3,7 @@ slug: creatine-for-women
 title: "Creatine for women: what the research shows"
 excerpt: Creatine works in women too, but women have been studied far less than men, and some results are weaker. What the trials found for strength, muscle, older women and the brain, plus the water-weight question.
 seoTitle: "Creatine for Women: What the Research Shows | Noovit"
-seoDescription: Does creatine work for women? What trials show for strength, lean muscle, menopause and memory, why results differ from men's, and how to avoid water-weight gain.
+seoDescription: Does creatine work for women? What trials show for strength, lean muscle, menopause and memory, and how to avoid water-weight gain.
 publishAt: 2026-12-07T14:00:00Z
 ---
 

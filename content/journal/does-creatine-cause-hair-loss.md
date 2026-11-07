@@ -2,7 +2,7 @@
 slug: does-creatine-cause-hair-loss
 title: "Does creatine cause hair loss? The one study behind the claim"
 excerpt: The worry traces back to a single 2009 study that measured a hormone, not hair. In 2025, the first trial to measure hair itself found no difference. Here's what both found.
-seoTitle: Does Creatine Cause Hair Loss? What the Research Shows | Noovit
+seoTitle: Does Creatine Cause Hair Loss? The Evidence | Noovit
 seoDescription: The creatine hair-loss worry comes from one 2009 study that never measured hair. A 2025 trial that did found no change in hair or DHT. The details.
 publishAt: 2026-11-25T14:00:00Z
 ---

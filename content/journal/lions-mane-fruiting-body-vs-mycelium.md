@@ -2,7 +2,7 @@
 slug: lions-mane-fruiting-body-vs-mycelium
 title: "Lion's mane: fruiting body vs mycelium, and how to read the label"
 excerpt: Fruiting body, mycelium, extract ratios, "mg equivalent", polysaccharides vs beta-glucans. What each term means, what the studies used, and what to check before you buy.
-seoTitle: "Lion's Mane Fruiting Body vs Mycelium: How to Read the Label | Noovit"
+seoTitle: "Lion's Mane: Fruiting Body vs Mycelium | Noovit"
 seoDescription: Fruiting body or mycelium? What each part contains, what the lion's mane studies used, and how to read extract ratios, "mg equivalent" and beta-glucan figures.
 publishAt: 2026-12-10T14:00:00Z
 ---
