@@ -26,5 +26,8 @@ a, b = read(f"{D}/phosphocreatine.2d.sdf"); res['phosphocreatine'] = {'atoms': n
 a, b = read(f"{D}/creatine.2d.sdf", keep_h=True); res['creatine-h'] = {'atoms': norm(pca(a)), 'bonds': b}
 # Curcumin, flat 2D layout with hydrogens (the familiar ball-and-stick shape)
 a, b = read(f"{D}/curcumin.2d.sdf", keep_h=True); res['turmeric-complex'] = {'atoms': norm(pca(a)), 'bonds': b}
+# Ashwagandha: withaferin A (a withanolide, CID 265237) and cortisol (CID 5754), heavy atoms only
+a, b = read(f"{D}/withaferin.2d.sdf"); res['withaferin-a'] = {'atoms': norm(pca(a)), 'bonds': b}
+a, b = read(f"{D}/cortisol.2d.sdf"); res['cortisol'] = {'atoms': norm(pca(a)), 'bonds': b}
 json.dump(res, open(out, 'w'))
 print({k: (len(v['atoms']), len(v['bonds'])) for k, v in res.items()})

@@ -1,0 +1,28 @@
+import { readdirSync, writeFileSync } from 'fs';
+import { Resvg } from '@resvg/resvg-js';
+import { wordmark, ORANGE } from '@/lib/labels/svg';
+const NAVY = '#141A4D';
+let id = 0;
+// Wordmark with only the top-left spur of the first "n" recoloured (spur box measured from the glyph).
+function mark(cx: number, y: number, s: number, ink: string, spur: string | null) {
+  const x = cx - (3.46 * s) / 2;
+  let out = wordmark(cx, y, s, 'print', ink);
+  if (spur) {
+    const c = `sp${id++}`;
+    out += `<clipPath id="${c}"><rect x="${x + 0.03 * s}" y="${y - 0.515 * s}" width="${0.14 * s}" height="${0.128 * s}"/></clipPath>` +
+      `<text x="${x}" y="${y}" font-size="${s}" font-weight="500" letter-spacing="${-0.01 * s}" font-family="Funnel Display" fill="${spur}" clip-path="url(#${c})">n</text>`;
+  }
+  return out;
+}
+const opts: [string, string | null][] = [['Current (one colour)', null], ['Orange spur (#FF5F00, matches the cross)', ORANGE], ['Green spur (#2E9E5B)', '#2E9E5B'], ['Teal spur (#2DB6A8, science palette)', '#2DB6A8']];
+const W = 1800, rowH = 260, H = opts.length * rowH + 40;
+let body = `<rect width="${W}" height="${H}" fill="#fff"/><rect x="${W / 2}" width="${W / 2}" height="${H}" fill="${NAVY}"/>`;
+opts.forEach(([label, sp], i) => {
+  const y = 40 + i * rowH;
+  body += `<text x="40" y="${y + 30}" font-size="24" font-family="Inter" fill="#555">${label}</text>`;
+  body += mark(330, y + 170, 110, NAVY, sp) + mark(700, y + 150, 34, NAVY, sp) + mark(700, y + 210, 16, NAVY, sp);
+  body += mark(1230, y + 170, 110, '#ffffff', sp) + mark(1600, y + 150, 34, '#ffffff', sp) + mark(1600, y + 210, 16, '#ffffff', sp);
+});
+const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}">${body}</svg>`;
+const fontFiles = readdirSync('assets/fonts').filter((f) => f.endsWith('.ttf')).map((f) => `assets/fonts/${f}`);
+writeFileSync(process.argv[2], new Resvg(svg, { fitTo: { mode: 'width', value: W }, font: { fontFiles, loadSystemFonts: false } }).render().asPng());

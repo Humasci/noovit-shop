@@ -46,7 +46,7 @@ Read this first. It is the standing context for any session working on this repo
   art: `/art/cells-dark[-seed].svg`, `/art/cells-light[-seed].svg` (evidence band, advisor card, guides index + every guide
   header, quiz); `/art/helix-dark[-seed].svg` bead DNA helix (About header); `/art/protein-<slug>.svg`. Social post
   templates: `npm run social` → `design/social/` (evidence, dose, meet-the-molecule posts; Ask-AI and evidence stories).
-  Infographics: `npm run infographic` (CoQ10, magnesium, creatine). **Accuracy rule:** molecules are PubChem structures
+  Infographics: `npm run infographic` (CoQ10, magnesium, creatine, ashwagandha). **Accuracy rule:** molecules are PubChem structures
   (`ballStick`, atoms as rounded tiles, CPK colours O red / N blue / P orange), only rotated or scaled, never redrawn;
   facts from NIH ODS or peer-reviewed reviews; schematic biology marked "not to scale".
 - **The cross:** only the five-tile mosaic cross, everywhere (logo, favicon, loader, brand name in text, emails, advisor icon).

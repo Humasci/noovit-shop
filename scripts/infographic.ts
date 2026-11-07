@@ -123,6 +123,48 @@ function muscle() {
   return out.join('');
 }
 
+// Ashwagandha: a schematic taproot with side roots (pale, as the dried root is) and a few leaves at the crown.
+const ROOT = ['#E9D6B4', '#D9C29A', '#F3E6CF', '#C8AE82'], LEAF = ['#3F8F5A', '#6DBE7E', '#2E6B45'];
+function strand(p0: number[], p1: number[], p2: number[], w0: number, w1: number, cols: string[], r = 3.4) {
+  const out: string[] = [];
+  const len = Math.hypot(p1[0] - p0[0], p1[1] - p0[1]) + Math.hypot(p2[0] - p1[0], p2[1] - p1[1]);
+  const steps = Math.max(8, Math.round(len / (r * 1.1)));
+  for (let s = 0; s <= steps; s++) {
+    const t = s / steps, u = 1 - t;
+    const x = u * u * p0[0] + 2 * u * t * p1[0] + t * t * p2[0], y = u * u * p0[1] + 2 * u * t * p1[1] + t * t * p2[1];
+    const dx = 2 * u * (p1[0] - p0[0]) + 2 * t * (p2[0] - p1[0]), dy = 2 * u * (p1[1] - p0[1]) + 2 * t * (p2[1] - p1[1]);
+    const d = Math.hypot(dx, dy) || 1, nx = -dy / d, ny = dx / d, w = w0 + (w1 - w0) * t;
+    const k = Math.max(1, Math.round(w / (r * 1.5)));
+    for (let j = 0; j < k; j++) { const o = (rnd() - 0.5) * w; out.push(dot(x + nx * o, y + ny * o, r * (0.75 + 0.5 * rnd()), cols[Math.floor(rnd() * cols.length)])); }
+  }
+  return out.join('');
+}
+function root() {
+  const out: string[] = [`<ellipse cx="${CX}" cy="${CY + 20}" rx="420" ry="300" fill="url(#mem)" fill-opacity="0.55"/>`];
+  for (const [a, l] of [[-2.25, 115], [-1.8, 150], [-1.3, 140], [-0.85, 110]]) {
+    const ex = CX + Math.cos(a) * l, ey = 410 + Math.sin(a) * l;
+    out.push(strand([CX, 410], [CX + Math.cos(a) * l * 0.5, 410 + Math.sin(a) * l * 0.5 - 6], [ex, ey], 3, 2, ['#5E8F6A'], 2.2));
+    out.push(blob(ex, ey, 48, 22, LEAF, 3, 1.4, a));
+  }
+  out.push(strand([CX, 400], [CX + 30, 650], [CX - 10, 930], 64, 6, ROOT, 4)); // taproot
+  const sides: [number, number, number, number][] = [[470, -1, 170, 120], [520, 1, 190, 140], [600, -1, 230, 170], [650, 1, 220, 180], [730, -1, 170, 150], [780, 1, 160, 130], [850, -1, 110, 90]];
+  for (const [y, s, dx, dy] of sides) {
+    const x0 = CX + 30 * Math.sin(((y - 400) / 530) * Math.PI) * 0.6;
+    out.push(strand([x0, y], [x0 + s * dx * 0.6, y + dy * 0.2], [x0 + s * dx, y + dy], 18, 3, ROOT, 3.2));
+    out.push(strand([x0 + s * dx * 0.6, y + dy * 0.35], [x0 + s * dx * 0.8, y + dy * 0.45], [x0 + s * dx * 0.95, y + dy * 0.75 + 30], 6, 2, ROOT, 2.4));
+  }
+  return out.join('');
+}
+// Cross-section of the root: bark, cortex and woody core (schematic).
+const rootSection = (cx: number, cy: number) =>
+  blob(cx, cy, 92, 92, ['#B89A6A', '#C8AE82'], 3.6, 1.2) + blob(cx, cy, 78, 78, ['#F3E6CF', '#E9D6B4'], 3.6, 1.3) + blob(cx, cy, 34, 34, ['#D9C29A', '#C8AE82', '#E8C547'], 3.2, 1.4);
+// 100 beads, `k` lit: "at least 5% withanolides".
+const percentGrid = (cx: number, cy: number, k: number) => {
+  const out: string[] = [];
+  for (let i = 0; i < 100; i++) { const gx = i % 10, gy = Math.floor(i / 10); const lit = gy === 4 && gx >= 3 && gx < 3 + k; out.push(dot(cx - 67.5 + gx * 15, cy - 67.5 + gy * 15, lit ? 6.5 : 5.5, lit ? TEAL : '#6E7BE8', lit ? 1 : 0.45)); }
+  return out.join('');
+};
+
 interface Hex { cx: number; cy: number; ax: number; ay: number; inner: string; title: string; text: string; side: 'l' | 'r' }
 interface Topic { slug: string; title: string; subtitle: string; centre: () => string; hexes: Hex[]; sources: string }
 const POS = { tl: [560, 330], tr: [1240, 290], r: [1360, 650], br: [1240, 980], bl: [560, 980] } as const;
@@ -159,10 +201,22 @@ const TOPICS: Topic[] = [
       { ...at('bl'), ax: CX - 60, ay: CY + 164, side: 'l', inner: brandShape('creatine', 560, 980, 180), title: 'Food and supplements', text: 'Meat and fish provide around 1 g a day. Studies of creatine monohydrate typically use 3–5 g a day.' },
     ],
   },
+  {
+    slug: 'ashwagandha', title: 'Ashwagandha', subtitle: 'A root extract studied for stress', centre: root, sources: 'NIH NCCIH; NIH LiverTox; trials cited at noovit.com/guides/ashwagandha',
+    hexes: [
+      { ...at('tl'), ax: CX + 10, ay: 520, side: 'l', inner: rootSection(560, 330), title: 'The root', text: 'Ashwagandha (Withania somnifera) is a shrub used in Ayurveda. Supplements are usually made from its root, or root and leaf.' },
+      { ...at('tr'), ax: CX + 150, ay: 600, side: 'r', inner: mol('withaferin-a', 1240, 290, 190, 170, { rotate: 0 }), title: 'Withanolides', text: 'Its main active compounds are thought to be withanolides, steroid-like molecules such as withaferin A (shown). Which ones matter is unclear.' },
+      { ...at('r'), ax: CX + 200, ay: 760, side: 'r', inner: percentGrid(1360, 650, 5), title: 'Standardized extract', text: 'KSM-66 is a root-only extract standardized to at least 5% withanolides, so each dose contains a consistent amount.' },
+      { ...at('br'), ax: CX + 15, ay: 860, side: 'r', inner: mol('cortisol', 1240, 980, 190, 160, { rotate: 0 }), title: 'Stress and cortisol', text: 'In 8–12 week trials of stressed adults, 240–600 mg of extract a day lowered perceived stress and cortisol, a stress hormone. Most trials were small.' },
+      { ...at('bl'), ax: 790, ay: 660, side: 'l', inner: miniCells(560, 980), title: 'Safety first', text: 'Rare liver injury has been reported, and it can raise thyroid hormones. Avoid in pregnancy; ask your doctor if you take thyroid medicine.' },
+    ],
+  },
 ];
 
 function caption(h: Hex) {
-  const lines = wrap(h.text, 300, 22, 0.5).slice(0, 6);
+  const all = wrap(h.text, 300, 22, 0.5);
+  if (all.length > 6) console.warn(`Caption too long (${all.length} lines): ${h.title}`);
+  const lines = all.slice(0, 6);
   const x = h.side === 'l' ? h.cx - 130 - 320 : h.cx + 130;
   const y = h.cy - 60;
   return `<text x="${x}" y="${y}" font-size="26" font-weight="700" fill="#fff" font-family="Inter">${esc(h.title)}</text>` +
