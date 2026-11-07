@@ -68,15 +68,14 @@ function cell() {
 
 // ---- hexagon close-ups ----
 const hexPath = (cx: number, cy: number, r: number) => Array.from({ length: 6 }, (_, i) => { const a = Math.PI / 6 + (i * Math.PI) / 3; return `${n(cx + r * Math.cos(a))},${n(cy + r * Math.sin(a))}`; }).join(' ');
-function hex(id: string, cx: number, cy: number, inner: string) {
-  const r = 108;
+function hex(id: string, cx: number, cy: number, inner: string, r = 108) {
   defs.push(`<clipPath id="${id}"><polygon points="${hexPath(cx, cy, r)}"/></clipPath>`);
   return `<g clip-path="url(#${id})"><polygon points="${hexPath(cx, cy, r)}" fill="#141A4D"/>${inner}</g><polygon points="${hexPath(cx, cy, r)}" fill="none" stroke="#fff" stroke-width="4"/>`;
 }
 
 // ---- hexagon contents (all drawn in the hexagon's own box, ~210 px across) ----
-const mol = (key: string, cx: number, cy: number, w: number, h: number, opts: { rotate?: number; zoom?: number } = {}) =>
-  ballStick(key, cx, cy, w, h, '#7FD6CC', { carbon: '#3A4466', rotate: opts.rotate ?? 0, zoom: opts.zoom });
+const mol = (key: string, cx: number, cy: number, w: number, h: number, opts: { rotate?: number; zoom?: number; zoomAt?: 'oxygen' | 'centre'; weight?: number } = {}) =>
+  ballStick(key, cx, cy, w, h, '#7FD6CC', { carbon: '#3A4466', rotate: opts.rotate ?? 0, zoom: opts.zoom, zoomAt: opts.zoomAt, weight: opts.weight });
 const atpSynthase = (cx: number, cy: number) => {
   const out: string[] = [blob(cx, cy + 55, 70, 10, [LAV, COBALT], 3.5, 1.2)];
   for (let k = 0; k < 9; k++) { const a = (k / 9) * Math.PI * 2; out.push(blob(cx + Math.cos(a) * 30, cy - 20 + Math.sin(a) * 30, 13, 13, [GOLD, '#F2D97A', '#C9A227'], 3.2)); }
@@ -123,50 +122,84 @@ function muscle() {
   return out.join('');
 }
 
-// Ashwagandha: a schematic taproot with side roots (pale, as the dried root is) and a few leaves at the crown.
-const ROOT = ['#E9D6B4', '#D9C29A', '#F3E6CF', '#C8AE82'], LEAF = ['#3F8F5A', '#6DBE7E', '#2E6B45'];
-function strand(p0: number[], p1: number[], p2: number[], w0: number, w1: number, cols: string[], r = 3.4) {
+// Ashwagandha: a fleshy taproot that forks, with fine rootlets, shaded light-to-dark across its width so it reads as
+// round; above the ground line, oval leaves and the plant's orange-red berries in papery husks. Schematic, not to scale.
+const ROOT = ['#F6EBD6', '#EBD9B8', '#DCC49B', '#C7A97C', '#A88A5F'], LEAF = ['#8FCB8A', '#5FA66A', '#3F8552', '#2B6040'];
+function strand(p0: number[], p1: number[], p2: number[], w0: number, w1: number, cols: string[], r = 3.4, rings = 0) {
   const out: string[] = [];
   const len = Math.hypot(p1[0] - p0[0], p1[1] - p0[1]) + Math.hypot(p2[0] - p1[0], p2[1] - p1[1]);
-  const steps = Math.max(8, Math.round(len / (r * 1.1)));
+  const steps = Math.max(8, Math.round(len / (r * 0.9)));
   for (let s = 0; s <= steps; s++) {
     const t = s / steps, u = 1 - t;
     const x = u * u * p0[0] + 2 * u * t * p1[0] + t * t * p2[0], y = u * u * p0[1] + 2 * u * t * p1[1] + t * t * p2[1];
     const dx = 2 * u * (p1[0] - p0[0]) + 2 * t * (p2[0] - p1[0]), dy = 2 * u * (p1[1] - p0[1]) + 2 * t * (p2[1] - p1[1]);
-    const d = Math.hypot(dx, dy) || 1, nx = -dy / d, ny = dx / d, w = w0 + (w1 - w0) * t;
-    const k = Math.max(1, Math.round(w / (r * 1.5)));
-    for (let j = 0; j < k; j++) { const o = (rnd() - 0.5) * w; out.push(dot(x + nx * o, y + ny * o, r * (0.75 + 0.5 * rnd()), cols[Math.floor(rnd() * cols.length)])); }
+    const d = Math.hypot(dx, dy) || 1, nx = -dy / d, ny = dx / d, w = w0 + (w1 - w0) * Math.pow(t, 0.8);
+    const ring = rings > 0 && Math.round(t * len) % rings < r; // faint transverse wrinkles
+    const k = Math.max(1, Math.round(w / (r * 1.05)));
+    for (let j = 0; j < k; j++) {
+      const o = (rnd() - 0.5) * w, e = Math.min(1, Math.abs(o) / (w / 2 || 1));
+      const ci = Math.min(cols.length - 1, Math.floor(Math.pow(e, 1.4) * (cols.length - 1) + rnd() * 0.9 + (ring ? 1 : 0)));
+      out.push(dot(x + nx * o, y + ny * o, r * (0.75 + 0.5 * rnd()), cols[ci]));
+    }
   }
   return out.join('');
 }
-function root() {
-  const out: string[] = [`<ellipse cx="${CX}" cy="${CY + 20}" rx="420" ry="300" fill="url(#mem)" fill-opacity="0.55"/>`];
-  for (const [a, l] of [[-2.25, 115], [-1.8, 150], [-1.3, 140], [-0.85, 110]]) {
-    const ex = CX + Math.cos(a) * l, ey = 410 + Math.sin(a) * l;
-    out.push(strand([CX, 410], [CX + Math.cos(a) * l * 0.5, 410 + Math.sin(a) * l * 0.5 - 6], [ex, ey], 3, 2, ['#5E8F6A'], 2.2));
-    out.push(blob(ex, ey, 48, 22, LEAF, 3, 1.4, a));
+// An oval leaf, widest near the base, with a pale midrib.
+function leaf(x: number, y: number, ang: number, len: number, wid: number) {
+  const out: string[] = [], r = 2.8, ca = Math.cos(ang), sa = Math.sin(ang);
+  const count = Math.round(((len * wid) / (r * r)) * 0.55);
+  for (let i = 0; i < count; i++) {
+    const t = rnd(), hw = (wid / 2) * Math.sin(Math.PI * Math.pow(t, 0.7)), o = (rnd() * 2 - 1) * hw, e = Math.abs(o) / (hw || 1);
+    const c = e < 0.12 ? '#B8E0A8' : LEAF[Math.min(LEAF.length - 1, Math.floor(e * 2.2 + rnd() * 1.2))];
+    out.push(dot(x + ca * t * len - sa * o, y + sa * t * len + ca * o, r * (0.8 + 0.4 * rnd()), c));
   }
-  out.push(strand([CX, 400], [CX + 30, 650], [CX - 10, 930], 64, 6, ROOT, 4)); // taproot
-  const sides: [number, number, number, number][] = [[470, -1, 170, 120], [520, 1, 190, 140], [600, -1, 230, 170], [650, 1, 220, 180], [730, -1, 170, 150], [780, 1, 160, 130], [850, -1, 110, 90]];
-  for (const [y, s, dx, dy] of sides) {
-    const x0 = CX + 30 * Math.sin(((y - 400) / 530) * Math.PI) * 0.6;
-    out.push(strand([x0, y], [x0 + s * dx * 0.6, y + dy * 0.2], [x0 + s * dx, y + dy], 18, 3, ROOT, 3.2));
-    out.push(strand([x0 + s * dx * 0.6, y + dy * 0.35], [x0 + s * dx * 0.8, y + dy * 0.45], [x0 + s * dx * 0.95, y + dy * 0.75 + 30], 6, 2, ROOT, 2.4));
+  return out.join('');
+}
+// The berry: orange-red, inside a papery lantern-shaped husk.
+function lantern(x: number, y: number) {
+  const out: string[] = [blob(x, y + 4, 8, 8, ['#E0522D', '#F07A3E', '#C33A1E'], 2.6, 1.5)];
+  for (let k = 0; k < 34; k++) { const a = (k / 34) * Math.PI * 2; out.push(dot(x + 13 * Math.sin(a), y + 2 - 17 * Math.cos(a) + 4 * Math.cos(a) ** 2, 2.3, '#D9B77A', 0.85)); }
+  return out.join('');
+}
+const GROUND = 440;
+function root() {
+  const out: string[] = [`<ellipse cx="${CX}" cy="${CY + 30}" rx="420" ry="300" fill="url(#mem)" fill-opacity="0.55"/>`];
+  for (let x = 650; x <= 1150; x += 9) out.push(dot(x, GROUND + Math.sin(x / 40) * 2, 2.2, '#B9A9F2', 0.35)); // ground line
+  // stems, leaves and berries
+  const stems: [number[], number[]][] = [[[860, 330], [800, 250]], [[905, 300], [915, 215]], [[950, 330], [1010, 255]]];
+  for (const [mid, tip] of stems) out.push(strand([900, GROUND], mid, tip, 6, 3, ['#7C9A62', '#5E7D4A'], 2.2));
+  const leaves: [number, number, number, number][] = [[812, 300, -2.6, 78], [868, 262, -1.95, 70], [915, 300, -2.25, 62], [925, 250, -0.9, 70], [985, 300, -0.45, 80], [880, 360, -2.9, 66], [945, 365, -0.15, 66], [990, 262, -1.3, 58]];
+  for (const [x, y, a, l] of leaves) out.push(leaf(x, y, a, l, l * 0.5));
+  for (const [x, y] of [[835, 335], [962, 340], [905, 262]]) out.push(lantern(x, y));
+  // roots: a thick taproot that forks low down; two medium side roots; fine rootlets with a few root hairs
+  out.push(strand([900, GROUND - 6], [912, 580], [904, 700], 80, 50, ROOT, 3.8, 26));
+  out.push(strand([904, 690], [872, 820], [838, 965], 50, 6, ROOT, 3.6, 26));
+  out.push(strand([906, 690], [962, 790], [992, 925], 38, 5, ROOT, 3.4, 26));
+  out.push(strand([890, 520], [800, 560], [735, 650], 22, 3, ROOT, 3));
+  out.push(strand([918, 600], [1010, 640], [1075, 735], 20, 3, ROOT, 3));
+  const fine: [number[], number[], number[]][] = [
+    [[880, 480], [820, 495], [770, 530]], [[925, 500], [985, 515], [1035, 560]], [[800, 560], [770, 610], [775, 680]],
+    [[1010, 640], [1040, 700], [1030, 770]], [[885, 650], [810, 690], [770, 770]], [[930, 740], [1010, 760], [1060, 830]],
+    [[860, 830], [790, 860], [760, 930]], [[975, 840], [1040, 880], [1050, 950]], [[850, 900], [880, 950], [870, 1000]],
+  ];
+  for (const [a, b, c] of fine) {
+    out.push(strand(a, b, c, 5, 1.5, ROOT.slice(1), 2.1));
+    for (let h = 0; h < 6; h++) { const t = rnd(); out.push(dot((1 - t) ** 2 * a[0] + 2 * (1 - t) * t * b[0] + t * t * c[0] + (rnd() - 0.5) * 14, (1 - t) ** 2 * a[1] + 2 * (1 - t) * t * b[1] + t * t * c[1] + (rnd() - 0.5) * 14, 1.1, '#EBD9B8', 0.7)); }
   }
   return out.join('');
 }
 // Cross-section of the root: bark, cortex and woody core (schematic).
-const rootSection = (cx: number, cy: number) =>
-  blob(cx, cy, 92, 92, ['#B89A6A', '#C8AE82'], 3.6, 1.2) + blob(cx, cy, 78, 78, ['#F3E6CF', '#E9D6B4'], 3.6, 1.3) + blob(cx, cy, 34, 34, ['#D9C29A', '#C8AE82', '#E8C547'], 3.2, 1.4);
+const rootSection = (cx: number, cy: number, k = 1) =>
+  blob(cx, cy, 92 * k, 92 * k, ['#B89A6A', '#C8AE82'], 3.6, 1.2) + blob(cx, cy, 78 * k, 78 * k, ['#F3E6CF', '#E9D6B4'], 3.6, 1.3) + blob(cx, cy, 34 * k, 34 * k, ['#D9C29A', '#C8AE82', '#E8C547'], 3.2, 1.4);
 // 100 beads, `k` lit: "at least 5% withanolides".
-const percentGrid = (cx: number, cy: number, k: number) => {
+const percentGrid = (cx: number, cy: number, k: number, g = 15) => {
   const out: string[] = [];
-  for (let i = 0; i < 100; i++) { const gx = i % 10, gy = Math.floor(i / 10); const lit = gy === 4 && gx >= 3 && gx < 3 + k; out.push(dot(cx - 67.5 + gx * 15, cy - 67.5 + gy * 15, lit ? 6.5 : 5.5, lit ? TEAL : '#6E7BE8', lit ? 1 : 0.45)); }
+  for (let i = 0; i < 100; i++) { const gx = i % 10, gy = Math.floor(i / 10); const lit = gy === 4 && gx >= 3 && gx < 3 + k; out.push(dot(cx - 4.5 * g + gx * g, cy - 4.5 * g + gy * g, lit ? 6.5 : 5.5, lit ? TEAL : '#6E7BE8', lit ? 1 : 0.45)); }
   return out.join('');
 };
 
 interface Hex { cx: number; cy: number; ax: number; ay: number; inner: string; title: string; text: string; side: 'l' | 'r' }
-interface Topic { slug: string; title: string; subtitle: string; centre: () => string; hexes: Hex[]; sources: string }
+interface Topic { slug: string; title: string; subtitle: string; centre: () => string; hexes: Hex[]; sources: string; hexR?: number }
 const POS = { tl: [560, 330], tr: [1240, 290], r: [1360, 650], br: [1240, 980], bl: [560, 980] } as const;
 const at = (k: keyof typeof POS) => ({ cx: POS[k][0], cy: POS[k][1] });
 
@@ -202,22 +235,22 @@ const TOPICS: Topic[] = [
     ],
   },
   {
-    slug: 'ashwagandha', title: 'Ashwagandha', subtitle: 'A root extract studied for stress', centre: root, sources: 'NIH NCCIH; NIH LiverTox; trials cited at noovit.com/guides/ashwagandha',
+    slug: 'ashwagandha', title: 'Ashwagandha', subtitle: 'A root extract studied for stress', centre: root, sources: 'NIH NCCIH; NIH LiverTox; trials cited at noovit.com/guides/ashwagandha', hexR: 128,
     hexes: [
-      { ...at('tl'), ax: CX + 10, ay: 520, side: 'l', inner: rootSection(560, 330), title: 'The root', text: 'Ashwagandha (Withania somnifera) is a shrub used in Ayurveda. Supplements are usually made from its root, or root and leaf.' },
-      { ...at('tr'), ax: CX + 150, ay: 600, side: 'r', inner: mol('withaferin-a', 1240, 290, 190, 170, { rotate: 0 }), title: 'Withanolides', text: 'Its main active compounds are thought to be withanolides, steroid-like molecules such as withaferin A (shown). Which ones matter is unclear.' },
-      { ...at('r'), ax: CX + 200, ay: 760, side: 'r', inner: percentGrid(1360, 650, 5), title: 'Standardized extract', text: 'KSM-66 is a root-only extract standardized to at least 5% withanolides, so each dose contains a consistent amount.' },
-      { ...at('br'), ax: CX + 15, ay: 860, side: 'r', inner: mol('cortisol', 1240, 980, 190, 160, { rotate: 0 }), title: 'Stress and cortisol', text: 'In 8–12 week trials of stressed adults, 240–600 mg of extract a day lowered perceived stress and cortisol, a stress hormone. Most trials were small.' },
-      { ...at('bl'), ax: 790, ay: 660, side: 'l', inner: miniCells(560, 980), title: 'Safety first', text: 'Rare liver injury has been reported, and it can raise thyroid hormones. Avoid in pregnancy; ask your doctor if you take thyroid medicine.' },
+      { ...at('tl'), ax: 900, ay: 540, side: 'l', inner: rootSection(560, 330, 1.18), title: 'The root', text: 'Ashwagandha (Withania somnifera) is a shrub used in Ayurveda. Supplements are usually made from its root, or root and leaf.' },
+      { ...at('tr'), ax: 1003, ay: 654, side: 'r', inner: mol('withaferin-a', 1240, 290, 218, 200, { rotate: 0, weight: 1.2 }), title: 'Withanolides', text: 'Its main active compounds are thought to be withanolides, steroid-like molecules such as withaferin A (shown). Which ones matter is unclear.' },
+      { cx: 1335, cy: 650, ax: 1030, ay: 702, side: 'r', inner: percentGrid(1335, 650, 5, 17.5), title: 'Standardized extract', text: 'KSM-66 is a root-only extract standardized to at least 5% withanolides, so each dose contains a consistent amount.' },
+      { ...at('br'), ax: 964, ay: 823, side: 'r', inner: mol('cortisol', 1240, 980, 218, 200, { rotate: 0, weight: 1.2 }), title: 'Stress and cortisol', text: 'In 8–12 week trials of stressed adults, 240–600 mg of extract a day lowered perceived stress and cortisol, a stress hormone. Most trials were small.' },
+      { ...at('bl'), ax: 791, ay: 586, side: 'l', inner: miniCells(560, 980), title: 'Safety first', text: 'Rare liver injury has been reported, and it can raise thyroid hormones. Avoid in pregnancy; ask your doctor if you take thyroid medicine.' },
     ],
   },
 ];
 
-function caption(h: Hex) {
+function caption(h: Hex, r = 108) {
   const all = wrap(h.text, 300, 22, 0.5);
   if (all.length > 6) console.warn(`Caption too long (${all.length} lines): ${h.title}`);
   const lines = all.slice(0, 6);
-  const x = h.side === 'l' ? h.cx - 130 - 320 : h.cx + 130;
+  const x = h.side === 'l' ? h.cx - r - 22 - 320 : h.cx + r + 22;
   const y = h.cy - 60;
   return `<text x="${x}" y="${y}" font-size="26" font-weight="700" fill="#fff" font-family="Inter">${esc(h.title)}</text>` +
     lines.map((l, i) => `<text x="${x}" y="${y + 34 + i * 30}" font-size="22" fill="#fff" fill-opacity="0.78" font-family="Inter">${esc(l)}</text>`).join('');
@@ -228,7 +261,7 @@ mkdirSync('design/social', { recursive: true });
 for (const t of TOPICS) {
   seed = 7; // colour gradients are shared across topics (their close-ups are built up front)
   const centre = t.centre();
-  const hexes = t.hexes.map((h, i) => `<line x1="${h.cx}" y1="${h.cy}" x2="${h.ax}" y2="${h.ay}" stroke="#fff" stroke-opacity="0.7" stroke-width="2"/><circle cx="${h.ax}" cy="${h.ay}" r="7" fill="none" stroke="#fff" stroke-width="2.5"/>` + hex(`hx-${t.slug}-${i}`, h.cx, h.cy, h.inner) + caption(h)).join('');
+  const hexes = t.hexes.map((h, i) => `<line x1="${h.cx}" y1="${h.cy}" x2="${h.ax}" y2="${h.ay}" stroke="#fff" stroke-opacity="0.7" stroke-width="2"/><circle cx="${h.ax}" cy="${h.ay}" r="7" fill="none" stroke="#fff" stroke-width="2.5"/>` + hex(`hx-${t.slug}-${i}`, h.cx, h.cy, h.inner, t.hexR) + caption(h, t.hexR)).join('');
   const body = `<rect width="${W}" height="${H}" fill="${NIGHT}"/>${centre}${hexes}
     <text x="70" y="110" font-size="72" font-weight="300" fill="#fff" font-family="Manrope">${esc(t.title)}</text>
     <text x="70" y="160" font-size="34" font-weight="300" fill="#fff" fill-opacity="0.85" font-family="Manrope">${esc(t.subtitle)}</text>

@@ -255,7 +255,7 @@ export const ballStickArt = (p: Product, cx: number, cy: number, width: number, 
 // Element colours follow the standard CPK convention (O red, N blue, P orange, H white); carbon takes the product
 // colour. Atoms are rounded square tiles, the shape of the tiles in the noovit cross: accurate structure, our style.
 // `zoom`: a close-up (crop) centred on the oxygens' centroid; the rest of the molecule runs off the edge (clip it).
-export interface BallStickOpts { spectrum?: boolean; rotate?: number; oxygen?: string; tiles?: boolean; carbon?: string; zoom?: number }
+export interface BallStickOpts { spectrum?: boolean; rotate?: number; oxygen?: string; tiles?: boolean; carbon?: string; zoom?: number; zoomAt?: 'oxygen' | 'centre'; weight?: number }
 export function ballStick(key: string, cx: number, cy: number, width: number, height: number, color: string, opts: BallStickOpts = {}) {
   const sk = SK[key];
   if (!sk) return '';
@@ -267,7 +267,8 @@ export function ballStick(key: string, cx: number, cy: number, width: number, he
   const sx = Math.max(...xs) - Math.min(...xs) || 1, sy = Math.max(...ys) - Math.min(...ys) || 1;
   let s = Math.min(width / sx, height / sy) * 0.92;
   let mx = (Math.max(...xs) + Math.min(...xs)) / 2, my = (Math.max(...ys) + Math.min(...ys)) / 2;
-  if (opts.zoom) {
+  if (opts.zoom && opts.zoomAt === 'centre') s *= opts.zoom; // enlarge about the middle of the molecule
+  else if (opts.zoom) {
     const oi = sk.atoms.map((a, i) => (a[0] === 'O' ? i : -1)).filter((i) => i >= 0);
     mx = oi.reduce((t, i) => t + rotd[i][0], 0) / oi.length;
     my = oi.reduce((t, i) => t + rotd[i][1], 0) / oi.length;
@@ -297,7 +298,7 @@ export function ballStick(key: string, cx: number, cy: number, width: number, he
     const [x1, y1] = P[a], [x2, y2] = P[b];
     const L = Math.hypot(x2 - x1, y2 - y1) || 1, nx = -(y2 - y1) / L, ny = (x2 - x1) / L;
     const offs = order === 2 ? [-1, 1] : order === 3 ? [-1, 0, 1] : [0];
-    const r = bondLen * (order >= 2 ? 0.07 : 0.09);
+    const r = bondLen * (order >= 2 ? 0.07 : 0.09) * (opts.weight ?? 1); // weight: bolder drawing for small sizes
     for (const o of offs) {
       const k = steps(L, r * 1.6);
       for (let i = 0; i <= k; i++) {
@@ -307,7 +308,7 @@ export function ballStick(key: string, cx: number, cy: number, width: number, he
     }
   }
   sk.atoms.forEach(([e], i) => {
-    const r = bondLen * (atomR[e] ?? atomR.C);
+    const r = bondLen * (atomR[e] ?? atomR.C) * (opts.weight ?? 1);
     const [x, y] = P[i];
     out.push(tiles
       ? `<rect x="${n(x - r)}" y="${n(y - r)}" width="${n(2 * r)}" height="${n(2 * r)}" rx="${n(r * 0.3)}" fill="${g(col(e))}"/>`

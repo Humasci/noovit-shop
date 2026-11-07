@@ -178,3 +178,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 3 Nov (12): turmeric art redrawn as the recognisable curcumin ball-and-stick (labels, website, social).
 - [x] 4 Nov (13): ball-and-stick atoms as rounded tiles (cross language) with CPK oxygen/nitrogen/phosphorus colours; turmeric V2 label re-centred; CoQ10 V2 label shows a ring close-up; magnesium and creatine infographics; ATP / phosphocreatine / creatine skeletons from PubChem 2D; orange-spur logo mockup.
 - [x] 7 Nov (14): ashwagandha infographic (bead-built root, withaferin A and cortisol from PubChem 2D, 5% standardization grid, safety panel); caption overflow warning; spur colour comparison (orange / green / teal).
+- [x] 7 Nov (15): ashwagandha infographic redrawn: shaded forking taproot with rootlets, ground line, oval leaves and orange berries in papery husks; larger hexagons (per-topic `hexR`) and bolder molecules (`ballStick` `weight`, `zoomAt: 'centre'`).
