@@ -84,6 +84,8 @@ Read this first. It is the standing context for any session working on this repo
   labels `lib/labels/{svg,photo,png,gallery,gallery-data}.ts`; guides `lib/guides.ts`; quiz `lib/quiz.ts`;
   settings `lib/settings.ts` (admin values > env > defaults); pre-launch gate `proxy.ts` + `lib/launch.ts`;
   feeds `lib/feeds`; company name `LEGAL_NAME` in `lib/site.ts`.
+  Product SEO titles/descriptions: `lib/seo.ts` (Admin SEO fields > that map > name + tagline). Default share image:
+  `app/opengraph-image.png` (`npx tsx scripts/og-default.ts`). Launch content plan: `docs/CONTENT_PLAN.md`.
 - Live DB changes: migrations in `supabase/migrations` and one-off SQL in `supabase/manual` are **run by the owner**
   in the Supabase SQL editor (list the step in the TODO). After catalog SQL: save any product (cache) / Stripe sync.
 - Commands: `npm run build`, `npm run lint`, `npm run labels` (print label drafts → `design/labels`),

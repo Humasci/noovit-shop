@@ -13,6 +13,7 @@ import { Product } from '@/types';
 import { Stars } from '@/components/ui/Stars';
 import { PlaceholderNote } from '@/components/ui/Placeholder';
 import { guidesForProduct } from '@/lib/guides';
+import { productSeo } from '@/lib/seo';
 import { evidenceFor } from '@/lib/evidence';
 import { EvidenceTimeline, EvidenceTrials } from '@/components/product/EvidencePanel';
 import { GOAL_PAGES } from '@/lib/goals';
@@ -31,8 +32,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const product = await getStoreProduct((await params).slug);
   if (!product) return {};
-  const title = product.seoTitle || `${product.name} — Noovit`;
-  const description = product.seoDescription || product.description;
+  const { title, description } = productSeo(product);
   return {
     title,
     description,

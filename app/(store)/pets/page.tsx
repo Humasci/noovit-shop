@@ -25,7 +25,7 @@ const PET_TRUST = [
   { icon: Scale, label: 'Dosed by Weight' },
   { icon: MapPin, label: 'Free US Shipping' },
   { icon: FlaskConical, label: 'Clear Labels' },
-  { icon: Ban, label: 'No Artificial Colours' },
+  { icon: Ban, label: 'No Artificial Colors' },
   { icon: ShieldCheck, label: 'Picky-Eater Guarantee' },
 ];
 

@@ -5,7 +5,7 @@ import { findGuide } from '@/lib/guides';
 import { ORANGE, wordmark, wrap } from '@/lib/labels/svg';
 
 // 1200 × 630 social image for a guide (Open Graph / X cards): title, source count, wordmark, a corner of mosaic tiles.
-const NAVY = '#14213d';
+const NAVY = '#141A4D'; // science palette night
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 const FONT_DIR = path.join(process.cwd(), 'assets/fonts');
 
@@ -21,9 +21,9 @@ function svg(title: string, sources: number) {
       if (rnd() < w * 1.4) tiles.push(`<rect x="${1160 - c * 26}" y="${22 + r * 26}" width="20" height="20" rx="2.5" fill="${ORANGE}" opacity="${(0.15 + 0.6 * w * rnd()).toFixed(2)}"/>`);
     }
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
-  <rect width="1200" height="630" fill="#f6f4ef"/>
+  <rect width="1200" height="630" fill="#ffffff"/>
   ${tiles.join('')}
-  <text x="80" y="150" font-size="22" font-weight="600" letter-spacing="3.5" fill="#2f725d" font-family="'Inter'">SUPPLEMENT GUIDE · EVIDENCE-GRADED</text>
+  <text x="80" y="150" font-size="22" font-weight="600" letter-spacing="3.5" fill="#3E5BD6" font-family="'Inter'">SUPPLEMENT GUIDE · EVIDENCE-GRADED</text>
   ${lines.map((l, i) => `<text x="76" y="${240 + i * size * 1.12}" font-size="${size}" font-weight="600" letter-spacing="-1.5" fill="${NAVY}" font-family="'Manrope'">${esc(l)}</text>`).join('')}
   <text x="80" y="540" font-size="24" font-weight="500" fill="#5b6472" font-family="'Inter'">${sources} sources · noovit.com/guides</text>
   ${wordmark(1120 - (3.46 * 40) / 2, 552, 40, 'print')}

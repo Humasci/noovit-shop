@@ -8,7 +8,7 @@ const POLICIES: Record<string, { title: string; sections: { h: string; p: string
   'delivery-returns': {
     title: 'Delivery & Returns',
     sections: [
-      { h: 'Shipping', p: 'Free standard shipping on all US orders. Orders usually ship within 1–2 business days and arrive 2–5 business days after dispatch. You get a tracking link by email as soon as your order ships.' },
+      { h: 'Shipping', p: 'Free standard shipping on all US orders. Orders usually ship within 1–2 business days and arrive 2–5 business days after shipping. You get a tracking link by email as soon as your order ships.' },
       { h: '90-day money-back guarantee', p: 'If you are not happy with your purchase, contact us within 90 days of delivery for a full refund of the product price — even if the bottle is empty.' },
       { h: 'Damaged or missing items', p: 'Let us know within 14 days of delivery and we will send a replacement at no cost.' },
     ],
@@ -17,7 +17,7 @@ const POLICIES: Record<string, { title: string; sections: { h: string; p: string
     title: 'Privacy Policy',
     sections: [
       { h: 'What we collect', p: 'We collect the information you give us when you place an order, create an account or sign up for emails, plus basic analytics about how the site is used.' },
-      { h: 'How we use it', p: 'To fulfil orders, manage subscriptions, provide support and — with your consent — send marketing emails. We never sell your personal data.' },
+      { h: 'How we use it', p: 'To fulfill orders, manage subscriptions, provide support and — with your consent — send marketing emails. We never sell your personal data.' },
       { h: 'Your rights', p: 'You can access, correct or delete your data at any time by emailing hello@noovit.com.' },
     ],
   },
@@ -31,11 +31,18 @@ const POLICIES: Record<string, { title: string; sections: { h: string; p: string
   },
 };
 
+const POLICY_DESCRIPTIONS: Record<string, string> = {
+  'delivery-returns': 'Free standard shipping on all US orders, delivery times and tracking, damaged items, and our 90-day money-back guarantee.',
+  privacy: 'What personal data Noovit collects, how we use it (we never sell it), and how to access, correct or delete yours.',
+  terms: 'The terms for using noovit.com: how subscriptions renew, how to change or cancel online, and how pricing works.',
+};
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const policy = POLICIES[slug];
   if (!policy) return {};
-  return { title: `${policy.title} — Noovit`, description: `Noovit ${policy.title.toLowerCase()}.`, alternates: { canonical: `/policies/${slug}` } };
+  const description = POLICY_DESCRIPTIONS[slug] ?? `Noovit ${policy.title.toLowerCase()}.`;
+  return { title: `${policy.title} — Noovit`, description, alternates: { canonical: `/policies/${slug}` } };
 }
 
 export function generateStaticParams() {
