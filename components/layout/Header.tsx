@@ -135,18 +135,31 @@ export function Header({ trustBar, announcement, advisor = false }: { trustBar: 
               );
             })}
           </nav>
-          <button
-            className="-m-2.5 order-1 p-2.5 lg:hidden"
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-            aria-expanded={menuOpen}
-            aria-controls="mobile-menu"
-          >
-            {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
+          {/* Phones and tablets: menu button, plus a compact "Ask AI" pill beside it (the floating pill is gone). The left
+              and right groups share the spare width equally (flex-1), so the logo stays centred. */}
+          <div className="order-1 flex flex-1 items-center gap-2.5 lg:hidden">
+            <button
+              className="-m-2.5 p-2.5"
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={menuOpen}
+              aria-controls="mobile-menu"
+            >
+              {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+            {advisor && (
+              <button
+                type="button"
+                onClick={() => { setMenuOpen(false); window.dispatchEvent(new Event('noovit:advisor')); }}
+                aria-label="Ask Noovit AI"
+                className="flex items-center gap-1.5 rounded-full bg-[var(--color-navy)] px-3 py-1.5 text-[13px] font-semibold text-white md:hidden max-[370px]:px-2"
+              >
+                <CrossIcon className="h-3 w-3" /> <span className="max-[370px]:sr-only">Ask AI</span>
+              </button>
+            )}
+          </div>
 
-
-          <div className="order-3 flex items-center gap-4 text-sm font-semibold lg:ml-auto">
+          <div className="order-3 flex flex-1 items-center justify-end gap-4 text-sm font-semibold lg:ml-auto lg:flex-none">
             {advisor && (
               <button
                 type="button"
@@ -188,6 +201,15 @@ export function Header({ trustBar, announcement, advisor = false }: { trustBar: 
 
         {menuOpen && (
           <nav id="mobile-menu" aria-label="Main" className="animate-slide-in flex flex-col gap-4 border-t border-[var(--color-line)] px-6 py-5 font-logo text-lg font-medium lg:hidden">
+            {advisor && (
+              <button
+                type="button"
+                onClick={() => { setMenuOpen(false); window.dispatchEvent(new Event('noovit:advisor')); }}
+                className="flex items-center gap-2 self-start rounded-full bg-[var(--color-navy)] px-4 py-2 font-sans text-[15px] font-semibold text-white"
+              >
+                <CrossIcon className="h-3.5 w-3.5" /> Ask Noovit AI
+              </button>
+            )}
             {NAV.map((n) => (
               <div key={n.href}>
                 <Link href={n.href} onClick={() => setMenuOpen(false)} className={n.pets ? 'text-[var(--color-pets)]' : ''}>
