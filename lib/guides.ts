@@ -43,7 +43,7 @@ export const GUIDES: Guide[] = [
     ingredient: 'Nattokinase',
     metaTitle: 'Nattokinase: Benefits, Dosage, Side Effects & Interactions',
     metaDescription:
-      'What nattokinase is, what the research says about blood pressure and circulation, typical doses (2,000 FU), side effects, and who should avoid it. Evidence-graded, with sources.',
+      'What nattokinase is, what research says about blood pressure and circulation, typical doses (2,000 FU), side effects, and who should avoid it.',
     published: '2026-10-28',
     updated: '2026-10-28',
     summary:

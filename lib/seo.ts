@@ -38,8 +38,11 @@ const PRODUCT_SEO: Record<string, { title: string; description: string }> = {
 export function productSeo(p: Product) {
   const preset = PRODUCT_SEO[p.slug];
   const built = p.tagline && `${p.name}: ${p.tagline} | Noovit`.length <= 65 ? `${p.name}: ${p.tagline} | Noovit` : `${p.name} | Noovit`;
+  // Short product descriptions get the store promise added, so search snippets aren't thin (Google shows ~155 chars).
+  const tail = ' Free US shipping, 90-day money-back guarantee.';
+  const fallback = p.description.length < 110 && p.description.length + tail.length <= 160 ? p.description + tail : p.description;
   return {
     title: p.seoTitle || preset?.title || built,
-    description: p.seoDescription || preset?.description || p.description,
+    description: p.seoDescription || preset?.description || fallback,
   };
 }

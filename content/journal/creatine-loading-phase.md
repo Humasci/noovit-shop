@@ -4,6 +4,7 @@ title: Do you need a creatine loading phase?
 excerpt: No. Loading fills your muscles in about a week; 3 to 5 grams a day gets you to the same place in about four. Here's the study behind that, and when loading might still make sense.
 seoTitle: Do You Need a Creatine Loading Phase? | Noovit
 seoDescription: A creatine loading phase fills muscle stores in about a week; 3 g a day reaches the same level in about 4 weeks. Doses, trade-offs and how to do either.
+publishAt: 2026-11-19T14:00:00Z
 ---
 
 **Short answer:** no. Loading is a shortcut, not a requirement. Taking about 20 g a day for 5–7 days fills your muscles' creatine stores within a week. Taking 3–5 g a day gets them to the same level in about 3–4 weeks [1][2][3]. Once stores are full, the result is the same either way.

@@ -4,6 +4,7 @@ title: How long does ashwagandha take to work? What the trials measured
 excerpt: Most trials measured results after 8 to 10 weeks, and at the 4 to 5 week check-ins the differences from placebo were mostly not there yet. Here's the timeline, study by study.
 seoTitle: How Long Does Ashwagandha Take to Work? | Noovit
 seoDescription: In trials, ashwagandha's effects on stress and sleep showed up after 8–10 weeks, not days. What each study measured, and how long it's safe to take.
+publishAt: 2026-12-03T14:00:00Z
 ---
 
 **Short answer:** think in **weeks, not days**. In the main trials, the clear differences from placebo on stress, cortisol and sleep showed up at **8 to 10 weeks**. At the halfway check-ins (4 to 5 weeks), most measures weren't yet different from placebo, though a few sleep scores were [1][2][3]. A meta-analysis also found bigger sleep effects after 8 weeks or more [4].

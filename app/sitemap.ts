@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { getStoreCollections, getStoreProducts } from '@/lib/catalog/server';
-import { SITE_URL } from '@/lib/site';
+import { SITE_URL, productImageUrl } from '@/lib/site';
 import { getPublishedPosts } from '@/lib/blog';
 import { petProducts } from '@/data/products';
 import { GOAL_PAGES } from '@/lib/goals';
@@ -15,9 +15,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     ...pages.map((path) => ({ url: `${SITE_URL}${path}`, changeFrequency: 'weekly' as const, priority: path === '' ? 1 : 0.6 })),
     { url: `${SITE_URL}/guides`, changeFrequency: 'weekly' as const, priority: 0.6 },
-    ...GUIDES.map((g) => ({ url: `${SITE_URL}/guides/${g.slug}`, lastModified: g.updated, changeFrequency: 'monthly' as const, priority: 0.7 })),
+    ...GUIDES.map((g) => ({ url: `${SITE_URL}/guides/${g.slug}`, lastModified: g.updated, changeFrequency: 'monthly' as const, priority: 0.7, images: [`${SITE_URL}/guide-image/${g.slug}`] })),
     ...GOAL_PAGES.map((g) => ({ url: `${SITE_URL}/goals/${g.slug}`, changeFrequency: 'weekly' as const, priority: 0.7 })),
-    ...products.map((p) => ({ url: `${SITE_URL}/products/${p.slug}`, changeFrequency: 'weekly' as const, priority: 0.8 })),
+    // Image entries help Google Images / Shopping find the bottle photos.
+    ...products.map((p) => ({ url: `${SITE_URL}/products/${p.slug}`, changeFrequency: 'weekly' as const, priority: 0.8, images: [productImageUrl(p)] })),
     ...collections.map((c) => ({ url: `${SITE_URL}/collections/${c.slug}`, changeFrequency: 'weekly' as const, priority: 0.7 })),
     ...posts.map((p) => ({ url: `${SITE_URL}/blog/${p.slug}`, lastModified: p.updatedAt, changeFrequency: 'monthly' as const, priority: 0.5 })),
   ];

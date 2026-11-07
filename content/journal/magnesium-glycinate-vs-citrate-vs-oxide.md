@@ -4,6 +4,7 @@ title: "Magnesium glycinate vs citrate vs oxide: which form, for what?"
 excerpt: The form changes how much magnesium you get per capsule, how well it's absorbed and whether it acts as a laxative. A plain comparison, with what the (thin) research actually shows.
 seoTitle: Magnesium Glycinate vs Citrate vs Oxide | Noovit
 seoDescription: Glycinate, citrate or oxide? How much magnesium each gives, what absorption studies show, which ones loosen stools, and how to pick by goal.
+publishAt: 2026-11-16T14:00:00Z
 ---
 
 **Short answer:** pick by goal. **Citrate** and **oxide** draw water into the bowel, so they suit people who want a laxative effect. **Glycinate** is the form most often chosen to get magnesium *without* that effect. Absorption differences between forms are real but smaller and less certain than marketing suggests: most studies are tiny and measure blood or urine levels, not how people feel [1][2].
