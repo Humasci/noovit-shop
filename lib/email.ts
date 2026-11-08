@@ -8,6 +8,8 @@ async function send(to: string, subject: string, html: string, headers?: Record<
   if (to.endsWith('@deleted.invalid')) return false; // personal data deleted on request (Admin → Customers)
   const key = process.env.RESEND_API_KEY;
   const from = process.env.EMAIL_FROM || 'Noovit <orders@noovit.com>';
+  // Every email invites a reply, so replies go to the support inbox (orders@ is send-only).
+  const reply = replyTo || process.env.EMAIL_REPLY_TO || 'hello@noovit.com';
   if (!key) {
     // Bodies hold sign-in links, so they are only printed outside production.
     const text = html.replace(/<a [^>]*href="([^"]+)"[^>]*>/g, ' [$1] ').replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&');
@@ -18,7 +20,7 @@ async function send(to: string, subject: string, html: string, headers?: Record<
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ from, to, subject, html, ...(headers ? { headers } : {}), ...(replyTo ? { reply_to: replyTo } : {}) }),
+    body: JSON.stringify({ from, to, subject, html, ...(headers ? { headers } : {}), reply_to: reply }),
     signal: AbortSignal.timeout(8000),
   });
   if (!res.ok) console.error(`Email to ${to} failed: ${res.status} ${await res.text()}`);
@@ -29,7 +31,7 @@ const layout = (body: string) => `
 <div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;color:#1f2937">
   <p style="font-size:24px;font-weight:600;color:#14213d;margin:0 0 16px">noovit<table role="presentation" cellpadding="0" cellspacing="1" style="display:inline-table;vertical-align:top;margin-left:2px;margin-top:2px;border-collapse:separate"><tr><td style="width:4px;height:4px;padding:0;background:transparent;border-radius:1px"></td><td style="width:4px;height:4px;padding:0;background:#ff9f66;border-radius:1px"></td><td style="width:4px;height:4px;padding:0;background:transparent;border-radius:1px"></td></tr><tr><td style="width:4px;height:4px;padding:0;background:#ffbf99;border-radius:1px"></td><td style="width:4px;height:4px;padding:0;background:#ff5f00;border-radius:1px"></td><td style="width:4px;height:4px;padding:0;background:#ff7f33;border-radius:1px"></td></tr><tr><td style="width:4px;height:4px;padding:0;background:transparent;border-radius:1px"></td><td style="width:4px;height:4px;padding:0;background:#ffaf80;border-radius:1px"></td><td style="width:4px;height:4px;padding:0;background:transparent;border-radius:1px"></td></tr></table></p>
   ${body}
-  <p style="margin-top:32px;font-size:12px;color:#6b7280">Questions? Just reply to this email.<br/>Noovit · Clean, science-driven supplements<br/>${LEGAL_NAME}</p>
+  <p style="margin-top:32px;font-size:12px;color:#6b7280">Questions? Just reply to this email.<br/>Noovit · Evidence-led supplements<br/>${LEGAL_NAME}</p>
 </div>`;
 
 export interface EmailOrder {
