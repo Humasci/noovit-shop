@@ -4,7 +4,7 @@ import { readdirSync } from 'fs';
 import { Resvg } from '@resvg/resvg-js';
 import sharp from 'sharp';
 import { SEED_PRODUCTS } from '@/data/products';
-import { FRONT, frontPanelElegant, elegantPaper } from '@/lib/labels/svg';
+import { FRONT, frontLabel, labelPaper } from '@/lib/labels/svg';
 import { photoBottleSvg, type LabelArt } from '@/lib/labels/photo';
 
 const fontFiles = readdirSync('assets/fonts').filter((f) => f.endsWith('.ttf')).map((f) => `assets/fonts/${f}`);
@@ -12,8 +12,8 @@ const product = (slug: string) => SEED_PRODUCTS.find((x) => x.slug === slug)!;
 const BG = '#efe9df'; // warm stone, so the white bottle and cap still read
 // The dark paper wraps round the bottle's sides; the front panel draws the type and the colour edge.
 const art: LabelArt = (p, ext) => `
-  <rect x="${-ext}" y="0" width="${FRONT.w + ext * 2}" height="${FRONT.h}" fill="${elegantPaper(p.color)}"/>
-  ${frontPanelElegant(p, 'print', 0, { align: 'left', tone: 'dark' })}`;
+  <rect x="${-ext}" y="0" width="${FRONT.w + ext * 2}" height="${FRONT.h}" fill="${labelPaper(p)}"/>
+  ${frontLabel(p, 'print', 0)}`;
 const png = (svg: string, w: number) => Buffer.from(new Resvg(svg, { fitTo: { mode: 'width', value: w }, font: { fontFiles, loadSystemFonts: false, defaultFontFamily: 'Inter' } }).render().asPng());
 
 (async () => {

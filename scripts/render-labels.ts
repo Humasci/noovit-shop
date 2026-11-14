@@ -1,5 +1,5 @@
 // Writes print drafts of the full wrap-around labels to design/labels/ (and, for powders, the 11" × 3" tub label).
-// Every front is the V2 design (14 Nov); `fullLabelSvg(p, { v2: false })` still gives the earlier A3 front.
+// Every label is the E2 dark design (14 Nov); `fullLabelSvg(p, { style: 'v2' | 'a3' })` gives the earlier fronts.
 //   <slug>.svg         artwork (fonts as names: open in Affinity/Illustrator with Funnel Display and Inter
 //                      installed, outline the text and export a CMYK PDF/X)
 //   <slug>.guides.svg  the same with trim (red), safe zone (blue) and panel folds

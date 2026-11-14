@@ -38,8 +38,15 @@ Read this first. It is the standing context for any session working on this repo
   `lib/labels/molecule.ts`, data `data/molecules.json`). Three products use symbolic particle shapes instead
   (`lib/labels/shapes.ts`): Lion's Mane = brain, Magnesium = wave-shaped mineral ore, Creatine = triple spiral (strength); Turmeric = curcumin as a flat bead ball-and-stick (`ballStickArt`, PubChem 2D in
   `data/skeletons.json`), because its 3D model reads as a blob. Used for the website product photos and, since 14 Nov, every print label (`fullLabelSvg`, `tubLabelSvg`; `v2: false` gives the old A3 front). Products without molecule/shape art get a bead sphere (`particleShape(..., { fallback: true })`). "Made in the USA" is off the labels (`ORIGIN_CLAIM = null`) until Supliful confirms. Core colours: Mg `#4A6B94`, Ashwa `#AE5559`, Lion's Mane
-  `#2B7C82`, Creatine `#2F6F4E`, CoQ10 `#8E2E45`, Turmeric `#B56E1E`. Website graphics in the same style: `/art/molecule-<slug>.svg`,
+  `#2B7C82`, Creatine `#2F6F4E`, CoQ10 `#7B3F86` (plum, 14 Nov), Turmeric `#C98F14` (saffron, 14 Nov). Website graphics in the same style: `/art/molecule-<slug>.svg`,
   `/art/drift-<slug>.svg` (`lib/labels/web-art.ts`).
+- **Label E2 dark (14 Nov, the label in use; supersedes V2/M2 for print and product photos):** `frontLabel` =
+  `frontPanelElegant(p, mode, bleed, { align: 'left', tone: 'dark' })` in `lib/labels/svg.ts`. Whole wrap in a deep shade of
+  the product colour (`labelPaper`: `elegantPaper(color)`, or `ELEGANT_PAPER` overrides; Turmeric = charcoal `#232327`),
+  7-unit bright colour edge, wordmark 24 leading, name max 17.5, one hero number (`ELEGANT_HERO` for blends; Turmeric
+  900 mg), vertical rhythm from cap heights (gap 12). Info and Supplement Facts on white cards (small type dark on white).
+  `fullLabelSvg`/`tubLabelSvg` take `style: 'elegant' | 'v2' | 'a3'` (default elegant). Colours changed: CoQ10 plum
+  `#7B3F86`, Turmeric saffron `#C98F14`. Mockups `design/label-v3-2026-11/`.
 - **Science palette (3 Nov, website art and accents only):** night `#141A4D`, indigo `#26307E`, cobalt `#3E5BD6`, violet
   `#7A5CE0`, lavender `#B9A9F2`, teal `#2DB6A8`, magenta `#C4458F`, haze `#D9DFF5` (CSS `--sci-*`). Microscopy-style cell
   art: `/art/cells-dark[-seed].svg`, `/art/cells-light[-seed].svg` (evidence band, advisor card, guides index + every guide

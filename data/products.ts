@@ -188,7 +188,7 @@ const seeds: Seed[] = [
     ],
     otherIngredients: 'Hypromellose capsule, rice flour. Contains: shellfish (crab, lobster, crawfish).',
     dosage: 'Take 2 capsules once a day, 20–30 minutes before a meal.',
-    servings: 30, form: 'capsules', basePrice: 29, color: '#B56E1E',
+    servings: 30, form: 'capsules', basePrice: 29, color: '#C98F14',
     productType: 'supplements', dietaryTags: ['gluten-free'],
     audiences: ['women', 'men'], bestSeller: true, reviewCount: 2236,
   },
@@ -404,7 +404,7 @@ const seeds: Seed[] = [
     ingredients: [{ name: 'Coenzyme Q10 (as Ubiquinone)', amount: '200mg' }],
     otherIngredients: 'Vegetable capsule (hypromellose), rice flour.',
     dosage: 'Take 1 capsule daily with a meal that contains some fat.',
-    servings: 30, form: 'capsules', basePrice: 28, color: '#8E2E45',
+    servings: 30, form: 'capsules', basePrice: 28, color: '#7B3F86',
     productType: 'supplements', dietaryTags: ['vegan', 'gluten-free', 'sugar-free'],
     audiences: ['women', 'men'], bestSeller: true, reviewCount: 0,
     faqs: [

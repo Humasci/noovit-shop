@@ -189,3 +189,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 12 Nov (23): owner confirmed done: noovit.com is the primary domain (www redirects to it), Resend set up for noovit.com, inbox for hello@noovit.com.
 - [x] 14 Nov (24): medical reviewer brief and Upwork job post (`docs/REVIEWER_BRIEF.md`).
 - [x] 14 Nov (25): labels: V2 front is the default for all bottle and tub print labels (creatine tub converted); products without molecule/shape art get a bead-sphere fallback; "Made in the USA" removed from labels; other-ingredients wrap fixed; product images bumped to photo-v11.
+- [x] 14 Nov (26): new label "E2 dark" (owner's pick, Thorne-like minimal): deep product-colour wrap, bigger wordmark, smaller name, even spacing, white Facts/Info cards; CoQ10 → plum, Turmeric → saffron on charcoal with a 900 mg hero number. Wired into every print label, the creatine tub and the website photos; colour SQL for the live DB.

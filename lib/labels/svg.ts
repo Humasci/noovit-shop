@@ -15,7 +15,7 @@ import { LEGAL_NAME } from '@/lib/site';
 export type FontMode = 'web' | 'print';
 
 // Bump when the photo mockup (lib/labels/photo.ts) changes, so cached product image URLs refresh.
-export const MOCKUP_VERSION = 'photo-v11';
+export const MOCKUP_VERSION = 'photo-v12'; // v12 (14 Nov): elegant dark label
 
 const NAVY = '#14213d';
 const INK = '#4b5563';
@@ -606,6 +606,10 @@ export function frontPanelClinical(p: Product, mode: FontMode, bleed = 0, opts: 
 // slim colour edge on the left. Net quantity stays at legal size in the bottom 30% (21 CFR 101.105).
 // Deep shade of the product colour used as the dark label's background.
 export const elegantPaper = (col: string) => hueShiftDarken(col, 6, 0.5);
+// Products whose label paper isn't simply a deep shade of their colour. Turmeric (owner's pick E, 14 Nov): saffron gold
+// on charcoal, because any deep orange reads brown.
+const ELEGANT_PAPER: Record<string, string> = { 'turmeric-complex': '#232327' };
+export const labelPaper = (p: Product) => ELEGANT_PAPER[p.slug] ?? elegantPaper(p.color);
 // Hero number for blends, so every front has the same big-number anchor (14 Nov). Turmeric: 800 mg root powder +
 // 100 mg 95% extract per serving = 900 mg turmeric.
 const ELEGANT_HERO: Record<string, { value: string; unit: string; line: string }> = {
@@ -621,7 +625,7 @@ export function frontPanelElegant(p: Product, mode: FontMode, bleed = 0, opts: {
   const col = opts.color ?? p.color;
   // 'dark' (14 Nov): the whole label in a deep shade of the product colour, white type, a brighter colour edge.
   const dark = opts.tone === 'dark';
-  const paper = dark ? opts.paper ?? elegantPaper(col) : '#fff';
+  const paper = dark ? opts.paper ?? ELEGANT_PAPER[p.slug] ?? elegantPaper(col) : '#fff';
   const accent = dark ? hueShiftDarken(col, 0, -0.45) : col; // edge and rule
   const colText = dark ? hueShiftDarken(col, 0, -0.62) : shade(col, 0.15);
   const ink = dark ? '#ffffff' : NAVY;
@@ -700,6 +704,9 @@ export function frontPanelElegant(p: Product, mode: FontMode, bleed = 0, opts: {
     ${caps(213.5, unitWord, capsSize, ink, 600, FRONT.w - 20, 'end')}
   </g>`;
 }
+
+// The label in use (14 Nov): E2 dark. Every print label, tub and website image draws its front with this.
+export const frontLabel = (p: Product, mode: FontMode, bleed = 0) => frontPanelElegant(p, mode, bleed, { align: 'left', tone: 'dark' });
 
 // ---------- Front panel "field" (3 Nov): clinical white + a square molecule field in the top-right corner ----------
 // Left column under the wordmark: category and the dose; the field fills the top-right block (bleeding off the
@@ -897,11 +904,15 @@ export function labelOverflow(p: Product) {
   ];
 }
 
-// The print front is V2 by default (14 Nov): clinical white, colour band, particle molecule/shape, clipped to the front
-// panel. `v2: false` gives the earlier A3 colour-block front.
-export function fullLabelSvg(p: Product, opts: { mode?: FontMode; guides?: boolean; v2?: boolean } = {}) {
+// The print label is E2 dark by default (14 Nov): the whole wrap in the deep product colour, the elegant front, and the
+// directions and Supplement Facts on white cards so the small type stays dark on white. `style: 'v2'` gives the
+// clinical-white particle front, `style: 'a3'` the earlier colour-block front (both on white).
+export type LabelStyle = 'elegant' | 'v2' | 'a3';
+export function fullLabelSvg(p: Product, opts: { mode?: FontMode; guides?: boolean; style?: LabelStyle } = {}) {
   const mode = opts.mode ?? 'print';
-  const v2 = opts.v2 ?? true;
+  const style = opts.style ?? 'elegant';
+  const v2 = style === 'v2';
+  const elegant = style === 'elegant';
   const { trimW, trimH, bleed, frontW, infoW } = LABEL;
   const W = trimW + bleed * 2;
   const H = trimH + bleed * 2;
@@ -922,7 +933,9 @@ export function fullLabelSvg(p: Product, opts: { mode?: FontMode; guides?: boole
     : '';
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W / 100}in" height="${H / 100}in" viewBox="0 0 ${W} ${H}">
   <title>Noovit label — ${esc(p.name)} (draft)</title>
-  <rect width="${W}" height="${H}" fill="#fff"/>
+  <rect width="${W}" height="${H}" fill="${elegant ? labelPaper(p) : '#fff'}"/>
+  ${elegant ? `<rect x="${bleed + 5}" y="${bleed + 5}" width="${infoW - 10}" height="${trimH - 10}" rx="3" fill="#fff"/>
+  <rect x="${sx + 5}" y="${bleed + 5}" width="${LABEL.factsW - 10}" height="${trimH - 10}" rx="3" fill="#fff"/>` : ''}
   <g id="info" transform="translate(${bleed + 12} ${bleed + 12})">${info.svg}
     <g transform="translate(0 ${trimH - 24 - 28})">
       <text x="0" y="6" font-size="7" font-weight="700" fill="${NAVY}" ${f}>Distributed by ${LEGAL_NAME}</text>
@@ -930,7 +943,9 @@ export function fullLabelSvg(p: Product, opts: { mode?: FontMode; guides?: boole
       <text x="0" y="25" font-size="7" fill="${NAVY}" ${f}>hello@noovit.com</text>
     </g>
   </g>
-  ${v2
+  ${elegant
+    ? `<g id="front" transform="translate(${fx} ${bleed})">${frontLabel(p, mode, bleed)}</g>`
+    : v2
     ? `<clipPath id="v2front-${p.slug}"><rect x="${fx}" y="0" width="${FRONT.w}" height="${H}"/></clipPath><g clip-path="url(#v2front-${p.slug})"><g id="front" transform="translate(${fx} ${bleed})">${frontPanelClinical(p, mode, bleed, { accent: 'band', color: p.color, form: 'molecule-spectrum' })}</g></g>`
     : `<g id="front" transform="translate(${fx} ${bleed})">${frontPanel(p, mode, bleed)}</g>`}
   <g id="facts" transform="translate(${sx + 10} ${bleed + 12}) scale(${n(factsScale)})">${facts.svg}</g>
@@ -992,7 +1007,7 @@ export function bottle(p: Product, mode: FontMode, uid: string, pattern: LabelPa
   <g clip-path="url(#body-${uid})">
     <rect x="${X0 - 10}" y="${shoulder - 20}" width="${R * 2 + 20}" height="${base - shoulder + 40}" fill="#f8f8f6"/>
     <rect x="${X0 - 10}" y="${shoulder - 20}" width="${R * 2 + 20}" height="${bodyTop - shoulder + 30}" fill="url(#sh-${uid})"/>
-    <g clip-path="url(#label-${uid})"><g transform="translate(${n(cx - lw / 2)} ${n(LT)}) scale(${n(scale)})">${frontPanel(p, mode, 30, pattern)}</g></g>
+    <g clip-path="url(#label-${uid})"><g transform="translate(${n(cx - lw / 2)} ${n(LT)}) scale(${n(scale)})">${pattern === 'top' ? `<rect x="-20" y="-30" width="${FRONT.w + 40}" height="${FRONT.h + 60}" fill="${labelPaper(p)}"/>${frontLabel(p, mode, 30)}` : frontPanel(p, mode, 30, pattern)}</g></g>
     <path d="M${X0} ${n(LT)} ${arcL(n(LT), R)}" fill="none" stroke="#000" stroke-opacity="0.07"/>
     <path d="M${X0} ${n(LB)} ${arcL(n(LB), R)}" fill="none" stroke="#000" stroke-opacity="0.07"/>
     <rect x="${X0 - 10}" y="${shoulder - 20}" width="${R * 2 + 20}" height="${base - shoulder + 40}" fill="url(#cyl-${uid})"/>
@@ -1051,9 +1066,11 @@ export function bottleSvg(p: Product, variant: BottleVariant = 'front', opts: { 
 // the right. Text stays 0.25" inside the trim. Their editor adds a lot/QR code bottom-left, so that corner stays clear.
 export const TUB_LABEL = { trimW: 1100, trimH: 300, bleed: 12.5 };
 
-export function tubLabelSvg(p: Product, opts: { mode?: FontMode; guides?: boolean; v2?: boolean } = {}) {
+export function tubLabelSvg(p: Product, opts: { mode?: FontMode; guides?: boolean; style?: LabelStyle } = {}) {
   const mode = opts.mode ?? 'print';
-  const v2 = opts.v2 ?? true; // V2 front by default (14 Nov), as on the bottles
+  const style = opts.style ?? 'elegant'; // as on the bottles (14 Nov)
+  const v2 = style === 'v2';
+  const elegant = style === 'elegant';
   const { trimW, trimH, bleed } = TUB_LABEL;
   const W = trimW + bleed * 2;
   const H = trimH + bleed * 2;
@@ -1074,17 +1091,21 @@ export function tubLabelSvg(p: Product, opts: { mode?: FontMode; guides?: boolea
     : '';
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W / 100}in" height="${H / 100}in" viewBox="0 0 ${W} ${H}">
   <title>Noovit tub label — ${esc(p.name)}</title>
-  <rect width="${W}" height="${H}" fill="#fff"/>
+  <rect width="${W}" height="${H}" fill="${elegant ? labelPaper(p) : '#fff'}"/>
+  ${elegant ? `<rect x="${bleed + 12}" y="${bleed + 12}" width="${n(fx - bleed - 24)}" height="${trimH - 24}" rx="4" fill="#fff"/>
+  <rect x="${n(fx + fw + 12)}" y="${bleed + 12}" width="${n(bleed + trimW - 12 - (fx + fw + 12))}" height="${trimH - 24}" rx="4" fill="#fff"/>` : ''}
   <g id="info" transform="translate(${bleed + 25} ${bleed + 22}) scale(${n(is)})">${info.svg}</g>
   <g id="distributor" transform="translate(${bleed + 100} ${bleed + trimH - 58})">
     <text x="0" y="0" font-size="9" font-weight="700" fill="${NAVY}" ${f}>Distributed by ${LEGAL_NAME}</text>
     <text x="0" y="12" font-size="9" fill="${NAVY}" ${f}>30 N Gould St Ste R, Sheridan, WY 82801</text>
     <text x="0" y="24" font-size="9" fill="${NAVY}" ${f}>hello@noovit.com · noovit.com</text>
   </g>
-  ${v2
+  ${elegant
+    ? `<g id="front" transform="translate(${n(fx)} ${bleed}) scale(${n(s)})">${frontLabel(p, mode, bleed / s)}</g>`
+    : v2
     ? `<clipPath id="v2tub-${p.slug}"><rect x="${n(fx)}" y="0" width="${n(fw)}" height="${H}"/></clipPath><g clip-path="url(#v2tub-${p.slug})"><g id="front" transform="translate(${n(fx)} ${bleed}) scale(${n(s)})">${frontPanelClinical(p, mode, bleed / s, { accent: 'band', color: p.color, form: 'molecule-spectrum' })}</g></g>`
     : `<g id="front" transform="translate(${n(fx)} ${bleed}) scale(${n(s)})">${frontPanel(p, mode, bleed / s)}</g>`}
-  <g id="facts" transform="translate(${n(bleed + trimW - 25 - 210 * fs)} ${bleed + 25}) scale(${n(fs)})">${facts.svg}</g>
+  <g id="facts" transform="translate(${n(elegant ? (fx + fw + 12 + bleed + trimW - 12) / 2 - (210 * fs) / 2 : bleed + trimW - 25 - 210 * fs)} ${bleed + 25}) scale(${n(fs)})">${facts.svg}</g>
   ${guides}
 </svg>`;
 }

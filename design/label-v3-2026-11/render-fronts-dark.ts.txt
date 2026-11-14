@@ -4,7 +4,7 @@ import { readdirSync } from 'fs';
 import { Resvg } from '@resvg/resvg-js';
 import sharp from 'sharp';
 import { SEED_PRODUCTS } from '@/data/products';
-import { FRONT, frontPanelElegant } from '@/lib/labels/svg';
+import { FRONT, frontLabel } from '@/lib/labels/svg';
 
 const fontFiles = readdirSync('assets/fonts').filter((f) => f.endsWith('.ttf')).map((f) => `assets/fonts/${f}`);
 const slugs = ['magnesium-complex', 'ashwagandha', 'lions-mane', 'creatine', 'coq10', 'turmeric-complex', 'probiotic', 'omega-3'];
@@ -12,7 +12,7 @@ const ps = slugs.map((s) => SEED_PRODUCTS.find((x) => x.slug === s)).filter(Bool
 const gap = 16, cols = 4, rows = Math.ceil(ps.length / cols);
 const W = cols * FRONT.w + (cols + 1) * gap, H = rows * FRONT.h + (rows + 1) * gap;
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><rect width="${W}" height="${H}" fill="#efe9df"/>${ps
-  .map((p, i) => `<g transform="translate(${gap + (i % cols) * (FRONT.w + gap)} ${gap + Math.floor(i / cols) * (FRONT.h + gap)})">${frontPanelElegant(p, 'print', 0, { align: 'left', tone: 'dark' })}</g>`)
+  .map((p, i) => `<g transform="translate(${gap + (i % cols) * (FRONT.w + gap)} ${gap + Math.floor(i / cols) * (FRONT.h + gap)})">${frontLabel(p, 'print', 0)}</g>`)
   .join('')}</svg>`;
 const png = new Resvg(svg, { fitTo: { mode: 'width', value: 2400 }, font: { fontFiles, loadSystemFonts: false, defaultFontFamily: 'Inter' } }).render().asPng();
 sharp(Buffer.from(png)).png().toFile('design/label-v3-2026-11/fronts-E2dark-all.png').then(() => console.log('done', ps.map((p) => p.slug).join(' ')));
