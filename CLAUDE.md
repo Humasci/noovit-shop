@@ -106,6 +106,9 @@ Read this first. It is the standing context for any session working on this repo
 - Never commit secrets (Stripe keys, service-role keys, `vercel-secrets`); never ask the owner to paste keys in chat.
 - Keep `docs/TODO.md` current after every batch (tick, add owner steps); add a line to `docs/PROGRESS.md`.
 - The owner prefers a clear recommendation over a menu of options, and plain explanations.
+- **Hiring (14 Nov):** an agent posts jobs on Upwork. When the project needs outside help (reviewer, lawyer, photographer,
+  creators…), write a brief in `docs/hiring/` (format in its README), add it to the README table and tell the owner.
+  The agent only shortlists; the owner hires and pays. Never put secrets, customer data or the owner's personal details in a brief.
 - **Brand ambition (3 Nov):** become a premium, Thorne-level brand over time. Today's prices are **launch prices**;
   raise them as proof builds (reviews, COAs/third-party testing, own formulas). Never show a fake "was"/"regular" price
   that wasn't really charged (FTC 16 CFR 233): say "launch price" and raise prices for real. Label system: clinical white,
@@ -122,6 +125,7 @@ Read this first. It is the standing context for any session working on this repo
 - `SUPLIFUL_PRODUCT_SCREEN.md` — every checked Supliful product with verdicts (recap at top).
 - `SUPPLIER_RESEARCH.md` — dropship/private-label suppliers incl. pets. `pricing/noovit-pricing.xlsx`, `PRICING_NOTES.md`, `PRICE_LIST.md`.
 - `RESEARCH_PROMPTS.md` — deep-research prompts for the owner. `research/GUIDE_RESEARCH_BRIEF.md` — guide brief.
+- `hiring/` — Upwork briefs for the hiring agent (01 RD/RDN reviewer, 02 regulatory review, 03 photographer).
 - `COMPANY_SETUP.md`, `ACCOUNTING_BRIEF.md` — Wyoming LLC plan, UK tax questions, deadlines (Barbill annual report ~1 Jan 2027).
 - `ANALYTICS_SETUP.md`, `SEO_PLAN.md`, `SOCIAL_PLAN.md`, `CONTENT_GUIDELINES.md`, `DESIGN_DIRECTION.md`,
   `LABEL_DESIGN_BRIEF.md`, `DAILY_PACK_CONCEPT.md`, `APP_IDEAS.md` (parked; pets if anything), `LAUNCH_AUDIT.md`, `USER_GUIDE.md`.

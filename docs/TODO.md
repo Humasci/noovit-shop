@@ -42,7 +42,8 @@ _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only yo
 - [x] **Real products (done 1 Nov for the core range):** pick the Supliful products. For each, send the Supplement Facts, capsule count and serving, your cost, Supliful SKU, and photos if you have them.
 - [x] **"Made in the USA" wording:** confirm with Supliful which products qualify. If unsure, use "Manufactured in the USA from domestic and imported ingredients". It also appears on labels (`ORIGIN_CLAIM`) and feed images. **14 Nov: removed from all labels (`ORIGIN_CLAIM = null`) until Supliful confirms; set the string to bring it back.**
 - [ ] **Proof for "third-party tested" and "GMP certified":** get Supliful's GMP certificate and per-lot COAs, or tell me to remove the claims.
-- [ ] **Regulatory lawyer review of claims.** Covers iron, berberine, zinc/testosterone, "clinically studied strains", quiz symptom wording and the nattokinase guide. Also ask: can methylene blue be sold as a dietary supplement at all? (see `docs/SHOPPING_ANALYSIS_METHYLENE_BLUE.md`)
+- [ ] **Hiring via the Upwork agent (14 Nov):** briefs in `docs/hiring/`. **Owner:** OK and hand the agent brief 01 (RD/RDN reviewer) and brief 02 (regulatory review: labels + claims) now; brief 03 (photographer) when the printed bottles arrive.
+- [ ] **Regulatory lawyer review of claims** (brief: `docs/hiring/02-regulatory-review.md`). Covers iron, berberine, zinc/testosterone, "clinically studied strains", quiz symptom wording and the nattokinase guide. Also ask: can methylene blue be sold as a dietary supplement at all? (see `docs/SHOPPING_ANALYSIS_METHYLENE_BLUE.md`)
 - [ ] FDA structure/function notification within 30 days of first sale.
 - [ ] Prop 65 check (heavy metals in botanicals/powders); product liability insurance.
 - [ ] Trademark attorney: clear **NOOVIT** (US/UK, classes 5 and 35) and the "+" product names. Note the existing **CALM+** application.
@@ -70,7 +71,7 @@ _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only yo
 - [ ] **Switch "Show placeholder trust content" to `off`** once real reviews and advisors replace the placeholders.
 
 **Trust**
-- [ ] Recruit a **registered dietitian (RDN)** as medical reviewer and advisor: name, credentials, photo, consent, paid-relationship disclosure. **Brief + Upwork job post ready (14 Nov): `docs/REVIEWER_BRIEF.md`** (where to look, budget, CDR verification, contract points). Note: Journal posts that auto-publish before launch stay invisible (coming-soon gate + noindex), so review is needed before `SITE_LIVE`, not before each date.
+- [ ] Recruit a **registered dietitian (RDN)** as medical reviewer and advisor: name, credentials, photo, consent, paid-relationship disclosure. **Brief + Upwork job post ready (14 Nov): `docs/hiring/01-medical-reviewer-rdn.md`** (where to look, budget, CDR verification, contract points). Note: Journal posts that auto-publish before launch stay invisible (coming-soon gate + noindex), so review is needed before `SITE_LIVE`, not before each date.
 - [ ] Collect real reviews (the review emails are automatic). Set up **Trustpilot** and **Google Customer Reviews**.
 
 ## 🟠 Before launch: build

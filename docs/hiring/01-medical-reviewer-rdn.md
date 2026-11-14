@@ -1,4 +1,15 @@
-# Hiring a medical reviewer (RDN) — brief and job post
+# Hiring brief 01: medical reviewer (RD/RDN)
+
+| | |
+|---|---|
+| **Status** | Open: post now |
+| **Priority** | 1 (blocks launch: every guide and Journal post needs a named reviewer) |
+| **Contract** | Fixed price: paid trial (2 guides), then a monthly retainer |
+| **Budget** | Trial ~$150–300 per guide; retainer roughly $300–800/month (estimates from Upwork rates; let proposals set the real price) |
+| **Screening questions** | 1. What is your CDR registration number (or state licence number)? 2. Have you reviewed supplement or sports-nutrition content before? Link or attach one example. 3. What would you charge per guide (2,500–4,000 words) and per blog post (900–1,300 words)? 4. Can you return each piece within 5 business days? |
+| **Must-haves** | Active RD/RDN, verified at cdrnet.org before any offer |
+| **Red flags** | "Nutritionist" or "health coach" only; no verifiable credential; offers to "approve" product claims; AI-written proposals that ignore the questions |
+
 
 _14 Nov 2026. Goal: a named, credentialed Registered Dietitian Nutritionist (RD/RDN) who reviews Noovit's ingredient
 guides and Journal posts before they go public, and whose name and credentials appear as "Medically reviewed by" on the
