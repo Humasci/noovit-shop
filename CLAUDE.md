@@ -46,7 +46,9 @@ Read this first. It is the standing context for any session working on this repo
   7-unit bright colour edge, wordmark 24 leading, name max 17.5, one hero number (`ELEGANT_HERO` for blends; Turmeric
   900 mg), vertical rhythm from cap heights (gap 12). Info and Supplement Facts on white cards (small type dark on white).
   `fullLabelSvg`/`tubLabelSvg` take `style: 'elegant' | 'v2' | 'a3'` (default elegant). Colours changed: CoQ10 plum
-  `#7B3F86`, Turmeric saffron `#C98F14`. Mockups `design/label-v3-2026-11/`.
+  `#7B3F86`, Turmeric saffron `#C98F14`. Mockups `design/label-v3-2026-11/`. **Spare palettes for future products**
+  (owner, 14 Nov): G gold `#D9A21B` on navy `#1E2A3A`, H gold `#E0A526` on deep teal `#173A3A` (`SPARE_LABEL_PALETTES`;
+  preview `spare-palettes-G-H.png`). Check a new product's colour doesn't sit too close to Magnesium (navy) or Lion's Mane (teal).
 - **Science palette (3 Nov, website art and accents only):** night `#141A4D`, indigo `#26307E`, cobalt `#3E5BD6`, violet
   `#7A5CE0`, lavender `#B9A9F2`, teal `#2DB6A8`, magenta `#C4458F`, haze `#D9DFF5` (CSS `--sci-*`). Microscopy-style cell
   art: `/art/cells-dark[-seed].svg`, `/art/cells-light[-seed].svg` (evidence band, advisor card, guides index + every guide

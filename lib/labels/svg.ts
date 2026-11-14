@@ -609,6 +609,12 @@ export const elegantPaper = (col: string) => hueShiftDarken(col, 6, 0.5);
 // Products whose label paper isn't simply a deep shade of their colour. Turmeric (owner's pick E, 14 Nov): saffron gold
 // on charcoal, because any deep orange reads brown.
 const ELEGANT_PAPER: Record<string, string> = { 'turmeric-complex': '#232327' };
+// Spare palettes kept for future products (owner, 14 Nov; first tried for Turmeric). To use one: set the product's colour
+// to `color` and add its slug to ELEGANT_PAPER with `paper`. Previews: design/label-v3-2026-11/spare-palettes-G-H.png.
+export const SPARE_LABEL_PALETTES = {
+  G: { name: 'Gold on navy', color: '#D9A21B', paper: '#1E2A3A' },
+  H: { name: 'Gold on deep teal', color: '#E0A526', paper: '#173A3A' },
+} as const;
 export const labelPaper = (p: Product) => ELEGANT_PAPER[p.slug] ?? elegantPaper(p.color);
 // Hero number for blends, so every front has the same big-number anchor (14 Nov). Turmeric: 800 mg root powder +
 // 100 mg 95% extract per serving = 900 mg turmeric.
