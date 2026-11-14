@@ -1,0 +1,37 @@
+// Bottle-photo mockups of the two elegant fronts (E1 centred, E2 left) on Supliful's real bottle photo.
+// Usage: npx tsx --conditions=react-server design/label-v3-2026-11/render-bottles.ts
+import { readdirSync } from 'fs';
+import { Resvg } from '@resvg/resvg-js';
+import sharp from 'sharp';
+import { SEED_PRODUCTS } from '@/data/products';
+import { FRONT, frontPanelElegant } from '@/lib/labels/svg';
+import { photoBottleSvg, type LabelArt } from '@/lib/labels/photo';
+
+const fontFiles = readdirSync('assets/fonts').filter((f) => f.endsWith('.ttf')).map((f) => `assets/fonts/${f}`);
+const product = (slug: string) => SEED_PRODUCTS.find((x) => x.slug === slug)!;
+const BG = '#f3f1ed';
+const art = (align: 'center' | 'left'): LabelArt => (p, ext) => `
+  <rect x="${-ext}" y="0" width="${FRONT.w + ext * 2}" height="${FRONT.h}" fill="#fff"/>
+  ${frontPanelElegant(p, 'print', 0, { align })}`;
+const png = (svg: string, w: number) => Buffer.from(new Resvg(svg, { fitTo: { mode: 'width', value: w }, font: { fontFiles, loadSystemFonts: false, defaultFontFamily: 'Inter' } }).render().asPng());
+
+(async () => {
+  for (const [align, tag] of [['center', 'E1'], ['left', 'E2']] as const) {
+    // 1) Line-up of three bottles.
+    const slugs = ['magnesium-complex', 'ashwagandha', 'lions-mane'];
+    // Each tile carries the photo's own edge lighting, so feather its left/right edges into one shared backdrop
+    // (sampled from the tile's top corner) to avoid visible seams between bottles.
+    const feather = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900"><defs><linearGradient id="g"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="0.2" stop-color="#fff"/><stop offset="0.8" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><rect width="900" height="900" fill="url(#g)"/></svg>`);
+    const raw = slugs.map((s) => png(photoBottleSvg(product(s), BG, false, art(align)), 900));
+    const { data } = await sharp(raw[0]).extract({ left: 10, top: 10, width: 1, height: 1 }).raw().toBuffer({ resolveWithObject: true });
+    const bg = { r: data[0], g: data[1], b: data[2] };
+    const tiles = await Promise.all(raw.map((t) => sharp(t).ensureAlpha().composite([{ input: feather, blend: 'dest-in' }]).png().toBuffer()));
+    const step = 640, W = step * 2 + 900;
+    await sharp({ create: { width: W, height: 900, channels: 3, background: bg } })
+      .composite(tiles.map((t, i) => ({ input: t, left: i * step, top: 0 })))
+      .png().toFile(`design/label-v3-2026-11/bottles-${tag}-lineup.png`);
+    // 2) Close-up of one bottle.
+    await sharp(png(photoBottleSvg(product('magnesium-complex'), BG, true, art(align)), 1400)).png().toFile(`design/label-v3-2026-11/bottles-${tag}-closeup.png`);
+    console.log(tag, 'done');
+  }
+})();
