@@ -607,7 +607,8 @@ export function frontPanelClinical(p: Product, mode: FontMode, bleed = 0, opts: 
 // Deep shade of the product colour used as the dark label's background.
 export const elegantPaper = (col: string) => hueShiftDarken(col, 6, 0.5);
 
-export function frontPanelElegant(p: Product, mode: FontMode, bleed = 0, opts: { align?: 'center' | 'left'; color?: string; tone?: 'light' | 'dark' } = {}) {
+export function frontPanelElegant(p: Product, mode: FontMode, bleed = 0, opts: { align?: 'center' | 'left'; color?: string; tone?: 'light' | 'dark'; logo?: number } = {}) {
+  const logo = opts.logo ?? 15; // wordmark size (label units); 15 picked over 13/17 (14 Nov)
   const align = opts.align ?? 'center';
   const col = opts.color ?? p.color;
   // 'dark' (14 Nov): the whole label in a deep shade of the product colour, white type, a brighter colour edge.
@@ -649,7 +650,7 @@ export function frontPanelElegant(p: Product, mode: FontMode, bleed = 0, opts: {
   return `<g>
     <rect x="0" y="${-bleed}" width="${FRONT.w}" height="${FRONT.h + bleed * 2}" fill="${paper}"/>
     ${center ? '' : `<rect x="0" y="${-bleed}" width="7" height="${FRONT.h + bleed * 2}" fill="${accent}"/>`}
-    ${center ? wordmark(x0, 30, 13, mode, ink) : wordmarkRaw(x0, 30, 13, mode, ink, ink)}
+    ${center ? wordmark(x0, 30, logo, mode, ink) : wordmarkRaw(x0, 30, logo, mode, ink, ink)}
     ${center ? `<rect x="${n(x0 - 12)}" y="40" width="24" height="1.1" fill="${accent}"/>` : `<rect x="${x0}" y="40" width="24" height="1.1" fill="${accent}"/>`}
     ${category ? caps(55, category, 6.2, colText, 600) : ''}
     <text x="${n(x0)}" y="${nameY}" text-anchor="${anchor}" font-size="${n(size)}" font-weight="500" letter-spacing="${n(-0.025 * size)}" fill="${ink}" ${font('head', mode)}>${esc(main)}</text>

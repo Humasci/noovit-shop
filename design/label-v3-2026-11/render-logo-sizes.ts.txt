@@ -1,0 +1,23 @@
+// Logo size comparison on the E2 dark close-up: 13 (current), 15, 17 label units.
+// Usage: npx tsx --conditions=react-server design/label-v3-2026-11/render-logo-sizes.ts
+import { readdirSync } from 'fs';
+import { Resvg } from '@resvg/resvg-js';
+import sharp from 'sharp';
+import { SEED_PRODUCTS } from '@/data/products';
+import { FRONT, frontPanelElegant, elegantPaper } from '@/lib/labels/svg';
+import { photoBottleSvg, type LabelArt } from '@/lib/labels/photo';
+
+const fontFiles = readdirSync('assets/fonts').filter((f) => f.endsWith('.ttf')).map((f) => `assets/fonts/${f}`);
+const p = SEED_PRODUCTS.find((x) => x.slug === 'magnesium-complex')!;
+const art = (logo: number): LabelArt => (pr, ext) => `<rect x="${-ext}" y="0" width="${FRONT.w + ext * 2}" height="${FRONT.h}" fill="${elegantPaper(pr.color)}"/>${frontPanelElegant(pr, 'print', 0, { align: 'left', tone: 'dark', logo })}`;
+const png = (svg: string) => Buffer.from(new Resvg(svg, { fitTo: { mode: 'width', value: 760 }, font: { fontFiles, loadSystemFonts: false, defaultFontFamily: 'Inter' } }).render().asPng());
+(async () => {
+  const sizes = [13, 15, 17];
+  const tiles = sizes.map((z) => png(photoBottleSvg(p, '#efe9df', true, art(z))));
+  const labels = sizes.map((z, i) => Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="760" height="60"><rect width="760" height="60" fill="#efe9df"/><text x="380" y="38" text-anchor="middle" font-size="24" fill="#555" font-family="Inter">${['Current (13)', '+15% (15)', '+30% (17)'][i]}</text></svg>`));
+  const lab = await Promise.all(labels.map((l) => sharp(l).png().toBuffer()));
+  await sharp({ create: { width: 760 * 3 + 40, height: 820, channels: 3, background: '#efe9df' } })
+    .composite([...tiles.map((t, i) => ({ input: t, left: i * 780, top: 0 })), ...lab.map((l, i) => ({ input: l, left: i * 780, top: 760 }))])
+    .png().toFile('design/label-v3-2026-11/logo-sizes-E2dark.png');
+  console.log('done');
+})();
