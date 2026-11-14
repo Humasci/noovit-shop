@@ -608,7 +608,7 @@ export function frontPanelClinical(p: Product, mode: FontMode, bleed = 0, opts: 
 export const elegantPaper = (col: string) => hueShiftDarken(col, 6, 0.5);
 
 export function frontPanelElegant(p: Product, mode: FontMode, bleed = 0, opts: { align?: 'center' | 'left'; color?: string; tone?: 'light' | 'dark'; logo?: number } = {}) {
-  const logo = opts.logo ?? 15; // wordmark size (label units); 15 picked over 13/17 (14 Nov)
+  const logo = opts.logo ?? 15.6; // wordmark size (label units); 20% above the first draft's 13 (14 Nov)
   const align = opts.align ?? 'center';
   const col = opts.color ?? p.color;
   // 'dark' (14 Nov): the whole label in a deep shade of the product colour, white type, a brighter colour edge.
