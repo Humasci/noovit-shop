@@ -607,7 +607,7 @@ export function frontPanelClinical(p: Product, mode: FontMode, bleed = 0, opts: 
 // Deep shade of the product colour used as the dark label's background.
 export const elegantPaper = (col: string) => hueShiftDarken(col, 6, 0.5);
 
-export function frontPanelElegant(p: Product, mode: FontMode, bleed = 0, opts: { align?: 'center' | 'left'; color?: string; tone?: 'light' | 'dark'; logo?: number } = {}) {
+export function frontPanelElegant(p: Product, mode: FontMode, bleed = 0, opts: { align?: 'center' | 'left'; color?: string; tone?: 'light' | 'dark'; logo?: number; paper?: string } = {}) {
   // 14 Nov (owner): the brand leads. Wordmark 24 (about 1.5x the 15.6 draft, ~38% of the panel width), product name
   // 30% smaller (max 17.5, was 25). Vertical positions are computed from each element's cap height with one gap, so the
   // spacing between sections is the same on every product, whatever lines it has.
@@ -616,7 +616,7 @@ export function frontPanelElegant(p: Product, mode: FontMode, bleed = 0, opts: {
   const col = opts.color ?? p.color;
   // 'dark' (14 Nov): the whole label in a deep shade of the product colour, white type, a brighter colour edge.
   const dark = opts.tone === 'dark';
-  const paper = dark ? elegantPaper(col) : '#fff';
+  const paper = dark ? opts.paper ?? elegantPaper(col) : '#fff';
   const accent = dark ? hueShiftDarken(col, 0, -0.45) : col; // edge and rule
   const colText = dark ? hueShiftDarken(col, 0, -0.62) : shade(col, 0.15);
   const ink = dark ? '#ffffff' : NAVY;
