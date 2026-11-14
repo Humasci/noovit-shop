@@ -70,7 +70,7 @@ _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only yo
 - [ ] **Switch "Show placeholder trust content" to `off`** once real reviews and advisors replace the placeholders.
 
 **Trust**
-- [ ] Recruit a **registered dietitian (RDN)** as medical reviewer and advisor: name, credentials, photo, consent, paid-relationship disclosure.
+- [ ] Recruit a **registered dietitian (RDN)** as medical reviewer and advisor: name, credentials, photo, consent, paid-relationship disclosure. **Brief + Upwork job post ready (14 Nov): `docs/REVIEWER_BRIEF.md`** (where to look, budget, CDR verification, contract points). Note: Journal posts that auto-publish before launch stay invisible (coming-soon gate + noindex), so review is needed before `SITE_LIVE`, not before each date.
 - [ ] Collect real reviews (the review emails are automatic). Set up **Trustpilot** and **Google Customer Reviews**.
 
 ## 🟠 Before launch: build
