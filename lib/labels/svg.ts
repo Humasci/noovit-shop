@@ -661,7 +661,7 @@ export function frontPanelElegant(p: Product, mode: FontMode, bleed = 0, opts: {
   let doseBlock = '';
   if (dose) {
     const y = place(doseSize * CAP, GAP);
-    const yc = place(capsSize * CAP, TIGHT);
+    const yc = place(capsSize * CAP, 7.5); // dose → its caption: more air than TIGHT (owner, 14 Nov)
     doseBlock = `<text x="${n(x0)}" y="${n(y)}" text-anchor="${anchor}" font-size="${doseSize}" font-weight="500" letter-spacing="-0.3" fill="${ink}" ${font('head', mode)}>${esc(dose.value)}<tspan font-size="8.5" font-weight="500" dx="1.3">${esc(dose.unit)}</tspan></text>
       ${caps(yc, doseLine, capsSize, inkSoft)}`;
   } else {
