@@ -608,7 +608,10 @@ export function frontPanelClinical(p: Product, mode: FontMode, bleed = 0, opts: 
 export const elegantPaper = (col: string) => hueShiftDarken(col, 6, 0.5);
 
 export function frontPanelElegant(p: Product, mode: FontMode, bleed = 0, opts: { align?: 'center' | 'left'; color?: string; tone?: 'light' | 'dark'; logo?: number } = {}) {
-  const logo = opts.logo ?? 15.6; // wordmark size (label units); 20% above the first draft's 13 (14 Nov)
+  // 14 Nov (owner): the brand leads. Wordmark 24 (about 1.5x the 15.6 draft, ~38% of the panel width), product name
+  // 30% smaller (max 17.5, was 25). Vertical positions are computed from each element's cap height with one gap, so the
+  // spacing between sections is the same on every product, whatever lines it has.
+  const logo = opts.logo ?? 24;
   const align = opts.align ?? 'center';
   const col = opts.color ?? p.color;
   // 'dark' (14 Nov): the whole label in a deep shade of the product colour, white type, a brighter colour edge.
@@ -633,35 +636,63 @@ export function frontPanelElegant(p: Product, mode: FontMode, bleed = 0, opts: {
   const x0 = center ? FRONT.w / 2 : 24; // left edge sits clear of the colour edge in E2
   const anchor = center ? 'middle' : 'start';
   const room = FRONT.w - (center ? 40 : 46);
-  const size = Math.min(25, room / (main.length * 0.54));
   const caps = (y: number, t: string, sz: number, fill: string, weight = 500, x = x0, a = anchor) =>
     `<text x="${n(x)}" y="${n(y)}" text-anchor="${a}" font-size="${sz}" font-weight="${weight}" letter-spacing="${n(sz * 0.2)}" fill="${fill}" ${font('body', mode)}>${esc(t.toUpperCase())}</text>`;
   const doseLine = V2_DOSE_LINES[p.slug] ?? dose?.line ?? '';
-  const nameY = 86;
-  const descY = nameY + 19;
-  const doseY = descriptor ? 140 : 132;
-  const benefitLines = balance(wrap(p.shortBenefit.replace(/\.$/, '') + '*', room - 10, 7.2, 0.5).slice(0, 2));
-  const doseBlock = dose
-    ? `<text x="${n(x0)}" y="${doseY}" text-anchor="${anchor}" font-size="17" font-weight="500" letter-spacing="-0.3" fill="${ink}" ${font('head', mode)}>${esc(dose.value)}<tspan font-size="9.5" font-weight="500" dx="1.4">${esc(dose.unit)}</tspan></text>
-      ${caps(doseY + 11, doseLine, 6.2, inkSoft)}`
-    : textBlock(balance(wrap(labelSubtitle(p), room, 7.6, 0.5).slice(0, 2)), x0, doseY - 6, 7.6, 9.6, `text-anchor="${anchor}" font-weight="500" fill="${ink}" ${font('body', mode)}`);
-  const benY = doseY + (dose ? 29 : 18);
-  const ruleY = 188;
+
+  // Type sizes.
+  const nameSize = Math.min(17.5, room / (main.length * 0.54));
+  const descSize = 11;
+  const doseSize = 15;
+  const capsSize = 6.2;
+  const benSize = 7.2, benLead = 9.4;
+  const CAP = 0.72, DESC = 0.22; // cap height and descender as a share of the font size (Manrope / Inter)
+  const GAP = 12; // between sections: from the bottom of one to the cap top of the next
+  const TIGHT = 4.5; // inside a section (name + descriptor, dose + its caption)
+
+  // Vertical rhythm, top to bottom. Each baseline = previous bottom + gap + this element's cap height.
+  const logoY = 39; // the cross tops out at logoY - 0.8 * logo (about 20 units from the top edge)
+  const ruleTop = logoY + 10;
+  let bottom = ruleTop + 1.1;
+  const place = (capH: number, gap: number, descent = 0) => { const y = bottom + gap + capH; bottom = y + descent; return y; };
+  const catY = category ? place(capsSize * CAP, GAP) : 0;
+  const nameY = place(nameSize * CAP, GAP, nameSize * DESC);
+  const descY = descriptor ? place(descSize * CAP, TIGHT, descSize * DESC) : 0;
+  let doseBlock = '';
+  if (dose) {
+    const y = place(doseSize * CAP, GAP);
+    const yc = place(capsSize * CAP, TIGHT);
+    doseBlock = `<text x="${n(x0)}" y="${n(y)}" text-anchor="${anchor}" font-size="${doseSize}" font-weight="500" letter-spacing="-0.3" fill="${ink}" ${font('head', mode)}>${esc(dose.value)}<tspan font-size="8.5" font-weight="500" dx="1.3">${esc(dose.unit)}</tspan></text>
+      ${caps(yc, doseLine, capsSize, inkSoft)}`;
+  } else {
+    const lines = balance(wrap(labelSubtitle(p), room, 7.6, 0.5).slice(0, 2));
+    const y = place(7.6 * CAP, GAP);
+    bottom += (lines.length - 1) * 9.6 + 7.6 * DESC;
+    doseBlock = textBlock(lines, x0, y, 7.6, 9.6, `text-anchor="${anchor}" font-weight="500" fill="${ink}" ${font('body', mode)}`);
+  }
+  const benefitLines = balance(wrap(p.shortBenefit.replace(/\.$/, '') + '*', room - 10, benSize, 0.5).slice(0, 2));
+  const benY = place(benSize * CAP, GAP);
+  bottom += (benefitLines.length - 1) * benLead + benSize * DESC;
+
+  // Bottom zone (net quantity at legal size, 21 CFR 101.105), fixed: the count shares a baseline with "Dietary
+  // supplement" and its unit line sits below the count's descender ("281 g").
+  const ruleY = 186;
+  if (bottom > ruleY - 8) console.warn(`[labels] ${p.slug}: elegant front content ends at ${n(bottom)}, needs to end by ${ruleY - 8}`);
   return `<g>
     <rect x="0" y="${-bleed}" width="${FRONT.w}" height="${FRONT.h + bleed * 2}" fill="${paper}"/>
     ${center ? '' : `<rect x="0" y="${-bleed}" width="7" height="${FRONT.h + bleed * 2}" fill="${accent}"/>`}
-    ${center ? wordmark(x0, 30, logo, mode, ink) : wordmarkRaw(x0, 30, logo, mode, ink, ink)}
-    ${center ? `<rect x="${n(x0 - 12)}" y="40" width="24" height="1.1" fill="${accent}"/>` : `<rect x="${x0}" y="40" width="24" height="1.1" fill="${accent}"/>`}
-    ${category ? caps(55, category, 6.2, colText, 600) : ''}
-    <text x="${n(x0)}" y="${nameY}" text-anchor="${anchor}" font-size="${n(size)}" font-weight="500" letter-spacing="${n(-0.025 * size)}" fill="${ink}" ${font('head', mode)}>${esc(main)}</text>
-    ${descriptor ? `<text x="${n(x0)}" y="${descY}" text-anchor="${anchor}" font-size="14" font-weight="400" letter-spacing="-0.2" fill="${colText}" ${font('head', mode)}>${esc(descriptor)}</text>` : ''}
+    ${center ? wordmark(x0, logoY, logo, mode, ink) : wordmarkRaw(x0, logoY, logo, mode, ink, ink)}
+    <rect x="${n(center ? x0 - 12 : x0)}" y="${ruleTop}" width="24" height="1.1" fill="${accent}"/>
+    ${category ? caps(catY, category, capsSize, colText, 600) : ''}
+    <text x="${n(x0)}" y="${n(nameY)}" text-anchor="${anchor}" font-size="${n(nameSize)}" font-weight="500" letter-spacing="${n(-0.02 * nameSize)}" fill="${ink}" ${font('head', mode)}>${esc(main)}</text>
+    ${descriptor ? `<text x="${n(x0)}" y="${n(descY)}" text-anchor="${anchor}" font-size="${descSize}" font-weight="400" letter-spacing="-0.1" fill="${colText}" ${font('head', mode)}>${esc(descriptor)}</text>` : ''}
     ${doseBlock}
-    ${textBlock(benefitLines, x0, benY, 7.2, 9.2, `text-anchor="${anchor}" font-weight="400" fill="${inkSoft}" ${font('body', mode)}`)}
+    ${textBlock(benefitLines, x0, benY, benSize, benLead, `text-anchor="${anchor}" font-weight="400" fill="${inkSoft}" ${font('body', mode)}`)}
     <rect x="${center ? 20 : x0}" y="${ruleY}" width="${center ? FRONT.w - 40 : FRONT.w - x0 - 20}" height="0.5" fill="${hair}"/>
-    ${caps(203, 'Dietary supplement', 6.2, ink, 600, center ? 20 : x0, 'start')}
-    ${caps(212, `${servingsPerContainer} servings`, 6.2, inkSoft, 500, center ? 20 : x0, 'start')}
-    <text x="${FRONT.w - 20}" y="${206}" text-anchor="end" font-size="16" font-weight="500" fill="${ink}" ${font('head', mode)}>${esc(big)}</text>
-    ${caps(214.5, unitWord, 6.2, ink, 600, FRONT.w - 20, 'end')}
+    ${caps(203, 'Dietary supplement', capsSize, ink, 600, center ? 20 : x0, 'start')}
+    ${caps(212.5, `${servingsPerContainer} servings`, capsSize, inkSoft, 500, center ? 20 : x0, 'start')}
+    <text x="${FRONT.w - 20}" y="203" text-anchor="end" font-size="16" font-weight="500" fill="${ink}" ${font('head', mode)}>${esc(big)}</text>
+    ${caps(213.5, unitWord, capsSize, ink, 600, FRONT.w - 20, 'end')}
   </g>`;
 }
 
