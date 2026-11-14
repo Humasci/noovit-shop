@@ -15,7 +15,7 @@ import { LEGAL_NAME } from '@/lib/site';
 export type FontMode = 'web' | 'print';
 
 // Bump when the photo mockup (lib/labels/photo.ts) changes, so cached product image URLs refresh.
-export const MOCKUP_VERSION = 'photo-v10';
+export const MOCKUP_VERSION = 'photo-v11';
 
 const NAVY = '#14213d';
 const INK = '#4b5563';
@@ -170,7 +170,8 @@ export function labelSubtitle(p: Product) {
 
 // Origin claim. FTC rule: an unqualified "Made in USA" needs all or virtually all ingredients to be domestic too;
 // with imported ingredients use e.g. "Made in the USA with imported ingredients". Confirm with the supplier.
-export const ORIGIN_CLAIM = 'Made in the USA';
+// Removed from the labels (14 Nov) until Supliful confirms which products qualify; set a string here to print it again.
+export const ORIGIN_CLAIM: string | null = null;
 
 // One line when the whole name fits large; otherwise the first word on line one and the rest (set a little smaller)
 // on line two. Sized to clear the vertical wordmark.
@@ -514,6 +515,9 @@ export function productForm(p: Product, cx: number, cy: number, r: number, color
       : ballStickArt(p, FRONT.w - 58, 116, 92, 128, color, { spectrum: style === 'molecule-spectrum', rotate: -1.05 });
   if ((style === 'molecule' || style === 'molecule-spectrum') && hasMolecule(p.slug))
     return moleculeArt(p, cx - 34, cy - 2, r * 1.85, r * 1.55, color, style === 'molecule-spectrum' ? { palette: 'spectrum', disperse: true } : {});
+  // No molecule or shape data: a generic bead sphere, so the V2 front keeps its particle look.
+  if (style === 'molecule' || style === 'molecule-spectrum')
+    return particleShape(p, cx - 88, cy - 54, 104, color, { spectrum: style === 'molecule-spectrum', disperse: style === 'molecule-spectrum', fallback: true });
   if (style === 'scientific') return formScientific(p, cx, cy, r, color);
   if (style === 'organic') return formOrganic(p, cx, cy, r, color);
   const rnd = hash(p.slug + 'form');
@@ -721,7 +725,7 @@ export function factsPanel(p: Product, mode: FontMode, w = 190) {
     out.push(`<text x="0" y="${y}" font-size="8" fill="#000" ${f}>† Daily Value not established.</text>`);
     y += tight ? 10 : 12;
   }
-  const other = wrap(`Other ingredients: ${p.otherIngredients}`, w, 8, 0.47);
+  const other = wrap(`Other ingredients: ${p.otherIngredients}`, w, 8, 0.5); // 0.47 let long words cross the safe zone
   out.push(textBlock(other, 0, y, 8, 10, `fill="#000" ${f}`));
   y += other.length * 10;
   return { svg: `<g>${out.join('')}</g>`, height: y };
@@ -756,7 +760,7 @@ function infoPanel(p: Product, mode: FontMode, w = 190) {
   para('Caution:', 'Do not exceed the recommended dose. Consult your healthcare provider before use if you are pregnant, nursing, taking medication or have a medical condition.' + (p.ageRestricted ? ' Not for use by anyone under 18.' : '') + (iron ? '' : ' Keep out of reach of children.'));
   if (iron) para('', IRON_WARNING, 7);
   para('Store', 'in a cool, dry place. Do not use if the seal under the cap is broken or missing.');
-  para('', `${ORIGIN_CLAIM}.`);
+  if (ORIGIN_CLAIM) para('', `${ORIGIN_CLAIM}.`);
   const disc = wrap(DISCLAIMER, w - 8, 7, 0.52);
   out.push(`<rect x="0" y="${n(y - 4)}" width="${w}" height="${n(disc.length * 8.8 + 7)}" fill="none" stroke="${NAVY}" stroke-width="0.6"/>`);
   out.push(textBlock(disc, 4, y + 4, 7, 8.8, `font-weight="700" fill="${NAVY}" ${f}`));
@@ -791,9 +795,11 @@ export function labelOverflow(p: Product) {
   ];
 }
 
-// `v2`: the V2 front (clinical white, colour band, particle molecule/shape), clipped to the front panel.
+// The print front is V2 by default (14 Nov): clinical white, colour band, particle molecule/shape, clipped to the front
+// panel. `v2: false` gives the earlier A3 colour-block front.
 export function fullLabelSvg(p: Product, opts: { mode?: FontMode; guides?: boolean; v2?: boolean } = {}) {
   const mode = opts.mode ?? 'print';
+  const v2 = opts.v2 ?? true;
   const { trimW, trimH, bleed, frontW, infoW } = LABEL;
   const W = trimW + bleed * 2;
   const H = trimH + bleed * 2;
@@ -822,7 +828,7 @@ export function fullLabelSvg(p: Product, opts: { mode?: FontMode; guides?: boole
       <text x="0" y="25" font-size="7" fill="${NAVY}" ${f}>hello@noovit.com</text>
     </g>
   </g>
-  ${opts.v2
+  ${v2
     ? `<clipPath id="v2front-${p.slug}"><rect x="${fx}" y="0" width="${FRONT.w}" height="${H}"/></clipPath><g clip-path="url(#v2front-${p.slug})"><g id="front" transform="translate(${fx} ${bleed})">${frontPanelClinical(p, mode, bleed, { accent: 'band', color: p.color, form: 'molecule-spectrum' })}</g></g>`
     : `<g id="front" transform="translate(${fx} ${bleed})">${frontPanel(p, mode, bleed)}</g>`}
   <g id="facts" transform="translate(${sx + 10} ${bleed + 12}) scale(${n(factsScale)})">${facts.svg}</g>
@@ -943,8 +949,9 @@ export function bottleSvg(p: Product, variant: BottleVariant = 'front', opts: { 
 // the right. Text stays 0.25" inside the trim. Their editor adds a lot/QR code bottom-left, so that corner stays clear.
 export const TUB_LABEL = { trimW: 1100, trimH: 300, bleed: 12.5 };
 
-export function tubLabelSvg(p: Product, opts: { mode?: FontMode; guides?: boolean } = {}) {
+export function tubLabelSvg(p: Product, opts: { mode?: FontMode; guides?: boolean; v2?: boolean } = {}) {
   const mode = opts.mode ?? 'print';
+  const v2 = opts.v2 ?? true; // V2 front by default (14 Nov), as on the bottles
   const { trimW, trimH, bleed } = TUB_LABEL;
   const W = trimW + bleed * 2;
   const H = trimH + bleed * 2;
@@ -972,7 +979,9 @@ export function tubLabelSvg(p: Product, opts: { mode?: FontMode; guides?: boolea
     <text x="0" y="12" font-size="9" fill="${NAVY}" ${f}>30 N Gould St Ste R, Sheridan, WY 82801</text>
     <text x="0" y="24" font-size="9" fill="${NAVY}" ${f}>hello@noovit.com · noovit.com</text>
   </g>
-  <g id="front" transform="translate(${n(fx)} ${bleed}) scale(${n(s)})">${frontPanel(p, mode, bleed / s)}</g>
+  ${v2
+    ? `<clipPath id="v2tub-${p.slug}"><rect x="${n(fx)}" y="0" width="${n(fw)}" height="${H}"/></clipPath><g clip-path="url(#v2tub-${p.slug})"><g id="front" transform="translate(${n(fx)} ${bleed}) scale(${n(s)})">${frontPanelClinical(p, mode, bleed / s, { accent: 'band', color: p.color, form: 'molecule-spectrum' })}</g></g>`
+    : `<g id="front" transform="translate(${n(fx)} ${bleed}) scale(${n(s)})">${frontPanel(p, mode, bleed / s)}</g>`}
   <g id="facts" transform="translate(${n(bleed + trimW - 25 - 210 * fs)} ${bleed + 25}) scale(${n(fs)})">${facts.svg}</g>
   ${guides}
 </svg>`;

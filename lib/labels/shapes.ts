@@ -129,9 +129,17 @@ const SHAPES: Record<string, () => Mask> = {
 };
 export const hasShape = (slug: string) => slug in SHAPES;
 
+// Fallback for products without their own molecule or shape (14 Nov): a bead sphere lit from the top left, so every
+// label front keeps the V2 particle language instead of the old soft blob.
+const sphere: Mask = (u, v) => {
+  const d = inEll(u, v, 0.5, 0.52, 0.4, 0.4);
+  if (d > 1) return null;
+  return Math.max(-1, Math.min(1, (0.5 - u) * 1.3 + (0.52 - v) * 1.3 - d * 0.35));
+};
+
 // Fills a square box (x, y, size) with beads in the product colour + brand spectrum; one corner dissolves.
-export function particleShape(p: Product, x: number, y: number, size: number, color = p.color, opts: { spectrum?: boolean; disperse?: boolean; bead?: number } = {}) {
-  const make = SHAPES[p.slug];
+export function particleShape(p: Product, x: number, y: number, size: number, color = p.color, opts: { spectrum?: boolean; disperse?: boolean; bead?: number; fallback?: boolean } = {}) {
+  const make = SHAPES[p.slug] ?? (opts.fallback ? () => sphere : undefined);
   if (!make) return '';
   const mask = make();
   const rnd = seeded(p.slug + 'beads');

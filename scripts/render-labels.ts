@@ -1,4 +1,5 @@
-// Writes print drafts of the full wrap-around labels to design/labels/ (and, for powders, the 11" × 3" tub label):
+// Writes print drafts of the full wrap-around labels to design/labels/ (and, for powders, the 11" × 3" tub label).
+// Every front is the V2 design (14 Nov); `fullLabelSvg(p, { v2: false })` still gives the earlier A3 front.
 //   <slug>.svg         artwork (fonts as names: open in Affinity/Illustrator with Funnel Display and Inter
 //                      installed, outline the text and export a CMYK PDF/X)
 //   <slug>.guides.svg  the same with trim (red), safe zone (blue) and panel folds
@@ -15,7 +16,6 @@ import { fullLabelSvg, tubLabelSvg, TUB_LABEL, LABEL, labelOverflow } from '@/li
 
 const RETIRED = ['niacinamide', 'odorless-garlic']; // hidden with no supplier; no label needed
 const only = process.argv.slice(2);
-const V2_TEST = ['magnesium-complex', 'ashwagandha', 'lions-mane', 'coq10', 'turmeric-complex'];
 const fontFiles = readdirSync('assets/fonts').filter((f) => f.endsWith('.ttf')).map((f) => `assets/fonts/${f}`);
 mkdirSync('design/labels', { recursive: true });
 
@@ -43,13 +43,6 @@ for (const p of SEED_PRODUCTS) {
   writeFileSync(`design/labels/${p.slug}.guides.svg`, guides);
   const png = new Resvg(guides, { fitTo: { mode: 'width', value: 2000 }, font: { fontFiles, loadSystemFonts: false, defaultFontFamily: 'Inter' } }).render().asPng();
   writeFileSync(`design/labels/${p.slug}.png`, png);
-  // V2 test files (3 Nov): the new front on the real Supliful label, for a printed sample. Core bottles only.
-  if (p.form !== 'powder' && V2_TEST.includes(p.slug)) {
-    const v2 = fullLabelSvg(p, { mode: 'print', v2: true });
-    writeFileSync(`design/labels/${p.slug}.v2.svg`, v2);
-    writeFileSync(`design/labels/${p.slug}.v2.png`, new Resvg(fullLabelSvg(p, { mode: 'print', v2: true, guides: true }), { fitTo: { mode: 'width', value: 2000 }, ...fontOpts }).render().asPng());
-    await pdf(v2, (LABEL.trimW + LABEL.bleed * 2) / 100, (LABEL.trimH + LABEL.bleed * 2) / 100, `design/labels/${p.slug}.v2.label.pdf`);
-  }
   if (p.form !== 'powder') await pdf(fullLabelSvg(p, { mode: 'print' }), (LABEL.trimW + LABEL.bleed * 2) / 100, (LABEL.trimH + LABEL.bleed * 2) / 100, `design/labels/${p.slug}.label.pdf`);
   // Powders ship in Supliful's tub: 11" × 3" label. <slug>.tub.png is the upload file (300 dpi, bleed included).
   if (p.form === 'powder') {
