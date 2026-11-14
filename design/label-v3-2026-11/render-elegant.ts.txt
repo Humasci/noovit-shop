@@ -1,0 +1,24 @@
+// Compares the two "elegant" fronts (E1 centred, E2 left editorial) for the six core products.
+// Usage: npx tsx design/label-v3-2026-11/render-elegant.ts
+import { readdirSync, writeFileSync } from 'fs';
+import { Resvg } from '@resvg/resvg-js';
+import { SEED_PRODUCTS } from '@/data/products';
+import { frontPanelElegant, FRONT } from '@/lib/labels/svg';
+
+const SLUGS = ['magnesium-complex', 'ashwagandha', 'lions-mane', 'creatine', 'coq10', 'turmeric-complex'];
+const fontFiles = readdirSync('assets/fonts').filter((f) => f.endsWith('.ttf')).map((f) => `assets/fonts/${f}`);
+const gap = 24, pad = 40, labelH = 30;
+for (const align of ['center', 'left'] as const) {
+  const W = pad * 2 + SLUGS.length * FRONT.w + (SLUGS.length - 1) * gap;
+  const H = pad * 2 + FRONT.h + labelH;
+  const panels = SLUGS.map((slug, i) => {
+    const p = SEED_PRODUCTS.find((x) => x.slug === slug)!;
+    const x = pad + i * (FRONT.w + gap);
+    return `<g transform="translate(${x} ${pad})"><rect x="-0.5" y="-0.5" width="${FRONT.w + 1}" height="${FRONT.h + 1}" fill="none" stroke="#d6d3cd"/>${frontPanelElegant(p, 'print', 0, { align })}</g>`;
+  }).join('');
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}"><rect width="${W}" height="${H}" fill="#efede8"/>${panels}
+    <text x="${pad}" y="${H - 18}" font-size="12" fill="#6b6b6b" font-family="Inter">${align === 'center' ? 'E1 · centred, colour rule' : 'E2 · left, editorial, colour edge'}</text></svg>`;
+  const file = `design/label-v3-2026-11/elegant-${align === 'center' ? 'E1-centred' : 'E2-left'}.png`;
+  writeFileSync(file, new Resvg(svg, { fitTo: { mode: 'width', value: 2600 }, font: { fontFiles, loadSystemFonts: false, defaultFontFamily: 'Inter' } }).render().asPng());
+  console.log(file);
+}

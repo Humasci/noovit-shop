@@ -599,6 +599,61 @@ export function frontPanelClinical(p: Product, mode: FontMode, bleed = 0, opts: 
   </g>`;
 }
 
+// ---------- Front panel "elegant" (14 Nov, owner: premium, clean, minimal, elegant) ----------
+// All white, no illustration. Typography carries it: the wordmark, a large lighter-weight name, refined small caps and
+// hairlines. The product colour is one quiet accent (a short rule or a slim edge, plus the descriptor).
+// `align: 'center'` (E1) is symmetrical with a short colour rule under the wordmark; 'left' (E2) is editorial, with a
+// slim colour edge on the left. Net quantity stays at legal size in the bottom 30% (21 CFR 101.105).
+export function frontPanelElegant(p: Product, mode: FontMode, bleed = 0, opts: { align?: 'center' | 'left'; color?: string } = {}) {
+  const align = opts.align ?? 'center';
+  const col = opts.color ?? p.color;
+  const colText = shade(col, 0.15);
+  const { units, servingsPerContainer } = labelCounts(p);
+  const qty = netQuantity(p);
+  const wt = qty.match(/^Net Wt (\d+ g) \((.+)\)$/);
+  const big = wt ? wt[1] : p.form === 'powder' ? qty.split(' ')[0] : String(units);
+  const unitWord = wt ? `Net Wt ${wt[2]}` : p.form === 'powder' ? qty.replace(/^\S+\s/, '') : UNITS[p.form][units === 1 ? 0 : 1];
+  const dose = heroDose(p);
+  const category = labelCategory(p);
+  const words = p.name.split(' ');
+  const descriptor = words.length > 1 && /\+$|^Complex$/.test(words[words.length - 1]) ? words.pop()! : '';
+  const main = words.join(' ');
+  const center = align === 'center';
+  const x0 = center ? FRONT.w / 2 : 24; // left edge sits clear of the colour edge in E2
+  const anchor = center ? 'middle' : 'start';
+  const room = FRONT.w - (center ? 40 : 46);
+  const size = Math.min(25, room / (main.length * 0.54));
+  const caps = (y: number, t: string, sz: number, fill: string, weight = 500, x = x0, a = anchor) =>
+    `<text x="${n(x)}" y="${n(y)}" text-anchor="${a}" font-size="${sz}" font-weight="${weight}" letter-spacing="${n(sz * 0.2)}" fill="${fill}" ${font('body', mode)}>${esc(t.toUpperCase())}</text>`;
+  const doseLine = V2_DOSE_LINES[p.slug] ?? dose?.line ?? '';
+  const nameY = 86;
+  const descY = nameY + 19;
+  const doseY = descriptor ? 140 : 132;
+  const benefitLines = balance(wrap(p.shortBenefit.replace(/\.$/, '') + '*', room - 10, 7.2, 0.5).slice(0, 2));
+  const doseBlock = dose
+    ? `<text x="${n(x0)}" y="${doseY}" text-anchor="${anchor}" font-size="17" font-weight="500" letter-spacing="-0.3" fill="${NAVY}" ${font('head', mode)}>${esc(dose.value)}<tspan font-size="9.5" font-weight="500" dx="1.4">${esc(dose.unit)}</tspan></text>
+      ${caps(doseY + 11, doseLine, 6.2, INK)}`
+    : textBlock(balance(wrap(labelSubtitle(p), room, 7.6, 0.5).slice(0, 2)), x0, doseY - 6, 7.6, 9.6, `text-anchor="${anchor}" font-weight="500" fill="${NAVY}" ${font('body', mode)}`);
+  const benY = doseY + (dose ? 29 : 18);
+  const ruleY = 188;
+  return `<g>
+    <rect x="0" y="${-bleed}" width="${FRONT.w}" height="${FRONT.h + bleed * 2}" fill="#fff"/>
+    ${center ? '' : `<rect x="0" y="${-bleed}" width="7" height="${FRONT.h + bleed * 2}" fill="${col}"/>`}
+    ${center ? wordmark(x0, 30, 13, mode, NAVY) : wordmarkRaw(x0, 30, 13, mode, NAVY, NAVY)}
+    ${center ? `<rect x="${n(x0 - 12)}" y="40" width="24" height="1.1" fill="${col}"/>` : `<rect x="${x0}" y="40" width="24" height="1.1" fill="${col}"/>`}
+    ${category ? caps(55, category, 6.2, colText, 600) : ''}
+    <text x="${n(x0)}" y="${nameY}" text-anchor="${anchor}" font-size="${n(size)}" font-weight="500" letter-spacing="${n(-0.025 * size)}" fill="${NAVY}" ${font('head', mode)}>${esc(main)}</text>
+    ${descriptor ? `<text x="${n(x0)}" y="${descY}" text-anchor="${anchor}" font-size="14" font-weight="400" letter-spacing="-0.2" fill="${colText}" ${font('head', mode)}>${esc(descriptor)}</text>` : ''}
+    ${doseBlock}
+    ${textBlock(benefitLines, x0, benY, 7.2, 9.2, `text-anchor="${anchor}" font-weight="400" fill="${INK}" ${font('body', mode)}`)}
+    <rect x="${center ? 20 : x0}" y="${ruleY}" width="${center ? FRONT.w - 40 : FRONT.w - x0 - 20}" height="0.5" fill="#cfc9bf"/>
+    ${caps(203, 'Dietary supplement', 6.2, NAVY, 600, center ? 20 : x0, 'start')}
+    ${caps(212, `${servingsPerContainer} servings`, 6.2, INK, 500, center ? 20 : x0, 'start')}
+    <text x="${FRONT.w - 20}" y="${206}" text-anchor="end" font-size="16" font-weight="500" fill="${NAVY}" ${font('head', mode)}>${esc(big)}</text>
+    ${caps(214.5, unitWord, 6.2, NAVY, 600, FRONT.w - 20, 'end')}
+  </g>`;
+}
+
 // ---------- Front panel "field" (3 Nov): clinical white + a square molecule field in the top-right corner ----------
 // Left column under the wordmark: category and the dose; the field fills the top-right block (bleeding off the
 // top and right edges); the name, descriptor and benefit sit below it; the colour band carries the quantity.
