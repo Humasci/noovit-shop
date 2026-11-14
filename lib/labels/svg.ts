@@ -606,6 +606,11 @@ export function frontPanelClinical(p: Product, mode: FontMode, bleed = 0, opts: 
 // slim colour edge on the left. Net quantity stays at legal size in the bottom 30% (21 CFR 101.105).
 // Deep shade of the product colour used as the dark label's background.
 export const elegantPaper = (col: string) => hueShiftDarken(col, 6, 0.5);
+// Hero number for blends, so every front has the same big-number anchor (14 Nov). Turmeric: 800 mg root powder +
+// 100 mg 95% extract per serving = 900 mg turmeric.
+const ELEGANT_HERO: Record<string, { value: string; unit: string; line: string }> = {
+  'turmeric-complex': { value: '900', unit: 'mg', line: 'Turmeric root + 95% extract' },
+};
 
 export function frontPanelElegant(p: Product, mode: FontMode, bleed = 0, opts: { align?: 'center' | 'left'; color?: string; tone?: 'light' | 'dark'; logo?: number; paper?: string } = {}) {
   // 14 Nov (owner): the brand leads. Wordmark 24 (about 1.5x the 15.6 draft, ~38% of the panel width), product name
@@ -627,7 +632,7 @@ export function frontPanelElegant(p: Product, mode: FontMode, bleed = 0, opts: {
   const wt = qty.match(/^Net Wt (\d+ g) \((.+)\)$/);
   const big = wt ? wt[1] : p.form === 'powder' ? qty.split(' ')[0] : String(units);
   const unitWord = wt ? `Net Wt ${wt[2]}` : p.form === 'powder' ? qty.replace(/^\S+\s/, '') : UNITS[p.form][units === 1 ? 0 : 1];
-  const dose = heroDose(p);
+  const dose = ELEGANT_HERO[p.slug] ?? heroDose(p);
   const category = labelCategory(p);
   const words = p.name.split(' ');
   const descriptor = words.length > 1 && /\+$|^Complex$/.test(words[words.length - 1]) ? words.pop()! : '';

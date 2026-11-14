@@ -6,18 +6,18 @@ import { FRONT, frontPanelElegant, elegantPaper } from '@/lib/labels/svg';
 const fontFiles = readdirSync('assets/fonts').filter((f) => f.endsWith('.ttf')).map((f) => `assets/fonts/${f}`);
 const P = (s: string) => SEED_PRODUCTS.find((x) => x.slug === s)!;
 const items: [string, string, string?][] = [
-  ['ashwagandha', P('ashwagandha').color],
-  ['coq10', P('coq10').color],            // current
-  ['coq10', '#7B3F86'],                    // plum
-  ['coq10', '#6A4C9C'],                    // deep violet
-  ['turmeric-complex', P('turmeric-complex').color], // current (brown)
-  ['turmeric-complex', '#C8611F', '#7A2E10'], // burnt orange, rust paper
-  ['turmeric-complex', '#D9A21B', '#1E2A3A'], // saffron gold on ink
-  ['turmeric-complex', '#E0A526', '#173A3A'], // saffron gold on deep teal-black
+  ['magnesium-complex', P('magnesium-complex').color],
+  ['coq10', '#7B3F86'],                       // CoQ10 = C (picked)
+  ['lions-mane', P('lions-mane').color],
+  ['creatine', P('creatine').color],
+  ['turmeric-complex', '#E0A526', '#232327'], // T1 saffron gold on charcoal
+  ['turmeric-complex', '#E8892A', '#2A2C33'], // T2 turmeric orange on graphite
+  ['turmeric-complex', '#E3B23C', '#3A2E5C'], // T3 gold on deep indigo-violet
+  ['turmeric-complex', '#EDB431', '#5E1F2E'], // T4 gold on deep oxblood
 ];
 const gap = 16, cols = 4, rows = 2, W = cols * FRONT.w + (cols + 1) * gap, H = rows * FRONT.h + (rows + 1) * gap + 30;
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}"><rect width="${W}" height="${H}" fill="#efe9df"/>${items.map(([s, c, paper], i) => {
   const x = gap + (i % cols) * (FRONT.w + gap), y = gap + Math.floor(i / cols) * (FRONT.h + gap + 15);
   return `<g transform="translate(${x} ${y})">${frontPanelElegant({ ...P(s), color: c }, 'print', 0, { align: 'left', tone: 'dark', paper })}</g><text x="${x}" y="${y + FRONT.h + 11}" font-size="8" font-family="Inter" fill="#333">${String.fromCharCode(65 + i)}. ${s} ${c}${paper ? ' on ' + paper : ' → ' + elegantPaper(c)}</text>`;
 }).join('')}</svg>`;
-sharp(Buffer.from(new Resvg(svg, { fitTo: { mode: 'width', value: 2400 }, font: { fontFiles, loadSystemFonts: false, defaultFontFamily: 'Inter' } }).render().asPng())).png().toFile('design/label-v3-2026-11/colour-options.png').then(() => console.log('ok'));
+sharp(Buffer.from(new Resvg(svg, { fitTo: { mode: 'width', value: 2400 }, font: { fontFiles, loadSystemFonts: false, defaultFontFamily: 'Inter' } }).render().asPng())).png().toFile('design/label-v3-2026-11/colour-options-2.png').then(() => console.log('ok'));
