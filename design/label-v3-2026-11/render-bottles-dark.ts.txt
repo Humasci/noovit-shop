@@ -1,0 +1,33 @@
+// Bottle-photo mockups of E2 dark (deep product-colour label, white type, bright colour edge) on Supliful's white bottle.
+// Usage: npx tsx --conditions=react-server design/label-v3-2026-11/render-bottles-dark.ts
+import { readdirSync } from 'fs';
+import { Resvg } from '@resvg/resvg-js';
+import sharp from 'sharp';
+import { SEED_PRODUCTS } from '@/data/products';
+import { FRONT, frontPanelElegant, elegantPaper } from '@/lib/labels/svg';
+import { photoBottleSvg, type LabelArt } from '@/lib/labels/photo';
+
+const fontFiles = readdirSync('assets/fonts').filter((f) => f.endsWith('.ttf')).map((f) => `assets/fonts/${f}`);
+const product = (slug: string) => SEED_PRODUCTS.find((x) => x.slug === slug)!;
+const BG = '#efe9df'; // warm stone, so the white bottle and cap still read
+// The dark paper wraps round the bottle's sides; the front panel draws the type and the colour edge.
+const art: LabelArt = (p, ext) => `
+  <rect x="${-ext}" y="0" width="${FRONT.w + ext * 2}" height="${FRONT.h}" fill="${elegantPaper(p.color)}"/>
+  ${frontPanelElegant(p, 'print', 0, { align: 'left', tone: 'dark' })}`;
+const png = (svg: string, w: number) => Buffer.from(new Resvg(svg, { fitTo: { mode: 'width', value: w }, font: { fontFiles, loadSystemFonts: false, defaultFontFamily: 'Inter' } }).render().asPng());
+
+(async () => {
+  const feather = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900"><defs><linearGradient id="g"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="0.2" stop-color="#fff"/><stop offset="0.8" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><rect width="900" height="900" fill="url(#g)"/></svg>`);
+  for (const [name, slugs] of [['lineup', ['magnesium-complex', 'ashwagandha', 'lions-mane']], ['lineup2', ['creatine', 'coq10', 'turmeric-complex']]] as const) {
+    const usable = slugs.filter((s) => product(s).form !== 'powder'); // the photo is the capsule bottle; tubs are separate
+    const raw = usable.map((s) => png(photoBottleSvg(product(s), BG, false, art), 900));
+    const { data } = await sharp(raw[0]).extract({ left: 10, top: 10, width: 1, height: 1 }).raw().toBuffer({ resolveWithObject: true });
+    const tiles = await Promise.all(raw.map((t) => sharp(t).ensureAlpha().composite([{ input: feather, blend: 'dest-in' }]).png().toBuffer()));
+    const step = 640, W = step * (tiles.length - 1) + 900;
+    await sharp({ create: { width: W, height: 900, channels: 3, background: { r: data[0], g: data[1], b: data[2] } } })
+      .composite(tiles.map((t, i) => ({ input: t, left: i * step, top: 0 })))
+      .png().toFile(`design/label-v3-2026-11/bottles-E2dark-${name}.png`);
+  }
+  await sharp(png(photoBottleSvg(product('magnesium-complex'), BG, true, art), 1400)).png().toFile('design/label-v3-2026-11/bottles-E2dark-closeup.png');
+  console.log('done');
+})();

@@ -604,10 +604,20 @@ export function frontPanelClinical(p: Product, mode: FontMode, bleed = 0, opts: 
 // hairlines. The product colour is one quiet accent (a short rule or a slim edge, plus the descriptor).
 // `align: 'center'` (E1) is symmetrical with a short colour rule under the wordmark; 'left' (E2) is editorial, with a
 // slim colour edge on the left. Net quantity stays at legal size in the bottom 30% (21 CFR 101.105).
-export function frontPanelElegant(p: Product, mode: FontMode, bleed = 0, opts: { align?: 'center' | 'left'; color?: string } = {}) {
+// Deep shade of the product colour used as the dark label's background.
+export const elegantPaper = (col: string) => hueShiftDarken(col, 6, 0.5);
+
+export function frontPanelElegant(p: Product, mode: FontMode, bleed = 0, opts: { align?: 'center' | 'left'; color?: string; tone?: 'light' | 'dark' } = {}) {
   const align = opts.align ?? 'center';
   const col = opts.color ?? p.color;
-  const colText = shade(col, 0.15);
+  // 'dark' (14 Nov): the whole label in a deep shade of the product colour, white type, a brighter colour edge.
+  const dark = opts.tone === 'dark';
+  const paper = dark ? elegantPaper(col) : '#fff';
+  const accent = dark ? hueShiftDarken(col, 0, -0.45) : col; // edge and rule
+  const colText = dark ? hueShiftDarken(col, 0, -0.62) : shade(col, 0.15);
+  const ink = dark ? '#ffffff' : NAVY;
+  const inkSoft = dark ? 'rgba(255,255,255,0.78)' : INK;
+  const hair = dark ? 'rgba(255,255,255,0.28)' : '#cfc9bf';
   const { units, servingsPerContainer } = labelCounts(p);
   const qty = netQuantity(p);
   const wt = qty.match(/^Net Wt (\d+ g) \((.+)\)$/);
@@ -631,26 +641,26 @@ export function frontPanelElegant(p: Product, mode: FontMode, bleed = 0, opts: {
   const doseY = descriptor ? 140 : 132;
   const benefitLines = balance(wrap(p.shortBenefit.replace(/\.$/, '') + '*', room - 10, 7.2, 0.5).slice(0, 2));
   const doseBlock = dose
-    ? `<text x="${n(x0)}" y="${doseY}" text-anchor="${anchor}" font-size="17" font-weight="500" letter-spacing="-0.3" fill="${NAVY}" ${font('head', mode)}>${esc(dose.value)}<tspan font-size="9.5" font-weight="500" dx="1.4">${esc(dose.unit)}</tspan></text>
-      ${caps(doseY + 11, doseLine, 6.2, INK)}`
-    : textBlock(balance(wrap(labelSubtitle(p), room, 7.6, 0.5).slice(0, 2)), x0, doseY - 6, 7.6, 9.6, `text-anchor="${anchor}" font-weight="500" fill="${NAVY}" ${font('body', mode)}`);
+    ? `<text x="${n(x0)}" y="${doseY}" text-anchor="${anchor}" font-size="17" font-weight="500" letter-spacing="-0.3" fill="${ink}" ${font('head', mode)}>${esc(dose.value)}<tspan font-size="9.5" font-weight="500" dx="1.4">${esc(dose.unit)}</tspan></text>
+      ${caps(doseY + 11, doseLine, 6.2, inkSoft)}`
+    : textBlock(balance(wrap(labelSubtitle(p), room, 7.6, 0.5).slice(0, 2)), x0, doseY - 6, 7.6, 9.6, `text-anchor="${anchor}" font-weight="500" fill="${ink}" ${font('body', mode)}`);
   const benY = doseY + (dose ? 29 : 18);
   const ruleY = 188;
   return `<g>
-    <rect x="0" y="${-bleed}" width="${FRONT.w}" height="${FRONT.h + bleed * 2}" fill="#fff"/>
-    ${center ? '' : `<rect x="0" y="${-bleed}" width="7" height="${FRONT.h + bleed * 2}" fill="${col}"/>`}
-    ${center ? wordmark(x0, 30, 13, mode, NAVY) : wordmarkRaw(x0, 30, 13, mode, NAVY, NAVY)}
-    ${center ? `<rect x="${n(x0 - 12)}" y="40" width="24" height="1.1" fill="${col}"/>` : `<rect x="${x0}" y="40" width="24" height="1.1" fill="${col}"/>`}
+    <rect x="0" y="${-bleed}" width="${FRONT.w}" height="${FRONT.h + bleed * 2}" fill="${paper}"/>
+    ${center ? '' : `<rect x="0" y="${-bleed}" width="7" height="${FRONT.h + bleed * 2}" fill="${accent}"/>`}
+    ${center ? wordmark(x0, 30, 13, mode, ink) : wordmarkRaw(x0, 30, 13, mode, ink, ink)}
+    ${center ? `<rect x="${n(x0 - 12)}" y="40" width="24" height="1.1" fill="${accent}"/>` : `<rect x="${x0}" y="40" width="24" height="1.1" fill="${accent}"/>`}
     ${category ? caps(55, category, 6.2, colText, 600) : ''}
-    <text x="${n(x0)}" y="${nameY}" text-anchor="${anchor}" font-size="${n(size)}" font-weight="500" letter-spacing="${n(-0.025 * size)}" fill="${NAVY}" ${font('head', mode)}>${esc(main)}</text>
+    <text x="${n(x0)}" y="${nameY}" text-anchor="${anchor}" font-size="${n(size)}" font-weight="500" letter-spacing="${n(-0.025 * size)}" fill="${ink}" ${font('head', mode)}>${esc(main)}</text>
     ${descriptor ? `<text x="${n(x0)}" y="${descY}" text-anchor="${anchor}" font-size="14" font-weight="400" letter-spacing="-0.2" fill="${colText}" ${font('head', mode)}>${esc(descriptor)}</text>` : ''}
     ${doseBlock}
-    ${textBlock(benefitLines, x0, benY, 7.2, 9.2, `text-anchor="${anchor}" font-weight="400" fill="${INK}" ${font('body', mode)}`)}
-    <rect x="${center ? 20 : x0}" y="${ruleY}" width="${center ? FRONT.w - 40 : FRONT.w - x0 - 20}" height="0.5" fill="#cfc9bf"/>
-    ${caps(203, 'Dietary supplement', 6.2, NAVY, 600, center ? 20 : x0, 'start')}
-    ${caps(212, `${servingsPerContainer} servings`, 6.2, INK, 500, center ? 20 : x0, 'start')}
-    <text x="${FRONT.w - 20}" y="${206}" text-anchor="end" font-size="16" font-weight="500" fill="${NAVY}" ${font('head', mode)}>${esc(big)}</text>
-    ${caps(214.5, unitWord, 6.2, NAVY, 600, FRONT.w - 20, 'end')}
+    ${textBlock(benefitLines, x0, benY, 7.2, 9.2, `text-anchor="${anchor}" font-weight="400" fill="${inkSoft}" ${font('body', mode)}`)}
+    <rect x="${center ? 20 : x0}" y="${ruleY}" width="${center ? FRONT.w - 40 : FRONT.w - x0 - 20}" height="0.5" fill="${hair}"/>
+    ${caps(203, 'Dietary supplement', 6.2, ink, 600, center ? 20 : x0, 'start')}
+    ${caps(212, `${servingsPerContainer} servings`, 6.2, inkSoft, 500, center ? 20 : x0, 'start')}
+    <text x="${FRONT.w - 20}" y="${206}" text-anchor="end" font-size="16" font-weight="500" fill="${ink}" ${font('head', mode)}>${esc(big)}</text>
+    ${caps(214.5, unitWord, 6.2, ink, 600, FRONT.w - 20, 'end')}
   </g>`;
 }
 
