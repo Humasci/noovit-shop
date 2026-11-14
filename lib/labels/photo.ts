@@ -19,6 +19,11 @@ const R = 215;
 const TOP = 372;
 const BOTTOM = 846;
 const STRIPS = 48;
+// Seen from slightly above, the label's top and bottom edges are ellipses: at the front they sit lower than at the
+// sides (measured on the photo: ~10 px at the shoulder seam, ~22 px near the base). The label follows that curve
+// instead of a flat rectangle, so its corners turn round the bottle like a real wrap.
+const BOW_TOP = 9;
+const BOW_BOTTOM = 20;
 
 export function usesPhoto(p: Product) {
   return !p.bundleComponents?.length && (p.form === 'capsules' || p.form === 'softgels');
@@ -63,12 +68,21 @@ const LIGHT_DEFS = `
       <feColorMatrix values="0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0.9 0"/>
     </filter>`;
 const lighting = () => `
-      <rect x="${X0}" y="${TOP}" width="${2 * R}" height="${BOTTOM - TOP}" filter="url(#lt-grain)" opacity="0.07" style="mix-blend-mode:overlay"/>
-      <rect x="${X0}" y="${TOP}" width="${2 * R}" height="${BOTTOM - TOP}" fill="url(#lt-v)"/>
-      <rect x="${X0}" y="${TOP}" width="${2 * R}" height="${BOTTOM - TOP}" fill="url(#lt-roll)"/>
-      <rect x="${X0}" y="${TOP}" width="${2 * R}" height="${BOTTOM - TOP}" fill="url(#lt-spec)" style="mix-blend-mode:screen"/>
-      <rect x="${X0}" y="${TOP}" width="${2 * R}" height="1.4" fill="#fff" opacity="0.22"/>
-      <rect x="${X0}" y="${BOTTOM - 2.2}" width="${2 * R}" height="2.2" fill="#000" opacity="0.28"/>`;
+      <rect x="${X0}" y="${TOP}" width="${2 * R}" height="${BOTTOM - TOP + BOW_BOTTOM}" filter="url(#lt-grain)" opacity="0.07" style="mix-blend-mode:overlay"/>
+      <rect x="${X0}" y="${TOP}" width="${2 * R}" height="${BOTTOM - TOP + BOW_BOTTOM}" fill="url(#lt-v)"/>
+      <rect x="${X0}" y="${TOP}" width="${2 * R}" height="${BOTTOM - TOP + BOW_BOTTOM}" fill="url(#lt-roll)"/>
+      <rect x="${X0}" y="${TOP}" width="${2 * R}" height="${BOTTOM - TOP + BOW_BOTTOM}" fill="url(#lt-spec)" style="mix-blend-mode:screen"/>
+      <path d="${edge(TOP, BOW_TOP)}" fill="none" stroke="#fff" stroke-width="1.6" opacity="0.22"/>
+      <path d="${edge(BOTTOM - 1.2, BOW_BOTTOM)}" fill="none" stroke="#000" stroke-width="2.4" opacity="0.28"/>`;
+// The label's top or bottom edge as a polyline round the cylinder (bow px lower at the front than at the sides).
+const edge = (y: number, bow: number, reverse = false) => {
+  const pts = Array.from({ length: 41 }, (_, i) => {
+    const a = -Math.PI / 2 + (Math.PI * i) / 40;
+    return `${r(CX + R * Math.sin(a))} ${r(y + bow * Math.cos(a))}`;
+  });
+  return 'M' + (reverse ? pts.reverse() : pts).join(' L');
+};
+const bandPath = () => `${edge(TOP, BOW_TOP)} L${edge(BOTTOM, BOW_BOTTOM, true).slice(1)} Z`;
 
 // `backdrop`: the cream scene, plain white (feeds), or a hex tint (gallery images), multiplied under the photo.
 export function photoBottleSvg(p: Product, backdrop: 'scene' | 'white' | `#${string}` = 'scene', closeUp = false, artFn: LabelArt = defaultArt) {
@@ -86,8 +100,11 @@ export function photoBottleSvg(p: Product, backdrop: 'scene' | 'white' | `#${str
     const ua = (R * a) / s; // label units from the panel centre
     const ub = (R * b) / s;
     const kx = (xb - xa) / (ub - ua);
-    clips.push(`<clipPath id="s${k}"><rect x="${r(xa - 0.4)}" y="${TOP - 2}" width="${r(xb - xa + 0.8)}" height="${BOTTOM - TOP + 4}"/></clipPath>`);
-    strips.push(`<g clip-path="url(#s${k})"><use href="#art" transform="matrix(${r(kx * 1000) / 1000} 0 0 ${r(s * 1000) / 1000} ${r(xa - (FRONT.w / 2 + ua) * kx)} ${TOP})"/></g>`);
+    const c = Math.cos((a + b) / 2); // 1 at the front, 0 at the silhouette
+    const t = TOP + BOW_TOP * c, bt = BOTTOM + BOW_BOTTOM * c;
+    const sy = (bt - t) / FRONT.h;
+    clips.push(`<clipPath id="s${k}"><rect x="${r(xa - 0.4)}" y="${r(t)}" width="${r(xb - xa + 0.8)}" height="${r(bt - t)}"/></clipPath>`);
+    strips.push(`<g clip-path="url(#s${k})"><use href="#art" transform="matrix(${r(kx * 1000) / 1000} 0 0 ${r(sy * 1000) / 1000} ${r(xa - (FRONT.w / 2 + ua) * kx)} ${r(t)})"/></g>`);
   }
   const tint = backdrop === 'scene' ? '#f7f1e9' : backdrop === 'white' ? null : backdrop;
   const bg =
@@ -99,7 +116,7 @@ export function photoBottleSvg(p: Product, backdrop: 'scene' | 'white' | `#${str
   <defs>
     ${art}
     ${clips.join('')}
-    <clipPath id="band"><rect x="${CX - R}" y="${TOP}" width="${R * 2}" height="${BOTTOM - TOP}"/></clipPath>
+    <clipPath id="band"><path d="${bandPath()}"/></clipPath>
     ${LIGHT_DEFS}
   </defs>
   ${bg}
@@ -107,10 +124,10 @@ export function photoBottleSvg(p: Product, backdrop: 'scene' | 'white' | `#${str
   <g>
     <g clip-path="url(#band)">
       ${strips.join('')}
-      <rect x="${CX - R}" y="${TOP}" width="${R * 2}" height="1.2" fill="#000" opacity="0.10"/>
-      <rect x="${CX - R}" y="${BOTTOM - 1.2}" width="${R * 2}" height="1.2" fill="#000" opacity="0.10"/>
+      <path d="${edge(TOP + 0.6, BOW_TOP)}" fill="none" stroke="#000" stroke-width="1.2" opacity="0.10"/>
+      <path d="${edge(BOTTOM - 0.6, BOW_BOTTOM)}" fill="none" stroke="#000" stroke-width="1.2" opacity="0.10"/>
       <image href="${photo}" width="1024" height="1024" style="mix-blend-mode:multiply"/>
-      ${tint ? `<rect x="${CX - R}" y="${TOP}" width="${R * 2}" height="${BOTTOM - TOP}" fill="${tint}" style="mix-blend-mode:multiply"/>` : ''}
+      ${tint ? `<rect x="${CX - R}" y="${TOP}" width="${R * 2}" height="${BOTTOM - TOP + BOW_BOTTOM}" fill="${tint}" style="mix-blend-mode:multiply"/>` : ''}
       ${lighting()}
     </g>
   </g>

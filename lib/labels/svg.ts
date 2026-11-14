@@ -15,7 +15,7 @@ import { LEGAL_NAME } from '@/lib/site';
 export type FontMode = 'web' | 'print';
 
 // Bump when the photo mockup (lib/labels/photo.ts) changes, so cached product image URLs refresh.
-export const MOCKUP_VERSION = 'photo-v13'; // v12 (14 Nov): elegant dark label; v13: studio lighting on the label
+export const MOCKUP_VERSION = 'photo-v14'; // v12 (14 Nov): elegant dark label; v13: studio lighting; v14: label edges curve round the bottle
 
 const NAVY = '#14213d';
 const INK = '#4b5563';
