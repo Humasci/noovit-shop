@@ -382,7 +382,7 @@ const seeds: Seed[] = [
     description: "1,000 mg of organic lion's mane mushroom a day, the classic mushroom for the mind.",
     whoFor: 'Anyone looking for a simple, daily mushroom supplement for focus and memory.',
     benefits: ['Supports focus and memory', 'Supports healthy nerve function', 'Organic, fruiting body & mycelium', 'Vegan pullulan capsule'],
-    ingredients: [{ name: "Organic Lion's Mane (fruiting body & mycelium, 40% polysaccharides)", amount: '1000mg' }],
+    ingredients: [{ name: "Organic Lion's Mane (fruiting body & mycelium, 40% polysaccharides)", amount: '1,000mg' }],
     otherIngredients: 'Organic capsule (pullulan, water), organic pea starch.',
     // Matches Supliful's Lion's Mane Mushroom (facts panel 1 Nov 2026): delivered $13.79 (product $6.60), suggested $33.90.
     dosage: 'Take 2 capsules daily, with or without food.',

@@ -131,7 +131,7 @@ Read this first. It is the standing context for any session working on this repo
 - `hiring/` — Upwork briefs for the hiring agent (01 RD/RDN reviewer, 02 regulatory review, 03 photographer).
 - `COMPANY_SETUP.md`, `ACCOUNTING_BRIEF.md` — Wyoming LLC plan, UK tax questions, deadlines (Barbill annual report ~1 Jan 2027).
 - `ANALYTICS_SETUP.md`, `SEO_PLAN.md`, `SOCIAL_PLAN.md`, `CONTENT_GUIDELINES.md`, `DESIGN_DIRECTION.md`,
-  `LABEL_DESIGN_BRIEF.md`, `DAILY_PACK_CONCEPT.md`, `APP_IDEAS.md` (parked; pets if anything), `LAUNCH_AUDIT.md`, `USER_GUIDE.md`.
+  `LABEL_DESIGN_BRIEF.md`, `LABEL_READINESS.md` (print checklist), `DAILY_PACK_CONCEPT.md`, `APP_IDEAS.md` (parked; pets if anything), `LAUNCH_AUDIT.md`, `USER_GUIDE.md`.
 
 **Design (design/)**
 - `label-rework-2026-10/` — label exploration A–G, Shopping-tile tests, chosen A3, final renders, creatine colours,
