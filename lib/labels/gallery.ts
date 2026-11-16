@@ -29,7 +29,7 @@ function bottleAt(p: Product, x: number, y: number, size: number, photo?: string
   if (usesPhoto(p) && photo) {
     // The studio photo's grey backdrop fades out into the tint, so no box shows.
     const id = `fade-${x}-${y}`;
-    return `<defs><radialGradient id="${id}g" cx="0.5" cy="0.5" r="0.5"><stop offset="0.7" stop-color="#fff"/><stop offset="1" stop-color="#000"/></radialGradient>
+    return `<defs><radialGradient id="${id}g" cx="0.5" cy="0.5" r="0.5"><stop offset="0.88" stop-color="#fff"/><stop offset="1" stop-color="#000"/></radialGradient>
       <mask id="${id}" maskUnits="userSpaceOnUse" x="${x}" y="${y}" width="${size}" height="${size}"><rect x="${x}" y="${y}" width="${size}" height="${size}" fill="url(#${id}g)"/></mask></defs>
       <g mask="url(#${id})"><image href="${photo}" x="${x}" y="${y}" width="${size}" height="${size}" style="mix-blend-mode:multiply"/></g>`;
   }

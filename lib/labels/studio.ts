@@ -144,7 +144,7 @@ export async function studioPhotoPng(p: Product, size = 1000, crop: 'front' | 'c
   const box =
     crop === 'closeup'
       ? (() => { const side = Math.round((r.box.x1 - r.box.x0) * 1.12); const cy = (t.top[Math.round(t.cx)] + t.bot[Math.round(t.cx)]) / 2; return { left: Math.round(cxp - side / 2), top: Math.round(cy - side / 2), side }; })()
-      : (() => { const side = Math.round(r.height * 0.74); return { left: Math.round(cxp - side / 2), top: Math.round(r.height * 0.11), side }; })();
+      : (() => { const side = Math.round(r.height * 0.74); return { left: Math.round(cxp - side / 2), top: Math.round(r.height * 0.145), side }; })();
   return sharp(r.data, { raw: { width: r.width, height: r.height, channels: 3 } })
     .extract({ left: Math.max(0, box.left), top: Math.max(0, box.top), width: box.side, height: box.side })
     .resize(size, size)
