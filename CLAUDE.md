@@ -58,9 +58,9 @@ Read this first. It is the standing context for any session working on this repo
   (`ballStick`, atoms as rounded tiles, CPK colours O red / N blue / P orange), only rotated or scaled, never redrawn;
   facts from NIH ODS or peer-reviewed reviews; schematic biology marked "not to scale".
 - **The cross:** only the five-tile mosaic cross, everywhere (logo, favicon, loader, brand name in text, emails, advisor icon).
-- **Product images (16 Nov): photoreal studio shot** `assets/mockups/studio-bottle.jpg` (owner-supplied render, grey studio,
-  ribbed cap) with our label mapped on by `lib/labels/studio.ts` (cylinder unwrap; the template's light is measured from its
-  label background and applied to ours, `HIGHLIGHT` 0.6). Used for the front, the label close-up and inside the gallery
+- **Product images (16 Nov): photoreal studio shot** `assets/mockups/studio-bottle.jpg` (owner-supplied render, 2000 × 1493, grey studio,
+  ribbed cap, soft natural shadow; the portrait one had a hard streak shadow) with our label mapped on by `lib/labels/studio.ts` (cylinder unwrap; the template's light is measured from its
+  label background and applied to ours, `HIGHLIGHT` 0.6, `SHADOW` 0.7). Used for the front, the label close-up and inside the gallery
   images (`lib/labels/png.ts`). Older Supliful-photo path (`lib/labels/photo.ts`, `assets/mockups/bottle-photo.jpg`) still
   exists for the line-up mockups. Framed tight (~85% height). Gallery: front, "In every serving" fact image,
   dose comparison (Mg, CoQ10), label close-up, Supplement Facts. Bump `MOCKUP_VERSION` when images change.

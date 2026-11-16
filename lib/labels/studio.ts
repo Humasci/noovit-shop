@@ -7,14 +7,15 @@ import { Product } from '@/types';
 import { FRONT, frontLabel, labelPaper } from './svg';
 
 // Studio photo (16 Nov, owner's pick): a photoreal studio shot of our white bottle (assets/mockups/studio-bottle.jpg,
-// 1493 × 2000, soft grey backdrop, ribbed cap) with our label wrapped onto it. The template's own label area is
+// 2000 × 1493, soft grey backdrop, ribbed cap) with our label wrapped onto it. The template's own label area is
 // measured, then replaced pixel by pixel: each pixel maps to a point on the flat label (cylinder unwrap), and the
 // template's light and shade are carried over from its label (per-column and per-row medians, so its printed text
 // doesn't leak through). The result keeps the photo's real lighting with the approved label artwork exactly.
 const FILE = path.join(process.cwd(), 'assets/mockups/studio-bottle.jpg');
 const SCALE = 6; // label art render resolution, px per label unit
-const U0 = -40, U1 = FRONT.w + 40;
-const HIGHLIGHT = 0.6; // share of the template's key-light highlight kept (deep label colours bloom more than its teal) // label units rendered (front panel plus the wrap round the sides)
+const U0 = -40, U1 = FRONT.w + 40; // label units rendered (front panel plus the wrap round the sides)
+const HIGHLIGHT = 0.6; // share of the template's key-light highlight kept (deep label colours bloom more than its own)
+const SHADOW = 0.7; // share of the template's fall-off into shadow kept, so type on the dark side stays readable
 
 type Template = {
   W: number; H: number; data: Buffer;
@@ -125,7 +126,7 @@ export async function studioPhotoRaw(p: Product) {
       const c = sample(u, v);
       // The template's light scales the label's colours, as real light does on a matte print (hue kept, brighter or
       // darker). The vertical profile is flat on this photo, so only the across-the-bottle light is used.
-      const k = kx > 1 ? 1 + (kx - 1) * HIGHLIGHT : kx;
+      const k = kx > 1 ? 1 + (kx - 1) * HIGHLIGHT : 1 - (1 - kx) * SHADOW;
       const lit = c.map((ch) => Math.min(255, ch * k));
       // Anti-alias the top and bottom edges against the template (which shows the white bottle beyond the label).
       const cover = Math.min(1, y + 1 - top, bot - y);
@@ -144,7 +145,7 @@ export async function studioPhotoPng(p: Product, size = 1000, crop: 'front' | 'c
   const box =
     crop === 'closeup'
       ? (() => { const side = Math.round((r.box.x1 - r.box.x0) * 1.12); const cy = (t.top[Math.round(t.cx)] + t.bot[Math.round(t.cx)]) / 2; return { left: Math.round(cxp - side / 2), top: Math.round(cy - side / 2), side }; })()
-      : (() => { const side = Math.round(r.height * 0.74); return { left: Math.round(cxp - side / 2), top: Math.round(r.height * 0.145), side }; })();
+      : (() => { const side = Math.round(r.height * 0.87); return { left: Math.round(cxp - side / 2), top: Math.round(r.height * 0.075), side }; })();
   return sharp(r.data, { raw: { width: r.width, height: r.height, channels: 3 } })
     .extract({ left: Math.max(0, box.left), top: Math.max(0, box.top), width: box.side, height: box.side })
     .resize(size, size)
