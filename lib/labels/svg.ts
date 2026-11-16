@@ -15,7 +15,7 @@ import { LEGAL_NAME } from '@/lib/site';
 export type FontMode = 'web' | 'print';
 
 // Bump when the photo mockup (lib/labels/photo.ts) changes, so cached product image URLs refresh.
-export const MOCKUP_VERSION = 'photo-v14'; // v12 (14 Nov): elegant dark label; v13: studio lighting; v14: label edges curve round the bottle
+export const MOCKUP_VERSION = 'studio-v1'; // studio-v1 (16 Nov): photoreal studio bottle (lib/labels/studio.ts); was photo-v14 // v12 (14 Nov): elegant dark label; v13: studio lighting; v14: label edges curve round the bottle
 
 const NAVY = '#14213d';
 const INK = '#4b5563';
@@ -236,7 +236,7 @@ const CATEGORIES: Record<string, string> = {
   colostrum: 'Gut · Immunity',
   'deep-sleep': 'Sleep · Rest',
 };
-function labelCategory(p: Product) {
+export function labelCategory(p: Product) {
   if (CATEGORIES[p.slug]) return CATEGORIES[p.slug];
   const goal = goalsForProduct(p.slug)[0];
   return GOALS.find((g) => g.id === goal)?.label.replace(/ & /g, ' · ') ?? '';

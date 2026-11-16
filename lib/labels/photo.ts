@@ -103,7 +103,7 @@ export function photoBottleSvg(p: Product, backdrop: 'scene' | 'white' | `#${str
     const c = Math.cos((a + b) / 2); // 1 at the front, 0 at the silhouette
     const t = TOP + BOW_TOP * c, bt = BOTTOM + BOW_BOTTOM * c;
     const sy = (bt - t) / FRONT.h;
-    clips.push(`<clipPath id="s${k}"><rect x="${r(xa - 0.4)}" y="${r(t)}" width="${r(xb - xa + 0.8)}" height="${r(bt - t)}"/></clipPath>`);
+    clips.push(`<clipPath id="s${k}"><rect x="${r(xa - 1)}" y="${r(t)}" width="${r(xb - xa + 2)}" height="${r(bt - t)}"/></clipPath>`); // 1 px overlap: no seams when scaled down
     strips.push(`<g clip-path="url(#s${k})"><use href="#art" transform="matrix(${r(kx * 1000) / 1000} 0 0 ${r(sy * 1000) / 1000} ${r(xa - (FRONT.w / 2 + ua) * kx)} ${r(t)})"/></g>`);
   }
   const tint = backdrop === 'scene' ? '#f7f1e9' : backdrop === 'white' ? null : backdrop;

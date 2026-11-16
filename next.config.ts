@@ -2,7 +2,7 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   // Native PNG renderer for product images; fonts (assets/fonts) and the bottle photo template (assets/mockups) are read at runtime.
-  serverExternalPackages: ['@resvg/resvg-js'],
+  serverExternalPackages: ['@resvg/resvg-js', 'sharp'],
   outputFileTracingIncludes: {
     '/product-image/[slug]': ['./assets/fonts/**/*', './assets/mockups/**/*'],
     '/product-image/[slug]/[file]': ['./assets/fonts/**/*', './assets/mockups/**/*'],

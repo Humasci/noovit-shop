@@ -1,0 +1,11 @@
+import sharp from 'sharp';
+import { SEED_PRODUCTS } from '@/data/products';
+import { studioPhotoRaw } from '@/lib/labels/studio';
+(async () => {
+  for (const slug of ['lions-mane', 'magnesium-complex', 'coq10']) {
+    const p = SEED_PRODUCTS.find((x) => x.slug === slug)!;
+    const r = await studioPhotoRaw(p);
+    await sharp(r.data, { raw: { width: r.width, height: r.height, channels: 3 } }).jpeg({ quality: 92 }).toFile(`design/label-v3-2026-11/studio/${slug}.jpg`);
+    console.log(slug);
+  }
+})();

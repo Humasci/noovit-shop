@@ -56,8 +56,9 @@ first, Pinterest for guides (it behaves like a search engine). Assets already ma
 **Carousel rule:** split each infographic into a cover + one slide per panel, big text. The full 1800 × 1200 image is for
 guide pages and Pinterest, not the Instagram feed.
 
-**Still to make:** carousel versions of the infographics, a brand-intro post, launch post, lion's mane assets (once it
-is active in the shop).
+**Made (16 Nov):** brand-intro post, launch post, launch story and one intro card per capsule product
+(`design/social/launch/`, script `scripts/launch-posts.ts`). **Still to make:** carousel versions of the infographics,
+lion's mane science assets.
 
 ## 4. SEO: what changed on 7 Nov, and the launch-day checklist
 **Fixed in code (7 Nov):**

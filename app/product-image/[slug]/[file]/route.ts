@@ -15,7 +15,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ slug: s
   if (!product) return new Response('Not found', { status: 404 });
   if ((variant === 'highlights' || variant === 'compare') && !galleryVariants(product).includes(variant)) return new Response('Not found', { status: 404 });
 
-  return new Response(new Uint8Array(renderBottlePng(product, variant)), {
+  return new Response(new Uint8Array(await renderBottlePng(product, variant)), {
     headers: { 'Content-Type': 'image/png', 'Cache-Control': 'public, max-age=31536000, immutable' },
   });
 }

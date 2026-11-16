@@ -1,7 +1,7 @@
 import 'server-only';
 import { Product } from '@/types';
 import { bottle, shade, wordmark, wrap } from './svg';
-import { photoBottleSvg, usesPhoto } from './photo';
+import { usesPhoto } from './photo';
 import { COMPARE, GalleryVariant, HIGHLIGHTS } from './gallery-data';
 
 // Extra gallery images for the core products (1000 × 1000), in the spirit of FourFive's: the bottle on a light tint
@@ -24,14 +24,14 @@ function tint(hex: string, k: number): `#${string}` {
 const caps = (x: number, y: number, t: string, size: number, fill: string, anchor = 'start') =>
   `<text x="${x}" y="${y}" text-anchor="${anchor}" font-size="${size}" font-weight="600" letter-spacing="${n(size * 0.16)}" fill="${fill}" ${B}>${esc(t.toUpperCase())}</text>`;
 
-// The bottle, as its own nested image so it can be placed and scaled freely.
-function bottleAt(p: Product, x: number, y: number, size: number, bg: `#${string}`) {
-  if (usesPhoto(p)) {
-    // The photo's own background is a touch darker than the flat tint, so its edges fade out instead of showing a box.
+// The bottle, as its own nested image so it can be placed and scaled freely. `photo`: the studio shot (data URI).
+function bottleAt(p: Product, x: number, y: number, size: number, photo?: string) {
+  if (usesPhoto(p) && photo) {
+    // The studio photo's grey backdrop fades out into the tint, so no box shows.
     const id = `fade-${x}-${y}`;
-    return `<defs><radialGradient id="${id}g" cx="0.5" cy="0.5" r="0.5"><stop offset="0.72" stop-color="#fff"/><stop offset="1" stop-color="#000"/></radialGradient>
+    return `<defs><radialGradient id="${id}g" cx="0.5" cy="0.5" r="0.5"><stop offset="0.7" stop-color="#fff"/><stop offset="1" stop-color="#000"/></radialGradient>
       <mask id="${id}" maskUnits="userSpaceOnUse" x="${x}" y="${y}" width="${size}" height="${size}"><rect x="${x}" y="${y}" width="${size}" height="${size}" fill="url(#${id}g)"/></mask></defs>
-      <g mask="url(#${id})">${photoBottleSvg(p, bg).replace('<svg ', `<svg x="${x}" y="${y}" width="${size}" height="${size}" `)}</g>`;
+      <g mask="url(#${id})"><image href="${photo}" x="${x}" y="${y}" width="${size}" height="${size}" style="mix-blend-mode:multiply"/></g>`;
   }
   // Drawn bottles and tubs: 400 × 460 drawing box centred on x = 200.
   const s = size / 460;
@@ -51,7 +51,7 @@ function tiles(color: string) {
   return out.join('');
 }
 
-function highlights(p: Product) {
+function highlights(p: Product, photo?: string) {
   const items = HIGHLIGHTS[p.slug];
   const bg = tint(p.color, 0.14);
   const dark = shade(p.color, 0.3);
@@ -71,12 +71,12 @@ function highlights(p: Product) {
   ${caps(70, 130, "In every serving", 20, dark)}
   <text x="68" y="190" font-size="48" font-weight="600" letter-spacing="-1" fill="${NAVY}" ${H}>${esc(p.name)}</text>
   ${callouts}
-  ${bottleAt(p, 450, 215, 560, bg)}
+  ${bottleAt(p, 450, 215, 560, photo)}
   ${wordmark(70 + 3.46 * 30 / 2, 940, 30, 'print')}
 </svg>`;
 }
 
-function compare(p: Product) {
+function compare(p: Product, photo?: string) {
   const c = COMPARE[p.slug];
   const dark = shade(p.color, 0.3);
   const max = Math.max(c.ours.value, c.typical.high) * 1.15;
@@ -93,7 +93,7 @@ function compare(p: Product) {
   ${tiles(p.color)}
   ${caps(X0, 130, 'Dose per serving', 20, dark)}
   ${wrap(c.heading, 560, 46, 0.55).slice(0, 2).map((l, i) => `<text x="68" y="${195 + i * 56}" font-size="46" font-weight="600" letter-spacing="-1" fill="${NAVY}" ${H}>${esc(l)}</text>`).join('')}
-  ${bottleAt(p, 650, 90, 330, PAPER)}
+  ${bottleAt(p, 650, 90, 330, photo)}
   <rect x="${X0}" y="470" width="1.5" height="330" fill="${NAVY}" opacity="0.25"/>
   ${bar(530, c.ours.label, `${c.ours.value} ${c.unit}`, c.ours.value, c.ours.value, p.color)}
   ${bar(700, c.typical.label, typicalText, c.typical.low, c.typical.high, '#9aa1ab')}
@@ -102,6 +102,6 @@ function compare(p: Product) {
 </svg>`;
 }
 
-export function gallerySvg(p: Product, v: GalleryVariant) {
-  return v === 'highlights' ? highlights(p) : compare(p);
+export function gallerySvg(p: Product, v: GalleryVariant, photo?: string) {
+  return v === 'highlights' ? highlights(p, photo) : compare(p, photo);
 }
