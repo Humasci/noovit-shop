@@ -6,10 +6,14 @@ import { petProducts } from '@/data/products';
 import { GOAL_PAGES } from '@/lib/goals';
 import { GUIDES } from '@/lib/guides';
 import { ADVISORS } from '@/data/content';
+import { siteLive } from '@/lib/launch';
 
 const PAGES = ['', '/shop', '/quiz', '/about', '/reviews', '/faq', '/contact', '/policies/delivery-returns', '/policies/privacy', '/policies/terms'];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  // Pre-launch every page is noindex (the coming-soon page), so listing them would only produce "noindex page in
+  // sitemap" errors in Search Console and audits. The full sitemap appears once SITE_LIVE=true (after a redeploy).
+  if (!siteLive()) return [{ url: SITE_URL, changeFrequency: 'weekly', priority: 1 }];
   const [products, collections, posts] = await Promise.all([getStoreProducts(), getStoreCollections(), getPublishedPosts()]);
   // /pets and /blog are listed only once they have content (they are noindex until then).
   const pages = [...PAGES, ...(petProducts(products).length ? ['/pets'] : []), ...(posts.length ? ['/blog'] : [])];
