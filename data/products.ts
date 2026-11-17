@@ -377,7 +377,7 @@ const seeds: Seed[] = [
   {
     name: "Lion's Mane",
     slug: 'lions-mane',
-    status: 'hidden',
+    status: 'active',
     shortBenefit: 'Supports focus, memory and nerve health.',
     description: "1,000 mg of organic lion's mane mushroom a day, the classic mushroom for the mind.",
     whoFor: 'Anyone looking for a simple, daily mushroom supplement for focus and memory.',
@@ -395,7 +395,7 @@ const seeds: Seed[] = [
     slug: 'coq10',
     // Matches Supliful's CoQ10 Ubiquinone (facts panel 1 Nov 2026): delivered $11.85 (product $4.45), suggested $28.90.
     // Directions kept as "with a meal that contains some fat" (fat-soluble); Supliful's "20–30 min before a meal" is boilerplate.
-    status: 'hidden',
+    status: 'active',
     tagline: 'Heart & Cellular Energy Support',
     shortBenefit: 'Supports heart health and cellular energy.',
     description: 'Coenzyme Q10 (ubiquinone) at 200 mg, the form and dose used in most human studies.',

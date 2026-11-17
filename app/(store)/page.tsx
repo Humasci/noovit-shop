@@ -36,10 +36,11 @@ const VALUES = [
 ];
 
 // Shop by goal: one tile per core product, tinted in its label colour.
+// The first four active ones show (owner, 17 Nov: four columns); the rest are fallbacks.
 const GOAL_TILES: { label: string; line: string; slug: string; href: string }[] = [
+  { label: 'Focus', line: 'Clear, steady thinking', slug: 'lions-mane', href: '/goals/brain-focus' },
   { label: 'Sleep', line: 'Wind down and recover', slug: 'magnesium-complex', href: '/goals/sleep-stress' },
   { label: 'Calm', line: 'Everyday stress balance', slug: 'ashwagandha', href: '/goals/sleep-stress' },
-  { label: 'Focus', line: 'Clear, steady thinking', slug: 'lions-mane', href: '/goals/brain-focus' },
   { label: 'Strength', line: 'Power and performance', slug: 'creatine', href: '/goals/muscle-performance' },
   { label: 'Energy', line: 'Cellular energy and heart', slug: 'coq10', href: '/goals/energy' },
   { label: 'Mobility', line: 'Joint comfort', slug: 'turmeric-complex', href: '/goals/joints-mobility' },
@@ -49,11 +50,6 @@ const GOAL_TILES: { label: string; line: string; slug: string; href: string }[] 
 
 export const metadata: Metadata = { alternates: { canonical: '/' } };
 
-const FEATURED = [
-  { slug: 'lions-mane', bg: 'var(--sage)', eyebrow: 'Focus · Clarity', title: 'Lion’s Mane, 1,000 mg a day' },
-  { slug: 'magnesium-complex', bg: 'var(--studio)', eyebrow: 'Sleep · Recovery', title: '275 mg magnesium, as glycinate' },
-];
-
 export default async function HomePage() {
   const [products, content, realReviews, settings] = await Promise.all([getStoreProducts(), getContent(), latestReviews(12), getSettings()]);
   const placeholders = placeholdersOn(settings);
@@ -61,8 +57,9 @@ export default async function HomePage() {
   const reviews = reviewPlaceholder ? PLACEHOLDER_REVIEWS : realReviews;
   const advisorPlaceholder = !ADVISORS.length && placeholders;
   const advisors = (advisorPlaceholder ? PLACEHOLDER_EXPERTS : ADVISORS).slice(0, 2); // two spots (owner, 17 Nov)
-  const tiles = GOAL_TILES.map((t) => ({ ...t, product: findProduct(products, t.slug) })).filter((t) => t.product && t.product.status !== 'hidden');
+  const tiles = GOAL_TILES.map((t) => ({ ...t, product: findProduct(products, t.slug) })).filter((t) => t.product && t.product.status !== 'hidden').slice(0, 4);
   const ask = advisorEnabled();
+  const hl = [findProduct(products, 'lions-mane')].find((p) => p && p.status !== 'hidden');
   const petsLive = petProducts(products).some((p) => p.status === 'active');
 
   return (
@@ -112,13 +109,13 @@ export default async function HomePage() {
               <h2 className="text-4xl md:text-5xl">Shop by goal</h2>
               <Link href="/shop" className="hidden items-center gap-1 text-sm font-semibold text-[var(--color-navy)] hover:underline sm:inline-flex">Shop all <ArrowRight className="h-4 w-4" /></Link>
             </div>
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
+            <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
               {tiles.map((t) => (
-                <Link key={t.label} href={t.href} className="group relative flex flex-col overflow-hidden rounded-3xl bg-[var(--studio)] p-6 md:p-8">
-                  <p className="font-display text-2xl text-[var(--color-navy)] md:text-3xl">{t.label}</p>
+                <Link key={t.label} href={t.href} className="group relative flex flex-col overflow-hidden rounded-3xl bg-[var(--studio)] p-5">
+                  <p className="font-display text-xl text-[var(--color-navy)] md:text-2xl">{t.label}</p>
                   <p className="mt-1 text-sm text-[var(--color-ink)]/70">{t.line}</p>
                   {/* The product's studio photo, on the same backdrop colour as the tile */}
-                  <ProductImage product={t.product!} sizes="(min-width: 768px) 30vw, 45vw" className="mx-auto mt-2 aspect-square w-[92%] transition-transform duration-700 [mask-image:radial-gradient(closest-side,#000_72%,transparent)] group-hover:scale-[1.04]" />
+                  <ProductImage product={t.product!} sizes="(min-width: 1024px) 20vw, 45vw" className="mx-auto mt-1 aspect-square w-[80%] transition-transform duration-700 [mask-image:radial-gradient(closest-side,#000_72%,transparent)] group-hover:scale-[1.04]" />
                   <span className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-[var(--color-navy)]">{t.product!.name} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
                 </Link>
               ))}
@@ -127,28 +124,57 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* Featured (FourFive-style): each product on a soft tint of its own label colour (public/images/feature-*.png,
-          scripts/site-images.ts; card background = the same tint, so the photo has no edge). */}
-      <section className="pb-16 md:pb-24">
-        <div className="container grid gap-6 px-6 md:grid-cols-2">
-          {FEATURED.map((f) => {
-            const p = findProduct(products, f.slug);
-            if (!p || p.status === 'hidden') return null;
-            return (
-              <Link key={f.slug} href={`/products/${p.slug}`} className="group relative overflow-hidden rounded-[2rem]" style={{ background: f.bg }}>
-                <img src={`/images/feature-${f.slug}.png?v=2`} alt={`${p.name} bottle`} className="aspect-square w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" loading="lazy" />
-                <div className="absolute inset-x-0 top-0 p-8 md:p-10">
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-navy)]/70">{f.eyebrow}</p>
-                  <h3 className="mt-2 max-w-xs text-3xl text-[var(--color-navy)] md:text-4xl">{f.title}</h3>
+      <SubscriptionPerks />
+
+      {/* Product highlight masonry (owner, 17 Nov): Lion's Mane large (text above the photo, never on it), with
+          highlight and benefit blocks around it. Benefit claims carry * → the FDA disclaimer in the footer. */}
+      {hl && (
+        <section className="section">
+          <div className="container px-6">
+            <div className="grid gap-4 md:grid-cols-3 md:grid-rows-[repeat(2,minmax(0,1fr))]">
+              <Link href={`/products/${hl.slug}`} className="group flex flex-col overflow-hidden rounded-[2rem] bg-[var(--sage)] md:col-span-2 md:row-span-2">
+                <div className="p-8 md:p-10">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-navy)]/70">Product highlight · Focus</p>
+                  <h2 className="mt-2 max-w-md text-3xl text-[var(--color-navy)] md:text-4xl">{hl.name}: 1,000 mg in every serving</h2>
+                  <p className="mt-3 max-w-md text-[var(--color-ink)]/75">Organic fruiting body and mycelium, two capsules a day, the dose printed on the front.</p>
+                  <span className="mt-5 inline-flex items-center gap-2 rounded-full bg-[var(--color-navy)] px-5 py-2.5 text-sm font-semibold text-white">
+                    Shop {hl.name} · ${hl.basePrice} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </span>
                 </div>
-                <span className="absolute bottom-6 left-8 inline-flex items-center gap-2 rounded-full bg-[var(--color-navy)] px-5 py-2.5 text-sm font-semibold text-white md:left-10">
-                  Shop {p.name} · ${p.basePrice} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </span>
+                <div className="relative mt-auto min-h-[280px] flex-1 md:min-h-[340px]">
+                  <img src="/images/feature-lions-mane.png?v=2" alt={`${hl.name} bottle`} className="absolute inset-0 h-full w-full object-contain object-bottom transition-transform duration-700 group-hover:scale-[1.03]" loading="lazy" />
+                </div>
               </Link>
-            );
-          })}
-        </div>
-      </section>
+              <div className="flex flex-col justify-between rounded-[2rem] bg-[var(--color-navy)] p-8 text-white">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/60">Highlight</p>
+                <div>
+                  <p className="font-display text-6xl">1,000<span className="ml-1 text-2xl">mg</span></p>
+                  <p className="mt-2 text-white/75">Organic lion&apos;s mane per serving, a mainstream, well-used dose.</p>
+                </div>
+              </div>
+              <div className="flex flex-col justify-between rounded-[2rem] bg-[var(--studio)] p-8">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-muted)]">Benefit</p>
+                <div>
+                  <p className="font-display text-2xl text-[var(--color-navy)]">Supports focus, memory and nerve health*</p>
+                  <Link href="/guides/lions-mane" className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-[var(--color-accent)] hover:underline">What the studies show <ArrowRight className="h-4 w-4" /></Link>
+                </div>
+              </div>
+            </div>
+            <div className="mt-4 grid gap-4 sm:grid-cols-3">
+              {[
+                ['How to take it', 'Two capsules a day, with or without food.'],
+                ['Clean label', 'Organic capsule, no proprietary blend, every amount listed.'],
+                ['Subscribe & save', `$${hl.basePrice - 5} a bottle on subscription, free US shipping, cancel anytime.`],
+              ].map(([t, d]) => (
+                <div key={t} className="rounded-[2rem] bg-[var(--studio)] p-7">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-muted)]">{t}</p>
+                  <p className="mt-3 text-[var(--color-navy)]">{d}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Evidence band: links to the graded guides */}
       <section className="relative overflow-hidden bg-[#141A4D] text-white">
@@ -284,13 +310,10 @@ export default async function HomePage() {
       </section>
 
       <ReviewsSection reviews={reviews} placeholder={reviewPlaceholder} />
-      <FAQSection faqs={GENERAL_FAQS.slice(0, 5)} />
       <CommunitySection />
-      <NewsletterSection />
-      <SubscriptionPerks />
 
-      {/* Noovit Pets teaser, last on the page (owner, 17 Nov): "Coming soon" until pet products are on sale. */}
-      <section className="pb-16">
+      {/* Noovit Pets teaser, above the FAQ (owner, 17 Nov): "Coming soon" until pet products are on sale. */}
+      <section className="pb-4">
         <div className="container px-6">
           <Link href="/pets" className="group grid overflow-hidden rounded-3xl bg-[var(--color-pets-soft)] md:grid-cols-2">
             <div className="p-10 md:p-14">
@@ -305,6 +328,10 @@ export default async function HomePage() {
           </Link>
         </div>
       </section>
+      <FAQSection faqs={GENERAL_FAQS.slice(0, 5)} />
+      <NewsletterSection />
+
+
     </>
   );
 }

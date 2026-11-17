@@ -208,7 +208,10 @@ export function NewsletterSection() {
               <button className="btn bg-[var(--color-accent)] text-white hover:bg-[var(--color-accent-dark)]">Get 10% Off</button>
             </form>
           </div>
-          <img src={IMAGES.sport} alt="A sprinter on a track in golden light" className="hidden h-full w-full object-cover md:block" loading="lazy" />
+          {/* Absolutely positioned, so the photo fills the text's height instead of stretching the block (owner: shorter). */}
+          <div className="relative hidden md:block">
+            <img src={IMAGES.sport} alt="A sprinter on a track in golden light" className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
+          </div>
         </div>
       </div>
     </section>
