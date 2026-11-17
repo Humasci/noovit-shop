@@ -58,8 +58,8 @@ await p.waitForURL(`${base}/admin`);
 // --- Import catalog
 await p.goto(`${base}/admin/products`);
 await p.click('button:has-text("Import launch catalog")');
-const imp = await toastFor(/Imported/);
-check('import launch catalog', /Imported 36 products/.test(imp), imp);
+const imp = await toastFor(/Added/);
+check('import launch catalog', /Added 36 products/.test(imp), imp);
 await p.waitForTimeout(800);
 check('products table has 36 rows', (await p.locator('tbody tr').count()) === 36);
 
