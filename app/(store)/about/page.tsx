@@ -78,7 +78,6 @@ export default async function AboutPage() {
                     <p className="font-bold">{e.name}</p>
                     <p className="text-xs font-semibold text-[var(--color-accent)]">{e.credentials}</p>
                     {e.bio && <p className="mt-2 line-clamp-3 text-sm text-[var(--color-muted)]">{e.bio}</p>}
-                    {e.paid && <p className="mt-1 text-xs text-[var(--color-muted)]">Paid advisor</p>}
                   </div>
                 </Link>
               ))}

@@ -9,7 +9,7 @@ import { JsonLd } from '@/components/seo/JsonLd';
 import { SITE_URL } from '@/lib/site';
 
 // Advisor profile (E-E-A-T): who reviews our content, their real credential and where to check it, what they have
-// reviewed, and the paid relationship. Only advisors with a slug in data/content.ts (ADVISORS) get a page.
+// reviewed. Only advisors with a slug in data/content.ts (ADVISORS) get a page.
 export function generateStaticParams() {
   return ADVISORS.filter((a) => a.slug).map((a) => ({ slug: a.slug! }));
 }
@@ -70,7 +70,6 @@ export default async function ExpertPage({ params }: { params: Promise<{ slug: s
           Reviews our ingredient guides and Journal articles for scientific accuracy, safety and clear wording before they go live.
           Reviewing content is not an endorsement of any product, and doesn&apos;t replace advice from your own healthcare provider.
         </p>
-        {e.paid && <p className="mt-2 font-semibold">{e.name.split(' ')[0]} is a paid advisor to Noovit.</p>}
       </section>
       {reviewed.length > 0 && (
         <section className="mt-10">

@@ -132,5 +132,4 @@ export interface Expert {
   photo?: string; // /experts/<slug>.jpg in public/, with consent
   registration?: string; // where the credential can be checked, e.g. "Hellenic Ministry of Health licence no. …"
   profileUrl?: string; // their own site or LinkedIn
-  paid?: boolean; // paid advisor → disclosed on their profile and beside quotes (FTC endorsement rules)
 }

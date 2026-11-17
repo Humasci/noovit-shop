@@ -42,7 +42,7 @@ page and in the schema (`reviewer` in `lib/guides.ts`)._
   endorsement of any product, and no product claims attributed to them.
 - Attribution: "Medically reviewed by [Name], RDN" with review date on each page; their consent to name, credentials,
   photo and short bio.
-- Paid relationship disclosed on the About/advisor page ("Paid advisor").
+- Their quote and bio are about their work and evidence-led nutrition, not endorsements of our products.
 - Turnaround: within 5 business days per piece; Journal posts are scheduled, so give them the calendar.
 - Liability: content review only, no individual advice; they keep their own professional liability cover.
 
@@ -80,7 +80,7 @@ rate per guide and per blog post.
 - Send Claude: name, exact title and credential, registration number/where to check it, a 2–3 sentence bio, a
   headshot (with written consent to publish), profile link, and a short quote about evidence-led nutrition (not about our
   products). Claude adds them to `ADVISORS` in `data/content.ts`: they then appear on the homepage, the About page and
-  their own profile page (/experts/<name>), marked "Paid advisor".
+  their own profile page (/experts/<name>).
 - After each review, Claude adds the page and date to `REVIEW_LOG`: "Reviewed by <name> · <date>" then shows on that
   guide, its product pages, or that Journal post. Never list a page they haven't reviewed.
 - Share the Journal calendar (`docs/CONTENT_PLAN.md`) and the post files (`content/journal/`).

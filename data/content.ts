@@ -53,7 +53,7 @@ export const PET_IMAGES = {
 };
 
 
-// Real, consenting advisors only (name, credentials, photo, any paid relationship disclosed).
+// Real, consenting advisors only (name, credentials, photo).
 // While empty, the panels show labelled placeholders (data/placeholders.ts) if Settings allows, else hide.
 // The first advisor is the lead reviewer: their name appears on every guide, Journal post and product research panel
 // listed in REVIEW_LOG, with the date they reviewed it, and links to their profile (/experts/<slug>).

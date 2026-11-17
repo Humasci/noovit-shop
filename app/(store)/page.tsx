@@ -242,7 +242,6 @@ export default async function HomePage() {
                       <p className="font-bold">{e.slug ? <Link href={`/experts/${e.slug}`} className="hover:underline">{e.name}</Link> : e.name}</p>
                       <p className="text-xs font-semibold text-[var(--color-accent)]">{e.credentials}</p>
                       <p className="mt-2 text-sm text-[var(--color-muted)]">&ldquo;{e.quote}&rdquo;</p>
-                      {e.paid && <p className="mt-1 text-xs text-[var(--color-muted)]">Paid advisor</p>}
                     </div>
                   </div>
                 ))}
