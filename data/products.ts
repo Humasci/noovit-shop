@@ -765,7 +765,15 @@ export const humanProducts = (list: Product[]) => list.filter((p) => p.productTy
 export const petProducts = (list: Product[], species?: Species) =>
   list.filter((p) => p.productType === 'pets' && (!species || p.species?.includes(species)));
 
-export const bestSellers = (list: Product[]) => humanProducts(list).filter((p) => p.bestSeller);
+// Real best sellers once flagged (after launch, from sales); until then the core range, hero first, so suggestion
+// rows never come up empty and nothing is called a "best seller" without sales behind it.
+const CORE_ORDER = ['lions-mane', 'magnesium-complex', 'ashwagandha', 'creatine', 'coq10', 'turmeric-complex'];
+export const bestSellers = (list: Product[]) => {
+  const flagged = humanProducts(list).filter((p) => p.bestSeller);
+  if (flagged.length) return flagged;
+  const rank = (p: Product) => { const i = CORE_ORDER.indexOf(p.slug); return i < 0 ? CORE_ORDER.length : i; };
+  return [...humanProducts(list)].sort((a, b) => rank(a) - rank(b));
+};
 
 export const byAudience = (list: Product[], audience: Audience) => list.filter((p) => p.audiences.includes(audience));
 
