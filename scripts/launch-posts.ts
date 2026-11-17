@@ -12,7 +12,7 @@ import { Resvg } from '@resvg/resvg-js';
 import sharp from 'sharp';
 import { SEED_PRODUCTS } from '@/data/products';
 import { heroDose, labelCategory, wordmark, wrap, balance } from '@/lib/labels/svg';
-import { studioPhotoPng } from '@/lib/labels/studio';
+import { studioPhotoPng, studioGroupPng, studioBackdrop } from '@/lib/labels/studio';
 
 let BG = '#E2E2E2'; // page colour: set to the studio photo's own backdrop so no square shows
 const PHOTOS: Record<string, string> = {}; // slug → studio photo (data URI), filled before rendering
@@ -37,11 +37,14 @@ function bottleAt(slug: string, x: number, y: number, s: number, band: [number, 
     <mask id="${id}-m" maskUnits="userSpaceOnUse" x="${x}" y="${y}" width="${s}" height="${s}"><rect x="${x + s * band[0]}" y="${y}" width="${s * (band[1] - band[0])}" height="${s}" fill="url(#${id}-fade)"/></mask>
     <g mask="url(#${id}-m)"><image href="${PHOTOS[slug]}" x="${x}" y="${y}" width="${s}" height="${s}"/></g>`;
 }
-function lineup(slugs: string[], cx: number, y: number, s: number, step: number) {
-  const x0 = cx - ((slugs.length - 1) * step) / 2 - s / 2;
-  // Band just wider than the bottle when they stand close, so a neighbour never cuts into one.
-  const half = Math.min(0.38, step / s / 2);
-  return slugs.map((slug, i) => bottleAt(slug, x0 + i * step, y, s, [0.5 - half, 0.5 + half])).join('');
+// Line-ups are one group shot (lib/labels/studio.ts → studioGroupPng): every bottle on one shared backdrop, shadows
+// and all, so no tiles or edges show. Builders run twice: the first pass only collects the line-ups they need.
+const GROUPS = new Map<string, { slugs: string[]; w: number; s: number; step: number; png?: string }>();
+function lineup(slugs: string[], cx: number, y: number, s: number, step: number, w = 1080) {
+  const key = JSON.stringify([slugs, w, s, step]);
+  if (!GROUPS.has(key)) GROUPS.set(key, { slugs, w, s, step });
+  const png = GROUPS.get(key)!.png;
+  return png ? `<image href="${png}" x="${cx - w / 2}" y="${y}" width="${w}" height="${s}"/>` : '';
 }
 const frame = (W: number, H: number, body: string) =>
   `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 ${W} ${H}"><rect width="${W}" height="${H}" fill="${BG}"/>${body}</svg>`;
@@ -109,8 +112,13 @@ const render = (svg: string, file: string) => {
 };
 (async () => {
 for (const slug of LINEUP) PHOTOS[slug] = `data:image/png;base64,${(await studioPhotoPng(product(slug), 1000)).toString('base64')}`;
-const { data } = await sharp(Buffer.from(PHOTOS[LINEUP[0]].split(',')[1], 'base64')).extract({ left: 8, top: 8, width: 1, height: 1 }).raw().toBuffer({ resolveWithObject: true });
-BG = '#' + [data[0], data[1], data[2]].map((v) => v.toString(16).padStart(2, '0')).join('');
+const bg = await studioBackdrop();
+BG = '#' + bg.map((v) => v.toString(16).padStart(2, '0')).join('');
+brandIntro(); launch(); storyLaunch(); // first pass: collect the line-ups
+for (const g of GROUPS.values()) {
+  const png = await studioGroupPng(g.slugs.map(product), g.w * 2, g.s * 2, { size: g.s * 2, step: g.step * 2, y: 0, bg });
+  g.png = `data:image/png;base64,${png.toString('base64')}`;
+}
 render(brandIntro(), 'brand-intro.png');
 render(launch(), 'launch.png');
 render(storyLaunch(), 'story-launch.png');

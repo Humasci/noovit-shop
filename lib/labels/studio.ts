@@ -23,6 +23,7 @@ type Template = {
   top: Float32Array; bot: Float32Array; // label edges per column (NaN outside the label)
   shadeX: Float32Array; shadeY: Float32Array; // lighting ratios
   pxPerUnit: number;
+  plate: Float32Array; // the empty studio backdrop (RGB per pixel), estimated from the photo's clean left and right edges
 };
 let cached: Promise<Template> | null = null;
 
@@ -82,7 +83,34 @@ async function analyse(): Promise<Template> {
   const shadeY = smooth(rowMed, 40);
   const rowBase = median(Array.from(shadeY.slice(yTop, yBot)).filter((v) => !Number.isNaN(v)));
   for (let y = 0; y < H; y++) shadeY[y] = Number.isNaN(shadeY[y]) ? 1 : shadeY[y] / rowBase;
-  return { W, H, data, x0, x1, cx, R, top, bot, shadeX, shadeY, pxPerUnit: (yBot - yTop) / FRONT.h };
+  // Empty backdrop: per row, a quadratic in x fitted to the backdrop on both sides of the bottle (clear of the bottle and
+  // its shadow), which captures the studio light's soft centre; then smoothed down the rows.
+  // Bottle - plate = the bottle, its label and its shadow alone.
+  const leftEnd = Math.max(40, x0 - Math.round(W * 0.04)), rightStart = Math.min(W - 40, x1 + Math.round(W * 0.12));
+  const coef: number[][] = []; // per row: [a, b, c] per channel → 9 numbers
+  for (let y = 0; y < H; y++) {
+    const xs: number[] = [];
+    for (let x = 8; x < leftEnd; x += 6) xs.push(x);
+    for (let x = rightStart; x < W - 8; x += 6) xs.push(x);
+    const row: number[] = [];
+    for (let c = 0; c < 3; c++) {
+      // least squares for v = a + b·u + c·u², u = x / W
+      let s0 = 0, s1 = 0, s2 = 0, s3 = 0, s4 = 0, t0 = 0, t1 = 0, t2 = 0;
+      for (const x of xs) { const u = x / W, v = data[(y * W + x) * 3 + c]; s0++; s1 += u; s2 += u * u; s3 += u ** 3; s4 += u ** 4; t0 += v; t1 += v * u; t2 += v * u * u; }
+      const M = [[s0, s1, s2], [s1, s2, s3], [s2, s3, s4]], T = [t0, t1, t2];
+      const det = (m: number[][]) => m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[2][1]) - m[0][1] * (m[1][0] * m[2][2] - m[1][2] * m[2][0]) + m[0][2] * (m[1][0] * m[2][1] - m[1][1] * m[2][0]);
+      const D = det(M);
+      for (let k = 0; k < 3; k++) row.push(det(M.map((r, i) => r.map((v, j) => (j === k ? T[i] : v)))) / D);
+    }
+    coef.push(row);
+  }
+  const plate = new Float32Array(W * H * 3);
+  for (let y = 0; y < H; y++) {
+    const acc = new Array(9).fill(0); let nRows = 0;
+    for (let j = Math.max(0, y - 12); j <= Math.min(H - 1, y + 12); j++, nRows++) for (let k = 0; k < 9; k++) acc[k] += coef[j][k];
+    for (let x = 0; x < W; x++) { const u = x / W; for (let c = 0; c < 3; c++) { const [A, B, C] = acc.slice(c * 3, c * 3 + 3).map((v) => v / nRows); plate[(y * W + x) * 3 + c] = A + B * u + C * u * u; } }
+  }
+  return { W, H, data, x0, x1, cx, R, top, bot, shadeX, shadeY, pxPerUnit: (yBot - yTop) / FRONT.h, plate };
 }
 
 const fontFiles = () => {
@@ -151,4 +179,52 @@ export async function studioPhotoPng(p: Product, size = 1000, crop: 'front' | 'c
     .resize(size, size)
     .png()
     .toBuffer();
+}
+
+// Group shot: several bottles on one shared backdrop, as if photographed together. Each bottle is taken as its
+// difference from the empty studio backdrop (bottle, label and soft shadow, no box), scaled into place, and the
+// differences are added onto a flat backdrop of colour `bg` — so neighbours' shadows overlap naturally and no tile
+// edges show. `size` is the side of each bottle's square crop (same framing as the single product photo), `step` the
+// distance between bottle centres. Returns a PNG of width × height.
+export async function studioGroupPng(products: Product[], width: number, height: number, opts: { size: number; step: number; y: number; bg: [number, number, number] }) {
+  const t = await (cached ??= analyse());
+  const canvas = new Float32Array(width * height * 3);
+  for (let i = 0; i < canvas.length; i++) canvas[i] = opts.bg[i % 3];
+  const side = Math.round(t.H * 0.87), top = Math.round(t.H * 0.075);
+  const x0 = width / 2 - ((products.length - 1) * opts.step) / 2 - opts.size / 2;
+  for (const [i, p] of products.entries()) {
+    const r = await studioPhotoRaw(p);
+    const left = Math.round((r.box.x0 + r.box.x1) / 2 - side / 2);
+    // Difference image (offset by 128 so it fits in 8 bits), cropped like the product photo and resized into place.
+    // Stored at half scale around 128 so the full range (a dark label is ~-200 against the backdrop) fits in 8 bits.
+    const diff = Buffer.alloc(t.W * t.H * 3);
+    for (let k = 0; k < diff.length; k++) diff[k] = Math.max(0, Math.min(255, Math.round((r.data[k] - t.plate[k]) / 2 + 128)));
+    const { data } = await sharp(diff, { raw: { width: t.W, height: t.H, channels: 3 } })
+      .extract({ left: Math.max(0, left), top, width: side, height: side })
+      .resize(opts.size, opts.size)
+      .raw()
+      .toBuffer({ resolveWithObject: true });
+    const ox = Math.round(x0 + i * opts.step), oy = Math.round(opts.y);
+    for (let yy = 0; yy < opts.size; yy++) {
+      const cy = oy + yy; if (cy < 0 || cy >= height) continue;
+      for (let xx = 0; xx < opts.size; xx++) {
+        const cx = ox + xx; if (cx < 0 || cx >= width) continue;
+        const si = (yy * opts.size + xx) * 3, di = (cy * width + cx) * 3;
+        // Taper the last 6% at each edge of the crop, so any leftover backdrop difference fades out instead of edging.
+        const e = Math.min(xx, opts.size - 1 - xx, yy, opts.size - 1 - yy) / (opts.size * 0.06);
+        const w = e >= 1 ? 1 : e * e * (3 - 2 * e);
+        for (let c = 0; c < 3; c++) canvas[di + c] += (data[si + c] - 128) * 2 * w;
+      }
+    }
+  }
+  const out = Buffer.alloc(width * height * 3);
+  for (let k = 0; k < out.length; k++) out[k] = Math.max(0, Math.min(255, Math.round(canvas[k])));
+  return sharp(out, { raw: { width, height, channels: 3 } }).png().toBuffer();
+}
+
+// The backdrop colour behind the bottle in the product photo (mid-height), for pages that place group shots.
+export async function studioBackdrop(): Promise<[number, number, number]> {
+  const t = await (cached ??= analyse());
+  const i = (Math.round(t.H * 0.5) * t.W + 20) * 3;
+  return [Math.round(t.plate[i]), Math.round(t.plate[i + 1]), Math.round(t.plate[i + 2])];
 }
