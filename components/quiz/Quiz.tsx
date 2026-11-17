@@ -92,7 +92,7 @@ export function Quiz({ products, code }: { products: Product[]; code: string }) 
     go('calculating');
     if (withEmail && email) {
       try {
-        const res = await fetch('/api/newsletter', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, source: 'quiz' }) });
+        const res = await fetch('/api/newsletter', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, source: 'quiz', goal: a.goals[0] }) }); // first goal tags the subscriber (segments, welcome flow)
         setJoined(res.ok);
         if (res.ok) trackSignup('quiz');
       } catch {
@@ -341,7 +341,8 @@ export function Quiz({ products, code }: { products: Product[]; code: string }) 
 
       {step === 'email' && (
         <>
-          {heading('Almost there!', code ? `Join the list to get your ${code} code by email, plus tips and member offers.` : 'Join the list for tips and member offers.')}
+          {/* Same promise as the newsletter (10% off the first order; the code itself is set in Admin → Settings). */}
+          {heading('Almost there!', code ? `Join the list and we'll email you ${code}: 10% off your first order, plus tips and member offers.` : 'Join the list for tips and member offers.')}
           <form
             className="mx-auto grid max-w-md gap-3"
             onSubmit={(e) => {
@@ -353,7 +354,7 @@ export function Quiz({ products, code }: { products: Product[]; code: string }) 
             <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" aria-label="Email address" autoComplete="email" className="rounded border border-[var(--color-line)] bg-white px-5 py-3" />
             <label className="flex items-start gap-2 text-xs text-[var(--color-muted)]">
               <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-0.5" />
-              Email me my welcome code, tips and offers from Noovit. Unsubscribe anytime.
+              {code ? <>Email me my 10%-off welcome code ({code}), tips and offers from Noovit. Unsubscribe anytime.</> : <>Email me tips and offers from Noovit. Unsubscribe anytime.</>}
             </label>
             <button disabled={!consent} className="btn btn-primary mt-2 disabled:opacity-40">See my plan</button>
           </form>

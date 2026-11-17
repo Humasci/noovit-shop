@@ -49,6 +49,9 @@ Read this first. It is the standing context for any session working on this repo
   `#7B3F86`, Turmeric saffron `#C98F14`. Mockups `design/label-v3-2026-11/`. **Spare palettes for future products**
   (owner, 14 Nov): G gold `#D9A21B` on navy `#1E2A3A`, H gold `#E0A526` on deep teal `#173A3A` (`SPARE_LABEL_PALETTES`;
   preview `spare-palettes-G-H.png`). Check a new product's colour doesn't sit too close to Magnesium (navy) or Lion's Mane (teal).
+- **Website look (17 Nov):** particle/cell/helix art retired from the site (generators remain for social). Site imagery = studio
+  bottle photos + line-ups (`scripts/site-images.ts` → `public/images/lineup-*.png`, backdrop `--studio` #cacac9) and a few
+  Unsplash-License lifestyle photos (`IMAGES.sport`, `IMAGES.run`). Best Sellers section/nav and Pets nav show only when real.
 - **Science palette (3 Nov, website art and accents only):** night `#141A4D`, indigo `#26307E`, cobalt `#3E5BD6`, violet
   `#7A5CE0`, lavender `#B9A9F2`, teal `#2DB6A8`, magenta `#C4458F`, haze `#D9DFF5` (CSS `--sci-*`). Microscopy-style cell
   art: `/art/cells-dark[-seed].svg`, `/art/cells-light[-seed].svg` (evidence band, advisor card, guides index + every guide

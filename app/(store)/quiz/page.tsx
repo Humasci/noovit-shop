@@ -12,9 +12,7 @@ export const metadata: Metadata = {
 export default async function QuizPage() {
   const [products, settings] = await Promise.all([getStoreProducts(), getSettings()]);
   return (
-    <section className="section relative overflow-hidden bg-[#EEF1FB]">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/art/cells-light-quiz.svg?v=1" alt="" aria-hidden className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-70" />
+    <section className="section relative overflow-hidden bg-[var(--color-soft)]">
       <div className="container relative px-6">
         <Quiz products={products} code={settings.newsletter_code} />
       </div>

@@ -148,10 +148,8 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
 
   return (
     <>
-    {/* Light science-palette header (cell artwork); each guide gets its own arrangement */}
-    <div className="relative overflow-hidden bg-[#EEF1FB]">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={`/art/cells-light-${g.slug}.svg?v=1`} alt="" aria-hidden className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-80" />
+    {/* Plain soft header (the particle artwork was retired 17 Nov) */}
+    <div className="relative overflow-hidden bg-[var(--color-soft)]">
       <div className="container relative max-w-3xl px-6 pb-10 pt-12">
         <nav className="mb-4 text-xs text-[var(--color-muted)]">
           <Link href="/">Home</Link> / <Link href="/guides">Supplement guides</Link> / <span className="text-[var(--color-ink)]">{g.ingredient}</span>

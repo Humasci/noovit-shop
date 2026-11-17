@@ -1,12 +1,10 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Check, Microscope, Sprout, ArrowRight, PawPrint, ScanText } from 'lucide-react';
+import { Check, ArrowRight, PawPrint } from 'lucide-react';
 import { BestSellers } from '@/components/home/BestSellers';
 import {
-  TrustSection,
   ReviewsSection,
   FAQSection,
-  CommunitySection,
   NewsletterSection,
   SubscriptionPerks,
   SectionHeading,
@@ -18,11 +16,10 @@ import { getContent, lines, safeLink } from '@/lib/content';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { LEGAL_NAME, SITE_URL } from '@/lib/site';
 import { ADVISORS, GENERAL_FAQS, IMAGES, PET_IMAGES } from '@/data/content';
+import { unsplashSrcSet } from '@/lib/utils/format';
 import { PLACEHOLDER_EXPERTS, PLACEHOLDER_REVIEWS } from '@/data/placeholders';
-import { PlaceholderNote } from '@/components/ui/Placeholder';
 import { getSettings, placeholdersOn } from '@/lib/settings';
 import { latestReviews } from '@/lib/reviews';
-import { unsplashSrcSet } from '@/lib/utils/format';
 import { Brand, brandify } from '@/components/brand/Brand';
 import { AskButton } from '@/components/advisor/AskButton';
 import { advisorEnabled } from '@/lib/advisor';
@@ -47,8 +44,6 @@ const GOAL_TILES: { label: string; line: string; slug: string; href: string }[] 
 ];
 
 // The core range (docs/research/COMPETITORS_CORE5.md); hidden products drop out automatically. Up to four are shown.
-const ART_V = 7; // bump when the /art graphics change
-const SPOTLIGHT = ['magnesium-complex', 'ashwagandha', 'lions-mane', 'creatine', 'coq10', 'turmeric-complex'];
 
 export const metadata: Metadata = { alternates: { canonical: '/' } };
 
@@ -58,47 +53,40 @@ export default async function HomePage() {
   const reviewPlaceholder = !realReviews.length && placeholders;
   const reviews = reviewPlaceholder ? PLACEHOLDER_REVIEWS : realReviews;
   const advisorPlaceholder = !ADVISORS.length && placeholders;
-  const advisors = advisorPlaceholder ? PLACEHOLDER_EXPERTS : ADVISORS;
-  const spotlight = SPOTLIGHT.map((s) => findProduct(products, s)).filter((p): p is NonNullable<typeof p> => p !== undefined && p.status !== 'hidden').slice(0, 4);
-  const petsLive = petProducts(products).length > 0;
-  const hero = findProduct(products, 'lions-mane') ?? spotlight[0];
+  const advisors = (advisorPlaceholder ? PLACEHOLDER_EXPERTS : ADVISORS).slice(0, 2); // two spots (owner, 17 Nov)
   const tiles = GOAL_TILES.map((t) => ({ ...t, product: findProduct(products, t.slug) })).filter((t) => t.product && t.product.status !== 'hidden');
   const ask = advisorEnabled();
+  const petsLive = petProducts(products).some((p) => p.status === 'active');
 
   return (
     <>
       <JsonLd data={{ '@context': 'https://schema.org', '@type': 'Organization', name: 'Noovit', legalName: LEGAL_NAME, url: SITE_URL, address: { '@type': 'PostalAddress', streetAddress: '30 N Gould St Ste R', addressLocality: 'Sheridan', addressRegion: 'WY', postalCode: '82801', addressCountry: 'US' } }} />
-      {/* Hero: big quiet headline left, the hero product on a tinted panel right (Thorne-like) */}
-      <section className="pb-10 pt-10 md:pb-16 md:pt-16">
-        <div className="container grid items-center gap-10 px-6 md:grid-cols-[1.05fr_1fr] md:gap-16">
-          <div>
-            {content.hero_badge && <p className="mb-5 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-muted)]">{brandify(content.hero_badge)}</p>}
-            <h1 className="text-balance text-5xl leading-[1.02] md:text-7xl">{brandify(content.hero_headline)}</h1>
-            {content.hero_subheadline && <p className="mt-6 max-w-lg text-lg text-[var(--color-muted)] md:text-xl">{brandify(content.hero_subheadline)}</p>}
+      {/* Hero: one full-bleed studio scene. The copy sits on the same grey backdrop as the bottles
+          (public/images/lineup-hero.png, scripts/site-images.ts), so there is no card edge. */}
+      <section className="relative overflow-hidden bg-[var(--studio)]">
+        <div className="container grid items-center gap-2 px-6 md:grid-cols-[1fr_1fr] md:gap-6">
+          <div className="relative z-10 pt-14 md:py-24">
+            {content.hero_badge && <p className="mb-5 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-navy)]/70">{brandify(content.hero_badge)}</p>}
+            <h1 className="text-balance text-5xl leading-[1.02] text-[var(--color-navy)] md:text-6xl xl:text-7xl">{brandify(content.hero_headline)}</h1>
+            {content.hero_subheadline && <p className="mt-6 max-w-lg text-lg text-[var(--color-ink)]/80 md:text-xl">{brandify(content.hero_subheadline)}</p>}
             <div className="mt-9 flex flex-wrap gap-3">
               <Link href={safeLink(content.hero_cta_link) || '/shop'} className="btn btn-primary">{content.hero_cta_label || 'Shop the range'}</Link>
-              {ask ? <AskButton label="Ask our AI advisor" className="btn-outline" /> : <Link href="/quiz" className="btn btn-outline">Take the quiz</Link>}
+              {ask ? <AskButton label="Ask our AI advisor" className="btn-outline bg-white/60" /> : <Link href="/quiz" className="btn btn-outline bg-white/60">Take the quiz</Link>}
             </div>
-            <ul className="mt-8 flex flex-col gap-2 text-sm text-[var(--color-muted)] sm:flex-row sm:gap-6">
+            <ul className="mt-8 flex flex-col gap-2 text-sm text-[var(--color-ink)]/75 sm:flex-row sm:gap-6">
               {lines(content.hero_bullets, 3).map((b) => (
                 <li key={b} className="flex items-center gap-2"><Check className="h-4 w-4 text-[var(--color-navy)]" /> {brandify(b)}</li>
               ))}
             </ul>
           </div>
-          {hero && (
-            <Link href={`/products/${hero.slug}`} className="group relative block overflow-hidden rounded-[2rem]" style={{ background: `linear-gradient(160deg, ${hero.color}22, ${hero.color}45)` }}>
-              {/* V2 artwork: the key molecule dissolving into particles, behind the bottle */}
-              <ProductImage product={hero} priority sizes="(min-width: 768px) 45vw, 100vw" className="aspect-[4/5] w-full transition-transform duration-700 group-hover:scale-[1.03] md:aspect-square" />
-              <img src={`/art/molecule-${hero.slug}.svg?v=${ART_V}`} alt="" aria-hidden className="pointer-events-none absolute -left-[6%] -top-[4%] w-[46%] mix-blend-multiply" />
-              <span className="absolute bottom-5 left-5 rounded-full bg-white/90 px-4 py-2 text-sm font-semibold text-[var(--color-navy)]">{hero.name} · ${hero.basePrice}</span>
-            </Link>
-          )}
+          <Link href="/shop" aria-label="Shop the range" className="block">
+            <img src="/images/lineup-hero.png?v=1" alt="Noovit Magnesium Sleep+, Lion's Mane and Ashwagandha Calm+ bottles" className="w-full" fetchPriority="high" />
+          </Link>
         </div>
       </section>
 
       {/* Value row */}
       <section className="relative overflow-hidden border-y border-[var(--color-line)]">
-        <img src={`/art/drift-${hero?.slug ?? 'lions-mane'}.svg?from=right&v=${ART_V}`} alt="" aria-hidden className="pointer-events-none absolute inset-y-0 right-0 hidden h-full w-1/2 object-cover opacity-40 lg:block" />
         <div className="container relative grid gap-8 px-6 py-12 sm:grid-cols-2 lg:grid-cols-4">
           {VALUES.map(([title, text]) => (
             <div key={title}>
@@ -119,11 +107,11 @@ export default async function HomePage() {
             </div>
             <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
               {tiles.map((t) => (
-                <Link key={t.label} href={t.href} className="group relative overflow-hidden rounded-3xl p-6 md:p-8" style={{ background: `${t.product!.color}14` }}>
+                <Link key={t.label} href={t.href} className="group relative flex flex-col overflow-hidden rounded-3xl bg-[var(--studio)] p-6 md:p-8">
                   <p className="font-display text-2xl text-[var(--color-navy)] md:text-3xl">{t.label}</p>
-                  <p className="mt-1 text-sm text-[var(--color-muted)]">{t.line}</p>
-                  {/* The product's key molecule, in the V2 particle style */}
-                  <img src={`/art/molecule-${t.slug}.svg?v=${ART_V}`} alt="" aria-hidden loading="lazy" className="mx-auto mt-2 aspect-square w-[88%] transition-transform duration-700 group-hover:scale-105 group-hover:rotate-2" />
+                  <p className="mt-1 text-sm text-[var(--color-ink)]/70">{t.line}</p>
+                  {/* The product's studio photo, on the same backdrop colour as the tile */}
+                  <ProductImage product={t.product!} sizes="(min-width: 768px) 30vw, 45vw" className="mx-auto mt-2 aspect-square w-[92%] transition-transform duration-700 [mask-image:radial-gradient(closest-side,#000_72%,transparent)] group-hover:scale-[1.04]" />
                   <span className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-[var(--color-navy)]">{t.product!.name} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
                 </Link>
               ))}
@@ -132,9 +120,8 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* Evidence band: microscopy-style artwork in the science palette, linking to the graded guides */}
+      {/* Evidence band: links to the graded guides */}
       <section className="relative overflow-hidden bg-[#141A4D] text-white">
-        <img src={`/art/cells-dark.svg?v=${ART_V}`} alt="" aria-hidden loading="lazy" className="pointer-events-none absolute inset-0 h-full w-full object-cover" />
         <div className="container relative grid gap-10 px-6 py-20 md:grid-cols-[1.1fr_1fr] md:py-28">
           <div>
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-white/60">The evidence</p>
@@ -156,14 +143,12 @@ export default async function HomePage() {
 
       <BestSellers products={products} />
 
-      <TrustSection />
 
       {/* AI advisor promo */}
       {ask && (
         <section className="pb-4">
           <div className="container px-6">
             <div className="relative grid items-center gap-8 overflow-hidden rounded-[2rem] bg-[#141A4D] p-10 text-white md:grid-cols-[1.3fr_1fr] md:p-16">
-              <img src={`/art/cells-dark-advisor.svg?v=${ART_V}`} alt="" aria-hidden className="pointer-events-none absolute inset-0 h-full w-full object-cover" />
               <div className="relative">
                 <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-white/60">New · Noovit AI</p>
                 <h2 className="text-4xl text-white md:text-5xl">Questions? Ask Noovit AI.</h2>
@@ -180,38 +165,23 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* Noovit Pets teaser */}
-      <section className="pb-4">
-        <div className="container px-6">
-          <Link href="/pets" className="group grid overflow-hidden rounded-3xl bg-[var(--color-pets-soft)] md:grid-cols-2">
-            <div className="p-10 md:p-14">
-              <p className="mb-3 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-pets-dark)]">
-                <PawPrint className="h-4 w-4" /> {petsLive ? 'New' : 'Coming soon'} · <Brand /> Pets
-              </p>
-              <h2 className="text-3xl md:text-4xl">Clean supplements for dogs and cats</h2>
-              <p className="mt-3 text-[var(--color-muted)]">Soft chews for digestion, joints, calm and coat, in the same cart as yours.</p>
-              <span className="btn mt-6 bg-[var(--color-pets)] text-[var(--color-navy)] group-hover:brightness-95">{petsLive ? 'Shop Pets' : 'Join the waitlist'}</span>
-            </div>
-            <img src={PET_IMAGES.hero} srcSet={unsplashSrcSet(PET_IMAGES.hero)} sizes="(min-width: 768px) 50vw, 100vw" alt="A cat and dog cuddling" className="h-full min-h-64 w-full object-cover" loading="lazy" />
-          </Link>
-        </div>
-      </section>
-
-      {/* Quiz */}
-      <section className="section bg-[var(--color-soft)]">
-        <div className="container grid items-center gap-10 px-6 md:grid-cols-[1.2fr_1fr]">
+      {/* Quiz: lifestyle split (Thorne's "science is personal" pattern) */}
+      <section className="section">
+        <div className="container grid items-center gap-10 px-6 md:grid-cols-2 md:gap-16">
+          <img src={IMAGES.run} srcSet={unsplashSrcSet(IMAGES.run)} sizes="(min-width: 768px) 50vw, 100vw" alt="A man running outdoors" className="aspect-[4/5] w-full rounded-3xl object-cover md:aspect-[4/4.4]" loading="lazy" />
           <div>
-            <SectionHeading eyebrow="Not sure where to start?" title="Find your routine in two minutes" center={false} />
-            <p className="-mt-6 max-w-lg text-[var(--color-muted)]">
-              Tell us your goals, diet and lifestyle and we&apos;ll suggest up to three products, with the reasons why. No sign-up needed.
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-muted)]">Not sure where to start?</p>
+            <h2 className="text-4xl md:text-5xl">Built around your goals.</h2>
+            <p className="mt-4 max-w-lg text-lg text-[var(--color-muted)]">
+              Tell us your goals, diet and routine and we&apos;ll suggest up to three products, with the reasons why. Two minutes, no sign-up needed.
             </p>
+            <ul className="mt-6 grid gap-2 text-sm font-semibold sm:grid-cols-2">
+              {['Matched to your goals', 'Filtered for your diet', 'Pregnancy and medication aware', 'Change or cancel anytime'].map((t) => (
+                <li key={t} className="flex items-center gap-2"><Check className="h-4 w-4 shrink-0 text-[var(--color-accent)]" /> {t}</li>
+              ))}
+            </ul>
             <Link href="/quiz" className="btn btn-primary mt-8">Take the quiz</Link>
           </div>
-          <ul className="grid gap-3 text-sm font-semibold sm:grid-cols-2">
-            {['Matched to your goals', 'Filtered for your diet', 'Pregnancy and medication aware', 'Change or cancel anytime'].map((t) => (
-              <li key={t} className="flex items-center gap-2 rounded-2xl bg-white p-4"><Check className="h-4 w-4 shrink-0 text-[var(--color-accent)]" /> {t}</li>
-            ))}
-          </ul>
         </div>
       </section>
 
@@ -226,12 +196,6 @@ export default async function HomePage() {
               <Link href="/guides" className="btn btn-primary mt-6">Read the guides</Link>
             </div>
             <div>
-              {advisorPlaceholder && (
-                <PlaceholderNote className="mb-4">
-                  Your advisory panel goes here: real name, credential (RD, RDN, MSc, PhD), photo, a short quote, written consent, and disclosure if paid.
-                  Add them in data/content.ts (ADVISORS). Until then, the panel and the claim beside it should not go live.
-                </PlaceholderNote>
-              )}
               <div className="grid gap-4 sm:grid-cols-2">
                 {advisors.map((e, i) => (
                   <div key={i} className="flex gap-4 rounded-2xl bg-white p-5">
@@ -251,47 +215,27 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* Approach */}
-      <section className="section">
-        <div className="container grid items-center gap-12 px-6 md:grid-cols-2">
-          <img src={IMAGES.approach} srcSet={unsplashSrcSet(IMAGES.approach)} sizes="(min-width: 768px) 50vw, 100vw" alt="A table of fresh, colourful whole foods" className="aspect-[4/3] w-full rounded-3xl object-cover" loading="lazy" />
-          <div>
-            <SectionHeading eyebrow="Our approach" title="Nutrition backed by evidence, made for real life" center={false} />
-            <div className="space-y-6">
-              <div className="flex gap-4">
-                <Microscope className="h-8 w-8 shrink-0 text-[var(--color-accent)]" />
-                <div>
-                  <h3 className="text-lg">Researched doses</h3>
-                  <p className="text-[var(--color-muted)]">We use the forms and amounts studied in research — not pixie dust.</p>
-                </div>
-              </div>
-              <div className="flex gap-4">
-                <Sprout className="h-8 w-8 shrink-0 text-[var(--color-accent)]" />
-                <div>
-                  <h3 className="text-lg">Nothing you don&apos;t need</h3>
-                  <p className="text-[var(--color-muted)]">No artificial colors, fillers or unnecessary additives.</p>
-                </div>
-              </div>
-              <div className="flex gap-4">
-                <ScanText className="h-8 w-8 shrink-0 text-[var(--color-accent)]" strokeWidth={1.5} />
-                <div>
-                  <h3 className="text-lg">Labels you can read</h3>
-                  <p className="text-[var(--color-muted)]">Every ingredient and amount listed, the key dose on the front, and no proprietary blends.</p>
-                </div>
-              </div>
-            </div>
-            <Link href="/about" className="mt-8 inline-flex items-center gap-1 font-bold text-[var(--color-accent)]">
-              More about our approach <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
       <ReviewsSection reviews={reviews} placeholder={reviewPlaceholder} />
       <FAQSection faqs={GENERAL_FAQS.slice(0, 5)} />
-      <CommunitySection />
       <NewsletterSection />
       <SubscriptionPerks />
+
+      {/* Noovit Pets teaser, last on the page (owner, 17 Nov): "Coming soon" until pet products are on sale. */}
+      <section className="pb-16">
+        <div className="container px-6">
+          <Link href="/pets" className="group grid overflow-hidden rounded-3xl bg-[var(--color-pets-soft)] md:grid-cols-2">
+            <div className="p-10 md:p-14">
+              <p className="mb-3 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-pets-dark)]">
+                <PawPrint className="h-4 w-4" /> {petsLive ? 'New' : 'Coming soon'} · <Brand /> Pets
+              </p>
+              <h2 className="text-3xl md:text-4xl">Clean supplements for dogs and cats</h2>
+              <p className="mt-3 text-[var(--color-muted)]">Soft chews for digestion, joints, calm and coat, in the same cart as yours.</p>
+              <span className="btn mt-6 bg-[var(--color-pets)] text-[var(--color-navy)] group-hover:brightness-95">{petsLive ? 'Shop Pets' : 'Join the waitlist'}</span>
+            </div>
+            <img src={PET_IMAGES.hero} srcSet={unsplashSrcSet(PET_IMAGES.hero)} sizes="(min-width: 768px) 50vw, 100vw" alt="A cat and dog cuddling" className="h-full min-h-64 w-full object-cover" loading="lazy" />
+          </Link>
+        </div>
+      </section>
     </>
   );
 }

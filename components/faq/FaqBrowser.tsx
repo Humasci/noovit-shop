@@ -4,8 +4,8 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Search, Clock } from 'lucide-react';
 import { Product } from '@/types';
-import { GENERAL_FAQS, IMAGES } from '@/data/content';
-import { FAQSection, CommunitySection } from '@/components/sections/Sections';
+import { GENERAL_FAQS } from '@/data/content';
+import { FAQSection } from '@/components/sections/Sections';
 
 export function FaqBrowser({ products }: { products: Product[] }) {
   const [query, setQuery] = useState('');
@@ -58,12 +58,11 @@ export function FaqBrowser({ products }: { products: Product[] }) {
               <h2 className="text-3xl text-white md:text-4xl">Small daily habits, big long-term results.</h2>
               <Link href="/shop" className="btn mt-6 bg-white text-[var(--color-navy)]">Shop Now</Link>
             </div>
-            <img src={IMAGES.approach} alt="" className="h-full w-full object-cover" />
+            <img src="/images/lineup-5.png?v=1" alt="" className="h-full w-full bg-[var(--studio)] object-cover" />
           </div>
         </div>
       </section>
 
-      <CommunitySection />
     </>
   );
 }

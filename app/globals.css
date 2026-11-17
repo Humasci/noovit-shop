@@ -13,6 +13,7 @@
   /* Warm off-white canvas (The Absorption Company direction): page, soft panels, hairlines. */
   --color-canvas: #ffffff; /* Thorne-like clean white (3 Nov) */
   --color-soft: #f4f4f2;
+  --studio: #cacac9; /* backdrop of the studio bottle photos (scripts/site-images.ts prints it) */
   --color-line: #e7e6e2;
   --color-muted: #5b6472;
   --color-orange: #ff5f00;
@@ -241,3 +242,4 @@
   --sci-night: #141A4D; --sci-indigo: #26307E; --sci-cobalt: #3E5BD6; --sci-violet: #7A5CE0;
   --sci-lavender: #B9A9F2; --sci-teal: #2DB6A8; --sci-magenta: #C4458F; --sci-haze: #D9DFF5;
 }
+.prose-noovit h2, .prose-noovit h3 { scroll-margin-top: 6rem; } /* TOC jumps clear the sticky header */

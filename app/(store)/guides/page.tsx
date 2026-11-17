@@ -11,9 +11,7 @@ export const metadata: Metadata = {
 export default function GuidesIndex() {
   return (
     <>
-      <section className="relative overflow-hidden bg-[#EEF1FB] py-20">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/art/cells-light-guides.svg?v=3" alt="" aria-hidden className="pointer-events-none absolute inset-0 h-full w-full object-cover" />
+      <section className="relative overflow-hidden bg-[var(--color-soft)] py-20">
         <div className="container relative px-6">
           <h1 className="text-4xl md:text-5xl">Supplement guides</h1>
           <p className="mt-3 max-w-2xl text-[var(--color-muted)]">

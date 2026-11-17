@@ -13,8 +13,10 @@ const TABS = [
   { label: "Men's Health", get: (list: Product[]) => byAudience(list, 'men') },
 ];
 
+// Hidden until real best sellers are flagged in Admin (no "best seller" claims before sales, 17 Nov).
 export function BestSellers({ products }: { products: Product[] }) {
   const [tab, setTab] = useState(0);
+  if (!products.some((p) => p.bestSeller && p.status === 'active')) return null;
   const items = TABS[tab].get(products).slice(0, 8);
 
   return (

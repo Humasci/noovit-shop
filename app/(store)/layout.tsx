@@ -2,7 +2,7 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { CartDrawer } from '@/components/cart/CartDrawer';
 import { getStoreProducts } from '@/lib/catalog/server';
-import { bestSellers } from '@/data/products';
+import { bestSellers, petProducts } from '@/data/products';
 import { getSettings, placeholdersOn } from '@/lib/settings';
 import { Analytics } from '@/components/analytics/Analytics';
 import { getContent, lines, safeLink } from '@/lib/content';
@@ -13,7 +13,10 @@ import { Advisor } from '@/components/advisor/Advisor';
 import { advisorEnabled } from '@/lib/advisor';
 
 export default async function StoreLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const suggestions = bestSellers(await getStoreProducts()).filter((p) => p.status === 'active').slice(0, 6);
+  const products = await getStoreProducts();
+  const suggestions = bestSellers(products).filter((p) => p.status === 'active').slice(0, 6);
+  const flaggedBestSellers = products.some((p) => p.bestSeller && p.status === 'active');
+  const petsLive = petProducts(products).some((p) => p.status === 'active');
   const settings = await getSettings();
   const content = await getContent();
   const config = {
@@ -35,6 +38,8 @@ export default async function StoreLayout({ children }: Readonly<{ children: Rea
         trustBar={lines(content.trust_bar, 5)}
         announcement={{ text: content.announcement_text, href: safeLink(content.announcement_link) }}
         advisor={advisorEnabled()}
+        bestSellers={flaggedBestSellers}
+        pets={petsLive}
       />
       <main id="main" tabIndex={-1} className="min-h-screen outline-none">{children}</main>
       <Footer />

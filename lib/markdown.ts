@@ -8,9 +8,17 @@ const safeHref = (href: string) => {
   return /^(https?:\/\/|mailto:|\/(?!\/)|#)/i.test(h) ? h : '';
 };
 
+// Heading anchors (for the table of contents): "Can I take it at night?" → "can-i-take-it-at-night".
+export const headingId = (text: string) =>
+  text.toLowerCase().replace(/<[^>]+>/g, '').replace(/&[a-z#0-9]+;/g, '').replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-').slice(0, 60);
+
 const marked = new Marked({ gfm: true });
 marked.use({
   renderer: {
+    heading(this: { parser: { parseInline: (t: Tokens.Heading['tokens']) => string } }, token: Tokens.Heading) {
+      const text = this.parser.parseInline(token.tokens);
+      return `<h${token.depth} id="${headingId(token.text)}">${text}</h${token.depth}>\n`;
+    },
     html: () => '', // raw HTML in posts is never rendered
     link(this: { parser: { parseInline: (t: Tokens.Link['tokens']) => string } }, token: Tokens.Link) {
       const text = this.parser.parseInline(token.tokens);
@@ -27,3 +35,11 @@ marked.use({
 });
 
 export const renderMarkdown = (md: string) => marked.parse(md, { async: false }) as string;
+
+// The post's H2 sections, for "In this article". Skips the closing Sources list.
+export const markdownToc = (md: string) =>
+  marked
+    .lexer(md)
+    .filter((t): t is Tokens.Heading => t.type === 'heading' && (t as Tokens.Heading).depth === 2)
+    .map((t) => ({ id: headingId(t.text), text: t.text.replace(/[*_`]/g, '') }))
+    .filter((h) => !/^(sources|references)$/i.test(h.text.trim()));

@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { IMAGES } from '@/data/content';
 import { humanProducts } from '@/data/products';
 import { getStoreProducts } from '@/lib/catalog/server';
 import { TrustSection, ReviewsSection, SubscriptionPerks, SectionHeading } from '@/components/sections/Sections';
@@ -29,9 +28,7 @@ export default async function AboutPage() {
   const reviewProps = { reviews: placeholder ? PLACEHOLDER_REVIEWS : real, placeholder };
   return (
     <>
-      <section className="relative overflow-hidden">
-        <img src="/art/helix-dark-about.svg?v=1" alt="" aria-hidden className="absolute inset-0 h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(20,26,77,0.82)_25%,rgba(20,26,77,0.35)_70%)]" />
+      <section className="relative overflow-hidden bg-[var(--color-navy)]">
         <div className="container relative px-6 py-28 text-center text-white">
           <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-accent-light)]">About Noovit</p>
           <h1 className="mx-auto max-w-3xl text-balance text-4xl text-white md:text-6xl">Supplements you can actually understand.</h1>
@@ -46,12 +43,12 @@ export default async function AboutPage() {
           <div>
             <SectionHeading eyebrow="Our story" title="Built on evidence, not marketing" center={false} />
             <div className="space-y-4 text-[var(--color-muted)]">
-              <p>Every Noovit formula starts with the research: which forms absorb best, which doses were actually studied, and what can be left out.</p>
-              <p>We pick each formula from what the research supports, list every ingredient and amount on the label, and publish quality documents as we receive them, starting with purity and potency testing.</p>
+              <p>We choose every product from the research: which forms are well studied, what doses trials used, and how our dose compares.</p>
+              <p>We pick each formula from what the research supports, list every ingredient and amount on the label, and will publish lab test results as we receive them.</p>
               <p>The result is a focused range of supplements with clear labels, honest claims and a 90-day guarantee behind them.</p>
             </div>
           </div>
-          <img src={IMAGES.nutrition} alt="" className="aspect-[4/3] w-full rounded-3xl object-cover" />
+          <img src="/images/lineup-5.png?v=1" alt="The Noovit core range" className="aspect-[4/3] w-full rounded-3xl bg-[var(--studio)] object-cover" />
         </div>
       </section>
 

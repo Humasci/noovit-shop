@@ -3,6 +3,9 @@ import { Expert, FAQ } from '@/types';
 export const TRUST_BAR = ['Clean Ingredients', 'Free US Shipping', 'Science-Driven', '90-Day Guarantee', 'Cancel Anytime'];
 
 export const IMAGES = {
+  // Sports lifestyle (Unsplash License, free): sprinter by Jorge Alberto Vega Barrera; runner by Sherise Van Dyk.
+  sport: 'https://images.unsplash.com/photo-1744060204728-f68e434a3edf?w=1200&q=80&fit=crop',
+  run: 'https://images.unsplash.com/photo-1560073742-bc295f81c3c0?w=1200&q=80&fit=crop',
   hero: 'https://images.unsplash.com/photo-1552196563-55cd4e45efb3?w=1920&q=80&fit=crop',
   approach: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=1200&q=80&fit=crop',
   nutrition: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&q=80&fit=crop',

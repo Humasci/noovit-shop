@@ -49,7 +49,8 @@ const NAV: NavItem[] = [
   },
 ];
 
-export function Header({ trustBar, announcement, advisor = false }: { trustBar: string[]; announcement?: { text: string; href: string }; advisor?: boolean }) {
+// `bestSellers` / `pets`: shown only once real best sellers are flagged / pet products are on sale (17 Nov).
+export function Header({ trustBar, announcement, advisor = false, bestSellers = false, pets = false }: { trustBar: string[]; announcement?: { text: string; href: string }; advisor?: boolean; bestSellers?: boolean; pets?: boolean }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
   const onPets = pathname.startsWith('/pets');
@@ -90,8 +91,9 @@ export function Header({ trustBar, announcement, advisor = false }: { trustBar: 
           <Link href="/" className="order-2 mx-auto text-[1.6rem] text-[var(--color-navy)] md:text-[1.85rem] lg:order-none lg:mx-0">
             <Logo />
           </Link>
-          <nav aria-label="Main" className="hidden items-center gap-7 whitespace-nowrap text-[15px] font-medium lg:flex">
-            {NAV.filter((n) => !n.pets).map((n) => {
+          {/* Top-level items in caps (owner, 17 Nov); dropdown links stay in sentence case. */}
+          <nav aria-label="Main" className="hidden items-center gap-7 whitespace-nowrap text-[13px] font-semibold uppercase tracking-[0.12em] lg:flex">
+            {NAV.filter((n) => !n.pets && (bestSellers || n.name !== 'Best Sellers')).map((n) => {
               const tone = n.pets ? 'text-[var(--color-pets)] hover:text-[var(--color-pets-dark)]' : 'hover:text-[var(--color-accent)]';
               if (!n.children) return <Link key={n.href} href={n.href} className={tone}>{n.name}</Link>;
               return (
@@ -108,7 +110,7 @@ export function Header({ trustBar, announcement, advisor = false }: { trustBar: 
                     {n.name} <ChevronDown className="h-3.5 w-3.5 transition-transform group-hover:rotate-180 group-focus-within:rotate-180" />
                   </Link>
                   <div className="invisible absolute left-0 top-full z-50 pt-2 opacity-0 transition-opacity group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
-                    <div className="flex gap-2 rounded-2xl border border-[var(--color-line)] bg-white p-2 shadow-lg">
+                    <div className="flex gap-2 rounded-2xl border border-[var(--color-line)] bg-white p-2 text-[15px] font-medium normal-case tracking-normal shadow-lg">
                       {[
                         { title: n.goals ? 'Categories' : '', links: n.children },
                         ...(n.goals ? [{ title: 'Shop by goal', links: GOAL_LINKS }] : []),
@@ -170,7 +172,7 @@ export function Header({ trustBar, announcement, advisor = false }: { trustBar: 
               </button>
             )}
             {/* Noovit Pets sits apart from the human range as its own button; on the Pets pages it leads back to the human shop. */}
-            {onPets ? (
+            {!pets && !onPets ? null : onPets ? (
               <Link
                 href="/shop"
                 className="hidden items-center gap-1.5 rounded-full bg-[var(--color-opal)] px-4 py-1.5 text-[14px] font-medium text-[var(--color-navy)] transition-colors hover:bg-[var(--color-accent-light)] lg:flex"
@@ -210,7 +212,7 @@ export function Header({ trustBar, announcement, advisor = false }: { trustBar: 
                 <CrossIcon className="h-3.5 w-3.5" /> Ask Noovit AI
               </button>
             )}
-            {NAV.map((n) => (
+            {NAV.filter((n) => (pets || !n.pets) && (bestSellers || n.name !== 'Best Sellers')).map((n) => (
               <div key={n.href}>
                 <Link href={n.href} onClick={() => setMenuOpen(false)} className={n.pets ? 'text-[var(--color-pets)]' : ''}>
                   {n.name}

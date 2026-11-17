@@ -19,7 +19,7 @@ export const PLACEHOLDER_REVIEWS: Review[] = [
 // What to collect: full name, credential (RD, RDN, MSc, PhD), a short quote about a product or approach,
 // a photo, written consent to be featured, and disclosure if they are paid.
 export const PLACEHOLDER_EXPERTS: Expert[] = [
-  { name: 'Advisor Name', credentials: 'Registered Nutritionist, MSc', quote: 'Simple, well-dosed formulas you can actually stick to.' },
+  { name: 'Advisor Name', credentials: 'Registered Dietitian, MSc', quote: 'Simple, well-dosed formulas you can actually stick to.' },
   { name: 'Advisor Name', credentials: 'Registered Dietitian', quote: 'Clear labels and forms the body can absorb.' },
   { name: 'Advisor Name', credentials: 'Sports Nutritionist', quote: 'Single-ingredient creatine done properly.' },
   { name: 'Advisor Name', credentials: "Women's Health Nutritionist", quote: 'Thoughtful support for every life stage.' },
