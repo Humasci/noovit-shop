@@ -5,7 +5,7 @@
 import { writeFileSync } from 'fs';
 import sharp from 'sharp';
 import { SEED_PRODUCTS } from '@/data/products';
-import { studioGroupPng, studioBackdrop } from '@/lib/labels/studio';
+import { studioGroupPng, studioBackdrop, BACKDROP, SAGE } from '@/lib/labels/studio';
 
 const P = (s: string) => SEED_PRODUCTS.find((p) => p.slug === s)!;
 (async () => {
@@ -18,10 +18,9 @@ const P = (s: string) => SEED_PRODUCTS.find((p) => p.slug === s)!;
   const hero = await studioGroupPng(['magnesium-complex', 'lions-mane', 'ashwagandha'].map(P), 1500, 1200, { size: 860, step: 470, y: 230, bg });
   writeFileSync('public/images/lineup-hero.png', hero);
   // Featured products on a soft tint of their own label colour (FourFive-style), for the homepage feature cards.
-  const tint = (hex: string, k: number) => (hex.match(/\w\w/g) ?? []).map((h) => Math.round(255 - (255 - parseInt(h, 16)) * k)) as [number, number, number];
-  for (const slug of ['lions-mane', 'magnesium-complex']) {
-    const t = tint(P(slug).color, 0.32);
-    writeFileSync(`public/images/feature-${slug}.png`, await studioGroupPng([P(slug)], 1200, 1200, { size: 1100, step: 0, y: 60, bg: t }));
+  // Cards alternate cream and sage (owner, 17 Nov).
+  for (const [slug, t] of [['lions-mane', SAGE], ['magnesium-complex', BACKDROP]] as const) {
+    writeFileSync(`public/images/feature-${slug}.png`, await studioGroupPng([P(slug)], 1200, 1200, { size: 1100, step: 0, y: 60, bg: [...t] as [number, number, number] }));
     console.log('feature', slug, '#' + t.map((v) => v.toString(16).padStart(2, '0')).join(''));
   }
   console.log('backdrop', '#' + bg.map((v) => v.toString(16).padStart(2, '0')).join(''));

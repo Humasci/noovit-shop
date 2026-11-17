@@ -15,7 +15,7 @@ import { LEGAL_NAME } from '@/lib/site';
 export type FontMode = 'web' | 'print';
 
 // Bump when the photo mockup (lib/labels/photo.ts) changes, so cached product image URLs refresh.
-export const MOCKUP_VERSION = 'studio-v5'; // studio-v1 (16 Nov): photoreal studio bottle (lib/labels/studio.ts); was photo-v14 // v12 (14 Nov): elegant dark label; v13: studio lighting; v14: label edges curve round the bottle
+export const MOCKUP_VERSION = 'studio-v6'; // v6 (17 Nov): cream backdrop // studio-v1 (16 Nov): photoreal studio bottle (lib/labels/studio.ts); was photo-v14 // v12 (14 Nov): elegant dark label; v13: studio lighting; v14: label edges curve round the bottle
 
 const NAVY = '#14213d';
 const INK = '#4b5563';
@@ -1039,9 +1039,9 @@ export function bottle(p: Product, mode: FontMode, uid: string, pattern: LabelPa
 }
 
 // Cream scene with a soft floor line.
-// Drawn bottles and tubs sit on the same grey as the studio photos (17 Nov), so the shop grid matches.
+// Drawn bottles and tubs sit on the same cream as the studio photos (17 Nov), so the shop grid matches.
 export function scene(uid: string) {
-  return `<defs><radialGradient id="bg-${uid}" cx="0.5" cy="0.42" r="0.75"><stop offset="0" stop-color="#d2d2d0"/><stop offset="1" stop-color="#c4c4c2"/></radialGradient></defs><rect width="400" height="400" fill="url(#bg-${uid})"/>`;
+  return `<defs><radialGradient id="bg-${uid}" cx="0.5" cy="0.42" r="0.75"><stop offset="0" stop-color="#f3eee5"/><stop offset="1" stop-color="#ebe4d8"/></radialGradient></defs><rect width="400" height="400" fill="url(#bg-${uid})"/>`;
 }
 
 // Square 400×400 image. `uid` keeps gradient/clip ids unique when several images share a page.

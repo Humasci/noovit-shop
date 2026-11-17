@@ -24,7 +24,12 @@ type Template = {
   shadeX: Float32Array; shadeY: Float32Array; // lighting ratios
   pxPerUnit: number;
   plate: Float32Array; // the empty studio backdrop (RGB per pixel), estimated from the photo's clean left and right edges
+  mask: Float32Array; // 1 inside the bottle (cap, shoulders, body), soft at the edges; used to place it on any backdrop
 };
+
+// Site backdrop for product photos (17 Nov, owner: cream, not grey). Sage is the alternative accent.
+export const BACKDROP: [number, number, number] = [0xef, 0xe9, 0xdf]; // cream #EFE9DF (CSS --studio)
+export const SAGE: [number, number, number] = [0xd9, 0xe0, 0xd2]; // sage #D9E0D2
 let cached: Promise<Template> | null = null;
 
 const median = (a: number[]) => { const s = [...a].sort((p, q) => p - q); return s.length ? s[s.length >> 1] : 0; };
@@ -110,7 +115,34 @@ async function analyse(): Promise<Template> {
     for (let j = Math.max(0, y - 12); j <= Math.min(H - 1, y + 12); j++, nRows++) for (let k = 0; k < 9; k++) acc[k] += coef[j][k];
     for (let x = 0; x < W; x++) { const u = x / W; for (let c = 0; c < 3; c++) { const [A, B, C] = acc.slice(c * 3, c * 3 + 3).map((v) => v / nRows); plate[(y * W + x) * 3 + c] = A + B * u + C * u * u; } }
   }
-  return { W, H, data, x0, x1, cx, R, top, bot, shadeX, shadeY, pxPerUnit: (yBot - yTop) / FRONT.h, plate };
+  // Bottle mask, column by column: from the first row that differs from the backdrop (cap or shoulder) down to the
+  // base, which follows the label's bottom curve plus the label-to-base distance measured at the centre. Then
+  // softened by a small blur so the edge is anti-aliased.
+  const plum = (i: number) => 0.299 * plate[i] + 0.587 * plate[i + 1] + 0.114 * plate[i + 2];
+  const pix = (i: number) => 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
+  const cxi = Math.round(cx);
+  let baseC = Math.round(bot[cxi]);
+  for (let y = Math.round(bot[cxi]); y < Math.min(H - 1, bot[cxi] + H * 0.2); y++) { const i = (y * W + cxi) * 3; if (pix(i) > plum(i) + 10) baseC = y; }
+  const baseOffset = baseC - bot[cxi];
+  const hard = new Float32Array(W * H);
+  for (let x = Math.max(0, x0 - 6); x <= Math.min(W - 1, x1 + 6); x++) {
+    const xe = Math.min(x1, Math.max(x0, x));
+    let tp = -1;
+    for (let y = Math.round(H * 0.05); y < bot[xe]; y++) { const i = (y * W + x) * 3; if (Math.abs(pix(i) - plum(i)) > 16) { tp = y; break; } }
+    if (tp < 0) continue;
+    const bt = Math.round(bot[xe] + baseOffset * (0.55 + 0.45 * Math.sqrt(Math.max(0, 1 - ((x - cx) / R) ** 2))));
+    // columns just outside the label edge only count where the pixel really differs (the bottle's rounded side)
+    for (let y = tp; y <= Math.min(H - 1, bt); y++) {
+      if (x < x0 || x > x1) { const i = (y * W + x) * 3; if (Math.abs(pix(i) - plum(i)) <= 12) continue; }
+      hard[y * W + x] = 1;
+    }
+  }
+  const mask = new Float32Array(W * H);
+  const tmp = new Float32Array(W * H);
+  const rad = 2;
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { let a = 0, n = 0; for (let d = -rad; d <= rad; d++) { const xx = x + d; if (xx >= 0 && xx < W) { a += hard[y * W + xx]; n++; } } tmp[y * W + x] = a / n; }
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { let a = 0, n = 0; for (let d = -rad; d <= rad; d++) { const yy = y + d; if (yy >= 0 && yy < H) { a += tmp[yy * W + x]; n++; } } mask[y * W + x] = a / n; }
+  return { W, H, data, x0, x1, cx, R, top, bot, shadeX, shadeY, pxPerUnit: (yBot - yTop) / FRONT.h, plate, mask };
 }
 
 const fontFiles = () => {
@@ -165,9 +197,25 @@ export async function studioPhotoRaw(p: Product) {
   return { data: out, width: t.W, height: t.H, box: { x0: t.x0, x1: t.x1 } };
 }
 
-// Square product image (PNG). 'front': the whole bottle at ~85% of the height; 'closeup': the label, filling the frame.
-export async function studioPhotoPng(p: Product, size = 1000, crop: 'front' | 'closeup' = 'front') {
+// The labelled photo placed on any backdrop colour: the bottle keeps its true colours (mask), and the backdrop takes
+// the photo's shadow and soft light as a brightness ratio against the empty studio, so it looks photographed there.
+export async function studioOnBackdrop(p: Product, bg: [number, number, number] = BACKDROP) {
+  const t = await (cached ??= analyse());
   const r = await studioPhotoRaw(p);
+  const out = Buffer.alloc(r.data.length);
+  for (let k = 0, m = 0; k < r.data.length; k += 3, m++) {
+    const a = t.mask[m];
+    const lp = 0.299 * t.plate[k] + 0.587 * t.plate[k + 1] + 0.114 * t.plate[k + 2];
+    const li = 0.299 * r.data[k] + 0.587 * r.data[k + 1] + 0.114 * r.data[k + 2];
+    const shade = Math.max(0.3, Math.min(1, li / lp));
+    for (let c = 0; c < 3; c++) out[k + c] = Math.round(a * r.data[k + c] + (1 - a) * bg[c] * shade);
+  }
+  return { ...r, data: out };
+}
+
+// Square product image (PNG). 'front': the whole bottle at ~85% of the height; 'closeup': the label, filling the frame.
+export async function studioPhotoPng(p: Product, size = 1000, crop: 'front' | 'closeup' = 'front', bg: [number, number, number] = BACKDROP) {
+  const r = await studioOnBackdrop(p, bg);
   const t = await (cached ??= analyse());
   const cxp = (r.box.x0 + r.box.x1) / 2;
   const box =
@@ -181,39 +229,52 @@ export async function studioPhotoPng(p: Product, size = 1000, crop: 'front' | 'c
     .toBuffer();
 }
 
-// Group shot: several bottles on one shared backdrop, as if photographed together. Each bottle is taken as its
-// difference from the empty studio backdrop (bottle, label and soft shadow, no box), scaled into place, and the
-// differences are added onto a flat backdrop of colour `bg` — so neighbours' shadows overlap naturally and no tile
-// edges show. `size` is the side of each bottle's square crop (same framing as the single product photo), `step` the
-// distance between bottle centres. Returns a PNG of width × height.
+// Group shot: several bottles on one shared backdrop of colour `bg`, as if photographed together. Each bottle is
+// placed with its mask (true colours) and its shadow is applied to whatever is already on the canvas, so neighbours'
+// shadows overlap naturally and no tile edges show. `size` is each bottle's square crop (same framing as the product
+// photo), `step` the distance between bottle centres. Returns a PNG of width × height.
 export async function studioGroupPng(products: Product[], width: number, height: number, opts: { size: number; step: number; y: number; bg: [number, number, number] }) {
   const t = await (cached ??= analyse());
   const canvas = new Float32Array(width * height * 3);
   for (let i = 0; i < canvas.length; i++) canvas[i] = opts.bg[i % 3];
   const side = Math.round(t.H * 0.87), top = Math.round(t.H * 0.075);
   const x0 = width / 2 - ((products.length - 1) * opts.step) / 2 - opts.size / 2;
-  for (const [i, p] of products.entries()) {
-    const r = await studioPhotoRaw(p);
-    const left = Math.round((r.box.x0 + r.box.x1) / 2 - side / 2);
-    // Difference image (offset by 128 so it fits in 8 bits), cropped like the product photo and resized into place.
-    // Stored at half scale around 128 so the full range (a dark label is ~-200 against the backdrop) fits in 8 bits.
-    const diff = Buffer.alloc(t.W * t.H * 3);
-    for (let k = 0; k < diff.length; k++) diff[k] = Math.max(0, Math.min(255, Math.round((r.data[k] - t.plate[k]) / 2 + 128)));
-    const { data } = await sharp(diff, { raw: { width: t.W, height: t.H, channels: 3 } })
+  // Per bottle: the labelled photo, a mask (alpha) and the shadow ratio, packed as RGBA + a grey map, each cut to the
+  // product-photo framing and resized together (same pipeline, so they stay aligned).
+  const shadeFull = Buffer.alloc(t.W * t.H);
+  for (let m = 0, k = 0; m < t.W * t.H; m++, k += 3) {
+    const lp = 0.299 * t.plate[k] + 0.587 * t.plate[k + 1] + 0.114 * t.plate[k + 2];
+    const li = 0.299 * t.data[k] + 0.587 * t.data[k + 1] + 0.114 * t.data[k + 2];
+    shadeFull[m] = Math.round(Math.max(0.3, Math.min(1, li / lp)) * 255);
+  }
+  const resize = async (buf: Buffer, channels: 1 | 4, left: number) => {
+    const { data, info } = await sharp(buf, { raw: { width: t.W, height: t.H, channels } })
       .extract({ left: Math.max(0, left), top, width: side, height: side })
       .resize(opts.size, opts.size)
       .raw()
       .toBuffer({ resolveWithObject: true });
+    return { data, ch: info.channels };
+  };
+  for (const [i, p] of products.entries()) {
+    const r = await studioPhotoRaw(p);
+    const left = Math.round((r.box.x0 + r.box.x1) / 2 - side / 2);
+    const rgba = Buffer.alloc(t.W * t.H * 4);
+    for (let m = 0; m < t.W * t.H; m++) {
+      rgba[m * 4] = r.data[m * 3]; rgba[m * 4 + 1] = r.data[m * 3 + 1]; rgba[m * 4 + 2] = r.data[m * 3 + 2];
+      rgba[m * 4 + 3] = Math.round(t.mask[m] * 255);
+    }
+    const [px, sh] = await Promise.all([resize(rgba, 4, left), resize(shadeFull, 1, left)]);
     const ox = Math.round(x0 + i * opts.step), oy = Math.round(opts.y);
     for (let yy = 0; yy < opts.size; yy++) {
       const cy = oy + yy; if (cy < 0 || cy >= height) continue;
       for (let xx = 0; xx < opts.size; xx++) {
         const cx = ox + xx; if (cx < 0 || cx >= width) continue;
-        const si = (yy * opts.size + xx) * 3, di = (cy * width + cx) * 3;
-        // Taper the last 6% at each edge of the crop, so any leftover backdrop difference fades out instead of edging.
+        const m = yy * opts.size + xx, di = (cy * width + cx) * 3;
+        const a = px.data[m * px.ch + 3] / 255;
         const e = Math.min(xx, opts.size - 1 - xx, yy, opts.size - 1 - yy) / (opts.size * 0.06);
         const w = e >= 1 ? 1 : e * e * (3 - 2 * e);
-        for (let c = 0; c < 3; c++) canvas[di + c] += (data[si + c] - 128) * 2 * w;
+        const shade = 1 - (1 - sh.data[m * sh.ch] / 255) * w;
+        for (let c = 0; c < 3; c++) canvas[di + c] = a * px.data[m * px.ch + c] + (1 - a) * canvas[di + c] * shade;
       }
     }
   }
@@ -224,7 +285,5 @@ export async function studioGroupPng(products: Product[], width: number, height:
 
 // The backdrop colour behind the bottle in the product photo (mid-height), for pages that place group shots.
 export async function studioBackdrop(): Promise<[number, number, number]> {
-  const t = await (cached ??= analyse());
-  const i = (Math.round(t.H * 0.5) * t.W + 20) * 3;
-  return [Math.round(t.plate[i]), Math.round(t.plate[i + 1]), Math.round(t.plate[i + 2])];
+  return BACKDROP;
 }

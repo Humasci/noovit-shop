@@ -241,7 +241,7 @@ await p.goto(`${base}/admin/blog/magnesium-and-sleep`);
 await p.selectOption('select[name=status]', 'published');
 await submit('button:has-text("Save")');
 const post = await text('/blog/magnesium-and-sleep');
-check('published post renders safely with BlogPosting schema', post.includes('<h2>Why magnesium</h2>') && !post.includes('<script>alert') && !post.includes('javascript:') && post.includes('"@type":"BlogPosting"'));
+check('published post renders safely with BlogPosting schema', post.includes('<h2 id="why-magnesium">Why magnesium</h2>') && !post.includes('<script>alert') && !post.includes('javascript:') && post.includes('"@type":"BlogPosting"'));
 check('blog index + sitemap list the post', (await text('/blog')).includes('Magnesium and sleep') && (await text('/sitemap.xml')).includes('/blog/magnesium-and-sleep'));
 
 // ===== Marketing automations =====

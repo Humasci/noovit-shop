@@ -152,7 +152,7 @@ export function CommunitySection({
         <SectionHeading eyebrow={handle} title={title} sub="Tag us to be featured." />
         <div className="no-scrollbar -mx-6 flex snap-x gap-4 overflow-x-auto px-6">
           {images.map((src, i) => (
-            <div key={i} className="aspect-[2/3] w-56 shrink-0 snap-start overflow-hidden rounded-2xl md:w-auto md:flex-1">
+            <div key={i} className="aspect-square w-44 shrink-0 snap-start overflow-hidden rounded-2xl md:w-auto md:flex-1">
               <img src={src} alt="" className="h-full w-full object-cover" loading="lazy" />
             </div>
           ))}

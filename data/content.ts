@@ -6,18 +6,24 @@ export const IMAGES = {
   // Sports lifestyle (Unsplash License, free): sprinter by Jorge Alberto Vega Barrera; runner by Sherise Van Dyk.
   sport: 'https://images.unsplash.com/photo-1744060204728-f68e434a3edf?w=1200&q=80&fit=crop',
   run: 'https://images.unsplash.com/photo-1560073742-bc295f81c3c0?w=1200&q=80&fit=crop',
+  // More sports photos, Unsplash License: Cristian Londono (barbell), Land O'Lakes Inc. (gym, track), Ryan Fleischer (winter run).
+  womanLift: 'https://images.unsplash.com/photo-1639660299469-9e9279364c97?w=1200&q=80&fit=crop',
+  womanGym: 'https://images.unsplash.com/photo-1761839258420-5c3e2f2e2a74?w=1200&q=80&fit=crop',
+  womanRun: 'https://images.unsplash.com/photo-1765250251997-daf44e3c0268?w=1200&q=80&fit=crop',
+  track: 'https://images.unsplash.com/photo-1761839257789-20147513121a?w=1200&q=80&fit=crop',
   hero: 'https://images.unsplash.com/photo-1552196563-55cd4e45efb3?w=1920&q=80&fit=crop',
   approach: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=1200&q=80&fit=crop',
   nutrition: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&q=80&fit=crop',
   savings: 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=800&q=80&fit=crop',
   support: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&q=80&fit=crop',
   results: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&q=80&fit=crop',
+  // Sports people, women and men (all Unsplash License, see above).
   community: [
-    'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=600&h=900&q=80&fit=crop',
-    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=900&q=80&fit=crop',
-    'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&h=900&q=80&fit=crop',
-    'https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=600&h=900&q=80&fit=crop',
-    'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600&h=900&q=80&fit=crop',
+    'https://images.unsplash.com/photo-1639660299469-9e9279364c97?w=600&h=600&q=80&fit=crop',
+    'https://images.unsplash.com/photo-1560073742-bc295f81c3c0?w=600&h=600&q=80&fit=crop',
+    'https://images.unsplash.com/photo-1765250251997-daf44e3c0268?w=600&h=600&q=80&fit=crop',
+    'https://images.unsplash.com/photo-1744060204728-f68e434a3edf?w=600&h=600&q=80&fit=crop',
+    'https://images.unsplash.com/photo-1761839258420-5c3e2f2e2a74?w=600&h=600&q=80&fit=crop',
   ],
 };
 

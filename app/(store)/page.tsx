@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Check, ArrowRight, PawPrint } from 'lucide-react';
+import { Check, Microscope, Sprout, ArrowRight, ScanText, PawPrint } from 'lucide-react';
 import { BestSellers } from '@/components/home/BestSellers';
 import {
+  TrustSection,
+  CommunitySection,
   ReviewsSection,
   FAQSection,
   NewsletterSection,
@@ -48,8 +50,8 @@ const GOAL_TILES: { label: string; line: string; slug: string; href: string }[] 
 export const metadata: Metadata = { alternates: { canonical: '/' } };
 
 const FEATURED = [
-  { slug: 'lions-mane', bg: '#bbd5d7', eyebrow: 'Focus · Clarity', title: 'Lion’s Mane, 1,000 mg a day' },
-  { slug: 'magnesium-complex', bg: '#c5d0dd', eyebrow: 'Sleep · Recovery', title: '275 mg magnesium, as glycinate' },
+  { slug: 'lions-mane', bg: 'var(--sage)', eyebrow: 'Focus · Clarity', title: 'Lion’s Mane, 1,000 mg a day' },
+  { slug: 'magnesium-complex', bg: 'var(--studio)', eyebrow: 'Sleep · Recovery', title: '275 mg magnesium, as glycinate' },
 ];
 
 export default async function HomePage() {
@@ -85,7 +87,7 @@ export default async function HomePage() {
             </ul>
           </div>
           <Link href="/shop" aria-label="Shop the range" className="block">
-            <img src="/images/lineup-hero.png?v=1" alt="Noovit Magnesium Sleep+, Lion's Mane and Ashwagandha Calm+ bottles" className="w-full" fetchPriority="high" />
+            <img src="/images/lineup-hero.png?v=2" alt="Noovit Magnesium Sleep+, Lion's Mane and Ashwagandha Calm+ bottles" className="w-full" fetchPriority="high" />
           </Link>
         </div>
       </section>
@@ -134,7 +136,7 @@ export default async function HomePage() {
             if (!p || p.status === 'hidden') return null;
             return (
               <Link key={f.slug} href={`/products/${p.slug}`} className="group relative overflow-hidden rounded-[2rem]" style={{ background: f.bg }}>
-                <img src={`/images/feature-${f.slug}.png?v=1`} alt={`${p.name} bottle`} className="aspect-square w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" loading="lazy" />
+                <img src={`/images/feature-${f.slug}.png?v=2`} alt={`${p.name} bottle`} className="aspect-square w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" loading="lazy" />
                 <div className="absolute inset-x-0 top-0 p-8 md:p-10">
                   <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-navy)]/70">{f.eyebrow}</p>
                   <h3 className="mt-2 max-w-xs text-3xl text-[var(--color-navy)] md:text-4xl">{f.title}</h3>
@@ -171,6 +173,8 @@ export default async function HomePage() {
 
       <BestSellers products={products} />
 
+      <TrustSection />
+
 
       {/* AI advisor promo */}
       {ask && (
@@ -196,7 +200,7 @@ export default async function HomePage() {
       {/* Quiz: lifestyle split (Thorne's "science is personal" pattern) */}
       <section className="section">
         <div className="container grid items-center gap-10 px-6 md:grid-cols-2 md:gap-16">
-          <img src={IMAGES.run} srcSet={unsplashSrcSet(IMAGES.run)} sizes="(min-width: 768px) 50vw, 100vw" alt="A man running outdoors" className="aspect-[4/5] w-full rounded-3xl object-cover md:aspect-[4/4.4]" loading="lazy" />
+          <img src={IMAGES.womanRun} srcSet={unsplashSrcSet(IMAGES.womanRun)} sizes="(min-width: 768px) 50vw, 100vw" alt="A woman running by a river in winter" className="aspect-[4/3] w-full rounded-3xl object-cover" loading="lazy" />
           <div>
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-muted)]">Not sure where to start?</p>
             <h2 className="text-4xl md:text-5xl">Built around your goals.</h2>
@@ -243,8 +247,45 @@ export default async function HomePage() {
         </section>
       )}
 
+      {/* Approach */}
+      <section className="section">
+        <div className="container grid items-center gap-12 px-6 md:grid-cols-2">
+          <img src={IMAGES.womanLift} srcSet={unsplashSrcSet(IMAGES.womanLift)} sizes="(min-width: 768px) 50vw, 100vw" alt="A woman lifting a barbell in a gym" className="aspect-[16/11] w-full rounded-3xl object-cover" loading="lazy" />
+          <div>
+            <SectionHeading eyebrow="Our approach" title="Evidence-led, and honest about it" center={false} />
+            <div className="space-y-6">
+              <div className="flex gap-4">
+                <Microscope className="h-8 w-8 shrink-0 text-[var(--color-accent)]" />
+                <div>
+                  <h3 className="text-lg">The dose on the front</h3>
+                  <p className="text-[var(--color-muted)]">The amount per serving is printed big on every bottle, and our guides compare it with what studies used.</p>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <Sprout className="h-8 w-8 shrink-0 text-[var(--color-accent)]" />
+                <div>
+                  <h3 className="text-lg">Evidence, graded honestly</h3>
+                  <p className="text-[var(--color-muted)]">Every ingredient has a guide with its studies, including the ones that found nothing.</p>
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <ScanText className="h-8 w-8 shrink-0 text-[var(--color-accent)]" strokeWidth={1.5} />
+                <div>
+                  <h3 className="text-lg">Labels you can read</h3>
+                  <p className="text-[var(--color-muted)]">Every ingredient and amount listed, the key dose on the front, and no proprietary blends.</p>
+                </div>
+              </div>
+            </div>
+            <Link href="/about" className="mt-8 inline-flex items-center gap-1 font-bold text-[var(--color-accent)]">
+              More about our approach <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <ReviewsSection reviews={reviews} placeholder={reviewPlaceholder} />
       <FAQSection faqs={GENERAL_FAQS.slice(0, 5)} />
+      <CommunitySection />
       <NewsletterSection />
       <SubscriptionPerks />
 

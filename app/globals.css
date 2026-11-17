@@ -13,7 +13,8 @@
   /* Warm off-white canvas (The Absorption Company direction): page, soft panels, hairlines. */
   --color-canvas: #ffffff; /* Thorne-like clean white (3 Nov) */
   --color-soft: #f4f4f2;
-  --studio: #cacac9; /* backdrop of the studio bottle photos (scripts/site-images.ts prints it) */
+  --studio: #efe9df; /* cream backdrop of the studio bottle photos (BACKDROP in lib/labels/studio.ts) */
+  --sage: #d9e0d2; /* sage accent (SAGE) */
   --color-line: #e7e6e2;
   --color-muted: #5b6472;
   --color-orange: #ff5f00;
