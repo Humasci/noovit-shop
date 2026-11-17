@@ -7,8 +7,8 @@
 | **Contract** | Fixed price: paid trial (2 guides), then a monthly retainer |
 | **Budget** | Trial ~$150–300 per guide; retainer roughly $300–800/month (estimates from Upwork rates; let proposals set the real price) |
 | **Screening questions** | 1. What is your CDR registration number (or state licence number)? 2. Have you reviewed supplement or sports-nutrition content before? Link or attach one example. 3. What would you charge per guide (2,500–4,000 words) and per blog post (900–1,300 words)? 4. Can you return each piece within 5 business days? |
-| **Must-haves** | Active RD/RDN, verified at cdrnet.org before any offer |
-| **Red flags** | "Nutritionist" or "health coach" only; no verifiable credential; offers to "approve" product claims; AI-written proposals that ignore the questions |
+| **Must-haves** | A registered dietitian: US RD/RDN (check at cdrnet.org) preferred; a dietitian registered in the EU/UK (e.g. Greece, licensed by the Ministry of Health / member of the national dietetic association) is accepted if the registration can be checked and they know US rules (FDA structure/function claims, NIH ODS values). Their real title is shown on the site, never "RDN" unless they hold it. |
+| **Red flags** | "Nutritionist" or "health coach" only (no protected title); no verifiable credential; offers to "approve" product claims; AI-written proposals that ignore the questions |
 
 
 _14 Nov 2026. Goal: a named, credentialed Registered Dietitian Nutritionist (RD/RDN) who reviews Noovit's ingredient
@@ -68,7 +68,8 @@ Scope to start: a **paid trial of 2 guides** (about 2,500–4,000 words each, fu
 about **8 blog posts (900–1,300 words) and 1–2 guides a month**.
 
 Requirements:
-- Active RD/RDN credential (we verify with CDR). US-based preferred.
+- Registered dietitian: US RD/RDN preferred; EU/UK-registered dietitians welcome (we verify your registration).
+- Familiar with US supplement rules (FDA structure/function claims) and US reference values (NIH ODS), or willing to learn them.
 - Experience with supplements or sports nutrition; comfortable evaluating clinical trials and meta-analyses.
 - Reliable 5-business-day turnaround.
 
@@ -76,6 +77,10 @@ Please include: your credential and CDR number or state licence, a sample of con
 rate per guide and per blog post.
 
 ## After hiring
-- Add them in `lib/guides.ts` (`reviewer: { name, credentials, ... }`) and the About/advisors section; this replaces the
-  "Medically reviewed by" placeholder.
+- Send Claude: name, exact title and credential, registration number/where to check it, a 2–3 sentence bio, a
+  headshot (with written consent to publish), profile link, and a short quote about evidence-led nutrition (not about our
+  products). Claude adds them to `ADVISORS` in `data/content.ts`: they then appear on the homepage, the About page and
+  their own profile page (/experts/<name>), marked "Paid advisor".
+- After each review, Claude adds the page and date to `REVIEW_LOG`: "Reviewed by <name> · <date>" then shows on that
+  guide, its product pages, or that Journal post. Never list a page they haven't reviewed.
 - Share the Journal calendar (`docs/CONTENT_PLAN.md`) and the post files (`content/journal/`).

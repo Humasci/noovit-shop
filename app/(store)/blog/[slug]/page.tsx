@@ -5,6 +5,7 @@ import { getPublishedPosts, type Post } from '@/lib/blog';
 import { Article } from '@/components/blog/Article';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { SITE_URL } from '@/lib/site';
+import { reviewFor } from '@/lib/experts';
 
 const find = async (slug: string) => (await getPublishedPosts()).find((p) => p.slug === slug);
 const shareImage = (post: Post) => post.coverImage || `${SITE_URL}/journal-image/${post.slug}`;
@@ -56,6 +57,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
           publisher: { '@type': 'Organization', name: 'Noovit', url: SITE_URL, logo: { '@type': 'ImageObject', url: `${SITE_URL}/icon.svg` } },
           mainEntityOfPage: `${SITE_URL}/blog/${post.slug}`,
           image: [shareImage(post)],
+          ...(() => { const r = reviewFor(`blog:${post.slug}`); return r ? { reviewedBy: { '@type': 'Person', name: r.expert.name, url: `${SITE_URL}/experts/${r.expert.slug}` }, lastReviewed: r.date } : {}; })(),
         }}
       />
       <Article post={post} />

@@ -11,6 +11,8 @@ import { SITE_URL } from '@/lib/site';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { ProductCard } from '@/components/product/ProductCard';
 import { PlaceholderNote } from '@/components/ui/Placeholder';
+import { ReviewedBy } from '@/components/experts/ReviewedBy';
+import { reviewFor } from '@/lib/experts';
 
 export function generateStaticParams() {
   return GUIDES.map((g) => ({ slug: g.slug }));
@@ -92,6 +94,7 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
   const title = g.h1 ?? `${g.ingredient}: benefits, uses, dosage & side effects`;
   const t = g.sectionTitles ?? {};
 
+  const review = reviewFor(`guide:${g.slug}`);
   const structured = [
     {
       '@context': 'https://schema.org',
@@ -105,6 +108,9 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
       dateModified: g.updated,
       inLanguage: 'en-US',
       publisher: { '@type': 'Organization', name: 'Noovit', url: SITE_URL },
+      ...(review && !g.reviewer
+        ? { lastReviewed: review.date, reviewedBy: { '@type': 'Person', name: review.expert.name, description: review.expert.credentials, url: `${SITE_URL}/experts/${review.expert.slug}` } }
+        : {}),
       ...(g.reviewer
         ? { lastReviewed: g.updated, reviewedBy: { '@type': 'Person', name: g.reviewer.name, description: g.reviewer.credentials, ...(g.reviewer.url ? { url: g.reviewer.url } : {}) } }
         : {}),
@@ -158,9 +164,10 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
       <p className="mt-4 text-sm text-[var(--color-muted)]">
         Updated {fmt(g.updated)}
         {g.reviewer && <> · Reviewed by <b className="text-[var(--color-ink)]">{g.reviewer.name}</b>, {g.reviewer.credentials}</>}
+        {!g.reviewer && review && <> · <ReviewedBy reviewKey={`guide:${g.slug}`} /></>}
         {' · '}{g.sources.length} sources
       </p>
-      {!g.reviewer && placeholdersOn(settings) && (
+      {!g.reviewer && !review && placeholdersOn(settings) && (
         <PlaceholderNote className="mt-3">
           “Medically reviewed by [name, RD/MD], [date]” goes here. A named, credentialed reviewer is one of the strongest trust signals for health pages.
         </PlaceholderNote>

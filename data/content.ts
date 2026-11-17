@@ -55,7 +55,13 @@ export const PET_IMAGES = {
 
 // Real, consenting advisors only (name, credentials, photo, any paid relationship disclosed).
 // While empty, the panels show labelled placeholders (data/placeholders.ts) if Settings allows, else hide.
+// The first advisor is the lead reviewer: their name appears on every guide, Journal post and product research panel
+// listed in REVIEW_LOG, with the date they reviewed it, and links to their profile (/experts/<slug>).
 export const ADVISORS: Expert[] = [];
+
+// What the lead reviewer has actually reviewed, and when (YYYY-MM-DD). Only listed pages say "Reviewed by".
+// Keys: 'guide:<guide slug>' (also shown on the matching product pages) and 'blog:<post slug>'.
+export const REVIEW_LOG: Record<string, string> = {};
 export const VETS: Expert[] = [];
 
 export const PET_FAQS: FAQ[] = [

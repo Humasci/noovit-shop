@@ -67,7 +67,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <JsonLd data={{ '@context': 'https://schema.org', '@type': 'Organization', name: 'Noovit', legalName: LEGAL_NAME, url: SITE_URL }} />
+      <JsonLd data={{ '@context': 'https://schema.org', '@type': 'Organization', name: 'Noovit', legalName: LEGAL_NAME, url: SITE_URL, address: { '@type': 'PostalAddress', streetAddress: '30 N Gould St Ste R', addressLocality: 'Sheridan', addressRegion: 'WY', postalCode: '82801', addressCountry: 'US' } }} />
       {/* Hero: big quiet headline left, the hero product on a tinted panel right (Thorne-like) */}
       <section className="pb-10 pt-10 md:pb-16 md:pt-16">
         <div className="container grid items-center gap-10 px-6 md:grid-cols-[1.05fr_1fr] md:gap-16">
@@ -220,9 +220,10 @@ export default async function HomePage() {
         <section className="section bg-[var(--color-soft)]">
           <div className="container grid gap-12 px-6 lg:grid-cols-[1fr_2fr]">
             <div>
-              <SectionHeading eyebrow="Expert formulated" title="Build your routine with our nutritionists" center={false} />
-              <p className="-mt-6 text-[var(--color-muted)]">Every formula is reviewed by our panel of qualified nutrition professionals.</p>
-              <Link href="/shop" className="btn btn-primary mt-6">Shop Now</Link>
+              {/* Honest scope: our advisors review the guides and articles; the formulas are the manufacturer's. */}
+              <SectionHeading eyebrow="Expert reviewed" title={advisors.length === 1 ? 'Meet our nutrition advisor' : 'Meet our nutrition advisors'} center={false} />
+              <p className="-mt-6 text-[var(--color-muted)]">Our ingredient guides and articles are checked by a qualified dietitian before they go live.</p>
+              <Link href="/guides" className="btn btn-primary mt-6">Read the guides</Link>
             </div>
             <div>
               {advisorPlaceholder && (
@@ -238,9 +239,10 @@ export default async function HomePage() {
                       {e.credentials[0]}
                     </div>
                     <div>
-                      <p className="font-bold">{e.name}</p>
+                      <p className="font-bold">{e.slug ? <Link href={`/experts/${e.slug}`} className="hover:underline">{e.name}</Link> : e.name}</p>
                       <p className="text-xs font-semibold text-[var(--color-accent)]">{e.credentials}</p>
                       <p className="mt-2 text-sm text-[var(--color-muted)]">&ldquo;{e.quote}&rdquo;</p>
+                      {e.paid && <p className="mt-1 text-xs text-[var(--color-muted)]">Paid advisor</p>}
                     </div>
                   </div>
                 ))}

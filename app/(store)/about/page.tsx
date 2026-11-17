@@ -7,6 +7,7 @@ import { TrustSection, ReviewsSection, SubscriptionPerks, SectionHeading } from 
 import { latestReviews } from '@/lib/reviews';
 import { getSettings, placeholdersOn } from '@/lib/settings';
 import { PLACEHOLDER_REVIEWS } from '@/data/placeholders';
+import { ADVISORS } from '@/data/content';
 
 export const metadata: Metadata = {
   title: 'About Noovit — Clean, Evidence-Based Supplements',
@@ -64,6 +65,27 @@ export default async function AboutPage() {
           ))}
         </div>
       </section>
+
+      {ADVISORS.length > 0 && (
+        <section className="section">
+          <div className="container max-w-3xl px-6">
+            <SectionHeading eyebrow="Expert reviewed" title="Who checks our content" />
+            <div className="grid gap-4 sm:grid-cols-2">
+              {ADVISORS.map((e) => (
+                <Link key={e.name} href={e.slug ? `/experts/${e.slug}` : '#'} className="flex gap-4 rounded-2xl bg-[var(--color-soft)] p-5">
+                  {e.photo ? <img src={e.photo} alt="" className="h-14 w-14 rounded-full object-cover" /> : <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[var(--color-navy)] text-lg font-bold text-white">{e.name[0]}</div>}
+                  <div>
+                    <p className="font-bold">{e.name}</p>
+                    <p className="text-xs font-semibold text-[var(--color-accent)]">{e.credentials}</p>
+                    {e.bio && <p className="mt-2 line-clamp-3 text-sm text-[var(--color-muted)]">{e.bio}</p>}
+                    {e.paid && <p className="mt-1 text-xs text-[var(--color-muted)]">Paid advisor</p>}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       <TrustSection />
       <ReviewsSection {...reviewProps} />

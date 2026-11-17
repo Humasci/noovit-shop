@@ -5,6 +5,7 @@ import { getPublishedPosts } from '@/lib/blog';
 import { petProducts } from '@/data/products';
 import { GOAL_PAGES } from '@/lib/goals';
 import { GUIDES } from '@/lib/guides';
+import { ADVISORS } from '@/data/content';
 
 const PAGES = ['', '/shop', '/quiz', '/about', '/reviews', '/faq', '/contact', '/policies/delivery-returns', '/policies/privacy', '/policies/terms'];
 
@@ -15,6 +16,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     ...pages.map((path) => ({ url: `${SITE_URL}${path}`, changeFrequency: 'weekly' as const, priority: path === '' ? 1 : 0.6 })),
     { url: `${SITE_URL}/guides`, changeFrequency: 'weekly' as const, priority: 0.6 },
+    ...ADVISORS.filter((a) => a.slug).map((a) => ({ url: `${SITE_URL}/experts/${a.slug}`, changeFrequency: 'monthly' as const, priority: 0.4 })),
     ...GUIDES.map((g) => ({ url: `${SITE_URL}/guides/${g.slug}`, lastModified: g.updated, changeFrequency: 'monthly' as const, priority: 0.7, images: [`${SITE_URL}/guide-image/${g.slug}`] })),
     ...GOAL_PAGES.map((g) => ({ url: `${SITE_URL}/goals/${g.slug}`, changeFrequency: 'weekly' as const, priority: 0.7 })),
     // Image entries help Google Images / Shopping find the bottle photos.

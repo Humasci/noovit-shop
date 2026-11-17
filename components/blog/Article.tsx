@@ -1,5 +1,6 @@
 import { renderMarkdown } from '@/lib/markdown';
 import { Post } from '@/lib/blog';
+import { ReviewedBy } from '@/components/experts/ReviewedBy';
 
 export const postDate = (iso: string | null) =>
   iso ? new Date(iso).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : 'Unpublished';
@@ -11,6 +12,7 @@ export function Article({ post }: { post: Post }) {
       <h1 className="mt-3 text-balance text-4xl md:text-5xl">{post.title}</h1>
       <p className="mt-4 text-sm text-[var(--color-muted)]">
         {post.author} · {postDate(post.publishedAt)}
+        <ReviewedBy reviewKey={`blog:${post.slug}`} className="block sm:inline sm:before:content-['_·_']" />
       </p>
       {post.coverImage && <img src={post.coverImage} alt="" className="mt-8 aspect-[16/9] w-full rounded-3xl object-cover" />}
       {/* Markdown is rendered with raw HTML and unsafe URLs stripped (lib/markdown.ts). */}

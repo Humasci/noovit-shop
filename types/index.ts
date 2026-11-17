@@ -124,6 +124,13 @@ export interface Review {
 
 export interface Expert {
   name: string;
-  credentials: string;
+  credentials: string; // as they hold it, e.g. "RDN" (US) or "Registered Dietitian (Greece), MSc"; never upgraded
   quote: string;
+  slug?: string; // profile page /experts/<slug>
+  title?: string; // e.g. "Nutrition advisor"
+  bio?: string; // short, factual: training, registration, experience
+  photo?: string; // /experts/<slug>.jpg in public/, with consent
+  registration?: string; // where the credential can be checked, e.g. "Hellenic Ministry of Health licence no. …"
+  profileUrl?: string; // their own site or LinkedIn
+  paid?: boolean; // paid advisor → disclosed on their profile and beside quotes (FTC endorsement rules)
 }

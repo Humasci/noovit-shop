@@ -19,6 +19,7 @@ import { EvidenceTimeline, EvidenceTrials } from '@/components/product/EvidenceP
 import { GOAL_PAGES } from '@/lib/goals';
 import { goalsForProduct, relatedByGoal } from '@/lib/quiz';
 import { getSettings, placeholdersOn } from '@/lib/settings';
+import { ReviewedBy } from '@/components/experts/ReviewedBy';
 import { ReviewsModule } from '@/components/reviews/ReviewsModule';
 import { FAQSection, SectionHeading } from '@/components/sections/Sections';
 import { heroDose, netQuantity } from '@/lib/labels/svg';
@@ -218,12 +219,14 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             <Panel id="research" title="The research: what changed vs placebo">
               <div className="px-5 py-4">
                 <EvidenceTrials evidence={evidence} color={product.color} guideSlug={guide?.slug} />
+                {guide && <p className="mt-3 text-xs text-[var(--color-muted)]"><ReviewedBy reviewKey={`guide:${guide.slug}`} /></p>}
               </div>
             </Panel>
           ) : guide ? (
             <Panel id="research" title={`The research on ${guide.ingredient.toLowerCase()}`}>
               <div className="px-5 py-4 text-sm">
                 <p>{guide.summary.replace(/\s*\[\d+\]/g, '')}</p>
+                <p className="mt-2 text-xs text-[var(--color-muted)]"><ReviewedBy reviewKey={`guide:${guide.slug}`} /></p>
                 <Link href={`/guides/${guide.slug}`} className="mt-3 inline-block font-semibold text-[var(--color-accent)] hover:underline">
                   Read the full guide: studies, doses and evidence grades →
                 </Link>

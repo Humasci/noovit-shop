@@ -109,6 +109,8 @@ Read this first. It is the standing context for any session working on this repo
 - Never commit secrets (Stripe keys, service-role keys, `vercel-secrets`); never ask the owner to paste keys in chat.
 - Keep `docs/TODO.md` current after every batch (tick, add owner steps); add a line to `docs/PROGRESS.md`.
 - The owner prefers a clear recommendation over a menu of options, and plain explanations.
+- **Advisors (17 Nov):** real dietitian(s) in `ADVISORS` (`data/content.ts`, first with a slug = lead reviewer); `REVIEW_LOG`
+  lists only pages they actually reviewed (+ date). Show their real title (EU titles are never shown as "RDN"); mark paid.
 - **Hiring (14 Nov):** an agent posts jobs on Upwork. When the project needs outside help (reviewer, lawyer, photographer,
   creators…), write a brief in `docs/hiring/` (format in its README), add it to the README table and tell the owner.
   The agent only shortlists; the owner hires and pays. Never put secrets, customer data or the owner's personal details in a brief.
