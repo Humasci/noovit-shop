@@ -47,6 +47,11 @@ const GOAL_TILES: { label: string; line: string; slug: string; href: string }[] 
 
 export const metadata: Metadata = { alternates: { canonical: '/' } };
 
+const FEATURED = [
+  { slug: 'lions-mane', bg: '#bbd5d7', eyebrow: 'Focus · Clarity', title: 'Lion’s Mane, 1,000 mg a day' },
+  { slug: 'magnesium-complex', bg: '#c5d0dd', eyebrow: 'Sleep · Recovery', title: '275 mg magnesium, as glycinate' },
+];
+
 export default async function HomePage() {
   const [products, content, realReviews, settings] = await Promise.all([getStoreProducts(), getContent(), latestReviews(12), getSettings()]);
   const placeholders = placeholdersOn(settings);
@@ -119,6 +124,29 @@ export default async function HomePage() {
           </div>
         </section>
       )}
+
+      {/* Featured (FourFive-style): each product on a soft tint of its own label colour (public/images/feature-*.png,
+          scripts/site-images.ts; card background = the same tint, so the photo has no edge). */}
+      <section className="pb-16 md:pb-24">
+        <div className="container grid gap-6 px-6 md:grid-cols-2">
+          {FEATURED.map((f) => {
+            const p = findProduct(products, f.slug);
+            if (!p || p.status === 'hidden') return null;
+            return (
+              <Link key={f.slug} href={`/products/${p.slug}`} className="group relative overflow-hidden rounded-[2rem]" style={{ background: f.bg }}>
+                <img src={`/images/feature-${f.slug}.png?v=1`} alt={`${p.name} bottle`} className="aspect-square w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" loading="lazy" />
+                <div className="absolute inset-x-0 top-0 p-8 md:p-10">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-navy)]/70">{f.eyebrow}</p>
+                  <h3 className="mt-2 max-w-xs text-3xl text-[var(--color-navy)] md:text-4xl">{f.title}</h3>
+                </div>
+                <span className="absolute bottom-6 left-8 inline-flex items-center gap-2 rounded-full bg-[var(--color-navy)] px-5 py-2.5 text-sm font-semibold text-white md:left-10">
+                  Shop {p.name} · ${p.basePrice} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </span>
+              </Link>
+            );
+          })}
+        </div>
+      </section>
 
       {/* Evidence band: links to the graded guides */}
       <section className="relative overflow-hidden bg-[#141A4D] text-white">

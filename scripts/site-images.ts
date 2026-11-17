@@ -17,5 +17,12 @@ const P = (s: string) => SEED_PRODUCTS.find((p) => p.slug === s)!;
   // Hero: three bottles, wide, for the full-bleed homepage hero (text sits on the same backdrop to the left).
   const hero = await studioGroupPng(['magnesium-complex', 'lions-mane', 'ashwagandha'].map(P), 1500, 1200, { size: 860, step: 470, y: 230, bg });
   writeFileSync('public/images/lineup-hero.png', hero);
+  // Featured products on a soft tint of their own label colour (FourFive-style), for the homepage feature cards.
+  const tint = (hex: string, k: number) => (hex.match(/\w\w/g) ?? []).map((h) => Math.round(255 - (255 - parseInt(h, 16)) * k)) as [number, number, number];
+  for (const slug of ['lions-mane', 'magnesium-complex']) {
+    const t = tint(P(slug).color, 0.32);
+    writeFileSync(`public/images/feature-${slug}.png`, await studioGroupPng([P(slug)], 1200, 1200, { size: 1100, step: 0, y: 60, bg: t }));
+    console.log('feature', slug, '#' + t.map((v) => v.toString(16).padStart(2, '0')).join(''));
+  }
   console.log('backdrop', '#' + bg.map((v) => v.toString(16).padStart(2, '0')).join(''));
 })();
