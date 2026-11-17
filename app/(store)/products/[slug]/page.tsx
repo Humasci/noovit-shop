@@ -20,6 +20,7 @@ import { GOAL_PAGES } from '@/lib/goals';
 import { goalsForProduct, relatedByGoal } from '@/lib/quiz';
 import { getSettings, placeholdersOn } from '@/lib/settings';
 import { ReviewedBy } from '@/components/experts/ReviewedBy';
+import { BIOTIN_NOTE, IRON_WARNING, hasBiotin } from '@/lib/labels/svg';
 import { ReviewsModule } from '@/components/reviews/ReviewsModule';
 import { FAQSection, SectionHeading } from '@/components/sections/Sections';
 import { heroDose, netQuantity } from '@/lib/labels/svg';
@@ -256,6 +257,11 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                 ))}
               </ul>
               <p className="border-t border-[var(--color-line)] px-5 py-3 text-xs text-[var(--color-muted)]">Other ingredients: {product.otherIngredients}</p>
+              {/* Same safety text as the printed label. */}
+              {product.ingredients.some((i) => /\biron\b/i.test(i.name)) && (
+                <p className="mx-5 mb-4 rounded border border-[var(--color-navy)] p-3 text-xs text-[var(--color-navy)]"><b>WARNING:</b> {IRON_WARNING.replace(/^WARNING:\s*/, '')}</p>
+              )}
+              {hasBiotin(product) && <p className="mx-5 mb-4 rounded bg-[var(--color-soft)] p-3 text-xs text-[var(--color-navy)]"><b>Lab tests:</b> {BIOTIN_NOTE}</p>}
             </Panel>
           )}
 

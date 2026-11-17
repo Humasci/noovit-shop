@@ -11,11 +11,14 @@ Files: `design/labels/<slug>.label.pdf` (bottle upload file, 6.25" × 2.5" with 
 | Supplement Facts: serving size, servings, amounts, %DV, † footnote | 21 CFR 101.36 | ✅ |
 | "Other ingredients" below the Facts box | 21 CFR 101.4 | ✅ |
 | Structure/function claim marked * + full FDA disclaimer | 21 CFR 101.93 | ✅ (info panel, boxed) |
-| Name and US address of the distributor ("Distributed by Noovit LLC", Sheridan WY) | 21 CFR 101.5 | ✅ |
+| Name and US address of the distributor ("Distributed by Noovit LLC", Sheridan WY); no email (not required, 17 Nov) | 21 CFR 101.5 | ✅ |
 | Domestic address for serious adverse-event reports | FD&C Act 761 | ✅ (same address) |
 | Allergen statement (Turmeric: shellfish) | FALCPA | ✅ |
 | "Keep out of reach of children", caution, storage, seal warning | good practice | ✅ |
 | 18+ statement on creatine | our policy | ✅ |
+| Iron products: the mandatory accidental-overdose warning, word for word, boxed, on the panel right of the front (Facts side) | 21 CFR 101.17(e) | ✅ (17 Nov) |
+| Biotin products: lab-test interference note (caution + product page) | FDA safety communication | ✅ (17 Nov) |
+| Front bottom block ("Dietary supplement", count) clear of the safe zone | Supliful | ✅ raised 4 units (17 Nov) |
 | No unproven trust claims ("Made in USA", GMP, third-party tested) | FTC | ✅ removed |
 | All text ≥ 5 pt (Supliful's minimum), nothing past the safe zone | Supliful | ✅ (`npm run labels` reports no overflow) |
 
@@ -29,6 +32,7 @@ Files: `design/labels/<slug>.label.pdf` (bottle upload file, 6.25" × 2.5" with 
 | 5 | **KSM-66® use.** Ask Supliful whether their KSM-66 licence covers our label naming it, and whether Ixoreal requires a trademark line ("KSM-66® is a registered trademark of Ixoreal Biomed"). I add the line if needed. | Owner → Supliful | Trademark licence. |
 | 6 | **Printed sample** of one bottle (Magnesium) and the creatine tub: matte finish, white cards printing cleanly to the trim, true colours. | Owner → Supliful | Last visual check before all SKUs. |
 | 7 | **UPC barcodes** (GS1). Not needed by Supliful; only for Amazon or retail later. | Owner, later | Optional now. |
+| 8 | **QR codes:** not required by FDA. Supliful's editor adds its own lot/QR code (tub, bottom-left corner kept clear). Our own QR (batch COA page) only once COAs exist. | Later | Optional. |
 
 ## Product by product
 - **Magnesium Sleep+:** ready, pending #2, #3, #4.

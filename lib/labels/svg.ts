@@ -15,7 +15,7 @@ import { LEGAL_NAME } from '@/lib/site';
 export type FontMode = 'web' | 'print';
 
 // Bump when the photo mockup (lib/labels/photo.ts) changes, so cached product image URLs refresh.
-export const MOCKUP_VERSION = 'studio-v3'; // studio-v1 (16 Nov): photoreal studio bottle (lib/labels/studio.ts); was photo-v14 // v12 (14 Nov): elegant dark label; v13: studio lighting; v14: label edges curve round the bottle
+export const MOCKUP_VERSION = 'studio-v4'; // studio-v1 (16 Nov): photoreal studio bottle (lib/labels/studio.ts); was photo-v14 // v12 (14 Nov): elegant dark label; v13: studio lighting; v14: label edges curve round the bottle
 
 const NAVY = '#14213d';
 const INK = '#4b5563';
@@ -293,7 +293,7 @@ function hueShiftDarken(hex: string, deg: number, k: number) {
   h = ((h * 60) % 360 + 360) % 360;
   // Warm colours turn muddy toward yellow, so they shift toward red/magenta instead.
   h = (((h + (h < 75 || h > 320 ? -deg : deg)) % 360) + 360) % 360;
-  const L = l * (1 - k), c = (1 - Math.abs(2 * L - 1)) * sat, x = c * (1 - Math.abs(((h / 60) % 2) - 1)), m = L - c / 2;
+  const L = Math.min(0.95, Math.max(0, l * (1 - k))), c = (1 - Math.abs(2 * L - 1)) * sat, x = c * (1 - Math.abs(((h / 60) % 2) - 1)), m = L - c / 2;
   const [r1, g1, b1] = h < 60 ? [c, x, 0] : h < 120 ? [x, c, 0] : h < 180 ? [0, c, x] : h < 240 ? [0, x, c] : h < 300 ? [x, 0, c] : [c, 0, x];
   return '#' + [r1, g1, b1].map((v) => Math.round((v + m) * 255).toString(16).padStart(2, '0')).join('');
 }
@@ -605,7 +605,12 @@ export function frontPanelClinical(p: Product, mode: FontMode, bleed = 0, opts: 
 // `align: 'center'` (E1) is symmetrical with a short colour rule under the wordmark; 'left' (E2) is editorial, with a
 // slim colour edge on the left. Net quantity stays at legal size in the bottom 30% (21 CFR 101.105).
 // Deep shade of the product colour used as the dark label's background.
-export const elegantPaper = (col: string) => hueShiftDarken(col, 6, 0.5);
+// Light product colours (e.g. a pastel) are darkened further, so the paper stays deep enough for white type.
+export const elegantPaper = (col: string) => {
+  const [r, g, b] = (col.match(/\w\w/g) ?? []).map((h) => parseInt(h, 16) / 255);
+  const l = (Math.max(r, g, b) + Math.min(r, g, b)) / 2;
+  return hueShiftDarken(col, 6, Math.max(0.5, 1 - 0.28 / Math.max(l, 0.01)));
+};
 // Products whose label paper isn't simply a deep shade of their colour. Turmeric (owner's pick E, 14 Nov): saffron gold
 // on charcoal, because any deep orange reads brown.
 const ELEGANT_PAPER: Record<string, string> = { 'turmeric-complex': '#232327' };
@@ -691,7 +696,7 @@ export function frontPanelElegant(p: Product, mode: FontMode, bleed = 0, opts: {
 
   // Bottom zone (net quantity at legal size, 21 CFR 101.105), fixed: the count shares a baseline with "Dietary
   // supplement" and its unit line sits below the count's descender ("281 g").
-  const ruleY = 186;
+  const ruleY = 182; // bottom block raised 4 units (17 Nov) so it clears the safe zone
   if (bottom > ruleY - 8) console.warn(`[labels] ${p.slug}: elegant front content ends at ${n(bottom)}, needs to end by ${ruleY - 8}`);
   return `<g>
     <rect x="0" y="${-bleed}" width="${FRONT.w}" height="${FRONT.h + bleed * 2}" fill="${paper}"/>
@@ -704,10 +709,10 @@ export function frontPanelElegant(p: Product, mode: FontMode, bleed = 0, opts: {
     ${doseBlock}
     ${textBlock(benefitLines, x0, benY, benSize, benLead, `text-anchor="${anchor}" font-weight="400" fill="${inkSoft}" ${font('body', mode)}`)}
     <rect x="${center ? 20 : x0}" y="${ruleY}" width="${center ? FRONT.w - 40 : FRONT.w - x0 - 20}" height="0.5" fill="${hair}"/>
-    ${caps(203, 'Dietary supplement', capsSize, ink, 600, center ? 20 : x0, 'start')}
-    ${caps(212.5, `${servingsPerContainer} servings`, capsSize, inkSoft, 500, center ? 20 : x0, 'start')}
-    <text x="${FRONT.w - 20}" y="203" text-anchor="end" font-size="16" font-weight="500" fill="${ink}" ${font('head', mode)}>${esc(big)}</text>
-    ${caps(213.5, unitWord, capsSize, ink, 600, FRONT.w - 20, 'end')}
+    ${caps(199, 'Dietary supplement', capsSize, ink, 600, center ? 20 : x0, 'start')}
+    ${caps(208.5, `${servingsPerContainer} servings`, capsSize, inkSoft, 500, center ? 20 : x0, 'start')}
+    <text x="${FRONT.w - 20}" y="199" text-anchor="end" font-size="16" font-weight="500" fill="${ink}" ${font('head', mode)}>${esc(big)}</text>
+    ${caps(209.5, unitWord, capsSize, ink, 600, FRONT.w - 20, 'end')}
   </g>`;
 }
 
@@ -843,21 +848,32 @@ export function factsPanel(p: Product, mode: FontMode, w = 190) {
   const other = wrap(`Other ingredients: ${p.otherIngredients}`, w, 8, 0.5); // 0.47 let long words cross the safe zone
   out.push(textBlock(other, 0, y, 8, 10, `fill="#000" ${f}`));
   y += other.length * 10;
+  // Iron: the mandatory warning (21 CFR 101.17(e)) sits on the information panel, i.e. the panel right of the front,
+  // which on our label is this one, set off in a hairline box. Same text, word for word.
+  if (p.ingredients.some((i) => /\biron\b/i.test(i.name))) {
+    const lines = wrap(IRON_WARNING, w - 8, 7.5, 0.5);
+    y += 2;
+    out.push(`<rect x="0" y="${n(y)}" width="${w}" height="${n(lines.length * 9 + 7)}" fill="none" stroke="#000" stroke-width="0.6"/>`);
+    out.push(textBlock(lines, 4, y + 10, 7.5, 9, `fill="#000" ${f}`).replace('>WARNING:', '><tspan font-weight="700">WARNING:</tspan>'));
+    y += lines.length * 9 + 10;
+  }
   return { svg: `<g>${out.join('')}</g>`, height: y };
 }
 
 // ---------- Information panel ----------
 
 const DISCLAIMER = '*These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.';
-const IRON_WARNING =
+// Biotin can skew some lab tests (FDA safety communication, 2017/2019): shown on the label and the product page.
+export const BIOTIN_NOTE = 'Biotin can interfere with some lab tests, including heart (troponin) and thyroid tests. Tell your doctor and the lab that you take biotin before any blood test.';
+export const hasBiotin = (p: Product) => p.ingredients.some((i) => /\bbiotin\b/i.test(i.name));
+export const IRON_WARNING =
   'WARNING: Accidental overdose of iron-containing products is a leading cause of fatal poisoning in children under 6. Keep this product out of reach of children. In case of accidental overdose, call a doctor or poison control center immediately.';
 
 function infoPanel(p: Product, mode: FontMode, w = 190) {
   const f = font('body', mode);
   const out: string[] = [];
   let y = 9;
-  // Iron products carry the mandatory poisoning warning, so their paragraphs sit a little closer.
-  const gap = p.ingredients.some((i) => /\biron\b/i.test(i.name)) ? 1.5 : 3;
+  const gap = 3;
   const para = (label: string, text: string, size = 7) => {
     const lines = wrap(label ? `${label} ${text}` : text, w, size, 0.5);
     out.push(
@@ -871,9 +887,7 @@ function infoPanel(p: Product, mode: FontMode, w = 190) {
     y += lines.length * (size + 2) + gap;
   };
   para('Directions:', p.dosage);
-  const iron = p.ingredients.some((i) => /\biron\b/i.test(i.name));
-  para('Caution:', 'Do not exceed the recommended dose. Consult your healthcare provider before use if you are pregnant, nursing, taking medication or have a medical condition.' + (p.ageRestricted ? ' Not for use by anyone under 18.' : '') + (iron ? '' : ' Keep out of reach of children.'));
-  if (iron) para('', IRON_WARNING, 7);
+  para('Caution:', 'Do not exceed the recommended dose. Consult your healthcare provider before use if you are pregnant, nursing, taking medication or have a medical condition.' + (p.ageRestricted ? ' Not for use by anyone under 18.' : '') + ' Keep out of reach of children.' + (hasBiotin(p) ? ` ${BIOTIN_NOTE}` : ''));
   para('Store', 'in a cool, dry place. Do not use if the seal under the cap is broken or missing.');
   if (ORIGIN_CLAIM) para('', `${ORIGIN_CLAIM}.`);
   const disc = wrap(DISCLAIMER, w - 8, 7, 0.52);
@@ -943,10 +957,9 @@ export function fullLabelSvg(p: Product, opts: { mode?: FontMode; guides?: boole
   ${elegant ? `<rect x="${bleed + 5}" y="${bleed + 5}" width="${infoW - 10}" height="${trimH - 10}" rx="3" fill="#fff"/>
   <rect x="${sx + 5}" y="${bleed + 5}" width="${LABEL.factsW - 10}" height="${trimH - 10}" rx="3" fill="#fff"/>` : ''}
   <g id="info" transform="translate(${bleed + 12} ${bleed + 12})">${info.svg}
-    <g transform="translate(0 ${trimH - 24 - 28})">
+    <g transform="translate(0 ${trimH - 24 - 18.5})">
       <text x="0" y="6" font-size="7" font-weight="700" fill="${NAVY}" ${f}>Distributed by ${LEGAL_NAME}</text>
       <text x="0" y="15.5" font-size="7" fill="${NAVY}" ${f}>30 N Gould St Ste R, Sheridan, WY 82801</text>
-      <text x="0" y="25" font-size="7" fill="${NAVY}" ${f}>hello@noovit.com</text>
     </g>
   </g>
   ${elegant
@@ -1104,7 +1117,7 @@ export function tubLabelSvg(p: Product, opts: { mode?: FontMode; guides?: boolea
   <g id="distributor" transform="translate(${bleed + 100} ${bleed + trimH - 58})">
     <text x="0" y="0" font-size="9" font-weight="700" fill="${NAVY}" ${f}>Distributed by ${LEGAL_NAME}</text>
     <text x="0" y="12" font-size="9" fill="${NAVY}" ${f}>30 N Gould St Ste R, Sheridan, WY 82801</text>
-    <text x="0" y="24" font-size="9" fill="${NAVY}" ${f}>hello@noovit.com · noovit.com</text>
+    <text x="0" y="24" font-size="9" fill="${NAVY}" ${f}>noovit.com</text>
   </g>
   ${elegant
     ? `<g id="front" transform="translate(${n(fx)} ${bleed}) scale(${n(s)})">${frontLabel(p, mode, bleed / s)}</g>`

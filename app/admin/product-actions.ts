@@ -161,7 +161,7 @@ export async function importLaunchCatalog(): Promise<ActionResult> {
   const { data, error } = await db().from('products').upsert(rows, { onConflict: 'slug', ignoreDuplicates: true }).select('slug');
   if (error) return { ok: false, message: error.message };
   refresh();
-  return { ok: true, message: `Imported ${data?.length ?? 0} products.` };
+  return { ok: true, message: data?.length ? `Added ${data.length} product${data.length === 1 ? '' : 's'} (hidden until you set them Active).` : 'Nothing to add: every launch product is already here.' };
 }
 
 async function currentImages(slug: string) {

@@ -19,13 +19,19 @@ export function ProductListActions({ empty }: { empty: boolean }) {
       router.refresh();
     });
 
-  return empty ? (
-    <button disabled={pending} onClick={() => run(importLaunchCatalog)} className={btnSmOutline}>
-      {pending ? <span className="inline-flex items-center gap-2"><MosaicLoader size={14} label="Working" /> Working…</span> : 'Import launch catalog'}
-    </button>
-  ) : (
-    <button disabled={pending} onClick={() => run(syncAllProducts)} className={btnSmOutline}>
-      {pending ? <span className="inline-flex items-center gap-2"><MosaicLoader size={14} label="Working" /> Working…</span> : 'Sync all to Stripe'}
-    </button>
+  // "Add missing launch products" copies any seed product the database doesn't have yet (hidden), never touching
+  // existing ones, so it stays useful after the first import (e.g. a product added to the seed later).
+  const spin = <span className="inline-flex items-center gap-2"><MosaicLoader size={14} label="Working" /> Working…</span>;
+  return (
+    <div className="flex flex-wrap gap-2">
+      <button disabled={pending} onClick={() => run(importLaunchCatalog)} className={btnSmOutline}>
+        {pending ? spin : empty ? 'Import launch catalog' : 'Add missing launch products'}
+      </button>
+      {!empty && (
+        <button disabled={pending} onClick={() => run(syncAllProducts)} className={btnSmOutline}>
+          {pending ? spin : 'Sync all to Stripe'}
+        </button>
+      )}
+    </div>
   );
 }
