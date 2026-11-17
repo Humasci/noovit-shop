@@ -102,7 +102,7 @@ const seeds: Seed[] = [
     dosage: 'Take 3 capsules daily, ideally after an evening meal.',
     servings: 30, form: 'capsules', basePrice: 29, color: '#4A6B94',
     productType: 'supplements', dietaryTags: ['vegan', 'gluten-free', 'sugar-free', 'pregnancy-safe', 'postpartum-safe'],
-    audiences: ['women', 'men'], bestSeller: true, reviewCount: 4486,
+    audiences: ['women', 'men'], bestSeller: false, reviewCount: 4486,
     faqs: [{ q: 'Why glycinate?', a: 'Magnesium glycinate is well absorbed and gentler on the stomach than forms like oxide or citrate, which can have a laxative effect.' }],
   },
   {
@@ -190,7 +190,7 @@ const seeds: Seed[] = [
     dosage: 'Take 2 capsules once a day, 20–30 minutes before a meal.',
     servings: 30, form: 'capsules', basePrice: 29, color: '#C98F14',
     productType: 'supplements', dietaryTags: ['gluten-free'],
-    audiences: ['women', 'men'], bestSeller: true, reviewCount: 2236,
+    audiences: ['women', 'men'], bestSeller: false, reviewCount: 2236,
   },
   {
     name: 'Berberine Complex',
@@ -253,7 +253,7 @@ const seeds: Seed[] = [
     dosage: 'Take 2 capsules daily, ideally with a meal and 6–8 oz of water.',
     servings: 30, form: 'capsules', basePrice: 29, color: '#AE5559',
     productType: 'supplements', dietaryTags: ['gluten-free', 'sugar-free'],
-    audiences: ['women', 'men'], bestSeller: true, reviewCount: 2550,
+    audiences: ['women', 'men'], bestSeller: false, reviewCount: 2550,
   },
   {
     name: 'Daily Multi+',
@@ -328,7 +328,7 @@ const seeds: Seed[] = [
     dosage: 'Mix 1 scoop (5.6 g) with 8 oz (237 ml) of water or juice. Take 4 times daily for the first 5 days (loading phase), then 1–2 times daily, or as directed by a healthcare professional.',
     servings: 50, netWeight: '281 g (9.9 oz)', form: 'powder', basePrice: 32, color: '#2F6F4E',
     productType: 'sports', dietaryTags: ['vegan', 'gluten-free', 'sugar-free'],
-    audiences: ['men', 'women'], bestSeller: true, reviewCount: 3021, ageRestricted: true,
+    audiences: ['men', 'women'], bestSeller: false, reviewCount: 3021, ageRestricted: true,
     faqs: [{ q: 'How many servings are in a tub?', a: '50 servings of 5 g creatine (one 5.6 g scoop), in a 281 g tub.' }],
   },
   {
@@ -388,7 +388,7 @@ const seeds: Seed[] = [
     dosage: 'Take 2 capsules daily, with or without food.',
     servings: 30, form: 'capsules', basePrice: 35, color: '#2B7C82',
     productType: 'supplements', dietaryTags: ['vegan', 'gluten-free', 'sugar-free'],
-    audiences: ['women', 'men'], bestSeller: true, reviewCount: 0,
+    audiences: ['women', 'men'], bestSeller: false, reviewCount: 0,
   },
   {
     name: 'CoQ10',
@@ -406,7 +406,7 @@ const seeds: Seed[] = [
     dosage: 'Take 1 capsule daily with a meal that contains some fat.',
     servings: 30, form: 'capsules', basePrice: 28, color: '#7B3F86',
     productType: 'supplements', dietaryTags: ['vegan', 'gluten-free', 'sugar-free'],
-    audiences: ['women', 'men'], bestSeller: true, reviewCount: 0,
+    audiences: ['women', 'men'], bestSeller: false, reviewCount: 0,
     faqs: [
       { q: 'Why take it with food?', a: 'CoQ10 is fat-soluble, so it is absorbed better with a meal that contains some fat.' },
       { q: 'Who should check with a doctor first?', a: 'Anyone taking blood thinners such as warfarin, blood-pressure or diabetes medication, or who is pregnant or breastfeeding.' },
