@@ -92,11 +92,14 @@ async function analyse(): Promise<Template> {
   // its shadow), which captures the studio light's soft centre; then smoothed down the rows.
   // Bottle - plate = the bottle, its label and its shadow alone.
   const leftEnd = Math.max(40, x0 - Math.round(W * 0.04)), rightStart = Math.min(W - 40, x1 + Math.round(W * 0.12));
+  const shadowTop = Math.round(bot[Math.round(cx)] - H * 0.12);
   const coef: number[][] = []; // per row: [a, b, c] per channel → 9 numbers
   for (let y = 0; y < H; y++) {
     const xs: number[] = [];
     for (let x = 8; x < leftEnd; x += 6) xs.push(x);
-    for (let x = rightStart; x < W - 8; x += 6) xs.push(x);
+    // Near the base, the right side holds the bottle's cast shadow: fit those rows from the left side only, or the
+    // shadow would count as backdrop and vanish once the bottle is placed on another colour.
+    if (y < shadowTop) for (let x = rightStart; x < W - 8; x += 6) xs.push(x);
     const row: number[] = [];
     for (let c = 0; c < 3; c++) {
       // least squares for v = a + b·u + c·u², u = x / W
@@ -104,6 +107,7 @@ async function analyse(): Promise<Template> {
       for (const x of xs) { const u = x / W, v = data[(y * W + x) * 3 + c]; s0++; s1 += u; s2 += u * u; s3 += u ** 3; s4 += u ** 4; t0 += v; t1 += v * u; t2 += v * u * u; }
       const M = [[s0, s1, s2], [s1, s2, s3], [s2, s3, s4]], T = [t0, t1, t2];
       const det = (m: number[][]) => m[0][0] * (m[1][1] * m[2][2] - m[1][2] * m[2][1]) - m[0][1] * (m[1][0] * m[2][2] - m[1][2] * m[2][0]) + m[0][2] * (m[1][0] * m[2][1] - m[1][1] * m[2][0]);
+      if (y >= shadowTop) { row.push(t0 / s0, 0, 0); continue; } // one side only: flat backdrop for the row
       const D = det(M);
       for (let k = 0; k < 3; k++) row.push(det(M.map((r, i) => r.map((v, j) => (j === k ? T[i] : v)))) / D);
     }
@@ -205,7 +209,7 @@ function warm(r: number, g: number, b: number, bg: [number, number, number]): [n
   const mx = Math.max(r, g, b), mn = Math.min(r, g, b);
   const sat = mx ? (mx - mn) / mx : 0;
   const lum = 0.299 * r + 0.587 * g + 0.114 * b;
-  const w = Math.max(0, 1 - sat * 4) * Math.min(1, Math.max(0, (lum - 110) / 60)) * 0.85;
+  const w = Math.max(0, 1 - sat * 4) * Math.min(1, Math.max(0, (lum - 70) / 70)) * 0.85;
   const f = (c: number, k: number) => Math.min(255, c * (1 + (bg[k] / STUDIO_GREY - 1) * w));
   return [f(r, 0), f(g, 1), f(b, 2)];
 }

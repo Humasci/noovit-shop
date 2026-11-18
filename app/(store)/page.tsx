@@ -84,7 +84,7 @@ export default async function HomePage() {
             </ul>
           </div>
           <Link href="/shop" aria-label="Shop the range" className="block">
-            <img src="/images/lineup-hero.png?v=3" alt="Noovit Magnesium Sleep+, Lion's Mane and Ashwagandha Calm+ bottles" className="w-full" fetchPriority="high" />
+            <img src="/images/lineup-hero.png?v=4" alt="Noovit Magnesium Sleep+, Lion's Mane and Ashwagandha Calm+ bottles" className="w-full" fetchPriority="high" />
           </Link>
         </div>
       </section>
@@ -141,8 +141,8 @@ export default async function HomePage() {
                     Shop {hl.name} · ${hl.basePrice} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </span>
                 </div>
-                <div className="relative mt-auto min-h-[340px] flex-1 md:min-h-[420px]">
-                  <img src="/images/feature-lions-mane.png?v=3" alt={`${hl.name} bottle`} className="absolute inset-0 h-full w-full object-contain object-bottom transition-transform duration-700 group-hover:scale-[1.03]" loading="lazy" />
+                <div className="relative mt-auto min-h-[440px] flex-1 md:min-h-[546px]">
+                  <img src="/images/feature-lions-mane.png?v=4" alt={`${hl.name} bottle`} className="absolute inset-0 h-full w-full object-contain object-bottom transition-transform duration-700 group-hover:scale-[1.03]" loading="lazy" />
                 </div>
               </Link>
               <div className="flex flex-col justify-between rounded-[2rem] bg-[var(--color-navy)] p-8 text-white">
