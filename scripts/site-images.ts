@@ -15,12 +15,12 @@ const P = (s: string) => SEED_PRODUCTS.find((p) => p.slug === s)!;
   const five = await studioGroupPng(['magnesium-complex', 'ashwagandha', 'lions-mane', 'coq10', 'turmeric-complex'].map(P), 1600, 1200, { size: 560, step: 300, y: 330, bg });
   writeFileSync('public/images/lineup-5.png', five);
   // Hero: three bottles, wide, for the full-bleed homepage hero (text sits on the same backdrop to the left).
-  const hero = await studioGroupPng(['magnesium-complex', 'lions-mane', 'ashwagandha'].map(P), 1500, 1200, { size: 860, step: 470, y: 230, bg });
+  const hero = await studioGroupPng(['magnesium-complex', 'lions-mane', 'ashwagandha'].map(P), 1500, 1200, { size: 860, step: 470, y: 230, bg: [...SAGE] as [number, number, number] }); // hero on sage (owner, 18 Nov)
   writeFileSync('public/images/lineup-hero.png', hero);
   // Featured products on a soft tint of their own label colour (FourFive-style), for the homepage feature cards.
   // Cards alternate cream and sage (owner, 17 Nov).
   for (const [slug, t] of [['lions-mane', SAGE], ['magnesium-complex', BACKDROP]] as const) {
-    writeFileSync(`public/images/feature-${slug}.png`, await studioGroupPng([P(slug)], 1200, 1200, { size: 1100, step: 0, y: 60, bg: [...t] as [number, number, number] }));
+    writeFileSync(`public/images/feature-${slug}.png`, await studioGroupPng([P(slug)], 1200, 1100, { size: 1150, step: 0, y: -30, bg: [...t] as [number, number, number] })); // bottle fills the frame
     console.log('feature', slug, '#' + t.map((v) => v.toString(16).padStart(2, '0')).join(''));
   }
   console.log('backdrop', '#' + bg.map((v) => v.toString(16).padStart(2, '0')).join(''));

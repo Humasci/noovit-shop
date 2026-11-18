@@ -197,6 +197,19 @@ export async function studioPhotoRaw(p: Product) {
   return { data: out, width: t.W, height: t.H, box: { x0: t.x0, x1: t.x1 } };
 }
 
+// The template was shot on cool grey, so its white plastic reads grey on a warm backdrop. Neutral, light pixels
+// (cap, shoulders, base) take the backdrop's light: scaled by backdrop / studio grey, weighted by how neutral and how
+// light they are, so the coloured label is untouched.
+const STUDIO_GREY = 202;
+function warm(r: number, g: number, b: number, bg: [number, number, number]): [number, number, number] {
+  const mx = Math.max(r, g, b), mn = Math.min(r, g, b);
+  const sat = mx ? (mx - mn) / mx : 0;
+  const lum = 0.299 * r + 0.587 * g + 0.114 * b;
+  const w = Math.max(0, 1 - sat * 4) * Math.min(1, Math.max(0, (lum - 110) / 60)) * 0.85;
+  const f = (c: number, k: number) => Math.min(255, c * (1 + (bg[k] / STUDIO_GREY - 1) * w));
+  return [f(r, 0), f(g, 1), f(b, 2)];
+}
+
 // The labelled photo placed on any backdrop colour: the bottle keeps its true colours (mask), and the backdrop takes
 // the photo's shadow and soft light as a brightness ratio against the empty studio, so it looks photographed there.
 export async function studioOnBackdrop(p: Product, bg: [number, number, number] = BACKDROP) {
@@ -208,7 +221,8 @@ export async function studioOnBackdrop(p: Product, bg: [number, number, number] 
     const lp = 0.299 * t.plate[k] + 0.587 * t.plate[k + 1] + 0.114 * t.plate[k + 2];
     const li = 0.299 * r.data[k] + 0.587 * r.data[k + 1] + 0.114 * r.data[k + 2];
     const shade = Math.max(0.3, Math.min(1, li / lp));
-    for (let c = 0; c < 3; c++) out[k + c] = Math.round(a * r.data[k + c] + (1 - a) * bg[c] * shade);
+    const wm = warm(r.data[k], r.data[k + 1], r.data[k + 2], bg);
+    for (let c = 0; c < 3; c++) out[k + c] = Math.round(a * wm[c] + (1 - a) * bg[c] * shade);
   }
   return { ...r, data: out };
 }
@@ -274,7 +288,8 @@ export async function studioGroupPng(products: Product[], width: number, height:
         const e = Math.min(xx, opts.size - 1 - xx, yy, opts.size - 1 - yy) / (opts.size * 0.06);
         const w = e >= 1 ? 1 : e * e * (3 - 2 * e);
         const shade = 1 - (1 - sh.data[m * sh.ch] / 255) * w;
-        for (let c = 0; c < 3; c++) canvas[di + c] = a * px.data[m * px.ch + c] + (1 - a) * canvas[di + c] * shade;
+        const wm = warm(px.data[m * px.ch], px.data[m * px.ch + 1], px.data[m * px.ch + 2], opts.bg);
+        for (let c = 0; c < 3; c++) canvas[di + c] = a * wm[c] + (1 - a) * canvas[di + c] * shade;
       }
     }
   }

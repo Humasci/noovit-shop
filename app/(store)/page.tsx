@@ -67,11 +67,11 @@ export default async function HomePage() {
       <JsonLd data={{ '@context': 'https://schema.org', '@type': 'Organization', name: 'Noovit', legalName: LEGAL_NAME, url: SITE_URL, address: { '@type': 'PostalAddress', streetAddress: '30 N Gould St Ste R', addressLocality: 'Sheridan', addressRegion: 'WY', postalCode: '82801', addressCountry: 'US' } }} />
       {/* Hero: one full-bleed studio scene. The copy sits on the same grey backdrop as the bottles
           (public/images/lineup-hero.png, scripts/site-images.ts), so there is no card edge. */}
-      <section className="relative overflow-hidden bg-[var(--studio)]">
+      <section className="relative overflow-hidden bg-[var(--sage)]">
         <div className="container grid items-center gap-2 px-6 md:grid-cols-[1fr_1fr] md:gap-6">
           <div className="relative z-10 pt-14 md:py-24">
             {content.hero_badge && <p className="mb-5 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-navy)]/70">{brandify(content.hero_badge)}</p>}
-            <h1 className="text-balance text-5xl leading-[1.02] text-[var(--color-navy)] md:text-6xl xl:text-7xl">{brandify(content.hero_headline)}</h1>
+            <h1 className="text-balance text-[2.55rem] leading-[1.04] text-[var(--color-navy)] md:text-[3.2rem] xl:text-[3.83rem]">{brandify(content.hero_headline)}</h1>
             {content.hero_subheadline && <p className="mt-6 max-w-lg text-lg text-[var(--color-ink)]/80 md:text-xl">{brandify(content.hero_subheadline)}</p>}
             <div className="mt-9 flex flex-wrap gap-3">
               <Link href={safeLink(content.hero_cta_link) || '/shop'} className="btn btn-primary">{content.hero_cta_label || 'Shop the range'}</Link>
@@ -84,7 +84,7 @@ export default async function HomePage() {
             </ul>
           </div>
           <Link href="/shop" aria-label="Shop the range" className="block">
-            <img src="/images/lineup-hero.png?v=2" alt="Noovit Magnesium Sleep+, Lion's Mane and Ashwagandha Calm+ bottles" className="w-full" fetchPriority="high" />
+            <img src="/images/lineup-hero.png?v=3" alt="Noovit Magnesium Sleep+, Lion's Mane and Ashwagandha Calm+ bottles" className="w-full" fetchPriority="high" />
           </Link>
         </div>
       </section>
@@ -141,8 +141,8 @@ export default async function HomePage() {
                     Shop {hl.name} · ${hl.basePrice} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </span>
                 </div>
-                <div className="relative mt-auto min-h-[280px] flex-1 md:min-h-[340px]">
-                  <img src="/images/feature-lions-mane.png?v=2" alt={`${hl.name} bottle`} className="absolute inset-0 h-full w-full object-contain object-bottom transition-transform duration-700 group-hover:scale-[1.03]" loading="lazy" />
+                <div className="relative mt-auto min-h-[340px] flex-1 md:min-h-[420px]">
+                  <img src="/images/feature-lions-mane.png?v=3" alt={`${hl.name} bottle`} className="absolute inset-0 h-full w-full object-contain object-bottom transition-transform duration-700 group-hover:scale-[1.03]" loading="lazy" />
                 </div>
               </Link>
               <div className="flex flex-col justify-between rounded-[2rem] bg-[var(--color-navy)] p-8 text-white">
@@ -276,7 +276,7 @@ export default async function HomePage() {
       {/* Approach */}
       <section className="section">
         <div className="container grid items-center gap-12 px-6 md:grid-cols-2">
-          <img src={IMAGES.womanLift} srcSet={unsplashSrcSet(IMAGES.womanLift)} sizes="(min-width: 768px) 50vw, 100vw" alt="A woman lifting a barbell in a gym" className="aspect-[16/11] w-full rounded-3xl object-cover" loading="lazy" />
+          <img src={IMAGES.womanTrain} srcSet={unsplashSrcSet(IMAGES.womanTrain)} sizes="(min-width: 768px) 50vw, 100vw" alt="A woman training with a dumbbell in a gym" className="aspect-[16/11] w-full rounded-3xl object-cover" loading="lazy" />
           <div>
             <SectionHeading eyebrow="Our approach" title="Evidence-led, and honest about it" center={false} />
             <div className="space-y-6">

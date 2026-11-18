@@ -9,7 +9,6 @@ import { IMAGES, SUBSCRIPTION_PERKS } from '@/data/content';
 import { Stars } from '@/components/ui/Stars';
 import { SocialLinks } from '@/components/layout/Footer';
 import { brandify } from '@/components/brand/Brand';
-import { PlaceholderNote } from '@/components/ui/Placeholder';
 import { trackSignup } from '@/lib/analytics';
 
 export function SectionHeading({ eyebrow, title, sub, center = true }: { eyebrow?: string; title: string; sub?: string; center?: boolean }) {
@@ -59,17 +58,14 @@ export function TrustSection() {
 }
 
 // Real, approved reviews only (see lib/reviews.ts); renders nothing until there are some.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function ReviewsSection({ title = 'What customers say', reviews, placeholder = false }: { title?: string; reviews: Review[]; placeholder?: boolean }) {
   if (!reviews.length) return null;
   return (
     <section className="section">
       <div className="container px-6">
         <SectionHeading eyebrow="Reviews" title={title} />
-        {placeholder && (
-          <PlaceholderNote className="mb-6">
-            Example reviews showing where real ones will go. Collect them from customers (Admin → Reviews approves them); they replace these automatically.
-          </PlaceholderNote>
-        )}
+        {/* Owner (18 Nov): no orange note. Example reviews still disappear when Settings → Show placeholders is "off". */}
         <div className="no-scrollbar -mx-6 flex snap-x gap-5 overflow-x-auto px-6 pb-2">
           {reviews.map((r) => {
             return (
@@ -169,7 +165,7 @@ export function NewsletterSection() {
     <section className="section">
       <div className="container px-6">
         <div className="grid overflow-hidden rounded-3xl bg-[var(--color-navy)] text-white md:grid-cols-2">
-          <div className="p-10 md:p-14">
+          <div className="p-10 md:px-14 md:py-[66px]">
             <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-accent-light)]">Newsletter</p>
             <h2 className="text-3xl text-white md:text-4xl">10% off your first order</h2>
             <p className="mt-3 text-white/70">Sign up for nutrition tips, early access to launches, and member-only offers.</p>
@@ -210,7 +206,7 @@ export function NewsletterSection() {
           </div>
           {/* Absolutely positioned, so the photo fills the text's height instead of stretching the block (owner: shorter). */}
           <div className="relative hidden md:block">
-            <img src={IMAGES.sport} alt="A sprinter on a track in golden light" className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
+            <img src={IMAGES.sport} alt="A sprinter on a track in golden light" className="absolute inset-0 h-full w-full object-cover object-[center_30%]" loading="lazy" />
           </div>
         </div>
       </div>

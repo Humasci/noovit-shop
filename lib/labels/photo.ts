@@ -26,7 +26,8 @@ const BOW_TOP = 9;
 const BOW_BOTTOM = 20;
 
 export function usesPhoto(p: Product) {
-  return !p.bundleComponents?.length && (p.form === 'capsules' || p.form === 'softgels');
+  // Powders too (owner, 18 Nov): the drawn tub looked fake, so every single product uses the studio bottle photo.
+  return !p.bundleComponents?.length && (p.form === 'capsules' || p.form === 'softgels' || p.form === 'powder');
 }
 
 const r = (v: number) => Math.round(v * 100) / 100;
