@@ -25,6 +25,14 @@ Source: https://www.ihdlab.com/at-home-test-list, /white-label-test-kits, /digit
 - **No prices published.**
 - **Our side:** HIPAA/BAA, FTC Health Breach Notification Rule (no tracking pixels on results pages), and FTC claims (a low result is a reason to see a clinician, never proof someone needs a Noovit product).
 
+## Full lab menu (https://www.ihdlab.com/lab-testing-menu, read 19 Nov)
+- **Size:** 254 tests in 21 categories; 157 have 1-day turnaround. The extras are mostly venous (in-clinic draws only in California), so they don't matter for a national home kit.
+- **Magnesium:** **serum only** (no RBC). Folate is serum (no RBC). Iron and TIBC are venous only; ferritin is available at home.
+- **Not offered at all:** omega-3 index, zinc, copper, selenium, vitamins A/E/K, CoQ10 levels, heavy metals, food sensitivity.
+- **Panels:** no ready wellness panels, but custom panels on request ("Our team maps it to our menu, sets up EMR or API ordering…").
+- **Prices and physician ordering:** neither is stated.
+So the home "Nutrient Check" (vit D, ferritin, B12, serum magnesium, folate) is the right panel. Add omega-3 through OmegaQuant (affiliate).
+
 ## Suggested first product
 **"Nutrient Check"**: vitamin D, ferritin, B12, magnesium (+ folate) in one finger-prick kit. Retail target $79–89 (or $69 with a subscription), if their price allows ≥ ~$30 per kit after costs. Add-on later: "Heart & Energy" (hs-CRP, HbA1c, lipids/ApoB).
 
