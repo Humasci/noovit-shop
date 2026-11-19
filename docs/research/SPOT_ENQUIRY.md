@@ -48,3 +48,31 @@ Send both enquiries and compare per-kit cost, doctor ordering, states and sample
 > 5. API: v1 or v2 for new integrations? Is there a sandbox? Can we hold results only in your hosted portal at first?
 > 6. Will you sign a BAA? Who is the named kit manufacturer for FDA purposes?
 > Thank you.
+
+## Call script (Spot publishes no kit list, so the first step is a 30-minute call)
+Book: https://calendly.com/jajack/30minutes. Have this page open and take notes in the boxes.
+
+**Introduce us (30 seconds)**
+"US direct-to-consumer supplement brand, launching now. We want one branded at-home kit sold on our site, starting small (under 250 kits a month)."
+
+**Must-answer questions, in order**
+1. **Menu:** "Which ready-made panels or kits do you already run? Can you send the list?" Then: "Can you do vitamin D, ferritin, B12, magnesium and folate on one collection?"
+   - Answer: ______
+2. **Collection:** blood-spot card or Microtainer? Is magnesium serum, whole blood or RBC?
+   - Answer: ______
+3. **Price:** per kit, all-in (kit, both-way shipping, lab, doctor, portal). Any setup or monthly fee? Any minimum?
+   - Answer: ______ (we need about $50 or less to sell at $79–89)
+4. **Doctors and states:** your network orders every test? Which states are excluded?
+   - Answer: ______
+5. **Failed samples:** rate, and is recollection free?
+   - Answer: ______
+6. **Labs:** which labs, and are they CLIA/CAP?
+   - Answer: ______
+7. **Tech:** API v2, sandbox, can results live in your hosted portal at first? Time to launch?
+   - Answer: ______
+8. **Data:** will you sign a BAA? Who is the kit manufacturer for FDA purposes?
+   - Answer: ______
+
+**Ask them to email:** the price sheet, the panel list, a sample kit and a sample results report.
+
+**Don't share yet:** customer data, revenue figures or bank details. No signing on the call.
