@@ -13,12 +13,13 @@ export async function POST(req: NextRequest) {
 
   const waitlist = body.source === 'pets';
   const launch = body.source === 'launch'; // pre-launch "coming soon" page
-  const source = launch ? 'launch-waitlist' : waitlist ? 'pets-waitlist' : body.source === 'quiz' ? 'quiz' : 'newsletter';
+  const tests = body.source === 'tests'; // at-home Nutrient Check waitlist
+  const source = launch ? 'launch-waitlist' : waitlist ? 'pets-waitlist' : tests ? 'tests-waitlist' : body.source === 'quiz' ? 'quiz' : 'newsletter';
   // No welcome code before launch: there's no shop to use it in yet.
   const goal = GOALS.some((g) => g.id === body.goal) ? (body.goal as string) : undefined;
   if ((await subscribe(email, source, goal)) && !launch) {
     await welcome(email).catch((err) => console.error('Welcome email failed', err));
   }
   if (launch) return NextResponse.json({ ok: true, message: "You're on the list. We'll email you the day Noovit opens." });
-  return NextResponse.json({ ok: true, message: waitlist ? "You're on the list — we'll email you when Noovit Pets launches." : "You're in! Check your inbox for your welcome code." });
+  return NextResponse.json({ ok: true, message: waitlist ? "You're on the list — we'll email you when Noovit Pets launches." : tests ? "You're on the list — we'll email you when the Nutrient Check launches." : "You're in! Check your inbox for your welcome code." });
 }

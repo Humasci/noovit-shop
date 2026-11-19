@@ -63,7 +63,7 @@ export function track(e: TrackEvent) {
 }
 
 // Email sign-ups, as GA4's recommended lead event; `lead_source` says which form it came from.
-export type SignupSource = 'launch_waitlist' | 'newsletter_popup' | 'newsletter_section' | 'quiz' | 'pets_waitlist';
+export type SignupSource = 'launch_waitlist' | 'newsletter_popup' | 'newsletter_section' | 'quiz' | 'pets_waitlist' | 'tests_waitlist';
 
 export function trackSignup(source: SignupSource) {
   if (!hasConsent()) return;

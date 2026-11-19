@@ -19,7 +19,7 @@ export async function marketingFooter(email: string): Promise<MarketingFooter> {
 
 // Returns true when this email is new or re-subscribing (and so should get the welcome email).
 // `goal`: the quiz goal id picked in the newsletter pop-up, kept for segmenting (never overwritten with nothing).
-export async function subscribe(email: string, source: 'newsletter' | 'checkout' | 'pets-waitlist' | 'launch-waitlist' | 'quiz', goal?: string) {
+export async function subscribe(email: string, source: 'newsletter' | 'checkout' | 'pets-waitlist' | 'launch-waitlist' | 'tests-waitlist' | 'quiz', goal?: string) {
   const normalized = email.trim().toLowerCase();
   const { data: existing } = await db().from('subscribers').select('status').eq('email', normalized).maybeSingle();
   if (existing?.status === 'subscribed') {

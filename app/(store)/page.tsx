@@ -25,6 +25,7 @@ import { latestReviews } from '@/lib/reviews';
 import { Brand, brandify } from '@/components/brand/Brand';
 import { AskButton } from '@/components/advisor/AskButton';
 import { advisorEnabled } from '@/lib/advisor';
+import { WOMEN_FEATURED } from '@/lib/women';
 
 // Value row under the hero (Thorne-like). Only claims we can stand behind today: no GMP / tested / Made in USA
 // wording until Supliful's paperwork arrives (docs/TODO.md).
@@ -61,6 +62,7 @@ export default async function HomePage() {
   const ask = advisorEnabled();
   const hl = [findProduct(products, 'lions-mane')].find((p) => p && p.status !== 'hidden');
   const petsLive = petProducts(products).some((p) => p.status === 'active');
+  const women = WOMEN_FEATURED.map((s) => findProduct(products, s)).filter((p): p is NonNullable<typeof p> => Boolean(p)).slice(0, 3);
 
   return (
     <>
@@ -88,6 +90,31 @@ export default async function HomePage() {
           </Link>
         </div>
       </section>
+
+      {/* Women's Health: the lead category on the human side (owner, 19 Nov), straight under the hero. */}
+      {women.length > 0 && (
+        <section className="section">
+          <div className="container px-6">
+            <div className="grid overflow-hidden rounded-3xl bg-[var(--studio)] md:grid-cols-[1.1fr_1fr]">
+              <div className="flex flex-col justify-center p-8 md:p-12">
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-navy)]/70">Women&apos;s Health</p>
+                <h2 className="mt-3 text-balance text-3xl text-[var(--color-navy)] md:text-[2.6rem] md:leading-tight">Strength, sleep and midlife, backed by evidence</h2>
+                <p className="mt-4 max-w-md text-[var(--color-ink)]/80">Creatine for strength at every age, magnesium and ashwagandha for sleep and stress, and support through perimenopause and menopause.</p>
+                <div className="mt-6 grid grid-cols-3 gap-3">
+                  {women.map((p) => (
+                    <Link key={p.id} href={`/products/${p.slug}`} className="group text-center">
+                      <ProductImage product={p} sizes="(min-width: 768px) 12vw, 30vw" className="mx-auto aspect-square w-full [mask-image:radial-gradient(closest-side,#000_72%,transparent)] transition-transform duration-700 group-hover:scale-[1.04]" />
+                      <span className="mt-1 block text-xs font-semibold text-[var(--color-navy)] md:text-sm">{p.name}</span>
+                    </Link>
+                  ))}
+                </div>
+                <Link href="/women" className="btn btn-primary mt-7 self-start">Shop Women&apos;s Health</Link>
+              </div>
+              <img src={IMAGES.womanTrain} srcSet={unsplashSrcSet(IMAGES.womanTrain)} sizes="(min-width: 768px) 45vw, 100vw" alt="Woman training with weights" className="h-64 w-full object-cover md:h-full" loading="lazy" />
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Value row */}
       <section className="relative overflow-hidden border-y border-[var(--color-line)]">
