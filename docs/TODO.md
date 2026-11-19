@@ -3,6 +3,18 @@
 _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only you can do it. **Build** = Claude does it. Tick items off here; `PROGRESS.md` keeps the history._
 
 ## 🔴 Before launch: owner
+**▶ Your next steps (latest, 19 Nov). Do these in order:**
+1. [x] Run `supabase/manual/2026-11-19-remove-organic.sql` (done 19 Nov).
+2. [ ] Admin → Products: **save any product**, then **Stripe sync** (so the "organic" removal shows on the live store).
+3. [ ] Admin → Products → **Add missing launch products**. Open the women's creatine, set its name to **Creatine for Her**, set it **Active** and save.
+4. [ ] Supliful: upload the new **Lion's Mane** label (`design/labels/lions-mane.label.pdf`). Create **Creatine for Her** on the same creatine powder and upload `design/labels/creatine-for-women.tub.pdf`.
+5. [ ] Supliful: send me the delivered cost of **Creatine Hydration Powder** (I set the price; you switch it on).
+6. [ ] Supliful Help → "Understanding Product Certifications & Registrations" → open the **Product Compliance Documents** page and save the COAs for our products (heavy metals → Prop 65; may cut lab costs).
+7. [ ] Get a quote for **product liability insurance** (Supliful suggests usesparx.com).
+8. [ ] **EIN → bank → live Stripe keys + `STRIPE_WEBHOOK_SECRET`** in Vercel. Then **launch**: Vercel → Settings → Environment Variables → `SITE_LIVE` = `true` (Production) → Redeploy.
+9. [ ] Within 30 days of the first sale: **FDA structure/function notification** (I draft it, you submit; details below).
+10. [ ] Later: lab tests for our site (~$800, Advanced Labs); IHD Lab enquiry for at-home tests (`docs/research/IHDLAB_ENQUIRY.md`); hand brief 01 (reviewer) to the Upwork agent.
+
 **🛑 Pre-launch mode is ON (28 Oct).** The public sees a "Coming soon" page with a waitlist; every response says `noindex`; robots.txt has no sitemap. You see the full store while signed in to Admin, and Admin → Overview shows a 30-day preview link to share. Waitlist sign-ups appear in Admin → Subscribers (source `launch-waitlist`).
 
 **Company first** (full plan: `docs/COMPANY_SETUP.md`)
@@ -158,7 +170,7 @@ _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only yo
 - [ ] **Supliful legal pages (read 19 Nov, https://help.supliful.com/en/collections/9730447-legal-information):**
   1. **FDA structure/function notification: required within 30 days of first sale** (owner files; free). Online via the FDA's online submission portal (COSM/ePortal), or by letter to FDA, Office of Dietary Supplement Programs (HFS-810), 5001 Campus Drive, College Park, MD 20740. Content: company name and address, each product's name and exact claim text, a statement that the claims are made under 21 U.S.C. 343(r)(6), and a certification that we hold evidence they are truthful. Keep the evidence on file. Claude to draft the letter at launch.
   2. **COAs:** Supliful publishes compliance documents (COAs) on a Notion page, "Supliful Product Compliance Documents" (linked from its article "Understanding Product Certifications & Registrations"); we couldn't open it here (needs a browser). **Owner:** open it and save the PDFs for our products; that may cover heavy metals and Prop 65 without paying a lab. All Supliful facilities are FDA-registered; "most" are GMP, with certificates on request (help@supliful.com).
-  3. **Organic: removed 19 Nov (owner yes)** from the Lion's Mane label, site, feed, SEO and Journal post. **Owner:** run `supabase/manual/2026-11-19-remove-organic.sql`, save any product in Admin and run Stripe sync, then upload the new `design/labels/lions-mane.label.pdf` to Supliful.
+  3. **Organic: removed 19 Nov (owner yes)** from the Lion's Mane label, site, feed, SEO and Journal post. **Owner:** ~~run the SQL~~ (done 19 Nov), save any product in Admin and run Stripe sync, then upload the new `design/labels/lions-mane.label.pdf` to Supliful.
   6. **GMP:** Supliful's help center says "all [manufacturers] are either GMP certified or compliant with the cGMPs" and gives details of a specific manufacturer's certification on request (help@supliful.com). Don't claim "GMP certified" without the certificate in hand.
   4. **Prop 65** is our responsibility: rely on the COA, test, or warn.
   5. **Product liability insurance:** recommended (Supliful points to usesparx.com).
