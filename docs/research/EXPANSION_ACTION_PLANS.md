@@ -54,9 +54,9 @@ carry stock in a 3PL. Pet supplements are also regulated as animal feed, which m
 standards. Never reuse human formulas (xylitol, vitamin D levels and some oils are dangerous for pets).
 
 ### Phase 0: demand check (cheap, owner)
-1. Count `pets-waitlist` sign-ups in Admin → Subscribers.
-2. Run a $100–200 Meta test to the Pets waitlist page and compare cost per sign-up with the human products.
-3. Ask **Organic Pets Treats Inc.** (FL) whether it really has no minimum and can dropship. If yes, pets can start with no stock.
+1. **Market check (Claude, free):** pet teardown of search volume, Google Shopping and Amazon best-seller ranks for dog joint and gut chews (Zesty Paws, PetLab Co., Native Pet, Pawfectchew): prices, reviews, gaps.
+2. **Ask our own customers (after launch):** one question in the post-purchase email or survey: "Do you have a dog or cat? Would you buy supplements for them from us?" Our existing customers are the real cross-sell audience.
+3. Ask **Organic Pets Treats Inc.** (FL) whether it really has no minimum and can dropship. If yes, pets can start with no stock and no risk, and the demand check matters much less.
 
 ### Phase 1: supplements first, dogs first (if demand is there)
 - **Products:** two dog soft chews, **Hip & Joint** (the biggest category) and **Gut/Probiotic**, from a NASC-audited maker (PetDine, Bimini, Pet Tech Labs, Zero Tolerance Labs; get quotes on stock formulas, ~500 units).
@@ -86,7 +86,7 @@ standards. Never reuse human formulas (xylitol, vitamin D levels and some oils a
 2. People test quotes (now).
 3. Nutrient Check kit.
 4. Retest bundle.
-5. Pets demand check.
+5. Pets market check and customer question.
 6. Dog chews.
 7. Urine strips.
 8. Cats.
