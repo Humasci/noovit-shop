@@ -213,3 +213,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 19 Nov (47): "organic" removed from Lion's Mane everywhere (Supliful's own guidance); live-DB SQL added; Supliful legal and GMP pages summarised in the TODO.
 - [x] 19 Nov (48): owner ran the remove-organic SQL; next-steps checklist at the top of the TODO; IHD Lab at-home menu reviewed and enquiry drafted (`docs/research/IHDLAB_ENQUIRY.md`).
 - [x] 19 Nov (49): people and pets expansion action plans from the owner's Gemini research, with claims checked (`docs/research/EXPANSION_ACTION_PLANS.md`).
+- [x] 19 Nov (50): keyword gap research for people and pets (`docs/seo/`).
