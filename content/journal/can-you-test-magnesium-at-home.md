@@ -25,7 +25,7 @@ Up to a third of the magnesium in bone can be swapped in and out. When blood lev
 
 ## The standard test: serum magnesium
 
-This is the test a doctor usually orders, and it's the one most home kits are built around. It measures magnesium in serum. The common reference range is **0.75–0.95 mmol/L** (about 1.8–2.3 mg/dL) [3].
+This is the test doctors use most [5]. It measures magnesium in serum. The common reference range is **0.75–0.95 mmol/L** (about 1.8–2.3 mg/dL) [3].
 
 What it's good for: spotting a clearly low or high level, which matters for people with kidney disease, heavy diarrhea or certain medicines [1].
 
