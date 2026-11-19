@@ -95,7 +95,10 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
   const dietary = PUBLIC_DIETARY_TAGS.filter((t) => product.dietaryTags.includes(t.value));
   // Stat strip: figures straight from the label and price, never marketing multipliers.
-  const [count, unitWord] = netQuantity(product).split(' ');
+  // "60 capsules" → 60 / capsules; "Net Wt 281 g (9.9 oz)" → 281 g / net weight.
+  const qty = netQuantity(product);
+  const wt = qty.match(/^Net Wt ([\d.,]+\s*\w+)/i);
+  const [count, unitWord] = wt ? [wt[1], 'net weight'] : qty.split(' ');
   const dose = heroDose(product);
   const separately = components.reduce((sum, p) => sum + p.basePrice, 0);
   const stats = isBundle
@@ -111,7 +114,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           ? { value: `${dose.value} ${dose.unit}`, label: dose.line }
           : { value: product.ingredients[0]?.amount ?? '', label: (product.ingredients[0]?.name ?? '').replace(/\s*\(.*?\)/g, '').split(' ').slice(0, 2).join(' ') },
         { value: count, label: unitWord.toLowerCase() },
-        { value: `${product.servings}`, label: 'day supply' },
+        { value: `${product.servings}`, label: product.form === 'powder' ? 'servings' : 'day supply' },
         { value: formatPrice(asLowAs(product) / product.servings), label: 'per day, from' },
       ];
 
