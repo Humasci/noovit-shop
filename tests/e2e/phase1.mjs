@@ -59,15 +59,15 @@ await p.waitForURL(`${base}/admin`);
 await p.goto(`${base}/admin/products`);
 await p.click('button:has-text("Import launch catalog")');
 const imp = await toastFor(/Added/);
-check('import launch catalog', /Added 36 products/.test(imp), imp);
+check('import launch catalog', /Added 38 products/.test(imp), imp);
 await p.waitForTimeout(800);
-check('products table has 36 rows', (await p.locator('tbody tr').count()) === 36);
+check('products table has 38 rows', (await p.locator('tbody tr').count()) === 38);
 
 // --- Sync all to Stripe
 await p.click('button:has-text("Sync all to Stripe")');
 const syncMsg = await toastFor(/Stripe sync/);
 const [, changed, unchanged] = syncMsg.match(/(\d+) prices changed, (\d+) unchanged/) ?? [];
-check('sync all → 36 products, 400 prices', /36 products created/.test(syncMsg) && Number(changed) + Number(unchanged) === 400, syncMsg);
+check('sync all → 38 products, 424 prices', /38 products created/.test(syncMsg) && Number(changed) + Number(unchanged) === 424, syncMsg);
 
 // --- Edit Magnesium: price, status, SKU
 await p.goto(`${base}/admin/products/magnesium-complex`);
