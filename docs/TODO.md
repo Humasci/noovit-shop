@@ -13,7 +13,7 @@ _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only yo
 7. [ ] Get a quote for **product liability insurance** (Supliful suggests usesparx.com).
 8. [ ] **EIN → bank → live Stripe keys + `STRIPE_WEBHOOK_SECRET`** in Vercel. Then **launch**: Vercel → Settings → Environment Variables → `SITE_LIVE` = `true` (Production) → Redeploy.
 9. [ ] Within 30 days of the first sale: **FDA structure/function notification** (I draft it, you submit; details below).
-10. [ ] Later: lab tests for our site (~$800, Advanced Labs); at-home test enquiries to **IHD Lab** (`docs/research/IHDLAB_ENQUIRY.md`) and **Spot** (`docs/research/SPOT_ENQUIRY.md`), then compare quotes; hand brief 01 (reviewer) to the Upwork agent.
+10. [ ] Later: lab tests for our site (~$800, Advanced Labs); at-home test enquiries to **IHD Lab** (`docs/research/IHDLAB_ENQUIRY.md`) and **Spot** (`docs/research/SPOT_ENQUIRY.md`), then compare quotes. **Ready to send: `docs/outreach/2026-11-19-at-home-test-enquiries.md`**; hand brief 01 (reviewer) to the Upwork agent.
 
 **🛑 Pre-launch mode is ON (28 Oct).** The public sees a "Coming soon" page with a waitlist; every response says `noindex`; robots.txt has no sitemap. You see the full store while signed in to Admin, and Admin → Overview shows a 30-day preview link to share. Waitlist sign-ups appear in Admin → Subscribers (source `launch-waitlist`).
 
