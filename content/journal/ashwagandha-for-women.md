@@ -2,7 +2,7 @@
 slug: ashwagandha-for-women
 title: "Ashwagandha for women: what the research shows, and who should skip it"
 excerpt: Women took part in most of the main ashwagandha trials on stress and sleep, and a handful of small studies looked only at women. Here's what they found, plus the thyroid, liver and pregnancy cautions that matter most.
-seoTitle: "Ashwagandha for Women: Research, Benefits and Safety | Noovit"
+seoTitle: "Ashwagandha for Women: Research and Safety | Noovit"
 seoDescription: What trials found for women on stress, cortisol, sleep and menopause scores, the small sexual-function studies, and the thyroid, liver and pregnancy cautions.
 publishAt: 2026-12-12T14:00:00Z
 ---

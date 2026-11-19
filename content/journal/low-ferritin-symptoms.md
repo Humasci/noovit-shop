@@ -2,7 +2,7 @@
 slug: low-ferritin-symptoms
 title: "Low ferritin symptoms: what low iron stores feel like, and what to do next"
 excerpt: Low ferritin means your iron stores are running low, often before a standard blood count shows anything. The signs are vague, the cut-offs vary, and the cause always matters. Here's what the research says.
-seoTitle: "Low Ferritin Symptoms: Signs, Cut-offs and Next Steps | Noovit"
+seoTitle: "Low Ferritin Symptoms: Signs, Cut-offs, Next Steps | Noovit"
 seoDescription: Low ferritin can mean tiredness, restless legs or poor exercise tolerance. The cut-offs labs use, who's at risk, and why to test before taking iron.
 publishAt: 2026-12-09T14:00:00Z
 ---

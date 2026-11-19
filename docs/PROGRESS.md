@@ -214,3 +214,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 19 Nov (48): owner ran the remove-organic SQL; next-steps checklist at the top of the TODO; IHD Lab at-home menu reviewed and enquiry drafted (`docs/research/IHDLAB_ENQUIRY.md`).
 - [x] 19 Nov (49): people and pets expansion action plans from the owner's Gemini research, with claims checked (`docs/research/EXPANSION_ACTION_PLANS.md`).
 - [x] 19 Nov (50): keyword gap research for people and pets (`docs/seo/`).
+- [x] 19 Nov (51): Women's Health hub (/women, first in nav, homepage banner), Nutrient Check waitlist page (leads with iron/ferritin after the Search Atlas data), 6 new sourced Journal posts and schedule SQL.
