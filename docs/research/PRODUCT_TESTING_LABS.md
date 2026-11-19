@@ -13,6 +13,8 @@ Order of work:
 1. Test for our own site ("third-party tested", COAs published).
 2. Marketplaces stay blocked until GMP proof exists, or we move to a supplier that provides it.
 
+**Update (19 Nov, owner):** Supliful products are sold on Amazon, and Supliful runs an FBA service (https://help.supliful.com/en/collections/16302765-amazon-fba; Pro annual/Enterprise plans). Its help pages don't name the GMP/COA documents it supplies for verification, so ask Supliful before starting.
+
 ## Platform rules
 **Amazon (expanded early 2026)**
 - Covers all supplements.
