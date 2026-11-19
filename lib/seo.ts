@@ -21,6 +21,10 @@ const PRODUCT_SEO: Record<string, { title: string; description: string }> = {
     title: 'Creatine Monohydrate Powder, 5 g per Scoop | Noovit',
     description: 'Pure creatine monohydrate: 5 g per scoop, 50 servings (281 g). One ingredient, unflavored, mixes into any drink. For adults 18+. Free US shipping.',
   },
+  'creatine-for-women': {
+    title: 'Creatine for Women, Pure Monohydrate 5 g | Noovit',
+    description: 'Creatine monohydrate for women: 5 g per scoop, 50 servings (281 g). One ingredient, unflavored. Supports strength, lean muscle and memory.* Adults 18+. Free US shipping.',
+  },
   coq10: {
     title: 'CoQ10 200 mg Capsules | Noovit',
     description: 'CoQ10 at 200 mg per serving, within the 100–300 mg range used in studies. Free US shipping, subscribe & save, 90-day guarantee.',

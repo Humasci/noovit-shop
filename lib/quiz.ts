@@ -75,7 +75,10 @@ const WEIGHTS: Record<string, Weights> = {
   ashwagandha: { goals: { sleep: 2, energy: 1, brain: 1 }, symptoms: { stress: 3, sleep: 2, fog: 1 } },
   multivitamin: { goals: { energy: 1, immunity: 1, brain: 1 }, symptoms: { tired: 1 }, base: 1 },
   'biotin-complex': { goals: { beauty: 3 }, symptoms: { nails: 3, skin: 1 } },
-  creatine: { goals: { muscle: 4, brain: 1 }, bonus: (a) => (a.activity === 'high' ? 2 : 0) },
+  // Women get the women's version, everyone else the regular one (same powder), so the quiz never shows both.
+  creatine: { goals: { muscle: 4, brain: 1 }, sex: 'male', bonus: (a) => (a.activity === 'high' ? 2 : 0) },
+  'creatine-for-women': { goals: { muscle: 4, brain: 2 }, sex: 'female', bonus: (a) => (a.activity === 'high' ? 2 : 0) },
+  'creatine-hydration': { goals: { muscle: 3, energy: 1 }, bonus: (a) => (a.activity === 'high' ? 2 : 0) },
   'mushroom-blend-powder': { goals: { brain: 2, energy: 2, immunity: 1 }, symptoms: { fog: 2, tired: 1 } },
   'focus-complex': { goals: { brain: 4 }, symptoms: { fog: 3, stress: 1 } },
   'lions-mane': { goals: { brain: 3 }, symptoms: { fog: 2 } },
@@ -96,9 +99,11 @@ export interface Recommendation {
 const label = (list: { id: string; label: string }[], id: string) => list.find((x) => x.id === id)?.label ?? id;
 
 // Diet and life-stage filters always win over scores.
-function allowed(p: Product, a: QuizAnswers) {
+function allowed(p: Product, a: QuizAnswers, womensCreatine = true) {
   const w = WEIGHTS[p.slug];
-  if (w?.sex && a.sex && a.sex !== w.sex && a.sex !== 'other') return false;
+  // Regular creatine stays open to women until the women's version is live.
+  const sexOnly = p.slug === 'creatine' && !womensCreatine ? undefined : w?.sex;
+  if (sexOnly && a.sex && a.sex !== sexOnly && a.sex !== 'other') return false;
   if (a.diet.includes('vegan') && !p.dietaryTags.includes('vegan')) return false;
   if (a.diet.includes('gluten-free') && !p.dietaryTags.includes('gluten-free')) return false;
   if (a.pregnant === 'pregnant' && !p.dietaryTags.includes('pregnancy-safe')) return false;
@@ -107,8 +112,9 @@ function allowed(p: Product, a: QuizAnswers) {
 }
 
 export function recommend(products: Product[], a: QuizAnswers, count = 3): Recommendation[] {
+  const womensCreatine = products.some((p) => p.slug === 'creatine-for-women' && p.status === 'active');
   const scored = products
-    .filter((p) => p.productType !== 'pets' && p.status === 'active' && allowed(p, a))
+    .filter((p) => p.productType !== 'pets' && p.status === 'active' && allowed(p, a, womensCreatine))
     .map((p) => {
       const w = WEIGHTS[p.slug] ?? {};
       const reasons: string[] = [];

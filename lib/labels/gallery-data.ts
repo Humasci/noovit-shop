@@ -28,6 +28,11 @@ export const HIGHLIGHTS: Record<string, [string, string][]> = {
     ['1', 'ingredient, and nothing else'],
     ['50', 'servings per tub, unflavored'],
   ],
+  'creatine-for-women': [
+    ['5 g', 'creatine monohydrate per scoop'],
+    ['1', 'ingredient, and nothing else'],
+    ['1 a day', 'any time, in any drink'],
+  ],
   coq10: [
     ['200 mg', 'coenzyme Q10 in every capsule'],
     ['Ubiquinone', 'the most-studied form of CoQ10'],

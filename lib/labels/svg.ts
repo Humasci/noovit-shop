@@ -150,6 +150,8 @@ const SUBTITLES: Record<string, string> = {
   multivitamin: '23 Active Vitamins & Minerals',
   'biotin-complex': 'With Zinc & Selenium',
   creatine: 'Pure Monohydrate, 5g Serving',
+  'creatine-for-women': 'Pure Monohydrate, 5g Serving',
+  'creatine-hydration': '5g Creatine + Electrolytes, Lemon',
   'mushroom-blend-powder': "Lion's Mane, Cordyceps, Reishi & Chaga",
   'focus-complex': "Lion's Mane, Bacopa & L-Theanine",
   'lions-mane': "1000mg Organic Lion's Mane",
@@ -230,6 +232,8 @@ const CATEGORIES: Record<string, string> = {
   ashwagandha: 'Stress · Calm',
   'lions-mane': 'Focus · Clarity',
   creatine: 'Strength · Power',
+  'creatine-for-women': 'Strength · Memory',
+  'creatine-hydration': 'Strength · Hydration',
   coq10: 'Heart · Energy',
   nmn: 'Energy · Healthy Aging',
   'nad-plus': 'Energy · Healthy Aging',
@@ -248,6 +252,8 @@ const DOSE_LINES: Record<string, string> = {
   ashwagandha: 'KSM-66® ashwagandha root',
   'lions-mane': "Organic lion's mane",
   creatine: 'Creatine monohydrate',
+  'creatine-for-women': 'Creatine monohydrate',
+  'creatine-hydration': 'Creatine + electrolytes',
   coq10: 'Coenzyme Q10 (ubiquinone)',
   nmn: 'Nicotinamide mononucleotide',
   colostrum: 'Bovine colostrum, 25% IgG',
@@ -257,6 +263,7 @@ const DOSE_LINES: Record<string, string> = {
 // Blends whose label still leads with one key ingredient's dose (the rest are listed in the facts panel).
 const HERO_INGREDIENT: Record<string, RegExp> = {
   ashwagandha: /ksm-66/i,
+  'creatine-hydration': /creatine/i,
 };
 
 export function heroDose(p: Product) {
@@ -786,6 +793,8 @@ const DAILY_VALUES: [RegExp, number, 'mg' | 'mcg'][] = [
   [/selenium/i, 55, 'mcg'],
   [/chromium/i, 35, 'mcg'],
   [/magnesium/i, 420, 'mg'],
+  [/sodium/i, 2300, 'mg'],
+  [/potassium/i, 4700, 'mg'],
 ];
 
 // "1000 IU" vitamin D → "25 mcg (1,000 IU)" as required since 2020; %DV where a Daily Value exists.

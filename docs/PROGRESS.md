@@ -207,3 +207,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 19 Nov (41): placeholders (example reviews, ratings, advisors) off by default: they show only if Settings says "on"; product ratings appear only from real reviews. Creatine stat strip fixed.
 - [x] 19 Nov (42): new-category research saved (`docs/research/NEW_CATEGORIES_WHITE_LABEL.md`): top 4 = nHA toothpaste, sleep apnea test referral, personalised-pack test, paid digital program; blood tests and supplement-line reports alongside.
 - [x] 19 Nov (43): sleep/snoring device sourcing saved (`docs/research/SLEEP_DEVICES_PRIVATE_LABEL.md`): verified OTC 510(k) list, suppliers, distributor duties.
+- [x] 19 Nov (44): Creatine for Women (same powder, berry label, women's copy and FAQ, quiz shows it to women) and Creatine Hydration+ (Supliful Creatine Hydration Powder, hidden until priced); sodium and potassium Daily Values added to the facts panel.
