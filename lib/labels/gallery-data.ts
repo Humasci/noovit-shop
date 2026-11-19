@@ -19,8 +19,8 @@ export const HIGHLIGHTS: Record<string, [string, string][]> = {
     ['2 a day', 'the daily amount used in KSM-66 studies'],
   ],
   'lions-mane': [
-    ['1,000 mg', "organic lion's mane in every serving"],
-    ['Organic', 'fruiting body and mycelium'],
+    ['1,000 mg', "lion's mane in every serving"],
+    ['2 parts', 'fruiting body and mycelium'],
     ['2 a day', '30 servings per bottle'],
   ],
   creatine: [

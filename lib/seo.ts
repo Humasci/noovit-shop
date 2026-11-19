@@ -15,7 +15,7 @@ const PRODUCT_SEO: Record<string, { title: string; description: string }> = {
   },
   'lions-mane': {
     title: "Lion's Mane Mushroom 1,000 mg Capsules | Noovit",
-    description: "Organic lion's mane mushroom: 1,000 mg of fruiting body and mycelium per serving. Free US shipping, subscribe & save, 90-day guarantee.",
+    description: "Lion's mane mushroom: 1,000 mg of fruiting body and mycelium per serving. Free US shipping, subscribe & save, 90-day guarantee.",
   },
   creatine: {
     title: 'Creatine Monohydrate Powder, 5 g per Scoop | Noovit',

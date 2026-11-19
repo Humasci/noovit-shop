@@ -15,7 +15,7 @@ Read this first. It is the standing context for any session working on this repo
 
 ## Product decisions (keep consistent everywhere)
 - **Core range:** Magnesium Sleep+ (275 mg elemental as glycinate, 90 caps), Ashwagandha Calm+ (KSM-66 600 mg),
-  Lion's Mane (**hero**; Supliful's 1,000 mg organic fruiting body + mycelium, a normal mainstream spec — copy says
+  Lion's Mane (**hero**; Supliful's 1,000 mg fruiting body + mycelium; **never say "organic"** (19 Nov: Supliful says the brand must hold the certificate), a normal mainstream spec — copy says
   "1,000 mg", never that it matches the trial doses of 1.8–3.2 g; a beta-glucan COA is a nice-to-have), Creatine (5 g per 5.6 g scoop, 50 servings, 281 g tub, 18+ only; Supliful $14.69 delivered, i.e. product + shipping + fulfilment; **Creatine for Her** `creatine-for-women` = the same powder, own berry label `#A8467A`, women's copy, same $32, copy says openly it's the same powder; the quiz shows it to women instead of regular creatine; **Creatine Hydration+** `creatine-hydration` = Supliful Creatine Hydration Powder, lemon, 5 g creatine + 1,000 mg sodium + 200 mg K + 60 mg Mg, 300 g, hidden until price known, lime `#8FB339`), CoQ10 (200 mg). Plus Turmeric Complex (= Supliful Platinum Turmeric: 800 mg root + 100 mg 95% curcuminoids + glucosamine/chondroitin, **contains shellfish**, $29). Ashwagandha: Supliful's "Plus" sold as is, every
   ingredient listed (KSM-66 600 mg + D3, B6, B12, L-arginine, maca, ginseng, shatavari; $10.25 delivered). Wider range unlocked 31 Oct
   (probiotic, joint, collagen, D3/K2, sleep, omega-3, colostrum, menopause, NMN; see `SUPLIFUL_PRODUCT_SCREEN.md`).

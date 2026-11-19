@@ -15,7 +15,7 @@ import { LEGAL_NAME } from '@/lib/site';
 export type FontMode = 'web' | 'print';
 
 // Bump when the photo mockup (lib/labels/photo.ts) changes, so cached product image URLs refresh.
-export const MOCKUP_VERSION = 'studio-v8'; // v6 (17 Nov): cream backdrop // studio-v1 (16 Nov): photoreal studio bottle (lib/labels/studio.ts); was photo-v14 // v12 (14 Nov): elegant dark label; v13: studio lighting; v14: label edges curve round the bottle
+export const MOCKUP_VERSION = 'studio-v9'; // v9 (19 Nov): "organic" removed from Lion's Mane // v6 (17 Nov): cream backdrop // studio-v1 (16 Nov): photoreal studio bottle (lib/labels/studio.ts); was photo-v14 // v12 (14 Nov): elegant dark label; v13: studio lighting; v14: label edges curve round the bottle
 
 const NAVY = '#14213d';
 const INK = '#4b5563';
@@ -154,7 +154,7 @@ const SUBTITLES: Record<string, string> = {
   'creatine-hydration': '5g Creatine + Electrolytes, Lemon',
   'mushroom-blend-powder': "Lion's Mane, Cordyceps, Reishi & Chaga",
   'focus-complex': "Lion's Mane, Bacopa & L-Theanine",
-  'lions-mane': "1000mg Organic Lion's Mane",
+  'lions-mane': "1000mg Fruiting Body + Mycelium",
   coq10: '200mg Coenzyme Q10 (Ubiquinone)',
   'l-theanine': '200mg Pure L-Theanine',
   nac: 'N-Acetyl Cysteine 600mg',
@@ -250,7 +250,7 @@ export function labelCategory(p: Product) {
 const DOSE_LINES: Record<string, string> = {
   'magnesium-complex': 'Magnesium as glycinate',
   ashwagandha: 'KSM-66® ashwagandha root',
-  'lions-mane': "Organic lion's mane",
+  'lions-mane': "Lion's mane mushroom",
   creatine: 'Creatine monohydrate',
   'creatine-for-women': 'Creatine monohydrate',
   'creatine-hydration': 'Creatine + electrolytes',

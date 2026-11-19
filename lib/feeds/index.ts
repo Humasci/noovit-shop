@@ -25,7 +25,7 @@ export interface FeedItem {
 const FEED_SPECS: Record<string, string> = {
   'magnesium-complex': 'Magnesium Glycinate 275 mg',
   ashwagandha: 'KSM-66 Ashwagandha 600 mg with Vitamins D3, B6 & B12',
-  'lions-mane': "Organic Lion's Mane Mushroom 1,000 mg",
+  'lions-mane': "Lion's Mane Mushroom 1,000 mg",
   creatine: 'Creatine Monohydrate Powder 5 g',
   'creatine-for-women': "Women's Creatine Monohydrate Powder 5 g",
   'creatine-hydration': 'Creatine Monohydrate 5 g with Electrolytes, Lemon',

@@ -136,7 +136,7 @@ export default async function HomePage() {
                 <div className="p-8 md:p-10">
                   <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-navy)]/70">Product highlight · Focus</p>
                   <h2 className="mt-2 max-w-md text-3xl text-[var(--color-navy)] md:text-4xl">{hl.name}: 1,000 mg in every serving</h2>
-                  <p className="mt-3 max-w-md text-[var(--color-ink)]/75">Organic fruiting body and mycelium, two capsules a day, the dose printed on the front.</p>
+                  <p className="mt-3 max-w-md text-[var(--color-ink)]/75">Fruiting body and mycelium, two capsules a day, the dose printed on the front.</p>
                   <span className="mt-5 inline-flex items-center gap-2 rounded-full bg-[var(--color-navy)] px-5 py-2.5 text-sm font-semibold text-white">
                     Shop {hl.name} · ${hl.basePrice} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </span>
@@ -149,7 +149,7 @@ export default async function HomePage() {
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/60">Highlight</p>
                 <div>
                   <p className="font-display text-6xl">1,000<span className="ml-1 text-2xl">mg</span></p>
-                  <p className="mt-2 text-white/75">Organic lion&apos;s mane per serving, a mainstream, well-used dose.</p>
+                  <p className="mt-2 text-white/75">Lion&apos;s mane per serving, a mainstream, well-used dose.</p>
                 </div>
               </div>
               <div className="flex flex-col justify-between rounded-[2rem] bg-[var(--studio)] p-8">
@@ -163,7 +163,7 @@ export default async function HomePage() {
             <div className="mt-4 grid gap-4 sm:grid-cols-3">
               {[
                 ['How to take it', 'Two capsules a day, with or without food.'],
-                ['Clean label', 'Organic capsule, no proprietary blend, every amount listed.'],
+                ['Clean label', 'Plant-based capsule, no proprietary blend, every amount listed.'],
                 ['Subscribe & save', `$${hl.basePrice - 5} a bottle on subscription, free US shipping, cancel anytime.`],
               ].map(([t, d]) => (
                 <div key={t} className="rounded-[2rem] bg-[var(--studio)] p-7">
