@@ -110,7 +110,7 @@ export default async function HomePage() {
                 </div>
                 <Link href="/women" className="btn btn-primary mt-7 self-start">Shop Women&apos;s Health</Link>
               </div>
-              <img src={IMAGES.womanTrain} srcSet={unsplashSrcSet(IMAGES.womanTrain)} sizes="(min-width: 768px) 45vw, 100vw" alt="Woman training with weights" className="h-64 w-full object-cover md:h-full" loading="lazy" />
+              <img src={IMAGES.womenLaughing} srcSet={unsplashSrcSet(IMAGES.womenLaughing)} sizes="(min-width: 768px) 45vw, 100vw" alt="Two women laughing together outdoors" className="h-64 w-full object-cover md:h-full" loading="lazy" />
             </div>
           </div>
         </section>

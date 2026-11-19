@@ -29,7 +29,6 @@ export function ProductCard({ product }: { product: Product }) {
 
   const goal = product.bundleItems?.length ? 'Bundle' : GOAL_PAGES.find((g) => g.goal === goalsForProduct(product.slug)[0])?.name;
   const from = asLowAs(product);
-  const off = Math.round((1 - from / product.basePrice) * 100);
 
   return (
     // Phones: one product per row (image left, details right). From sm up: the classic vertical card.
@@ -68,12 +67,11 @@ export function ProductCard({ product }: { product: Product }) {
         </Link>
         <p className="mt-1 line-clamp-2 flex-1 text-xs text-[var(--color-muted)] sm:text-sm">{product.tagline || product.shortBenefit}</p>
         <p className="mt-2 text-sm sm:mt-3">
-          <span className="font-semibold text-[var(--color-navy)]">From {formatPrice(from)}</span>
-          {off > 0 && (
-            <span className="block text-xs sm:inline sm:text-sm">
-              <s className="text-[var(--color-muted)] sm:ml-1">{formatPrice(product.basePrice)}</s>{' '}
-              <span className="font-semibold text-[var(--color-accent)]">{off}% off</span>
-            </span>
+          {/* Regular price first; the multi-pack price as a plain "from", never a struck-through "was" price
+              (19 Nov: a strikethrough + "% off" read as a sale; FTC 16 CFR 233). */}
+          <span className="font-semibold text-[var(--color-navy)]">{formatPrice(product.basePrice)}</span>
+          {from < product.basePrice && (
+            <span className="block text-xs text-[var(--color-muted)] sm:inline sm:pl-1.5 sm:text-sm">or {formatPrice(from)} {product.bundleItems?.length ? 'with Subscribe & Save' : 'a bottle in a 6-pack'}</span>
           )}
           <span className="block text-xs text-[var(--color-muted)]">
             {product.servings}-day supply<span className="hidden sm:inline">{product.bundleItems?.length ? '' : ' per bottle'}</span>

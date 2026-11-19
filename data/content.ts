@@ -8,6 +8,9 @@ export const IMAGES = {
   run: 'https://images.unsplash.com/photo-1560073742-bc295f81c3c0?w=1200&q=80&fit=crop',
   // More sports photos, Unsplash License: Alora Griffiths (woman training), Ryan Fleischer (winter run), Sage Friedman (trail run).
   // Owner (18 Nov): fit, energetic people only, never tired, resting or unflattering shots.
+  // Women's Health (19 Nov, owner: women of different ages enjoying life). Unsplash License, checked free (not Unsplash+).
+  womenGenerations: 'https://images.unsplash.com/photo-1758874960777-931053e0d9c6?w=1200&q=80&fit=crop',
+  womenLaughing: 'https://images.unsplash.com/photo-1761055924354-244f0ca66af2?w=1200&q=80&fit=crop',
   womanTrain: 'https://images.unsplash.com/photo-1532384748853-8f54a8f476e2?w=1200&q=80&fit=crop',
   womanRun: 'https://images.unsplash.com/photo-1765250251997-daf44e3c0268?w=1200&q=80&fit=crop',
   trailRun: 'https://images.unsplash.com/photo-1522040942177-269680274214?w=1200&q=80&fit=crop',
