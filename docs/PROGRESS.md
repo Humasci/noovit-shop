@@ -209,3 +209,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 19 Nov (43): sleep/snoring device sourcing saved (`docs/research/SLEEP_DEVICES_PRIVATE_LABEL.md`): verified OTC 510(k) list, suppliers, distributor duties.
 - [x] 19 Nov (44): Creatine for Women (same powder, berry label, women's copy and FAQ, quiz shows it to women) and Creatine Hydration+ (Supliful Creatine Hydration Powder, hidden until priced); sodium and potassium Daily Values added to the facts panel.
 - [x] 19 Nov (45): renamed to Creatine for Her; IHD Lab and imaware added to the lab-test research; owner: launch without waiting for the medical reviewer, keep "organic" and "KSM-66®" as Supliful lists them; test suites 47/60/55/15 pass.
+- [x] 19 Nov (46): product testing labs researched (`docs/research/PRODUCT_TESTING_LABS.md`): Advanced Labs for site COAs (~$800 for 3 products); Amazon/TikTok also need the factory's GMP certificate.

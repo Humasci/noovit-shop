@@ -154,7 +154,8 @@ _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only yo
 - [ ] "+" drawn as the orange mosaic cross in product names and labels (mock-up first).
 - [ ] **Daily pack** line with OK Capsule (quotes, API docs, branded sample).
 - [ ] Automatic Supliful orders via a hidden Shopify backend (when manual orders reach about 10–15 a day).
-- [ ] Amazon (needs lab testing via an approved lab), then TikTok Shop (lab reports ≤180 days); eBay is low priority.
+- [ ] Amazon (needs lab testing via an approved lab), then TikTok Shop (lab reports ≤180 days); eBay is low priority. **Blocked (19 Nov research, `docs/research/PRODUCT_TESTING_LABS.md`):** both also need the factory's cGMP certificate, which Supliful won't give.
+- [ ] **Third-party testing for our own site (19 Nov):** order 3–4 bottles each of Magnesium, CoQ10 and Creatine → Advanced Laboratories (ISO 17025, online, 5 days): metals + micro + potency, ~$800 total. Publish each report in full on the product page (ask the lab first) and say "third-party tested" only on products that passed. Then Lion's Mane (+ beta-glucan at Medallion, $296).
 - [ ] Bundles: maybe a 4th, **Women 40+** (Menopause + Magnesium + D3&K2).
 - [ ] **Pets (rethought 31 Oct):** the store already has the Pets section, 6 drafted products and a waitlist; what's missing is supply (no US dropshipper found; Pet Tech Labs = 504 units/SKU into a 3PL).
   - **Owner, first:** check Admin → Subscribers for `pets-waitlist` sign-ups (demand signal); run a small Meta test ($100–200) to the Pets waitlist page and compare cost per sign-up with the human products.
