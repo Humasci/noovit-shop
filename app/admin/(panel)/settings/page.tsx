@@ -19,7 +19,7 @@ const GROUPS: { title: string; note: string; keys: (keyof typeof SETTING_FIELDS)
   },
   {
     title: 'Pre-launch',
-    note: 'While "on", the storefront shows clearly labelled placeholder reviews, ratings and nutritionist quotes wherever real ones are still missing, as a guide to what you need to collect. Type "off" before launch: placeholders disappear and only real content shows. Real reviews (approved in Reviews) and real advisors always replace placeholders automatically.',
+    note: 'Off by default: only real reviews, ratings and advisors show. Type "on" to preview labelled examples of where they will appear (never leave it on with real customers).',
     keys: ['show_placeholders'],
   },
   {
