@@ -81,7 +81,7 @@ Read this first. It is the standing context for any session working on this repo
 - **FDA structure/function language only:** never "treats/cures/prevents". Benefit claims carry * → disclaimer.
 - **Guides:** every source opened and verified, evidence graded (Moderate / Limited / Early / Insufficient), null
   results included, no Noovit mention in the body. Brief: `docs/research/GUIDE_RESEARCH_BRIEF.md`. All guides need a
-  medical reviewer before launch. Guides stay neutral on product formats we sell (no "avoid X" for our own spec).
+  medical reviewer, but launch does not wait for one (owner, 19 Nov); "Reviewed by" shows only after a real review. Guides stay neutral on product formats we sell (no "avoid X" for our own spec).
 - **No unverified trust claims** (GMP, third-party tested, Made in USA wording) until Supliful provides proof (TODO).
 - US spelling on the site. Plain, short sentences.
 
