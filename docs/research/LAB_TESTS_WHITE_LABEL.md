@@ -23,6 +23,7 @@ estimates are ours.
 | **LetsGetChecked / Truepill** | Co-branded B2B for employers, plans | Not found | At-home kits | Not found | Not found | Not found | Not found | Public dev docs | Low |
 | **Everlywell / Everly Health** | Enterprise co-brand | Vit D, Mg (type?), ferritin, B12, hs-CRP | Finger-prick, in-lab | Nationwide / Everywhere excludes NY, NJ, RI | CLIA + CAP | Not published | Not found | Gated | Low |
 | **ixlayer** | White-label platform for biopharma | Not found | Labs, kits, mobile | Via telehealth partners | Partner labs | Not found | Not found | Not found | Very low |
+| **IHD Lab** (ihdlab.com, added 19 Nov from the owner) | White-label kits + branded results portal or API ("LabFlow"); kit triggered by an order on our site | 250+ markers: vitamins, iron panel, omega-3, lipids, HbA1c, CRP, hormones, thyroid, liver/kidney | Home collection, return shipping included | Not stated; **holds NY and MD licences** (rare) | Own lab: CLIA 05D2040304, CA licence, FDA-registered (FEI 3011213917); ISO 17025 not stated | Not published | None stated (volume tiers start "under 250 kits/month") | API or portal | **High: ask alongside Spot** |
 | **OmegaQuant** | Affiliate, wholesale, co-brand, white-label API, private label | **Omega-3 index**, vit D | Finger-prick | Not found | CLIA high-complexity | Basic retail $49.95–54.95; affiliate ≥8% (10–20% by tier on one page) | Not found | API | **High as add-on** |
 | **Choose Health** | Private-label DBS kits for supplement brands | 28+ markers (not itemised) | Finger-prick DBS | Requisitions handled | Not found | Not found | Not found | Not found | Medium (ask) |
 | Rupa → Fullscript | Practitioner ordering | Full | Mixed | Needs practitioner licence | Varies | — | Practitioner account | Rupa closes 20 Jan 2027 | Not suitable |
@@ -45,6 +46,8 @@ estimates are ours.
 ## Recommendation
 1. **Spot**: primary. No upfront cost, custom panel and fully branded kit/portal, 50-state physicians, public API that fits
    our Stripe webhook. Confirm: menu for vit D / ferritin / B12 / Mg (type), CLIA/CAP labs, BAA, per-kit price, minimum.
+- **imaware** (owner note, 19 Nov): the most complete platform (200+ biomarkers, white-label portal with wearable data, trends over time, tailored content). Costs: setup + monthly + per-user + kit fees (no figures) and ~8 weeks to integrate, so better as the step up once kit volume is proven. Ask for a quote with the others.
+- **IHD Lab** (added 19 Nov): ask at the same time as Spot. Own CLIA lab, API, no stated minimum, and NY/MD licences (may open states others exclude). Confirm per-kit price, physician ordering, which states, vitamin D/ferritin/B12/Mg (type) panel, BAA.
 2. **SiPhox**: fallback with the lowest proven commitment (30 kits, ~1 week onboarding, CLIA/CAP, fulfilment, BAA). Launch
    with its ready Core Health panel (vit D, ferritin, HbA1c, lipids/ApoB); custom panels need 500 kits.
 - Add-on: **OmegaQuant** affiliate now (omega-3 index), co-brand later. **Junction** once volume justifies 250 kits or

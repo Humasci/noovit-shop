@@ -332,9 +332,9 @@ const seeds: Seed[] = [
     faqs: [{ q: 'How many servings are in a tub?', a: '50 servings of 5 g creatine (one 5.6 g scoop), in a 281 g tub.' }],
   },
   {
-    // 19 Nov (owner): the women's version. Same Supliful creatine as `creatine` (5 g per 5.6 g scoop, 50 servings,
+    // 19 Nov (owner): the women's version (named "Creatine for Her"; slug keeps the search term). Same Supliful creatine as `creatine` (5 g per 5.6 g scoop, 50 servings,
     // 281 g; delivered $14.69); only the label, copy and price positioning differ. The copy says so openly.
-    name: 'Creatine for Women',
+    name: 'Creatine for Her',
     slug: 'creatine-for-women',
     status: 'active',
     tagline: 'Strength, Energy & Memory',
