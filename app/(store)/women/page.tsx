@@ -45,10 +45,10 @@ export default async function WomenPage() {
             </nav>
           </div>
           <img
-            src={IMAGES.womenGenerations}
-            srcSet={unsplashSrcSet(IMAGES.womenGenerations)}
+            src={IMAGES.womanTrain}
+            srcSet={unsplashSrcSet(IMAGES.womanTrain)}
             sizes="(min-width: 768px) 50vw, 100vw"
-            alt="Three women of different ages smiling together"
+            alt="Woman training with weights"
             className="aspect-[4/3] w-full rounded-3xl object-cover"
           />
         </div>
