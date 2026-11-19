@@ -215,3 +215,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 19 Nov (49): people and pets expansion action plans from the owner's Gemini research, with claims checked (`docs/research/EXPANSION_ACTION_PLANS.md`).
 - [x] 19 Nov (50): keyword gap research for people and pets (`docs/seo/`).
 - [x] 19 Nov (51): Women's Health hub (/women, first in nav, homepage banner), Nutrient Check waitlist page (leads with iron/ferritin after the Search Atlas data), 6 new sourced Journal posts and schedule SQL.
+- [x] 19 Nov (52): card prices without strikethrough; supplier catalogues (tests, pets, digital/wearables); Stripe expansion plan; FourFive-style scene-shot drafts.

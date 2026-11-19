@@ -302,6 +302,31 @@ export async function studioGroupPng(products: Product[], width: number, height:
   return sharp(out, { raw: { width, height, channels: 3 } }).png().toBuffer();
 }
 
+// The labelled bottle cut out of the studio photo (RGBA, alpha = bottle mask), cropped to the bottle, for scene shots
+// composited onto other backgrounds (scripts/scene-shots.ts). Neutral whites are warmed towards `tint`.
+export async function studioCutout(p: Product, tint: [number, number, number] = BACKDROP) {
+  const t = await (cached ??= analyse());
+  const r = await studioPhotoRaw(p);
+  let minX = t.W, maxX = 0, minY = t.H, maxY = 0;
+  for (let m = 0; m < t.W * t.H; m++) if (t.mask[m] > 0.02) { const x = m % t.W, y = (m / t.W) | 0; if (x < minX) minX = x; if (x > maxX) maxX = x; if (y < minY) minY = y; if (y > maxY) maxY = y; }
+  const w = maxX - minX + 1, h = maxY - minY + 1;
+  // The bottle is convex in every row: fill each row between its outermost solid pixels, so small mask gaps (the
+  // ribbed cap's highlights) don't show the new background through.
+  const fill = new Float32Array(t.W * t.H);
+  for (let y = minY; y <= maxY; y++) {
+    let l = -1, r = -1;
+    for (let x = minX; x <= maxX; x++) if (t.mask[y * t.W + x] > 0.5) { if (l < 0) l = x; r = x; }
+    for (let x = minX; x <= maxX; x++) { const m = y * t.W + x; fill[m] = l >= 0 && x > l && x < r ? 1 : t.mask[m]; }
+  }
+  const out = Buffer.alloc(w * h * 4);
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+    const m = (y + minY) * t.W + x + minX, k = m * 3, o = (y * w + x) * 4;
+    const wm = warm(r.data[k], r.data[k + 1], r.data[k + 2], tint);
+    out[o] = wm[0]; out[o + 1] = wm[1]; out[o + 2] = wm[2]; out[o + 3] = Math.round(fill[m] * 255);
+  }
+  return { data: out, width: w, height: h };
+}
+
 // The backdrop colour behind the bottle in the product photo (mid-height), for pages that place group shots.
 export async function studioBackdrop(): Promise<[number, number, number]> {
   return BACKDROP;
