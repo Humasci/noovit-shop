@@ -13,7 +13,7 @@ Replace the [brackets] with your details before sending. Send both the same day 
 >
 > I run Noovit (noovit.com), a US direct-to-consumer supplement brand launching this winter. We'd like to offer our customers a white-label at-home blood test, sold and paid for on our own website.
 >
-> Proposed panel: vitamin D 25-OH, ferritin, vitamin B12, magnesium (serum) and folate, on one collection if possible. We start small (under 250 kits a month) and plan to grow.
+> Proposed panel: ferritin (ideally with serum iron), vitamin D 25-OH, vitamin B12, magnesium (serum) and folate, on one collection if possible. We'd also like a second women's health kit: FSH, LH and estradiol (perimenopause), optionally with cortisol and TSH. Please quote both. We start small (under 250 kits a month) and plan to grow.
 >
 > Could you tell us:
 > 1. The per-kit price at that volume (kit, two-way shipping, lab, results portal), plus any setup or monthly fees and any minimum order.
@@ -39,7 +39,7 @@ Replace the [brackets] with your details before sending. Send both the same day 
 >
 > I run Noovit (noovit.com), a US direct-to-consumer supplement brand launching this winter. We'd like to offer a white-label at-home test kit, ordered and paid for on our own website (Next.js + Stripe), with results in a branded portal. I've booked / will book a 30-minute call, and I'm sending the details ahead so we can make the most of it.
 >
-> Proposed panel: vitamin D 25-OH, ferritin, vitamin B12, magnesium and folate, ideally on one blood-spot card or a single Microtainer. Starting volume: under 250 kits a month.
+> Proposed panel: ferritin (ideally with serum iron), vitamin D 25-OH, vitamin B12, magnesium and folate, ideally on one blood-spot card or a single Microtainer. We'd also like a second women's health kit: FSH, LH and estradiol (perimenopause), optionally with cortisol and TSH. Please quote both. Starting volume: under 250 kits a month.
 >
 > It would help to know before or on the call:
 > 1. Which ready-made panels you already run (a list would be great), and whether you can build this one. Which collection method, and which partner labs (CLIA/CAP)? Is magnesium serum, whole blood or RBC?

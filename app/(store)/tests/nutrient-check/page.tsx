@@ -5,8 +5,8 @@ import { TestsWaitlist } from '@/components/tests/TestsWaitlist';
 // Honest landing page for the planned at-home Nutrient Check (owner, 19 Nov). Nothing is for sale yet and the lab
 // partner isn't chosen, so the page says so and collects a waitlist. Facts: NIH ODS fact sheets (linked below).
 export const metadata: Metadata = {
-  title: 'At-Home Nutrient Check: Vitamin D, Ferritin, B12, Magnesium | Noovit',
-  description: 'A finger-prick nutrient test is coming: vitamin D, ferritin, B12, magnesium and folate. What each marker can and can’t tell you, and why test before you supplement.',
+  title: 'At-Home Iron & Nutrient Test: Ferritin, Vitamin D, B12 | Noovit',
+  description: 'An at-home finger-prick test for iron stores (ferritin), vitamin D, B12, magnesium and folate is coming. What each marker shows, its limits, and why test first.',
   alternates: { canonical: '/tests/nutrient-check' },
 };
 
@@ -27,9 +27,9 @@ export default function NutrientCheckPage() {
             <Link href="/">Home</Link> / <span className="text-[var(--color-ink)]">Nutrient Check</span>
           </nav>
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-navy)]/70">Coming soon</p>
-          <h1 className="mt-3 max-w-2xl text-balance text-4xl text-[var(--color-navy)] md:text-5xl">Test first, then supplement</h1>
+          <h1 className="mt-3 max-w-2xl text-balance text-4xl text-[var(--color-navy)] md:text-5xl">At-home iron &amp; nutrient test</h1>
           <p className="mt-5 max-w-xl text-lg text-[var(--color-ink)]/80">
-            We&apos;re building an at-home finger-prick test for five nutrients: vitamin D, ferritin, B12, magnesium and folate. We&apos;re choosing a US lab partner now. Join the list and we&apos;ll email you when it&apos;s ready.
+            Test first, then supplement. We&apos;re building an at-home finger-prick test for your iron stores (ferritin), vitamin D, B12, magnesium and folate. We&apos;re choosing a US lab partner now. Join the list and we&apos;ll email you when it&apos;s ready.
           </p>
           <TestsWaitlist />
         </div>
