@@ -43,14 +43,14 @@ export async function HealthHub({ cfg }: { cfg: HubConfig }) {
           src={cfg.hero.src}
           alt={cfg.hero.alt}
           fetchPriority="high"
-          className={`aspect-[3/2] w-full object-cover [mask-image:linear-gradient(to_bottom,#000_70%,transparent)] md:absolute md:inset-y-0 md:right-0 md:aspect-auto md:h-full md:w-[64%] md:[mask-image:linear-gradient(to_right,transparent,#000_35%)] ${cfg.hero.position ?? 'object-center'}`}
+          className={`aspect-[3/2] w-full object-cover [mask-image:linear-gradient(to_bottom,#000_70%,transparent)] md:absolute md:inset-y-0 md:right-0 md:aspect-auto md:h-full md:w-[60%] md:[mask-image:linear-gradient(to_right,transparent,#000_30%)] ${cfg.hero.position ?? 'object-center'}`}
         />
         <div className="container relative px-6 pb-14 md:py-28 lg:py-32">
-          <div className="max-w-md lg:max-w-lg">
+          <div className="max-w-md lg:max-w-xl">
             <nav className="mb-4 text-xs text-[var(--color-muted)]">
               <Link href="/">Home</Link> / <span className="text-[var(--color-ink)]">{cfg.crumb}</span>
             </nav>
-            <h1 className="text-balance text-4xl text-[var(--color-navy)] md:text-5xl lg:text-6xl">{cfg.title}</h1>
+            <h1 className="text-balance text-4xl text-[var(--color-navy)] md:text-5xl lg:text-[3.4rem] lg:leading-[1.05]">{cfg.title}</h1>
             <p className="mt-5 text-lg text-[var(--color-ink)]/80">{cfg.intro}</p>
             <nav aria-label="Sections" className="mt-7 flex flex-wrap gap-2">
               {sections.map((s) => (
