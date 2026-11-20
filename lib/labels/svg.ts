@@ -16,7 +16,7 @@ import { LEGAL_NAME } from '@/lib/site';
 export type FontMode = 'web' | 'print';
 
 // Bump when the photo mockup (lib/labels/photo.ts) changes, so cached product image URLs refresh.
-export const MOCKUP_VERSION = 'studio-v10'; // v10 (20 Nov): For Her badge // v9 (19 Nov): "organic" removed from Lion's Mane // v6 (17 Nov): cream backdrop // studio-v1 (16 Nov): photoreal studio bottle (lib/labels/studio.ts); was photo-v14 // v12 (14 Nov): elegant dark label; v13: studio lighting; v14: label edges curve round the bottle
+export const MOCKUP_VERSION = 'studio-v11'; // v11 (20 Nov): women's range colours // v10 (20 Nov): For Her badge // v9 (19 Nov): "organic" removed from Lion's Mane // v6 (17 Nov): cream backdrop // studio-v1 (16 Nov): photoreal studio bottle (lib/labels/studio.ts); was photo-v14 // v12 (14 Nov): elegant dark label; v13: studio lighting; v14: label edges curve round the bottle
 
 const NAVY = '#14213d';
 const INK = '#4b5563';
@@ -706,9 +706,9 @@ export function frontPanelElegant(p: Product, mode: FontMode, bleed = 0, opts: {
   // supplement" and its unit line sits below the count's descender ("281 g").
   const ruleY = 182; // bottom block raised 4 units (17 Nov) so it clears the safe zone
   // "For Her" badge (owner, 20 Nov): top-right, level with the wordmark, so the vertical rhythm is unchanged.
-  const herW = 40, herH = 12.5, herX = FRONT.w - 20 - herW, herY = logoY - 16;
+  const herW = 50, herH = 13.5, herX = FRONT.w - 20 - herW, herY = logoY - 16.5;
   const forHer = FOR_HER_LABEL.has(p.slug)
-    ? `<rect x="${n(herX)}" y="${n(herY)}" width="${herW}" height="${herH}" rx="${n(herH / 2)}" fill="${FOR_HER_BERRY}"/>${caps(herY + herH / 2 + 2.4, 'For Her', 6.6, '#fff', 700, herX + herW / 2, 'middle')}`
+    ? `<rect x="${n(herX)}" y="${n(herY)}" width="${herW}" height="${herH}" rx="${n(herH / 2)}" fill="${FOR_HER_BERRY}"/>${caps(herY + herH / 2 + 2.1, 'For Her', 5.9, '#fff', 700, herX + herW / 2 + 0.6, 'middle')}`
     : '';
   if (bottom > ruleY - 8) console.warn(`[labels] ${p.slug}: elegant front content ends at ${n(bottom)}, needs to end by ${ruleY - 8}`);
   return `<g>
