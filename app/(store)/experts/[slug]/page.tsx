@@ -16,8 +16,8 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const e = expertBySlug((await params).slug);
-  if (!e) return {};
-  return { title: `${e.name}, ${e.credentials} — Noovit`, description: e.bio?.slice(0, 155), alternates: { canonical: `/experts/${e.slug}` } };
+  if (!e) return { title: 'Page not found | Noovit', robots: { index: false } };
+  return { title: `${e.name}, ${e.credentials} | Noovit`, description: e.bio?.slice(0, 155), alternates: { canonical: `/experts/${e.slug}` } };
 }
 
 export default async function ExpertPage({ params }: { params: Promise<{ slug: string }> }) {

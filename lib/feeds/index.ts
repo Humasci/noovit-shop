@@ -1,6 +1,11 @@
 import { Product } from '@/types';
-import { productImageUrl, productUrl } from '@/lib/site';
-import { labelCounts, labelSubtitle, netQuantity } from '@/lib/labels/svg';
+import { SITE_URL, productImageUrl, productUrl } from '@/lib/site';
+import { productSpec } from '@/lib/seo';
+import { productGalleryUrls } from '@/lib/labels/image-url';
+import { GOAL_PAGES } from '@/lib/goals';
+import { goalsForProduct } from '@/lib/quiz';
+import { FOR_HER_WEB } from '@/lib/for-her';
+import { labelCounts, netQuantity } from '@/lib/labels/svg';
 
 const GOOGLE_CATEGORY = {
   human: 'Health & Beauty > Health Care > Fitness & Nutrition > Vitamins & Supplements',
@@ -18,22 +23,21 @@ export interface FeedItem {
   price: string;
   category: string;
   productType: string;
+  highlights: string[];
+  isBundle: boolean;
+  goal: string;
+  forHer: boolean;
 }
 
 // Shopping titles: brand + product + the spec people search for + count, e.g.
 // "Noovit Magnesium Sleep+ – Magnesium Glycinate 275 mg – 90 Capsules". No promo words (Google disapproves them).
-const FEED_SPECS: Record<string, string> = {
-  'magnesium-complex': 'Magnesium Glycinate 275 mg',
-  ashwagandha: 'KSM-66 Ashwagandha 600 mg with Vitamins D3, B6 & B12',
-  'lions-mane': "Lion's Mane Mushroom 1,000 mg",
-  creatine: 'Creatine Monohydrate Powder 5 g',
-  'creatine-for-women': "Women's Creatine Monohydrate Powder 5 g",
-  'creatine-hydration': 'Creatine Monohydrate 5 g with Electrolytes, Lemon',
-  coq10: 'CoQ10 Ubiquinone 200 mg',
-};
+// Specs live in lib/seo.ts (PRODUCT_SPECS), shared with image alt text and structured data.
 export function feedTitle(p: Product) {
-  if (p.bundleItems?.length) return `Noovit ${p.name} – ${p.bundleItems.length}-Product Supplement Bundle`.slice(0, 150);
-  const spec = FEED_SPECS[p.slug] ?? labelSubtitle(p);
+  if (p.bundleItems?.length) {
+    const spec = productSpec(p);
+    return `Noovit ${p.name} – ${spec ? `${spec} ` : ''}${p.bundleItems.length}-Product Supplement Bundle`.slice(0, 150);
+  }
+  const spec = productSpec(p);
   const grams = netQuantity(p).match(/^Net Wt (\d+ g)/)?.[1];
   const qty = grams ? `${grams} (${labelCounts(p).servingsPerContainer} Servings)` : netQuantity(p);
   return [`Noovit ${p.name}`, spec, qty].filter(Boolean).join(' – ').slice(0, 150);
@@ -46,12 +50,33 @@ export const toFeedItem = (p: Product): FeedItem => ({
   description: [p.description, p.shortBenefit].filter(Boolean).join(' ').slice(0, 5000),
   link: productUrl(p),
   image: productImageUrl(p),
-  extraImages: p.images.slice(1, 11),
+  // Fact images, label close-up and Supplement Facts as extra images (Shopping shows them in the product panel).
+  extraImages: productGalleryUrls(p, SITE_URL).slice(1, 11),
   inStock: p.status === 'active',
   price: `${p.basePrice.toFixed(2)} USD`,
   category: p.productType === 'pets' ? GOOGLE_CATEGORY.pets : GOOGLE_CATEGORY.human,
-  productType: p.productType,
+  productType: feedProductType(p),
+  // Short benefit lines (Google "product highlights", 2–100 allowed, max 150 characters each). Structure/function only.
+  // Ads carry no disclaimer, so only "supports"-style lines go in; anything that reads as reducing/relieving is left out.
+  highlights: p.benefits
+    .map((b) => b.replace(/\*/g, '').trim())
+    .filter((b) => b && b.length <= 150 && !/\b(reduc|reliev|prevent|treat|cure|heal|fight)/i.test(b))
+    .slice(0, 10),
+  isBundle: Boolean(p.bundleItems?.length),
+  goal: feedGoal(p),
+  forHer: FOR_HER_WEB.has(p.slug),
 });
+
+// The shop's own category path (Google "product_type"), e.g. "Supplements > Sleep & Stress", for campaign grouping.
+function feedGoal(p: Product) {
+  const g = goalsForProduct(p.slug).map((x) => GOAL_PAGES.find((page) => page.goal === x)).find(Boolean);
+  return g?.name ?? '';
+}
+function feedProductType(p: Product) {
+  if (p.productType === 'pets') return 'Pets';
+  const goal = feedGoal(p);
+  return [p.bundleItems?.length ? 'Bundles' : 'Supplements', goal].filter(Boolean).join(' > ');
+}
 
 const xml = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
@@ -71,6 +96,17 @@ ${i.extraImages.map((u) => `      <g:additional_image_link>${xml(u)}</g:addition
       <g:identifier_exists>no</g:identifier_exists>
       <g:google_product_category>${xml(i.category)}</g:google_product_category>
       <g:product_type>${xml(i.productType)}</g:product_type>
+${i.isBundle ? '      <g:is_bundle>yes</g:is_bundle>\n' : ''}${i.highlights.map((h) => `      <g:product_highlight>${xml(h)}</g:product_highlight>\n`).join('')}      <g:shipping>
+        <g:country>US</g:country>
+        <g:service>Standard</g:service>
+        <g:price>0.00 USD</g:price>
+        <g:min_handling_time>1</g:min_handling_time>
+        <g:max_handling_time>2</g:max_handling_time>
+        <g:min_transit_time>2</g:min_transit_time>
+        <g:max_transit_time>5</g:max_transit_time>
+      </g:shipping>
+      <g:custom_label_0>${xml(i.goal || 'other')}</g:custom_label_0>
+      <g:custom_label_1>${i.forHer ? 'for-her' : 'all'}</g:custom_label_1>
     </item>`
     )
     .join('\n');
@@ -90,9 +126,9 @@ const csvCell = (v: string) => `"${v.replace(/"/g, '""')}"`;
 
 // Meta (Facebook/Instagram) and TikTok catalogs take the same columns; TikTok calls the id "sku_id".
 export function catalogCsv(items: FeedItem[], idColumn: 'id' | 'sku_id') {
-  const head = [idColumn, 'title', 'description', 'availability', 'condition', 'price', 'link', 'image_link', 'additional_image_link', 'brand', 'google_product_category'];
+  const head = [idColumn, 'title', 'description', 'availability', 'condition', 'price', 'link', 'image_link', 'additional_image_link', 'brand', 'google_product_category', 'product_type', 'custom_label_0', 'custom_label_1'];
   const rows = items.map((i) =>
-    [i.id, i.title, i.description, i.inStock ? 'in stock' : 'out of stock', 'new', i.price, i.link, i.image, i.extraImages.join(','), 'Noovit', i.category]
+    [i.id, i.title, i.description, i.inStock ? 'in stock' : 'out of stock', 'new', i.price, i.link, i.image, i.extraImages.join(','), 'Noovit', i.category, i.productType, i.goal || 'other', i.forHer ? 'for-her' : 'all']
       .map(csvCell)
       .join(',')
   );

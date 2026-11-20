@@ -13,7 +13,8 @@ import { Product } from '@/types';
 import { Stars } from '@/components/ui/Stars';
 import { PlaceholderNote } from '@/components/ui/Placeholder';
 import { guidesForProduct } from '@/lib/guides';
-import { productSeo } from '@/lib/seo';
+import { productSeo, productSpec } from '@/lib/seo';
+import { productGalleryUrls } from '@/lib/labels/image-url';
 import { evidenceFor } from '@/lib/evidence';
 import { EvidenceTimeline, EvidenceTrials } from '@/components/product/EvidencePanel';
 import { GOAL_PAGES } from '@/lib/goals';
@@ -34,13 +35,13 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const product = await getStoreProduct(productSlugFromUrl((await params).slug));
-  if (!product) return {};
+  if (!product) return { title: 'Page not found | Noovit', robots: { index: false } };
   const { title, description } = productSeo(product);
   return {
     title,
     description,
     alternates: { canonical: productPath(product.slug) },
-    openGraph: { title, description, url: productPath(product.slug), images: [{ url: productImageUrl(product) }] },
+    openGraph: { title, description, url: productPath(product.slug), images: [{ url: productImageUrl(product), alt: `${product.name}${productSpec(product) ? `, ${productSpec(product)}` : ''}` }] },
   };
 }
 
@@ -131,10 +132,17 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const structured = {
     '@context': 'https://schema.org',
     '@type': 'Product',
+    '@id': `${productUrl(product)}#product`,
     name: product.name,
+    // What it is in search words ("Magnesium Glycinate 275 mg"), shared with feed titles and image alt text.
+    ...(productSpec(product) ? { alternateName: productSpec(product) } : {}),
     description: product.description,
-    image: product.images.length ? product.images : [productImageUrl(product)],
+    url: productUrl(product),
+    // Every gallery image (front, fact images, label close-up, Supplement Facts).
+    image: productGalleryUrls(product, SITE_URL),
     sku: product.slug,
+    mpn: product.slug,
+    category: isPet ? 'Pet supplements' : 'Dietary supplements',
     brand: { '@type': 'Brand', name: 'Noovit' },
     offers: {
       '@type': 'Offer',
@@ -160,6 +168,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         applicableCountry: 'US',
         returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
         merchantReturnDays: 90,
+        returnMethod: 'https://schema.org/ReturnByMail',
         returnFees: 'https://schema.org/FreeReturn',
       },
     },

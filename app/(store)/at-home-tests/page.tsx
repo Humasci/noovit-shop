@@ -3,10 +3,12 @@ import type { Metadata } from 'next';
 import { ArrowRight, Droplet, Flower2, Activity, HeartPulse, Brain, User, PawPrint } from 'lucide-react';
 import { TEST_CATEGORY_LIST, TEST_KITS, type TestCategoryId } from '@/lib/tests';
 import { TestsWaitlist } from '@/components/tests/TestsWaitlist';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { pageLd } from '@/lib/structured-data';
 
 export const metadata: Metadata = {
-  title: 'At-Home Health Tests: Iron, Hormones, Thyroid, Cholesterol | Noovit',
-  description: 'At-home test kits are coming to Noovit: iron and nutrients, perimenopause hormones, thyroid, heart and metabolic, cortisol, and checks for pets. Join the waitlist.',
+  title: 'At-Home Health Tests: Iron, Hormones, Thyroid | Noovit',
+  description: 'At-home test kits are coming: iron and nutrients, perimenopause hormones, thyroid, cholesterol, A1c, cortisol and pet checks. Join the waitlist.',
   alternates: { canonical: '/at-home-tests' },
 };
 
@@ -15,6 +17,7 @@ const ICONS: Record<TestCategoryId, typeof Droplet> = { nutrients: Droplet, wome
 export default function TestsPage() {
   return (
     <>
+      <JsonLd data={pageLd({ path: '/at-home-tests', name: 'At-home health tests', description: metadata.description ?? undefined, crumbs: [['At-home tests', '/at-home-tests']], items: TEST_KITS.map((k) => ({ name: k.name, path: `/at-home-tests/${k.slug}` })) })} />
       <section className="bg-[var(--studio)]">
         <div className="container px-6 py-14 md:py-20">
           <nav className="mb-4 text-xs text-[var(--color-muted)]">

@@ -3,9 +3,11 @@ import Link from 'next/link';
 import { Mail, Clock, RefreshCw } from 'lucide-react';
 import { ContactForm } from '@/components/contact/ContactForm';
 import { getSettings, supportEmail } from '@/lib/settings';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { pageLd } from '@/lib/structured-data';
 
 export const metadata: Metadata = {
-  title: 'Contact Us — Noovit Customer Support',
+  title: 'Contact Us: Customer Support | Noovit',
   description: 'Questions about an order, a subscription or our supplements? Send us a message and we reply within one business day.',
   alternates: { canonical: '/contact' },
 };
@@ -14,6 +16,7 @@ export default async function ContactPage() {
   const [email, settings] = await Promise.all([supportEmail(), getSettings()]);
   return (
     <>
+      <JsonLd data={pageLd({ path: '/contact', name: 'Contact Noovit', type: 'ContactPage', crumbs: [['Contact', '/contact']] })} />
       <section className="bg-[var(--color-soft)] py-16">
         <div className="container px-6">
           <h1 className="text-4xl md:text-5xl">Get in touch</h1>

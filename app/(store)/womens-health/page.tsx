@@ -4,8 +4,8 @@ import { WOMEN_IMAGES } from '@/data/content';
 import { HealthHub } from '@/components/hub/HealthHub';
 
 export const metadata: Metadata = {
-  title: "Women's Health Supplements: Strength, Sleep, Menopause | Noovit",
-  description: "Evidence-led supplements for women: creatine for strength, magnesium glycinate and ashwagandha for sleep and stress, plus support for perimenopause, energy and iron. Free US shipping.",
+  title: "Women's Health Supplements & Menopause Support | Noovit",
+  description: 'Evidence-led supplements for women: creatine for strength, magnesium glycinate and ashwagandha for sleep and stress, plus menopause and iron support.',
   alternates: { canonical: '/womens-health' },
 };
 
@@ -14,6 +14,7 @@ export default function WomenPage() {
     <HealthHub
       cfg={{
         crumb: "Women's Health",
+        path: '/womens-health',
         title: "Women's health, backed by evidence",
         intro: 'Strength, sleep, stress and the changes of midlife. Researched ingredients at clear doses, printed on the front of every bottle.',
         hero: { src: WOMEN_IMAGES.hub, alt: 'Four women dancing in a circle in a sunny garden', position: 'object-center' },

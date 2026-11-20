@@ -16,8 +16,8 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const post = await find((await params).slug);
-  if (!post) return {};
-  const title = post.seoTitle || `${post.title} — Noovit`;
+  if (!post) return { title: 'Page not found | Noovit', robots: { index: false } };
+  const title = post.seoTitle || `${post.title} | Noovit`;
   const description = post.seoDescription || post.excerpt;
   return {
     title,

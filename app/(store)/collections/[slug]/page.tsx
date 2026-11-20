@@ -4,6 +4,9 @@ import type { Metadata } from 'next';
 import { getStoreCollections, getStoreProducts } from '@/lib/catalog/server';
 import { ProductCard } from '@/components/product/ProductCard';
 import { TrustSection } from '@/components/sections/Sections';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { pageLd } from '@/lib/structured-data';
+import { productPath } from '@/lib/urls';
 
 async function load(slug: string) {
   const collection = (await getStoreCollections()).find((c) => c.slug === slug);
@@ -19,11 +22,11 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const data = await load((await params).slug);
-  if (!data) return {};
+  if (!data) return { title: 'Page not found | Noovit', robots: { index: false } };
   const { collection: c } = data;
   return {
-    title: c.seoTitle || `${c.title} — Noovit`,
-    description: c.seoDescription || c.description,
+    title: c.seoTitle || (`${c.title} Supplements | Noovit`.length <= 60 && !/supplement/i.test(c.title) ? `${c.title} Supplements | Noovit` : `${c.title} | Noovit`),
+    description: c.seoDescription || (c.description && c.description.length >= 70 ? c.description : `${c.title}: ${c.description ? c.description.replace(/\.?$/, '. ') : ''}Evidence-led supplements with the dose on the front. Free US shipping, 90-day guarantee.`.slice(0, 160)),
     alternates: { canonical: `/collections/${c.slug}` },
     ...(c.image ? { openGraph: { images: [{ url: c.image }] } } : {}),
   };
@@ -36,6 +39,7 @@ export default async function CollectionPage({ params }: { params: Promise<{ slu
 
   return (
     <>
+      <JsonLd data={pageLd({ path: `/collections/${collection.slug}`, name: collection.title, crumbs: [['Shop', '/shop'], [collection.title, `/collections/${collection.slug}`]], items: items.map((p) => ({ name: p.name, path: productPath(p.slug) })) })} />
       <section className="relative overflow-hidden bg-[var(--color-soft)]">
         {collection.image && (
           <>

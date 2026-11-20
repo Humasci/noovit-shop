@@ -20,7 +20,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const g = findGuide((await params).slug);
-  if (!g) return {};
+  if (!g) return { title: 'Page not found | Noovit', robots: { index: false } };
   return {
     title: g.metaTitle,
     description: g.metaDescription,

@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { LEGAL_NAME } from '@/lib/site';
 import { getSettings, supportEmail } from '@/lib/settings';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { pageLd } from '@/lib/structured-data';
 
 // PLACEHOLDER: have these reviewed by a lawyer before launch.
 const POLICIES: Record<string, { title: string; sections: { h: string; p: string }[] }> = {
@@ -40,9 +42,9 @@ const POLICY_DESCRIPTIONS: Record<string, string> = {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const policy = POLICIES[slug];
-  if (!policy) return {};
+  if (!policy) return { title: 'Page not found | Noovit', robots: { index: false } };
   const description = POLICY_DESCRIPTIONS[slug] ?? `Noovit ${policy.title.toLowerCase()}.`;
-  return { title: `${policy.title} — Noovit`, description, alternates: { canonical: `/policies/${slug}` } };
+  return { title: `${policy.title} | Noovit`, description, alternates: { canonical: `/policies/${slug}` } };
 }
 
 export function generateStaticParams() {
@@ -53,7 +55,10 @@ export default async function PolicyPage({ params }: { params: Promise<{ slug: s
   const policy = POLICIES[(await params).slug];
   if (!policy) notFound();
   const [email, settings] = await Promise.all([supportEmail(), getSettings()]);
+  const slug = (await params).slug;
   return (
+    <>
+    <JsonLd data={pageLd({ path: `/policies/${slug}`, name: policy.title, crumbs: [[policy.title, `/policies/${slug}`]] })} />
     <article className="container max-w-3xl px-6 py-16">
       <h1 className="text-4xl">{policy.title}</h1>
       {policy.sections.map((s) => (
@@ -71,5 +76,6 @@ export default async function PolicyPage({ params }: { params: Promise<{ slug: s
         </p>
       </section>
     </article>
+    </>
   );
 }

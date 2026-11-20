@@ -1,4 +1,24 @@
 import type { Product } from '@/types';
+import { labelSubtitle } from '@/lib/labels/svg';
+
+// What the product is, in the words people search for ("Magnesium Glycinate 275 mg"). Used in Shopping feed titles,
+// image alt text and the Product structured data. Products not listed fall back to the label subtitle.
+export const PRODUCT_SPECS: Record<string, string> = {
+  'magnesium-complex': 'Magnesium Glycinate 275 mg',
+  ashwagandha: 'KSM-66 Ashwagandha 600 mg with Vitamins D3, B6 & B12',
+  'lions-mane': "Lion's Mane Mushroom 1,000 mg",
+  creatine: 'Creatine Monohydrate Powder 5 g',
+  'creatine-for-women': 'Creatine for Women, Monohydrate Powder 5 g',
+  'creatine-hydration': 'Creatine Monohydrate 5 g with Electrolytes, Lemon',
+  coq10: 'CoQ10 Ubiquinone 200 mg',
+  'turmeric-complex': 'Turmeric Curcumin with Glucosamine & Chondroitin',
+  'iron-complex': 'Iron Bisglycinate 20 mg with Vitamin C',
+  'collagen-complex': 'Collagen with Hyaluronic Acid & Vitamin C',
+  'biotin-complex': 'Biotin 5,000 mcg with Zinc & Selenium',
+  'menopause-complex': 'Menopause Supplement with Black Cohosh & Sage',
+  'sleep-calm-stack': 'Magnesium Glycinate + KSM-66 Ashwagandha',
+};
+export const productSpec = (p: Product) => PRODUCT_SPECS[p.slug] ?? (p.bundleItems?.length ? '' : labelSubtitle(p));
 
 // Search titles and descriptions for product pages. People search for the ingredient and dose ("magnesium glycinate
 // 275 mg"), not our product names, so the title leads with that. Order of precedence: what staff type in Admin
@@ -23,7 +43,7 @@ const PRODUCT_SEO: Record<string, { title: string; description: string }> = {
   },
   'creatine-for-women': {
     title: 'Creatine for Women: Pure Monohydrate, 5 g | Noovit',
-    description: 'Creatine monohydrate for women: 5 g per scoop, 50 servings (281 g). One ingredient, unflavored. Supports strength, lean muscle and memory.* Adults 18+. Free US shipping.',
+    description: 'Creatine for women: pure creatine monohydrate, 5 g per scoop, 50 servings. Unflavored. Supports strength and lean muscle.* Adults 18+. Free US shipping.',
   },
   coq10: {
     title: 'CoQ10 200 mg Capsules (Ubiquinone) | Noovit',

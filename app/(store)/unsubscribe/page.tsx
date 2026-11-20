@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation';
 import { verifyToken } from '@/lib/sign';
 import { unsubscribe } from '@/lib/marketing/subscribers';
 
-export const metadata: Metadata = { title: 'Unsubscribe — Noovit', robots: { index: false } };
+export const metadata: Metadata = { title: 'Unsubscribe | Noovit', robots: { index: false } };
 
 async function confirm(formData: FormData) {
   'use server';

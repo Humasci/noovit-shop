@@ -9,7 +9,7 @@ import { CopyField } from '@/components/admin/CopyField';
 import { Badge, date, money } from '@/components/admin/ui';
 
 // Private partner dashboard, reached by the unguessable link in the partner's welcome email.
-export const metadata: Metadata = { title: 'Partner dashboard — Noovit', robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: 'Partner dashboard | Noovit', robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
 
 const SOURCE: Record<string, string> = { code: 'Code', link: 'Link', renewal: 'Renewal' };

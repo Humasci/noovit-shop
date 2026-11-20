@@ -1,9 +1,11 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { GUIDES } from '@/lib/guides';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { pageLd } from '@/lib/structured-data';
 
 export const metadata: Metadata = {
-  title: 'Supplement Guides — Benefits, Dosage & Side Effects | Noovit',
+  title: 'Supplement Guides: Benefits, Dosage, Side Effects | Noovit',
   description: 'Plain-English, evidence-graded guides to supplements: what they are, what the research says, how much to take, side effects and interactions.',
   alternates: { canonical: '/guides' },
 };
@@ -11,6 +13,7 @@ export const metadata: Metadata = {
 export default function GuidesIndex() {
   return (
     <>
+      <JsonLd data={pageLd({ path: '/guides', name: 'Supplement guides', crumbs: [['Guides', '/guides']], items: GUIDES.map((g) => ({ name: g.ingredient, path: `/guides/${g.slug}` })) })} />
       <section className="relative overflow-hidden bg-[var(--color-soft)] py-20">
         <div className="container relative px-6">
           <h1 className="text-4xl md:text-5xl">Supplement guides</h1>

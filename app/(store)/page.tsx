@@ -17,6 +17,7 @@ import { WOMEN_FEATURED } from '@/lib/women';
 import { MEN_FEATURED, MEN_LIVE } from '@/lib/men';
 import { findKit } from '@/lib/tests';
 import { productPath } from '@/lib/urls';
+import { organizationLd, websiteLd } from '@/lib/structured-data';
 
 const HOME_TESTS = ['iron-test', 'perimenopause-test', 'thyroid-test', 'cholesterol-test'].map((s) => findKit(s)!).filter(Boolean);
 
@@ -53,7 +54,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <JsonLd data={{ '@context': 'https://schema.org', '@type': 'Organization', name: 'Noovit', legalName: LEGAL_NAME, url: SITE_URL, address: { '@type': 'PostalAddress', streetAddress: '30 N Gould St Ste R', addressLocality: 'Sheridan', addressRegion: 'WY', postalCode: '82801', addressCountry: 'US' } }} />
+      <JsonLd data={[organizationLd, websiteLd]} />
       {/* Hero: one full-bleed studio scene. The copy sits on the same grey backdrop as the bottles
           (public/images/lineup-hero.png, scripts/site-images.ts), so there is no card edge. */}
       <section className="relative overflow-hidden bg-[var(--sage)]">

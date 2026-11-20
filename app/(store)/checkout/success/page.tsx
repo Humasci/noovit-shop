@@ -9,7 +9,7 @@ import { PurchaseTracker } from '@/components/analytics/PurchaseTracker';
 import { CustomerReviewsOptIn } from '@/components/analytics/CustomerReviewsOptIn';
 import { getSettings } from '@/lib/settings';
 
-export const metadata: Metadata = { title: 'Order confirmed — Noovit', robots: { index: false } };
+export const metadata: Metadata = { title: 'Order confirmed | Noovit', robots: { index: false } };
 
 async function loadSession(id: string | undefined) {
   if (!id || !stripeConfigured()) return null;

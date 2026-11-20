@@ -8,11 +8,15 @@ import { ProductCard } from '@/components/product/ProductCard';
 import type { Product } from '@/types';
 import { TrustSection } from '@/components/sections/Sections';
 import { MasonryGallery } from '@/components/hub/MasonryGallery';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { pageLd } from '@/lib/structured-data';
+import { productPath } from '@/lib/urls';
 
 // Shared layout for the Women's Health and Men's Health hubs: a full-bleed hero photo fading into the page colour
 // (like Pets), sections with products and guides, a responsive photo masonry, the quiz and the trust row.
 export interface HubConfig {
   crumb: string;
+  path: string;
   title: string;
   intro: string;
   hero: { src: string; alt: string; position?: string };
@@ -34,8 +38,17 @@ export async function HealthHub({ cfg }: { cfg: HubConfig }) {
     }))
     .filter((s) => s.items.length > 0);
 
+  const ld = pageLd({
+    path: cfg.path,
+    name: cfg.crumb,
+    description: cfg.intro,
+    crumbs: [[cfg.crumb, cfg.path]],
+    items: [...new Map(sections.flatMap((s) => s.items).map((p) => [p.slug, { name: p.name, path: productPath(p.slug) }])).values()],
+  });
+
   return (
     <>
+      <JsonLd data={ld} />
       {/* Hero (owner, 20 Nov): the whole photo shows on the right, fading softly into the page colour under the text;
           on phones the photo sits on top and fades into the text below. */}
       <section className="relative overflow-hidden bg-[var(--studio)]">

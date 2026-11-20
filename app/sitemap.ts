@@ -2,7 +2,6 @@ import type { MetadataRoute } from 'next';
 import { getStoreCollections, getStoreProducts } from '@/lib/catalog/server';
 import { SITE_URL, productImageUrl } from '@/lib/site';
 import { getPublishedPosts } from '@/lib/blog';
-import { petProducts } from '@/data/products';
 import { GOAL_PAGES } from '@/lib/goals';
 import { GUIDES } from '@/lib/guides';
 import { ADVISORS } from '@/data/content';
@@ -18,8 +17,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // sitemap" errors in Search Console and audits. The full sitemap appears once SITE_LIVE=true (after a redeploy).
   if (!siteLive()) return [{ url: SITE_URL, changeFrequency: 'weekly', priority: 1 }];
   const [products, collections, posts] = await Promise.all([getStoreProducts(), getStoreCollections(), getPublishedPosts()]);
-  // /pets and /blog are listed only once they have content (they are noindex until then).
-  const pages = [...PAGES, ...(petProducts(products).length ? ['/pets'] : []), ...(posts.length ? ['/blog'] : [])];
+  // /blog is listed only once it has posts (noindex until then). /pets always: its at-home kits are content.
+  const pages = [...PAGES, '/pets', ...(posts.length ? ['/blog'] : [])];
   return [
     ...pages.map((path) => ({ url: `${SITE_URL}${path}`, changeFrequency: 'weekly' as const, priority: path === '' ? 1 : 0.6 })),
     { url: `${SITE_URL}/guides`, changeFrequency: 'weekly' as const, priority: 0.6 },

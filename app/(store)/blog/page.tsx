@@ -2,11 +2,13 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { getPublishedPosts } from '@/lib/blog';
 import { postDate } from '@/components/blog/Article';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { pageLd } from '@/lib/structured-data';
 
 export async function generateMetadata(): Promise<Metadata> {
   const posts = await getPublishedPosts();
   return {
-    title: 'Journal — Supplement & Wellness Guides | Noovit',
+    title: 'Journal: Supplement Research, Explained | Noovit',
     description: 'Science-backed guides on supplements, sleep, gut health, nutrition and pet wellness from the Noovit team.',
     alternates: { canonical: '/blog' },
     // An empty journal is thin content: keep it out of search until the first article is published.
@@ -18,6 +20,7 @@ export default async function BlogIndex() {
   const posts = await getPublishedPosts();
   return (
     <>
+      <JsonLd data={pageLd({ path: '/blog', name: 'Noovit Journal', crumbs: [['Journal', '/blog']], items: posts.map((p) => ({ name: p.title, path: `/blog/${p.slug}` })) })} />
       <section className="bg-[var(--color-soft)] py-16 text-center">
         <div className="container px-6">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-accent)]">Noovit Journal</p>

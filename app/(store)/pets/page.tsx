@@ -8,8 +8,11 @@ import { getStoreProducts } from '@/lib/catalog/server';
 import { FAQSection, CommunitySection, SectionHeading } from '@/components/sections/Sections';
 import { MasonryGallery } from '@/components/hub/MasonryGallery';
 import { PET_IMAGES, PET_FAQS, VETS } from '@/data/content';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { pageLd, faqLd } from '@/lib/structured-data';
+import { TEST_KITS } from '@/lib/tests';
 
-// Until pet products are published this is a waitlist page, kept out of search results.
+// Until pet products are published this is the at-home kits waitlist page (indexed; supplements come later).
 export async function generateMetadata(): Promise<Metadata> {
   const live = petProducts(await getStoreProducts()).length > 0;
   return live
@@ -18,7 +21,12 @@ export async function generateMetadata(): Promise<Metadata> {
         description: 'Probiotic, hip & joint, calming and skin & coat supplements for dogs and cats, dosed by weight.',
         alternates: { canonical: '/pets' },
       }
-    : { title: 'Noovit Pets: At-Home Health Checks for Dogs & Cats', description: 'At-home urine wellness strips and DNA health tests for dogs and cats are coming to Noovit Pets. Join the waitlist to hear first.', robots: { index: false } };
+    : {
+        // Indexed (20 Nov): the at-home kit pages are real content, like the human test pages.
+        title: 'Noovit Pets: At-Home Health Tests for Dogs & Cats',
+        description: 'At-home urine test strips and DNA health tests for dogs and cats are coming to Noovit Pets. What each test checks, and the waitlist.',
+        alternates: { canonical: '/pets' },
+      };
 }
 
 const PET_TRUST = [
@@ -36,6 +44,7 @@ export default async function PetsPage({ searchParams }: { searchParams: Promise
   const live = petProducts(products).length > 0;
   return (
     <>
+      <JsonLd data={[...pageLd({ path: '/pets', name: 'Noovit Pets', crumbs: [['Noovit Pets', '/pets']], items: TEST_KITS.filter((k) => k.pets).map((k) => ({ name: k.name, path: `/at-home-tests/${k.slug}` })) }), ...(live ? [faqLd(PET_FAQS)] : [])]} />
       <section className="relative overflow-hidden">
         <img src={PET_IMAGES.hero} alt="A woman relaxing on a sofa with her dog" className="absolute inset-0 h-full w-full object-cover object-right" />
         <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-pets-soft)] via-[var(--color-pets-soft)]/85 to-transparent" />

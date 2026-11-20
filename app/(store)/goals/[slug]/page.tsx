@@ -6,6 +6,9 @@ import { productsForGoal } from '@/lib/quiz';
 import { GOAL_PAGES, findGoal } from '@/lib/goals';
 import { ProductCard } from '@/components/product/ProductCard';
 import { TrustSection } from '@/components/sections/Sections';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { pageLd } from '@/lib/structured-data';
+import { productPath } from '@/lib/urls';
 
 export function generateStaticParams() {
   return GOAL_PAGES.map((g) => ({ slug: g.slug }));
@@ -13,7 +16,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const goal = findGoal((await params).slug);
-  if (!goal) return {};
+  if (!goal) return { title: 'Page not found | Noovit', robots: { index: false } };
   return { title: goal.seoTitle, description: goal.seoDescription, alternates: { canonical: `/goals/${goal.slug}` } };
 }
 
@@ -24,6 +27,7 @@ export default async function GoalPage({ params }: { params: Promise<{ slug: str
 
   return (
     <>
+      <JsonLd data={pageLd({ path: `/goals/${goal.slug}`, name: goal.title, description: goal.seoDescription, crumbs: [['Shop', '/shop'], [goal.name, `/goals/${goal.slug}`]], items: items.map((p) => ({ name: p.name, path: productPath(p.slug) })) })} />
       <section className="bg-[var(--color-soft)]">
         <div className="container px-6 py-14 md:py-20">
           <nav className="mb-4 text-xs text-[var(--color-muted)]">

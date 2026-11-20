@@ -4,6 +4,8 @@ import type { Metadata } from 'next';
 import { ArrowRight, Check } from 'lucide-react';
 import { TEST_KITS, findKit } from '@/lib/tests';
 import { TestsWaitlist } from '@/components/tests/TestsWaitlist';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { pageLd } from '@/lib/structured-data';
 
 export function generateStaticParams() {
   return TEST_KITS.map((k) => ({ slug: k.slug }));
@@ -11,7 +13,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const k = findKit((await params).slug);
-  if (!k) return {};
+  if (!k) return { title: 'Page not found | Noovit', robots: { index: false } };
   return { title: k.seoTitle, description: k.seoDescription, alternates: { canonical: `/at-home-tests/${k.slug}` } };
 }
 
@@ -23,6 +25,7 @@ export default async function TestKitPage({ params }: { params: Promise<{ slug: 
     : ['Order your kit; it ships free with a prepaid return.', 'Collect a small finger-prick sample at home and post it back.', 'Results arrive online, reviewed by an independent licensed physician.'];
   return (
     <>
+      <JsonLd data={pageLd({ path: `/at-home-tests/${k.slug}`, name: k.name, description: k.seoDescription, crumbs: [[k.pets ? 'Noovit Pets' : 'At-home tests', k.pets ? '/pets' : '/at-home-tests'], [k.name, `/at-home-tests/${k.slug}`]] })} />
       <section className={k.pets ? 'bg-[var(--color-pets-soft)]' : 'bg-[var(--studio)]'}>
         <div className="container px-6 py-14 md:py-20">
           <nav className="mb-4 text-xs text-[var(--color-muted)]">

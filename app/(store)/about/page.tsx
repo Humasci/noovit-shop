@@ -7,9 +7,11 @@ import { latestReviews } from '@/lib/reviews';
 import { getSettings, placeholdersOn } from '@/lib/settings';
 import { PLACEHOLDER_REVIEWS } from '@/data/placeholders';
 import { ADVISORS } from '@/data/content';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { pageLd } from '@/lib/structured-data';
 
 export const metadata: Metadata = {
-  title: 'About Noovit — Clean, Evidence-Based Supplements',
+  title: 'About Noovit: Evidence-Led Supplements, Clear Doses',
   description: 'Why we started Noovit: simple, well-dosed supplements with clear labels, free US shipping and subscriptions you can cancel anytime.',
   alternates: { canonical: '/about' },
 };
@@ -28,6 +30,7 @@ export default async function AboutPage() {
   const reviewProps = { reviews: placeholder ? PLACEHOLDER_REVIEWS : real, placeholder };
   return (
     <>
+      <JsonLd data={pageLd({ path: '/about', name: 'About Noovit', type: 'AboutPage', crumbs: [['About', '/about']] })} />
       <section className="relative overflow-hidden bg-[var(--color-navy)]">
         <div className="container relative px-6 py-28 text-center text-white">
           <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-accent-light)]">About Noovit</p>
