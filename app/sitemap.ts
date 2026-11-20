@@ -7,8 +7,9 @@ import { GOAL_PAGES } from '@/lib/goals';
 import { GUIDES } from '@/lib/guides';
 import { ADVISORS } from '@/data/content';
 import { siteLive } from '@/lib/launch';
+import { MEN_LIVE } from '@/lib/men';
 
-const PAGES = ['', '/women', '/men', '/tests/nutrient-check', '/shop', '/quiz', '/about', '/reviews', '/faq', '/contact', '/policies/delivery-returns', '/policies/privacy', '/policies/terms'];
+const PAGES = ['', '/women', ...(MEN_LIVE ? ['/men'] : []), '/tests/nutrient-check', '/shop', '/quiz', '/about', '/reviews', '/faq', '/contact', '/policies/delivery-returns', '/policies/privacy', '/policies/terms'];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Pre-launch every page is noindex (the coming-soon page), so listing them would only produce "noindex page in

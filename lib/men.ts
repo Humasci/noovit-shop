@@ -38,6 +38,9 @@ export const MEN_SECTIONS: WomenSection[] = [
   },
 ];
 
+// Hidden for now (owner, 20 Nov): no nav link, no homepage section, /men returns 404. Set true to show.
+export const MEN_LIVE = false;
+
 export const MEN_FEATURED = ['creatine', 'lions-mane', 'coq10', 'magnesium-complex'];
 
 export const MEN_GALLERY = [

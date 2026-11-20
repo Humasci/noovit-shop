@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
-import { MEN_SECTIONS, MEN_GALLERY } from '@/lib/men';
+import { notFound } from 'next/navigation';
+import { MEN_SECTIONS, MEN_GALLERY, MEN_LIVE } from '@/lib/men';
 import { MEN_IMAGES } from '@/data/content';
 import { HealthHub } from '@/components/hub/HealthHub';
 
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default function MenPage() {
+  if (!MEN_LIVE) notFound();
   return (
     <HealthHub
       cfg={{

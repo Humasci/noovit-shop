@@ -9,6 +9,7 @@ import { useHydrated } from '@/lib/useHydrated';
 import { Logo, CrossIcon } from '@/components/layout/Logo';
 import { brandify } from '@/components/brand/Brand';
 import { GOAL_PAGES } from '@/lib/goals';
+import { MEN_LIVE } from '@/lib/men';
 
 // Top navigation: Shop (with categories), Best Sellers, Journal and the quiz. Pets is a separate button on the right
 // (and listed in the mobile menu); About, Reviews, FAQ and Contact live in the footer.
@@ -25,7 +26,7 @@ const GOAL_LINKS = GOAL_PAGES.map((g) => ({ name: g.name, href: `/goals/${g.slug
 const NAV: NavItem[] = [
   // Women's Health leads the human side (owner, 19 Nov).
   { name: "Women's Health", href: '/women' },
-  { name: "Men's Health", href: '/men' },
+  ...(MEN_LIVE ? [{ name: "Men's Health", href: '/men' }] : []),
   {
     name: 'Shop',
     href: '/shop',

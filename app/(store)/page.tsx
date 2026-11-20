@@ -14,7 +14,7 @@ import { Brand, brandify } from '@/components/brand/Brand';
 import { AskButton } from '@/components/advisor/AskButton';
 import { advisorEnabled } from '@/lib/advisor';
 import { WOMEN_FEATURED } from '@/lib/women';
-import { MEN_FEATURED } from '@/lib/men';
+import { MEN_FEATURED, MEN_LIVE } from '@/lib/men';
 
 // Shop by goal: one tile per core product, tinted in its label colour.
 // The first four active ones show (owner, 17 Nov: four columns); the rest are fallbacks.
@@ -119,7 +119,7 @@ export default async function HomePage() {
       )}
 
       {/* Men's Health (owner, 20 Nov): one homepage section per audience: Women, Men, Pets. */}
-      {men.length > 0 && (
+      {MEN_LIVE && men.length > 0 && (
         <section className="section">
           <div className="container px-6">
             <div className="grid overflow-hidden rounded-3xl bg-[var(--studio)] md:grid-cols-[1fr_1.1fr]">

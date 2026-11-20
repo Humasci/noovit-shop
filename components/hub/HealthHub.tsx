@@ -60,14 +60,21 @@ export async function HealthHub({ cfg }: { cfg: HubConfig }) {
       {sections.map((s, i) => (
         <section key={s.id} id={s.id} className={`section scroll-mt-24 ${i % 2 ? 'bg-[var(--color-soft)]' : ''}`}>
           <div className="container px-6">
-            <div className="mb-8 grid items-center gap-6 md:grid-cols-[1.4fr_1fr]">
-              <div className="max-w-2xl">
-                <h2 className="text-3xl md:text-4xl">{s.title}</h2>
-                <p className="mt-3 text-[var(--color-ink)]/80">{s.intro}</p>
-              </div>
-              {s.image && <img src={s.image} alt={s.imageAlt ?? ''} loading="lazy" className={s.portrait ? 'aspect-[4/5] w-full max-w-sm justify-self-end rounded-3xl object-cover object-[center_65%]' : 'aspect-[16/10] w-full rounded-3xl object-cover'} />}
+            <div className="mb-8 max-w-2xl">
+              <h2 className="text-3xl md:text-4xl">{s.title}</h2>
+              <p className="mt-3 text-[var(--color-ink)]/80">{s.intro}</p>
             </div>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-x-5 sm:gap-y-10 lg:grid-cols-4">
+            {/* One grid per section (owner, 20 Nov): the photo is a wide tile beside the product cards (alternating
+                sides), so rows line up with no empty space. Phones: photo on top, then the cards. */}
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-flow-dense lg:grid-cols-4">
+              {s.image && (
+                <img
+                  src={s.image}
+                  alt={s.imageAlt ?? ''}
+                  loading="lazy"
+                  className={`aspect-[4/3] h-full w-full rounded-3xl object-cover sm:col-span-2 lg:aspect-auto ${i % 2 ? 'lg:col-start-3' : 'lg:col-start-1'} ${s.portrait ? 'object-[center_30%]' : 'object-center'}`}
+                />
+              )}
               {s.items.map((p) => (
                 <ProductCard key={p.id} product={p} />
               ))}
