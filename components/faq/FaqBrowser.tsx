@@ -58,7 +58,7 @@ export function FaqBrowser({ products }: { products: Product[] }) {
               <h2 className="text-3xl text-white md:text-4xl">Small daily habits, big long-term results.</h2>
               <Link href="/shop" className="btn mt-6 bg-white text-[var(--color-navy)]">Shop Now</Link>
             </div>
-            <img src="/images/lineup-5.png?v=3" alt="" className="h-full w-full bg-[var(--studio)] object-cover" />
+            <img src="/images/lineup-5.png?v=4" alt="" className="h-full w-full bg-[var(--studio)] object-cover" />
           </div>
         </div>
       </section>

@@ -51,7 +51,7 @@ export default async function AboutPage() {
               <p>The result is a focused range of supplements with clear labels, honest claims and a 90-day guarantee behind them.</p>
             </div>
           </div>
-          <img src="/images/lineup-5.png?v=3" alt="The Noovit core range" className="aspect-[4/3] w-full rounded-3xl bg-[var(--studio)] object-cover" />
+          <img src="/images/lineup-5.png?v=4" alt="The Noovit core range" className="aspect-[4/3] w-full rounded-3xl bg-[var(--studio)] object-cover" />
         </div>
       </section>
 

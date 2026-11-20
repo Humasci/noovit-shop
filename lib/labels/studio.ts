@@ -273,13 +273,14 @@ export async function studioGroupPng(products: Product[], width: number, height:
       .toBuffer({ resolveWithObject: true });
     return { data, ch: info.channels };
   };
+  const full = fullBottleMask(t); // includes the white base and cap rim
   for (const [i, p] of products.entries()) {
     const r = await studioPhotoRaw(p);
     const left = Math.round((r.box.x0 + r.box.x1) / 2 - side / 2);
     const rgba = Buffer.alloc(t.W * t.H * 4);
     for (let m = 0; m < t.W * t.H; m++) {
       rgba[m * 4] = r.data[m * 3]; rgba[m * 4 + 1] = r.data[m * 3 + 1]; rgba[m * 4 + 2] = r.data[m * 3 + 2];
-      rgba[m * 4 + 3] = Math.round(t.mask[m] * 255);
+      rgba[m * 4 + 3] = Math.round(full.fill[m] * 255);
     }
     const [px, sh] = await Promise.all([resize(rgba, 4, left), resize(shadeFull, 1, left)]);
     const ox = Math.round(x0 + i * opts.step), oy = Math.round(opts.y);
@@ -304,9 +305,12 @@ export async function studioGroupPng(products: Product[], width: number, height:
 
 // The labelled bottle cut out of the studio photo (RGBA, alpha = bottle mask), cropped to the bottle, for scene shots
 // composited onto other backgrounds (scripts/scene-shots.ts). Neutral whites are warmed towards `tint`.
-export async function studioCutout(p: Product, tint: [number, number, number] = BACKDROP) {
-  const t = await (cached ??= analyse());
-  const r = await studioPhotoRaw(p);
+// The whole bottle as a mask: the template mask stops at the label's bottom edge and misses the cap's top rim, so the
+// white base and rim are recovered here. Shared by the cut-out (scene shots) and the group shots (site line-ups), so
+// bottle bottoms never melt into the backdrop. Computed once.
+let fullMaskCache: { fill: Float32Array; minX: number; maxX: number; minY: number; maxY: number } | undefined;
+function fullBottleMask(t: Awaited<ReturnType<typeof analyse>>) {
+  if (fullMaskCache) return fullMaskCache;
   let minX = t.W, maxX = 0, minY = t.H, maxY = 0;
   for (let m = 0; m < t.W * t.H; m++) if (t.mask[m] > 0.02) { const x = m % t.W, y = (m / t.W) | 0; if (x < minX) minX = x; if (x > maxX) maxX = x; if (y < minY) minY = y; if (y > maxY) maxY = y; }
   // The mask stops at the label's bottom edge; the white base below it is found here: pixels clearly brighter than
@@ -360,7 +364,6 @@ export async function studioCutout(p: Product, tint: [number, number, number] = 
     base.set(y, [t.x0 + inset, t.x1 - inset]);
   }
   maxY = baseEnd;
-  const w = maxX - minX + 1, h = maxY - minY + 1;
   // The bottle is convex in every row: fill each row between its outermost solid pixels, so small mask gaps (the
   // ribbed cap's highlights) don't show the new background through.
   const fill = new Float32Array(t.W * t.H);
@@ -371,6 +374,15 @@ export async function studioCutout(p: Product, tint: [number, number, number] = 
     if (b) { l = l < 0 ? b[0] : Math.min(l, b[0]); r = Math.max(r, b[1]); }
     for (let x = minX; x <= maxX; x++) { const m = y * t.W + x; fill[m] = l >= 0 && x >= l && x <= r ? 1 : t.mask[m]; }
   }
+  fullMaskCache = { fill, minX, maxX, minY, maxY };
+  return fullMaskCache;
+}
+
+export async function studioCutout(p: Product, tint: [number, number, number] = BACKDROP) {
+  const t = await (cached ??= analyse());
+  const r = await studioPhotoRaw(p);
+  const { fill, minX, maxX, minY, maxY } = fullBottleMask(t);
+  const w = maxX - minX + 1, h = maxY - minY + 1;
   const out = Buffer.alloc(w * h * 4);
   for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
     const m = (y + minY) * t.W + x + minX, k = m * 3, o = (y * w + x) * 4;

@@ -74,7 +74,7 @@ export default async function HomePage() {
             </ul>
           </div>
           <Link href="/shop" aria-label="Shop the range" className="block">
-            <img src="/images/lineup-hero.png?v=4" alt="Noovit Magnesium Sleep+, Lion's Mane and Ashwagandha Calm+ bottles" className="w-full" fetchPriority="high" />
+            <img src="/images/lineup-hero.png?v=5" alt="Noovit Magnesium Sleep+, Lion's Mane and Ashwagandha Calm+ bottles" className="w-full" fetchPriority="high" />
           </Link>
         </div>
       </section>
