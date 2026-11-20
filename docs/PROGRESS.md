@@ -229,3 +229,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 20 Nov (63): guide template with answer-ready blocks (short answers, dosage/timing/comparison tables, question headings, FAQ + DietarySupplement data) filled for magnesium, creatine and ashwagandha; `/llms.txt`.
 - [x] 20 Nov (64): Men's Health live: header nav, homepage section, footer links (Women's, Men's, At-Home Tests), sitemap; men's versions fall back to the regular products until active.
 - [x] 20 Nov (65): answer-ready blocks for lion's mane, CoQ10 and turmeric; new pillar guide /guides/magnesium-glycinate.
+- [x] 20 Nov (66): new evidence guide /guides/biotin (answer-ready blocks; 19 sources opened, ODS/FDA items flagged for the owner to confirm).
