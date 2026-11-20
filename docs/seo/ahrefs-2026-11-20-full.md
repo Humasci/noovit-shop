@@ -1,5 +1,5 @@
 # Ahrefs Keywords Explorer (US), owner screenshots 20 Nov 2026, batch 1 (72 keywords), all columns
-Transcribed from screenshots 61–72.
+Transcribed from screenshots `screenshots/ahrefs-batch1-01..12.png`.
 
 List totals shown by Ahrefs: **72 keywords · SV 1.1M · GSV 2.3M**. Sorted by KD ascending (as in the screenshots).
 
