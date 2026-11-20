@@ -3,6 +3,7 @@
 import { GUIDES } from '@/lib/guides';
 import { SITE_URL } from '@/lib/site';
 import { siteLive } from '@/lib/launch';
+import { PUBLIC_EARLY_GUIDES } from '@/lib/public-early';
 import { getStoreProducts } from '@/lib/catalog/server';
 import { getPublishedPosts } from '@/lib/blog';
 import { TEST_KITS } from '@/lib/tests';
@@ -12,7 +13,11 @@ export const revalidate = 3600;
 
 export async function GET() {
   const head = `# Noovit\n\n> Evidence-led US supplement brand: researched ingredients at clear doses, printed on the front of every bottle. Our ingredient guides grade the evidence (Moderate, Limited, Early, Insufficient), include null results and cite every source.\n`;
-  if (!siteLive()) return new Response(head + '\nThe site is not public yet.\n', { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+  if (!siteLive()) {
+    // Pre-launch: only the guides that are public early.
+    const early = GUIDES.filter((g) => PUBLIC_EARLY_GUIDES.includes(g.slug)).map((g) => `- [${g.metaTitle}](${SITE_URL}/guides/${g.slug}): ${g.metaDescription}`);
+    return new Response([head, '## Ingredient guides', ...early, '', 'The shop opens soon.'].join('\n') + '\n', { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+  }
   const [products, posts] = await Promise.all([getStoreProducts(), getPublishedPosts().catch(() => [])]);
   const lines = [
     head,

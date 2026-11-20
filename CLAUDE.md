@@ -10,6 +10,8 @@ Read this first. It is the standing context for any session working on this repo
   being formed via Wyoming Agents (late Oct 2026). Owner also has Barbill LLC (media/legal projects): never trade under it.
 - **Status:** pre-launch. `SITE_LIVE` is off in production: the public sees `/coming-soon` (waitlist), every response is
   `noindex`. Staff signed in to Admin, and preview-link holders, see the full store.
+  **Exception (20 Nov):** finished guides in `lib/public-early.ts` are public and indexable now (proxy, noindex header,
+  sitemap, llms.txt and the guides index all read it); they hide product blocks for public visitors.
 - **Fulfilment:** Supliful print-on-demand dropship (white HDPE bottles only for now). Pets need another supplier
   (none found that dropships; see the pets plan in the TODO).
 

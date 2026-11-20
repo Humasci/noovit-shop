@@ -29,5 +29,10 @@ a, b = read(f"{D}/curcumin.2d.sdf", keep_h=True); res['turmeric-complex'] = {'at
 # Ashwagandha: withaferin A (a withanolide, CID 265237) and cortisol (CID 5754), heavy atoms only
 a, b = read(f"{D}/withaferin.2d.sdf"); res['withaferin-a'] = {'atoms': norm(pca(a)), 'bonds': b}
 a, b = read(f"{D}/cortisol.2d.sdf"); res['cortisol'] = {'atoms': norm(pca(a)), 'bonds': b}
+# At-home test figures (20 Nov): the molecule each test measures. PubChem CIDs: testosterone 6013, cholesterol 5997,
+# calcifediol (25-hydroxyvitamin D3, what the vitamin D test measures) 5283731, thyroxine (T4) 5819, estradiol 5757.
+# Download: https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/<CID>/record/SDF?record_type=2d -> <name>.2d.sdf
+for name in ['testosterone', 'cholesterol', 'calcifediol', 'thyroxine', 'estradiol']:
+    a, b = read(f"{D}/{name}.2d.sdf"); res[name] = {'atoms': norm(pca(a)), 'bonds': b}
 json.dump(res, open(out, 'w'))
 print({k: (len(v['atoms']), len(v['bonds'])) for k, v in res.items()})

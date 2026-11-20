@@ -16,7 +16,7 @@ export interface TestKit {
   seoTitle: string;
   seoDescription: string;
   related?: { href: string; label: string }[];
-  figure?: { src: string; alt: string; caption?: string }; // full-width illustration under the hero
+  figure?: { src: string; alt: string; caption?: string; height?: number }; // full-width illustration under the hero (1600 wide; height default 700)
   pets?: boolean;
   hidden?: boolean;
   sensitive?: boolean; // privacy-sensitive (STI): no tracking tags on its page, never named in emails or analytics
@@ -53,6 +53,7 @@ const KITS: TestKit[] = [
       m('Magnesium (serum)', 'A quick check for clearly low blood magnesium.', 'Less than 1% of the body’s magnesium is in serum, so a normal result doesn’t rule out low stores.'),
     ],
     collection: 'Finger-prick sample at home',
+    figure: { src: '/images/tests/iron-test.jpg', alt: 'Schematic red blood cells, disc-shaped with a dimpled centre', caption: 'Red blood cells carry most of the body’s iron. Schematic illustration, not to scale.' },
     seoTitle: 'Iron Test at Home: Ferritin, Vitamin D & B12 | Noovit',
     seoDescription: 'An at-home finger-prick test for iron stores (ferritin), iron, vitamin D, B12, folate and magnesium is coming. What each marker shows and why test first.',
     related: [{ href: '/guides/magnesium', label: 'Magnesium guide' }, { href: '/womens-health#energy', label: "Women's Health: energy & iron" }],
@@ -71,6 +72,7 @@ const KITS: TestKit[] = [
       m('TSH', 'Thyroid-stimulating hormone. Thyroid changes can mimic perimenopause.', 'An abnormal TSH needs follow-up with a doctor.'),
     ],
     collection: 'Finger-prick sample at home',
+    figure: { src: '/images/tests/perimenopause-test.jpg', alt: 'The estradiol molecule as a bead ball-and-stick model', caption: 'Estradiol, one of the hormones this test measures. Structure from PubChem.' },
     seoTitle: 'Menopause & Perimenopause Test at Home (FSH) | Noovit',
     seoDescription: 'An at-home perimenopause hormone test (FSH, LH, estradiol, progesterone and TSH) is coming. What each hormone can and can’t tell you, and when to test.',
     related: [{ href: '/womens-health#midlife', label: "Women's Health: perimenopause & menopause" }],
@@ -107,6 +109,7 @@ const KITS: TestKit[] = [
       m('TPO antibodies', 'Antibodies against the thyroid.', 'Raised antibodies are a reason to talk to your doctor.'),
     ],
     collection: 'Finger-prick sample at home',
+    figure: { src: '/images/tests/thyroid-test.jpg', alt: 'The thyroxine (T4) molecule with its four iodine atoms, as a bead ball-and-stick model', caption: 'Thyroxine (T4), one of the hormones this test measures. Structure from PubChem.' },
     seoTitle: 'Thyroid Test at Home: TSH, Free T4, Free T3 | Noovit',
     seoDescription: 'An at-home thyroid test (TSH, free T4, free T3 and TPO antibodies) is coming. What each marker shows and when to follow up with your doctor.',
   },
@@ -123,6 +126,7 @@ const KITS: TestKit[] = [
       m('hs-CRP', 'A general marker of inflammation.', 'A recent cold or injury can raise it.'),
     ],
     collection: 'Finger-prick sample at home',
+    figure: { src: '/images/tests/cholesterol-test.jpg', alt: 'The cholesterol molecule as a bead ball-and-stick model', caption: 'Cholesterol. This test measures how it is carried in your blood (LDL, HDL) plus triglycerides. Structure from PubChem.' },
     seoTitle: 'Cholesterol Test at Home: Lipids, ApoB & A1c | Noovit',
     seoDescription: 'An at-home heart and metabolic test is coming: cholesterol panel, ApoB, HbA1c and hs-CRP from one finger-prick sample. What each marker means.',
     related: [{ href: '/guides/coq10', label: 'CoQ10 guide' }],
@@ -138,6 +142,7 @@ const KITS: TestKit[] = [
       m('DHEA-S', 'An adrenal hormone often read alongside cortisol.', 'Falls naturally with age.'),
     ],
     collection: 'Finger-prick sample at home, in the morning',
+    figure: { src: '/images/tests/cortisol-test.jpg', alt: 'The cortisol molecule as a bead ball-and-stick model', caption: 'Cortisol, the hormone this test measures. Structure from PubChem.' },
     seoTitle: 'Cortisol Test at Home: Stress & Cortisol Check | Noovit',
     seoDescription: 'An at-home cortisol test (cortisol and DHEA-S) is coming. Why the time of day matters, what one sample can show, and when to talk to your doctor.',
     related: [{ href: '/guides/ashwagandha', label: 'Ashwagandha guide' }, { href: '/guides/magnesium', label: 'Magnesium guide' }],
@@ -150,6 +155,7 @@ const KITS: TestKit[] = [
     intro: 'The standard measure of your vitamin D status, so you know whether to supplement and how much.',
     markers: [m('Vitamin D (25-OH)', 'The standard blood measure of vitamin D status.', 'Levels change with the seasons; retest at a similar time of year.')],
     collection: 'Finger-prick sample at home',
+    figure: { src: '/images/tests/vitamin-d-test.jpg', alt: 'The 25-hydroxyvitamin D molecule as a bead ball-and-stick model', caption: '25-hydroxyvitamin D, the form of vitamin D this test measures. Structure from PubChem.' },
     seoTitle: 'Vitamin D Test at Home (25-OH) | Noovit',
     seoDescription: 'An at-home vitamin D test (25-OH) is coming. What your result means, why the season matters, and why test before you take vitamin D.',
     related: [{ href: '/at-home-tests/iron-test', label: 'Iron & Nutrient Check (includes vitamin D)' }],
@@ -190,6 +196,7 @@ const KITS: TestKit[] = [
       m('Estradiol', 'Men make some estrogen too.', 'Read alongside testosterone.'),
     ],
     collection: 'Finger-prick sample at home, in the morning',
+    figure: { src: '/images/tests/testosterone-test.jpg', alt: 'The testosterone molecule as a bead ball-and-stick model', caption: 'Testosterone, the hormone this test measures. Structure from PubChem.' },
     seoTitle: "Testosterone Test at Home: Men's Health Check | Noovit",
     seoDescription: "An at-home men's hormone test is coming: total and free testosterone, SHBG and estradiol from one finger-prick sample.",
     hidden: !MEN_LIVE,
@@ -290,7 +297,7 @@ const KITS: TestKit[] = [
       m('HIV, syphilis and hepatitis C', 'Blood-borne infections screened from a finger-prick sample.', 'Very recent exposure may not show yet; the kit explains the window periods.'),
     ],
     collection: 'Urine or swab, plus a finger-prick sample, at home',
-    figure: { src: '/images/tests/sti-organisms.jpg', alt: 'Schematic illustrations of HIV, hepatitis C, gonorrhea, syphilis, chlamydia and trichomoniasis', caption: 'The six infections this test screens for. Schematic illustrations, not to scale.' },
+    figure: { src: '/images/tests/sti-organisms.jpg', alt: 'Schematic illustrations of HIV, hepatitis C, gonorrhea, syphilis, chlamydia and trichomoniasis', caption: 'The six infections this test screens for. Schematic illustrations, not to scale.', height: 900 },
     seoTitle: 'STI Test at Home: Chlamydia, Gonorrhea, HIV & More | Noovit',
     seoDescription: 'A private at-home STI test is coming: chlamydia, gonorrhea, trichomoniasis, HIV, syphilis and hepatitis C, with clinician support for positive results.',
   },

@@ -6,6 +6,7 @@ import { GOAL_PAGES } from '@/lib/goals';
 import { GUIDES } from '@/lib/guides';
 import { ADVISORS } from '@/data/content';
 import { siteLive } from '@/lib/launch';
+import { PUBLIC_EARLY_GUIDES } from '@/lib/public-early';
 import { MEN_LIVE } from '@/lib/men';
 import { TEST_KITS } from '@/lib/tests';
 import { productPath } from '@/lib/urls';
@@ -15,7 +16,11 @@ const PAGES = ['', '/womens-health', ...(MEN_LIVE ? ['/mens-health'] : []), '/at
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Pre-launch every page is noindex (the coming-soon page), so listing them would only produce "noindex page in
   // sitemap" errors in Search Console and audits. The full sitemap appears once SITE_LIVE=true (after a redeploy).
-  if (!siteLive()) return [{ url: SITE_URL, changeFrequency: 'weekly', priority: 1 }];
+  // The guides that are public early (lib/public-early.ts) are listed now.
+  if (!siteLive()) return [
+    { url: `${SITE_URL}/guides`, changeFrequency: 'weekly', priority: 0.6 },
+    ...GUIDES.filter((g) => PUBLIC_EARLY_GUIDES.includes(g.slug)).map((g) => ({ url: `${SITE_URL}/guides/${g.slug}`, lastModified: g.updated, changeFrequency: 'monthly' as const, priority: 0.7, images: [`${SITE_URL}/guide-image/${g.slug}`] })),
+  ];
   const [products, collections, posts] = await Promise.all([getStoreProducts(), getStoreCollections(), getPublishedPosts()]);
   // /blog is listed only once it has posts (noindex until then). /pets always: its at-home kits are content.
   const pages = [...PAGES, '/pets', ...(posts.length ? ['/blog'] : [])];

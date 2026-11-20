@@ -3,6 +3,8 @@ import type { Metadata } from 'next';
 import { GUIDES } from '@/lib/guides';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { pageLd } from '@/lib/structured-data';
+import { siteLive } from '@/lib/launch';
+import { PUBLIC_EARLY_GUIDES } from '@/lib/public-early';
 
 export const metadata: Metadata = {
   title: 'Supplement Guides: Benefits, Dosage, Side Effects | Noovit',
@@ -11,9 +13,11 @@ export const metadata: Metadata = {
 };
 
 export default function GuidesIndex() {
+  // Pre-launch the index lists only the guides that are public early (the rest would open the coming-soon page).
+  const guides = siteLive() ? GUIDES : GUIDES.filter((g) => PUBLIC_EARLY_GUIDES.includes(g.slug));
   return (
     <>
-      <JsonLd data={pageLd({ path: '/guides', name: 'Supplement guides', crumbs: [['Guides', '/guides']], items: GUIDES.map((g) => ({ name: g.ingredient, path: `/guides/${g.slug}` })) })} />
+      <JsonLd data={pageLd({ path: '/guides', name: 'Supplement guides', crumbs: [['Guides', '/guides']], items: guides.map((g) => ({ name: g.ingredient, path: `/guides/${g.slug}` })) })} />
       <section className="relative overflow-hidden bg-[var(--color-soft)] py-20">
         <div className="container relative px-6">
           <h1 className="text-4xl md:text-5xl">Supplement guides</h1>
@@ -24,7 +28,7 @@ export default function GuidesIndex() {
       </section>
       <section className="section">
         <div className="container grid gap-5 px-6 sm:grid-cols-2 lg:grid-cols-3">
-          {GUIDES.map((g) => (
+          {guides.map((g) => (
             <Link key={g.slug} href={`/guides/${g.slug}`} className="rounded-2xl border border-[var(--color-line)] p-6 hover:border-[var(--color-navy)]">
               <h2 className="text-xl">{g.ingredient}</h2>
               <p className="mt-1 text-sm font-semibold text-[var(--color-accent)]">Benefits, dosage & side effects</p>

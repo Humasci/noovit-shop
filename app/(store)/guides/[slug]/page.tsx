@@ -10,6 +10,15 @@ import { getSettings, placeholdersOn } from '@/lib/settings';
 import { SITE_URL } from '@/lib/site';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { ProductCard } from '@/components/product/ProductCard';
+import { cookies } from 'next/headers';
+import { siteLive, PREVIEW_COOKIE, isPreviewToken } from '@/lib/launch';
+import { ADMIN_COOKIE, isAdminToken } from '@/lib/admin/session';
+
+async function storeVisible() {
+  if (siteLive()) return true;
+  const c = await cookies();
+  return isAdminToken(c.get(ADMIN_COOKIE)?.value) || isPreviewToken(c.get(PREVIEW_COOKIE)?.value);
+}
 import { PlaceholderNote } from '@/components/ui/Placeholder';
 import { ReviewedBy } from '@/components/experts/ReviewedBy';
 import { reviewFor } from '@/lib/experts';
@@ -93,9 +102,10 @@ function headings(g: NonNullable<ReturnType<typeof findGuide>>) {
 export default async function GuidePage({ params }: { params: Promise<{ slug: string }> }) {
   const g = findGuide((await params).slug);
   if (!g) notFound();
-  const [products, settings] = await Promise.all([getStoreProducts(), getSettings()]);
-  const related = g.relatedProducts.map((s) => products.find((p) => p.slug === s && p.status === 'active')).filter((p) => p !== undefined);
-  const goals = g.relatedGoals.map(findGoal).filter((x) => x !== undefined);
+  const [products, settings, shop] = await Promise.all([getStoreProducts(), getSettings(), storeVisible()]);
+  // Pre-launch, public visitors of an early guide don't see products (the shop isn't open); staff and preview links do.
+  const related = !shop ? [] : g.relatedProducts.map((s) => products.find((p) => p.slug === s && p.status === 'active')).filter((p) => p !== undefined);
+  const goals = !shop ? [] : g.relatedGoals.map(findGoal).filter((x) => x !== undefined);
   const url = `${SITE_URL}/guides/${g.slug}`;
   const title = g.h1 ?? `${g.ingredient}: benefits, uses, dosage & side effects`;
   const h = headings(g);

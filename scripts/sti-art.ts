@@ -1,6 +1,10 @@
 // STI illustration (20 Nov, owner): schematic organisms in a glossy bead "molecular surface" style (science palette),
 // labelled with thin leader lines like a journal figure. Schematic shapes from standard microbiology descriptions,
-// not structural models, and not to scale (accuracy rule in CLAUDE.md). Run: npx tsx scripts/sti-art.ts
+// not structural models, and not to scale (accuracy rule in CLAUDE.md). Accuracy pass (20 Nov): HIV carries few Env
+// spike trimers (~10-14 per virion, cryo-ET), HCV is about half HIV's size, gonococci are bean-shaped pairs with flat
+// facing sides and many straight type IV pili, chlamydia sits in an inclusion (large reticulate + small elementary
+// bodies) beside the host nucleus, and T. vaginalis has 4 anterior flagella, an undulating membrane along about half
+// its body (no free trailing flagellum) and an axostyle at the rear. Run: npx tsx scripts/sti-art.ts
 import { readdirSync } from 'fs';
 import path from 'path';
 import { Resvg } from '@resvg/resvg-js';
@@ -29,28 +33,34 @@ const beads: Bead[] = [];
 const labels: { x: number; y: number; lx: number; ly: number; name: string; kind: string; align: 'start' | 'end'; side: 'above' | 'below' }[] = [];
 
 // HIV: enveloped sphere with spike trimers
-beads.push(...sphere(330, 300, 118, 700, 9, PAL.lavender, { n: 34, len: 26, c: PAL.teal, size: 8 }));
-labels.push({ x: 250, y: 205, lx: 90, ly: 110, name: 'HIV', kind: 'Virus · enveloped, with spike proteins', align: 'start', side: 'above' });
+beads.push(...sphere(330, 300, 118, 700, 9, PAL.lavender, { n: 14, len: 26, c: PAL.teal, size: 8 }));
+labels.push({ x: 250, y: 205, lx: 90, ly: 110, name: 'HIV', kind: 'Virus · enveloped, few spike proteins', align: 'start', side: 'above' });
 // Hepatitis C: smaller enveloped virus
-beads.push(...sphere(330, 660, 78, 380, 8, PAL.magenta, { n: 26, len: 12, c: PAL.gold, size: 6 }));
-labels.push({ x: 272, y: 712, lx: 90, ly: 830, name: 'Hepatitis C', kind: 'Virus · enveloped', align: 'start', side: 'below' });
+beads.push(...sphere(330, 660, 60, 240, 8, PAL.magenta, { n: 16, len: 10, c: PAL.gold, size: 5.5 }));
+labels.push({ x: 290, y: 700, lx: 90, ly: 830, name: 'Hepatitis C', kind: 'Virus · enveloped, about half the size of HIV', align: 'start', side: 'below' });
 // Gonorrhea: diplococcus (two kidney beans) with pili
-beads.push(...ellipsoid(735, 290, 70, 90, 420, 9, PAL.teal, 0.1));
-beads.push(...ellipsoid(885, 300, 70, 90, 420, 9, PAL.teal, -0.1));
-for (let k = 0; k < 9; k++) { const a = Math.PI * (0.15 + rnd() * 0.7) * (k % 3 === 0 ? -0.35 : 1), x0 = k % 2 ? 735 : 885, len = 40 + rnd() * 45; const pts: [number, number][] = []; for (let t = 0; t < 1; t += 0.05) pts.push([x0 + Math.cos(a) * (90 + len * t) + Math.sin(t * 9) * 6, 295 + Math.sin(a) * (90 + len * t)]); beads.push(...strand(pts, 2.6, PAL.haze, -0.3)); }
-labels.push({ x: 812, y: 215, lx: 700, ly: 90, name: 'Gonorrhea', kind: 'Bacterium · paired cells with pili', align: 'start', side: 'above' });
+{ // two bean-shaped cells, flattened where they face each other
+  const half = (cx: number, dir: 1 | -1) => ellipsoid(cx, 295, 72, 92, 440, 9, PAL.teal).map((b) => { const dx = (b.x - cx) * dir; return dx > 40 ? { ...b, x: cx + 40 * dir, z: b.z - 0.2 } : b; });
+  beads.push(...half(760, 1), ...half(860, -1));
+  for (let k = 0; k < 18; k++) { const left = k % 2 === 0, cx = left ? 760 : 860; const a = (left ? Math.PI * 0.55 : -Math.PI * 0.45) + (rnd() - 0.5) * Math.PI * 1.1; const len = 55 + rnd() * 60, bend = (rnd() - 0.5) * 0.4; const pts: [number, number][] = []; for (let t = 0; t <= 1; t += 0.04) { const r = 80 + len * t, aa = a + bend * t; pts.push([cx + Math.cos(aa) * r * 0.85, 295 + Math.sin(aa) * r]); } beads.push(...strand(pts, 2.2, PAL.haze, -0.3)); } }
+labels.push({ x: 812, y: 215, lx: 700, ly: 90, name: 'Gonorrhea', kind: 'Bacterium · bean-shaped pairs with pili', align: 'start', side: 'above' });
 // Syphilis: tight corkscrew spirochete
 { const pts: [number, number][] = []; for (let t = 0; t <= 1; t += 0.0035) { const x = 640 + t * 340, y = 660 + Math.sin(t * Math.PI * 2 * 9) * 24 + Math.sin(t * Math.PI) * -30; pts.push([x, y]); } beads.push(...pts.map(([x, y], i) => ({ x, y, z: Math.cos(i * 0.21 * 9 / 2.6), r: 7, c: PAL.gold }))); }
-labels.push({ x: 820, y: 668, lx: 640, ly: 820, name: 'Syphilis', kind: 'Bacterium · corkscrew spirochete', align: 'start', side: 'below' });
+labels.push({ x: 820, y: 668, lx: 640, ly: 820, name: 'Syphilis', kind: 'Bacterium · thin spiral (spirochete)', align: 'start', side: 'below' });
 // Chlamydia: inclusion inside a host cell with many small bodies
 beads.push(...ellipsoid(1260, 270, 170, 125, 900, 5, 'rgba(185,169,242,0.35)'));
-for (let k = 0; k < 140; k++) { const a = rnd() * Math.PI * 2, r = Math.sqrt(rnd()) * 85; beads.push({ x: 1230 + Math.cos(a) * r, y: 280 + Math.sin(a) * r * 0.8, z: 0.6 + rnd() * 0.3, r: 6 + rnd() * 4, c: k % 3 ? PAL.magenta : PAL.violet }); }
-labels.push({ x: 1360, y: 175, lx: W - 50, ly: 70, name: 'Chlamydia', kind: 'Bacterium · lives inside cells', align: 'end', side: 'above' });
+beads.push(...ellipsoid(1365, 300, 42, 50, 160, 7, PAL.cobalt)); // host cell nucleus, pushed aside by the inclusion
+for (let k = 0; k < 26; k++) { const a = rnd() * Math.PI * 2, r = Math.sqrt(rnd()) * 70; beads.push({ x: 1215 + Math.cos(a) * r, y: 265 + Math.sin(a) * r * 0.8, z: 0.55 + rnd() * 0.3, r: 11 + rnd() * 3, c: PAL.magenta }); } // reticulate bodies
+for (let k = 0; k < 110; k++) { const a = rnd() * Math.PI * 2, r = Math.sqrt(rnd()) * 80; beads.push({ x: 1215 + Math.cos(a) * r, y: 265 + Math.sin(a) * r * 0.8, z: 0.7 + rnd() * 0.3, r: 4 + rnd() * 1.2, c: PAL.violet }); } // elementary bodies
+labels.push({ x: 1330, y: 178, lx: W - 50, ly: 70, name: 'Chlamydia', kind: 'Bacterium · grows inside host cells', align: 'end', side: 'above' });
 // Trichomonas: pear-shaped parasite with 4 flagella and an undulating membrane
 { const body: Bead[] = fib(650).map((p) => { const [x, y, z] = rot(p, 0.2, 0.4); const taper = 1 - 0.45 * ((y + 1) / 2); return { x: 1290 + x * 90 * taper, y: 700 + y * 115, z, r: 8.5, c: PAL.cobalt }; }); beads.push(...body);
   for (let k = 0; k < 4; k++) { const pts: [number, number][] = []; for (let t = 0; t < 1; t += 0.03) pts.push([1290 - 40 + k * 26 + Math.sin(t * 7 + k) * 14, 590 - t * 95]); beads.push(...strand(pts, 3.2, PAL.haze, 0.4)); }
-  const um: [number, number][] = []; for (let t = 0; t < 1; t += 0.02) um.push([1385 + Math.sin(t * 22) * 8 - t * 45, 600 + t * 200]); beads.push(...strand(um, 4, PAL.teal, 0.8)); }
-labels.push({ x: 1360, y: 780, lx: W - 50, ly: 845, name: 'Trichomoniasis', kind: 'Parasite · Trichomonas vaginalis', align: 'end', side: 'below' });
+  // undulating membrane along the upper half of one side, ending on the body (no free trailing flagellum)
+  const um: [number, number][] = []; for (let y = 595; y <= 712; y += 2.5) { const yn = (y - 700) / 115, w = 90 * (1 - 0.45 * ((yn + 1) / 2)); um.push([1290 + w * 0.97 + 4 + Math.sin(y * 0.22) * 6, y]); } beads.push(...strand(um, 4, PAL.teal, 0.8));
+  // axostyle: the stiff rod that sticks out of the rear end
+  const ax: [number, number][] = []; for (let y = 805; y <= 842; y += 3) ax.push([1290 + (y - 805) * 0.08, y]); beads.push(...strand(ax, 3, PAL.lavender, 0.9)); }
+labels.push({ x: 1372, y: 660, lx: W - 50, ly: 845, name: 'Trichomoniasis', kind: 'Parasite · T. vaginalis, a protozoan', align: 'end', side: 'below' });
 
 // ---- render
 const grad = new Map<string, string>();

@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { ADMIN_COOKIE, adminConfigured, isAdminToken } from '@/lib/admin/session';
 import { signToken, verifyToken } from '@/lib/sign';
 import { PREVIEW_COOKIE, isPreviewToken, siteLive } from '@/lib/launch';
+import { isPublicEarly } from '@/lib/public-early';
 
 // Hidden admin entrance. When ADMIN_PATH is set, /admin answers 404 to anyone who hasn't
 // first opened /<ADMIN_PATH> on this browser (which sets a signed "gate" cookie) or isn't
@@ -19,7 +20,8 @@ const notFound = (req: NextRequest) => NextResponse.rewrite(new URL('/__not-foun
 // Pre-launch: everything a shopper could open goes to /coming-soon, except for signed-in staff and preview-link holders.
 // Admin, the preview link, robots/sitemap and files (anything with an extension) stay reachable.
 const OPEN_PATHS = /^\/(admin|coming-soon|preview|unsubscribe|__not-found)(\/|$)/;
-const gated = (pathname: string) => !OPEN_PATHS.test(pathname) && !/\.[a-z0-9]+$/i.test(pathname);
+// Finished guides are public early (lib/public-early.ts).
+const gated = (pathname: string) => !OPEN_PATHS.test(pathname) && !/\.[a-z0-9]+$/i.test(pathname) && !isPublicEarly(pathname);
 
 export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;

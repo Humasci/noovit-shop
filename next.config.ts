@@ -1,5 +1,6 @@
 import type { NextConfig } from 'next';
 import { URL_REDIRECTS } from './lib/urls';
+import { NOINDEX_SOURCE } from './lib/public-early';
 
 const nextConfig: NextConfig = {
   // Native PNG renderer for product images; fonts (assets/fonts) and the bottle photo template (assets/mockups) are read at runtime.
@@ -22,8 +23,9 @@ const nextConfig: NextConfig = {
   },
   async headers() {
     return [
-      // Pre-launch (lib/launch.ts): keep the whole site out of search results until SITE_LIVE=true.
-      ...(process.env.SITE_LIVE === 'true' ? [] : [{ source: '/:path*', headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }] }]),
+      // Pre-launch (lib/launch.ts): keep the site out of search results until SITE_LIVE=true, except the guides that are
+      // public early (lib/public-early.ts).
+      ...(process.env.SITE_LIVE === 'true' ? [] : [{ source: NOINDEX_SOURCE, headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }] }]),
       {
         source: '/:path*',
         headers: [

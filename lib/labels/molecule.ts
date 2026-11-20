@@ -278,11 +278,12 @@ export function ballStick(key: string, cx: number, cy: number, width: number, he
   // Real bond length in this drawing: the median distance between bonded atoms.
   const lens = sk.bonds.map(([a, b]) => Math.hypot(P[a][0] - P[b][0], P[a][1] - P[b][1])).sort((a, b) => a - b);
   const bondLen = lens[Math.floor(lens.length / 2)] || 1;
-  const atomR: Record<string, number> = { C: 0.3, O: 0.32, N: 0.31, P: 0.34, H: 0.19 };
+  const atomR: Record<string, number> = { C: 0.3, O: 0.32, N: 0.31, P: 0.34, H: 0.19, I: 0.42 };
   const col = (e: string) => {
     if (e === 'O') return opts.oxygen ?? '#E0443E';
     if (e === 'N') return '#3E6FD8';
     if (e === 'P') return '#F08A24';
+    if (e === 'I') return '#940094'; // iodine, CPK dark violet
     if (e === 'H') return '#EEF0F6';
     return opts.carbon ?? (opts.spectrum ? '#2B2F45' : tone(color, 0, -0.12));
   };

@@ -41,7 +41,7 @@ export default async function TestKitPage({ params }: { params: Promise<{ slug: 
       </section>
       {k.figure && (
         <figure className="bg-[#05061a]">
-          <img src={k.figure.src} alt={k.figure.alt} width={1600} height={900} className="mx-auto block h-auto w-full max-w-[1600px]" loading="lazy" />
+          <img src={k.figure.src} alt={k.figure.alt} width={1600} height={k.figure.height ?? 700} className="mx-auto block h-auto w-full max-w-[1600px]" loading="lazy" />
           {k.figure.caption && <figcaption className="container px-6 pb-6 pt-2 text-center text-xs text-[#D9DFF5]/70">{k.figure.caption}</figcaption>}
         </figure>
       )}
