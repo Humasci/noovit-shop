@@ -79,7 +79,7 @@ Germany's risk assessor BfR also advises people with liver disease to avoid it [
 - **Give it about 8 weeks.** That's when most trials measured results [1][3].
 - **Don't use it long term without advice.** NCCIH says it may be safe for up to 3 months; longer-term safety isn't known [8].
 
-[Ashwagandha Calm+](/products/ashwagandha) contains 600 mg of KSM-66 root extract in two capsules a day. It also contains vitamins D3, B6 and B12, L-arginine, maca, Panax ginseng and shatavari, which weren't part of the trials above, so read the full label and check it with your doctor if you take any medication.
+[Ashwagandha Calm+](/products/ashwagandha-ksm-66) contains 600 mg of KSM-66 root extract in two capsules a day. It also contains vitamins D3, B6 and B12, L-arginine, maca, Panax ginseng and shatavari, which weren't part of the trials above, so read the full label and check it with your doctor if you take any medication.
 
 ## Sources
 
@@ -173,7 +173,7 @@ LactMed notes that shatavari's safety has not been rigorously studied [17]. At 5
 - **A blend can make sense** if you want the studied ashwagandha dose plus everyday vitamins in one product, and you accept that the extra herbs are there in small, supporting amounts.
 - **Either way,** the ashwagandha cautions apply: avoid it in pregnancy and while breastfeeding, and talk to your doctor first if you have a thyroid or liver condition or take sedatives, thyroid, diabetes, blood-pressure or immune-suppressing medicines [19]. Women can read more in [ashwagandha for women](/blog/ashwagandha-for-women).
 
-Our [Ashwagandha Calm+](/products/ashwagandha) is the blend described above: 600 mg of KSM-66 in two capsules a day, plus the vitamins and herbs in the table. Every ingredient and amount is on the label, so you and your doctor can check it.
+Our [Ashwagandha Calm+](/products/ashwagandha-ksm-66) is the blend described above: 600 mg of KSM-66 in two capsules a day, plus the vitamins and herbs in the table. Every ingredient and amount is on the label, so you and your doctor can check it.
 
 ## Sources
 
@@ -299,7 +299,7 @@ If you fall short and add a supplement, keep supplements at or below **350 mg a 
 
 Your doctor can order a serum test and interpret it alongside your symptoms, medicines and other blood work. More on forms, doses and safety in our [magnesium guide](/guides/magnesium) and [glycinate vs citrate vs oxide](/blog/magnesium-glycinate-vs-citrate-vs-oxide).
 
-If food alone doesn't get you there, our [Magnesium Sleep+](/products/magnesium-complex) gives 275 mg of elemental magnesium as glycinate in three capsules.
+If food alone doesn't get you there, our [Magnesium Sleep+](/products/magnesium-glycinate) gives 275 mg of elemental magnesium as glycinate in three capsules.
 
 ## Sources
 
@@ -353,10 +353,14 @@ Many women worry about looking "puffy". Here's what's known:
 - **Easy fix:** skip loading. Taking 3–5 g a day fills muscle stores in about 3–4 weeks with less early water gain (see [do you need a creatine loading phase?](/blog/creatine-loading-phase)).
 - Randomized trials have not found that creatine increases body fat [8].
 
-## How women typically take it
+## The best creatine for women, and how to take it
 
-- **Dose:** 3–5 g of creatine monohydrate a day, the same as men [7].
-- **Form:** monohydrate, the form used in almost all research [7].
+There's no special women's creatine. The molecule is the same; "for women" products differ only in label, flavor or added ingredients. What to look for:
+
+- **Form:** creatine monohydrate, the form used in almost all research [7]. Newer forms haven't been shown to work better.
+- **Dose:** 3–5 g a day, the same as men [7]. Check the label shows grams of creatine per serving.
+- **Few extras:** plain or lightly flavored powder is enough. Added sugar, caffeine or "fat burners" aren't needed.
+- **Testing:** if you compete in tested sport, choose a product certified by a third-party sport program.
 - **Timing:** any time of day, consistently. Taking it with a meal or a shake is fine.
 - **With training:** the clearest benefits came when creatine was combined with resistance training [3][5].
 
@@ -368,7 +372,7 @@ Many women worry about looking "puffy". Here's what's known:
 
 Creatine can raise creatinine on blood tests without harming the kidneys, so tell your doctor you take it [8]. More in our [creatine guide](/guides/creatine).
 
-Our [Creatine](/products/creatine) is pure creatine monohydrate: 5 g per scoop, unflavored, 50 servings.
+Our [Creatine](/products/creatine-monohydrate) is pure creatine monohydrate: 5 g per scoop, unflavored, 50 servings.
 
 ## Sources
 
@@ -380,7 +384,7 @@ Our [Creatine](/products/creatine) is pure creatine monohydrate: 5 g per scoop, 
 6. Benton D, Donohoe R. British Journal of Nutrition, 2011. [The influence of creatine supplementation on the cognitive functioning of vegetarians and omnivores](https://pubmed.ncbi.nlm.nih.gov/21118604/).
 7. Kreider RB et al. Journal of the International Society of Sports Nutrition, 2017. [International Society of Sports Nutrition position stand: safety and efficacy of creatine supplementation in exercise, sport, and medicine](https://pmc.ncbi.nlm.nih.gov/articles/PMC5469049/).
 8. Antonio J et al. Journal of the International Society of Sports Nutrition, 2021. [Common questions and misconceptions about creatine supplementation: what does the scientific evidence really show?](https://pmc.ncbi.nlm.nih.gov/articles/PMC7871530/)
-$jr$, 'Noovit', 'published', '2026-12-07T14:00:00.000Z', $jr$Creatine for Women: What the Research Shows | Noovit$jr$, $jr$Does creatine work for women? What trials show for strength, lean muscle, menopause and memory, and how to avoid water-weight gain.$jr$)
+$jr$, 'Noovit', 'published', '2026-12-07T14:00:00.000Z', $jr$Creatine for Women: Benefits, Dose, Best Type | Noovit$jr$, $jr$Does creatine work for women? What trials show for strength, lean muscle, menopause and memory, and how to avoid water-weight gain.$jr$)
 on conflict (slug) do update set
   status = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.status else posts.status end,
   published_at = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.published_at else posts.published_at end,
@@ -433,7 +437,7 @@ Talk to your doctor before taking creatine if you have **kidney disease** or red
 
 ## Our creatine
 
-Our [Creatine](/products/creatine) is pure creatine monohydrate: 5 g of creatine per scoop, 50 servings per tub. The label gives both options: four scoops a day for the first 5 days if you want to load, then one or two a day. Note that loading uses 20 scoops in that first week, so a tub lasts about 5 weeks with loading, or up to 50 days at one scoop a day.
+Our [Creatine](/products/creatine-monohydrate) is pure creatine monohydrate: 5 g of creatine per scoop, 50 servings per tub. The label gives both options: four scoops a day for the first 5 days if you want to load, then one or two a day. Note that loading uses 20 scoops in that first week, so a tub lasts about 5 weeks with loading, or up to 50 days at one scoop a day.
 
 ## Sources
 
@@ -489,7 +493,7 @@ In 2025, researchers ran the first randomized trial designed to answer the quest
 
 More in our [creatine guide](/guides/creatine).
 
-Our [Creatine](/products/creatine) is pure creatine monohydrate, 5 g per scoop, for adults 18 and over.
+Our [Creatine](/products/creatine-monohydrate) is pure creatine monohydrate, 5 g per scoop, for adults 18 and over.
 
 ## Sources
 
@@ -548,7 +552,7 @@ Stop and see a doctor if you notice yellowing of the skin or eyes, itching, naus
 
 ## Our product
 
-[Ashwagandha Calm+](/products/ashwagandha) gives 600 mg of KSM-66 root extract in two capsules a day, the dose used in the main stress trials. It also contains vitamins D3, B6 and B12, L-arginine, maca, Panax ginseng and shatavari, which weren't part of those trials, so read the full label and check it with your doctor if you take any medication.
+[Ashwagandha Calm+](/products/ashwagandha-ksm-66) gives 600 mg of KSM-66 root extract in two capsules a day, the dose used in the main stress trials. It also contains vitamins D3, B6 and B12, L-arginine, maca, Panax ginseng and shatavari, which weren't part of those trials, so read the full label and check it with your doctor if you take any medication.
 
 ## Sources
 
@@ -692,7 +696,7 @@ Much of the concern traces back to a 1998 case report of kidney problems in a pe
 
 Other myths? See [does creatine cause hair loss?](/blog/does-creatine-cause-hair-loss) and our full [creatine guide](/guides/creatine).
 
-Our [Creatine](/products/creatine) is pure creatine monohydrate: 5 g per scoop, for adults 18 and over.
+Our [Creatine](/products/creatine-monohydrate) is pure creatine monohydrate: 5 g per scoop, for adults 18 and over.
 
 ## Sources
 
@@ -763,7 +767,7 @@ Root is the part traditionally used in Ayurveda. Safety data on leaf preparation
 
 Ashwagandha may be safe for up to 3 months; long-term safety isn't known. Avoid it if you're pregnant or breastfeeding. Talk to your doctor first if you have a thyroid condition or take thyroid medication, take sedatives, anti-seizure, diabetes, blood-pressure or immune-suppressing medicines, or have liver disease or an autoimmune condition. Rare but serious liver injury has been reported [11][12].
 
-Our [Ashwagandha Calm+](/products/ashwagandha) uses KSM-66: 600 mg of root extract in two capsules a day. It also contains vitamins D3, B6 and B12, L-arginine, maca, Panax ginseng and shatavari, which weren't part of the KSM-66 trials, so read the full label.
+Our [Ashwagandha Calm+](/products/ashwagandha-ksm-66) uses KSM-66: 600 mg of root extract in two capsules a day. It also contains vitamins D3, B6 and B12, L-arginine, maca, Panax ginseng and shatavari, which weren't part of the KSM-66 trials, so read the full label.
 
 ## Sources
 
@@ -833,7 +837,7 @@ Trials of up to 49 weeks found it generally well tolerated, with mostly mild sto
 
 ## Our lion's mane
 
-Our [Lion's Mane](/products/lions-mane) contains 1,000 mg of lion's mane per serving, from both fruiting body and mycelium, and the label states both parts.
+Our [Lion's Mane](/products/lions-mane-mushroom) contains 1,000 mg of lion's mane per serving, from both fruiting body and mycelium, and the label states both parts.
 
 ## Sources
 
@@ -1013,7 +1017,7 @@ NCCIH says ashwagandha may be safe for up to 3 months; long-term safety isn't kn
 
 ## If you want both in one order
 
-Our [Sleep & Calm Stack](/products/sleep-calm-stack) pairs [Magnesium Sleep+](/products/magnesium-complex) (275 mg of magnesium as glycinate, taken after an evening meal) with [Ashwagandha Calm+](/products/ashwagandha) (600 mg of KSM-66, the dose used in the main stress trials, usually taken in the morning). Ashwagandha Calm+ also contains vitamins D3, B6 and B12, L-arginine, maca, Panax ginseng and shatavari, which weren't part of those trials, so read the full label and check it with your doctor if you take any medication.
+Our [Sleep & Calm Stack](/products/sleep-calm-stack) pairs [Magnesium Sleep+](/products/magnesium-glycinate) (275 mg of magnesium as glycinate, taken after an evening meal) with [Ashwagandha Calm+](/products/ashwagandha-ksm-66) (600 mg of KSM-66, the dose used in the main stress trials, usually taken in the morning). Ashwagandha Calm+ also contains vitamins D3, B6 and B12, L-arginine, maca, Panax ginseng and shatavari, which weren't part of those trials, so read the full label and check it with your doctor if you take any medication.
 
 ## Sources
 
@@ -1071,7 +1075,7 @@ In the Cochrane review, stomach side effects such as diarrhea affected **11% to 
 - **If cramps are frequent, severe, or come with weakness, swelling or numbness,** see a doctor to look for a cause.
 - **Magnesium may still make sense for other reasons:** about half of US adults get less than they need from food, and it's studied for sleep and other uses [3]. See [when to take magnesium for sleep](/blog/when-to-take-magnesium-for-sleep) and our [magnesium guide](/guides/magnesium).
 
-If you do take magnesium for general intake, glycinate is less likely to upset your stomach than oxide: see [magnesium glycinate vs citrate vs oxide](/blog/magnesium-glycinate-vs-citrate-vs-oxide). Our [Magnesium Sleep+](/products/magnesium-complex) gives 275 mg as glycinate, and we don't sell it as a cramp remedy.
+If you do take magnesium for general intake, glycinate is less likely to upset your stomach than oxide: see [magnesium glycinate vs citrate vs oxide](/blog/magnesium-glycinate-vs-citrate-vs-oxide). Our [Magnesium Sleep+](/products/magnesium-glycinate) gives 275 mg as glycinate, and we don't sell it as a cramp remedy.
 
 ## Sources
 
@@ -1169,7 +1173,7 @@ So we can't say magnesium helps with premenstrual symptoms. If your symptoms aff
 
 Many women don't get enough magnesium, and glycinate is a gentle way to top up. Start with food: pumpkin seeds, chia seeds, almonds, spinach and black beans are all good sources [1]. If you add a supplement, keep it at or below 350 mg a day, and take it for your overall intake rather than to fix a specific symptom.
 
-Our [Magnesium Sleep+](/products/magnesium-complex) gives 275 mg of elemental magnesium as glycinate in three capsules, taken after an evening meal. That's under the 350 mg limit, but count any multivitamin or prenatal you take too.
+Our [Magnesium Sleep+](/products/magnesium-glycinate) gives 275 mg of elemental magnesium as glycinate in three capsules, taken after an evening meal. That's under the 350 mg limit, but count any multivitamin or prenatal you take too.
 
 ## Sources
 
@@ -1240,7 +1244,7 @@ A 2021 systematic review found only 14 studies comparing forms. Organic forms (l
 
 Diarrhea, nausea and cramps are the common side effects, mostly at high doses [1]. If you have **kidney disease**, don't take magnesium supplements unless your doctor prescribes them, because excess magnesium can build up [1]. Magnesium binds to some **antibiotics** (tetracyclines and quinolones) and **osteoporosis drugs** (bisphosphonates), so space the doses, and long-term **acid-reducing drugs** (PPIs) and some **diuretics** change magnesium levels [1]. More detail in our [magnesium guide](/guides/magnesium).
 
-Our [Magnesium Sleep+](/products/magnesium-complex) uses magnesium glycinate: 275 mg of elemental magnesium in three capsules, taken after an evening meal.
+Our [Magnesium Sleep+](/products/magnesium-glycinate) uses magnesium glycinate: 275 mg of elemental magnesium in three capsules, taken after an evening meal.
 
 ## Sources
 
@@ -1258,13 +1262,13 @@ Our [Magnesium Sleep+](/products/magnesium-complex) uses magnesium glycinate: 27
 12. Peikert A et al. Cephalalgia, 1996. [Prophylaxis of migraine with oral magnesium: results from a prospective, multi-center, placebo-controlled and double-blind randomized study](https://pubmed.ncbi.nlm.nih.gov/8792038/).
 13. Veronese N et al. Nutrients, 2021. [Oral magnesium supplementation for treating glucose metabolism parameters in people with or at risk of diabetes: a systematic review and meta-analysis of double-blind randomized controlled trials](https://pmc.ncbi.nlm.nih.gov/articles/PMC8619199/).
 14. Lopresti AL, Smith SJ. Frontiers in Nutrition, 2026. [The effects of magnesium L-threonate (Magtein) on cognitive performance and sleep quality in adults: a randomised, double-blind, placebo-controlled trial](https://pubmed.ncbi.nlm.nih.gov/41601871/).
-$jr$, 'Noovit', 'published', '2026-11-16T14:00:00.000Z', $jr$Magnesium Glycinate vs Citrate vs Oxide | Noovit$jr$, $jr$Glycinate, citrate or oxide? How much magnesium each gives, what absorption studies show, which ones loosen stools, and how to pick by goal.$jr$)
+$jr$, 'Noovit', 'published', '2026-11-16T14:00:00.000Z', $jr$Magnesium Glycinate vs Citrate vs Oxide: Which? | Noovit$jr$, $jr$Glycinate, citrate or oxide? How much magnesium each gives, what absorption studies show, which ones loosen stools, and how to pick by goal.$jr$)
 on conflict (slug) do update set
   status = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.status else posts.status end,
   published_at = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.published_at else posts.published_at end,
   seo_title = excluded.seo_title, seo_description = excluded.seo_description;
 
--- Sat, 05 Dec 2026 14:00:00 GMT
+-- Tue, 24 Nov 2026 14:00:00 GMT
 insert into posts (slug, title, excerpt, body, author, status, published_at, seo_title, seo_description)
 values ($jr$magnesium-glycinate-vs-threonate$jr$, $jr$Magnesium glycinate vs threonate: what each gives you, and what the studies show$jr$, $jr$Threonate is sold for the brain, glycinate for sleep and everyday intake. How much magnesium each gives per gram, what the (often maker-funded) studies found, cost per mg, and how to choose.$jr$, $jr$**Short answer:** they do different jobs. **Glycinate** packs about twice as much magnesium per gram, so it's the practical way to top up your daily intake [1][2][3]. **Threonate** (sold as Magtein) is marketed for the brain. That idea comes mainly from rat studies and a handful of small human trials, most of them funded by companies behind the ingredient [4][5][6][7]. One independent trial found no benefit [8]. No study has compared the two forms head to head.
 
@@ -1341,7 +1345,7 @@ The same rules apply to both:
 
 Compare other forms in [magnesium glycinate vs citrate vs oxide](/blog/magnesium-glycinate-vs-citrate-vs-oxide), and see the full evidence in our [magnesium guide](/guides/magnesium).
 
-Our [Magnesium Sleep+](/products/magnesium-complex) uses glycinate: 275 mg of elemental magnesium in three capsules, taken after an evening meal. It's also in our [Sleep & Calm Stack](/products/sleep-calm-stack) with ashwagandha.
+Our [Magnesium Sleep+](/products/magnesium-glycinate) uses glycinate: 275 mg of elemental magnesium in three capsules, taken after an evening meal. It's also in our [Sleep & Calm Stack](/products/sleep-calm-stack) with ashwagandha.
 
 ## Sources
 
@@ -1354,7 +1358,7 @@ Our [Magnesium Sleep+](/products/magnesium-complex) uses glycinate: 275 mg of el
 7. Lopresti AL, Smith SJ. Frontiers in Nutrition, 2026. [The effects of magnesium L-threonate (Magtein) on cognitive performance and sleep quality in adults: a randomised, double-blind, placebo-controlled trial](https://pubmed.ncbi.nlm.nih.gov/41601871/).
 8. Ni Y et al. Breast Cancer: Targets and Therapy, 2023. [A randomized, double-blind, placebo-controlled trial to evaluate the therapeutic effect of magnesium-L-threonate supplementation for persistent pain after breast cancer surgery](https://pmc.ncbi.nlm.nih.gov/articles/PMC10386839/).
 9. NIH Office of Dietary Supplements. [Magnesium: fact sheet for health professionals](https://ods.od.nih.gov/factsheets/Magnesium-HealthProfessional/).
-$jr$, 'Noovit', 'published', '2026-12-05T14:00:00.000Z', $jr$Magnesium Glycinate vs Threonate: Dose, Evidence, Cost$jr$, $jr$Threonate gives about half the magnesium per gram of glycinate. What the brain and sleep studies found, who funded them, cost per mg, and how to choose.$jr$)
+$jr$, 'Noovit', 'published', '2026-11-24T14:00:00.000Z', $jr$Magnesium Glycinate vs Threonate: Dose, Evidence, Cost$jr$, $jr$Threonate gives about half the magnesium per gram of glycinate. What the brain and sleep studies found, who funded them, cost per mg, and how to choose.$jr$)
 on conflict (slug) do update set
   status = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.status else posts.status end,
   published_at = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.published_at else posts.published_at end,
@@ -1409,7 +1413,7 @@ Full details in our [turmeric guide](/guides/turmeric).
 
 ## Our turmeric
 
-Our [Turmeric Complex](/products/turmeric-complex) combines 800 mg of turmeric root powder with 100 mg of a 95% curcuminoid extract, plus glucosamine, chondroitin, ginger, boswellia and BioPerine® black pepper extract. It **contains shellfish** (crab, lobster, crawfish), as the label states, so it isn't suitable if you have a shellfish allergy.
+Our [Turmeric Complex](/products/turmeric-glucosamine-chondroitin) combines 800 mg of turmeric root powder with 100 mg of a 95% curcuminoid extract, plus glucosamine, chondroitin, ginger, boswellia and BioPerine® black pepper extract. It **contains shellfish** (crab, lobster, crawfish), as the label states, so it isn't suitable if you have a shellfish allergy.
 
 ## Sources
 
@@ -1432,7 +1436,7 @@ on conflict (slug) do update set
   published_at = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.published_at else posts.published_at end,
   seo_title = excluded.seo_title, seo_description = excluded.seo_description;
 
--- Mon, 28 Dec 2026 14:00:00 GMT
+-- Wed, 25 Nov 2026 14:00:00 GMT
 insert into posts (slug, title, excerpt, body, author, status, published_at, seo_title, seo_description)
 values ($jr$ubiquinol-vs-ubiquinone$jr$, $jr$Ubiquinol vs ubiquinone (CoQ10): does the form matter?$jr$, $jr$Ubiquinol is sold as the "active", better-absorbed CoQ10. But your body converts between the two forms, most research used ubiquinone, and how you take it may matter more. Here's the evidence.$jr$, $jr$**Short answer:** for most people, the form matters less than the label suggests. **Ubiquinone** is the form used in most CoQ10 research, including the largest heart trial, and it usually costs less [1][2]. **Ubiquinol** is often sold as better absorbed, but in a head-to-head study it **wasn't significantly better absorbed**, and your body converts one form into the other anyway [3]. Taking either **with a meal that contains fat** makes a bigger difference [2][4].
 
@@ -1472,7 +1476,7 @@ Most research used ubiquinone [2]. A few studies used ubiquinol, and one of the 
 
 CoQ10 is well tolerated in trials. Mild stomach upset is the most common complaint [4]. **Warfarin:** CoQ10 is chemically similar to vitamin K and may reduce warfarin's effect, so don't start or stop it without your doctor [8][9]. **Cancer treatment:** as an antioxidant, it may make some treatments less effective; check with your oncologist [8]. **Statins** lower your body's CoQ10, but never stop a statin because of muscle pain without talking to your doctor [8]. More in our [CoQ10 guide](/guides/coq10).
 
-Our [CoQ10](/products/coq10) is ubiquinone, 200 mg per capsule. Take one capsule a day with a meal that contains some fat.
+Our [CoQ10](/products/coq10-200mg) is ubiquinone, 200 mg per capsule. Take one capsule a day with a meal that contains some fat.
 
 ## Sources
 
@@ -1485,7 +1489,7 @@ Our [CoQ10](/products/coq10) is ubiquinone, 200 mg per capsule. Take one capsule
 7. Taylor BA et al. Atherosclerosis, 2015. [A randomized trial of coenzyme Q10 in patients with confirmed statin myopathy](https://pmc.ncbi.nlm.nih.gov/articles/PMC4298455/).
 8. Memorial Sloan Kettering Cancer Center. [Coenzyme Q10 — About Herbs](https://www.mskcc.org/cancer-care/integrative-medicine/herbs/coenzyme-q10).
 9. Spigset O. The Lancet, 1994. [Reduced effect of warfarin caused by ubidecarenone](https://pubmed.ncbi.nlm.nih.gov/7968059/).
-$jr$, 'Noovit', 'published', '2026-12-28T14:00:00.000Z', $jr$Ubiquinol vs Ubiquinone: Which CoQ10 Form? | Noovit$jr$, $jr$Ubiquinol or ubiquinone? Your body converts between the two CoQ10 forms, and most trials used ubiquinone. What absorption studies show, and how to take either.$jr$)
+$jr$, 'Noovit', 'published', '2026-11-25T14:00:00.000Z', $jr$Ubiquinol vs CoQ10: Does the Form Matter? | Noovit$jr$, $jr$Ubiquinol or ubiquinone? Your body converts between the two CoQ10 forms, and most trials used ubiquinone. What absorption studies show, and how to take either.$jr$)
 on conflict (slug) do update set
   status = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.status else posts.status end,
   published_at = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.published_at else posts.published_at end,
@@ -1535,7 +1539,7 @@ Glycinate (bisglycinate) is the form usually chosen for evening use because it's
 - **Diuretics** or long-term **acid reducers** (PPIs): these change magnesium levels [2].
 - **Ongoing insomnia:** see a doctor. Poor sleep can have many causes worth checking.
 
-Our [Magnesium Sleep+](/products/magnesium-complex) gives 275 mg of elemental magnesium as glycinate in three capsules, taken after an evening meal. Many people pair it with ashwagandha in the morning: that's our [Sleep & Calm Stack](/products/sleep-calm-stack).
+Our [Magnesium Sleep+](/products/magnesium-glycinate) gives 275 mg of elemental magnesium as glycinate in three capsules, taken after an evening meal. Many people pair it with ashwagandha in the morning: that's our [Sleep & Calm Stack](/products/sleep-calm-stack).
 
 ## Sources
 
@@ -1545,8 +1549,80 @@ Our [Magnesium Sleep+](/products/magnesium-complex) gives 275 mg of elemental ma
 4. Arab A et al. Biological Trace Element Research, 2023. [The role of magnesium in sleep health: a systematic review of available literature](https://pubmed.ncbi.nlm.nih.gov/35184264/).
 5. Hausenblas HA et al. Sleep Medicine: X, 2024. [Magnesium-L-threonate improves sleep quality and daytime functioning in adults with self-reported sleep problems: a randomized controlled trial](https://pmc.ncbi.nlm.nih.gov/articles/PMC11381753/).
 6. Abbasi B et al. Journal of Research in Medical Sciences, 2012. [The effect of magnesium supplementation on primary insomnia in elderly: a double-blind placebo-controlled clinical trial](https://pmc.ncbi.nlm.nih.gov/articles/PMC3703169/).
-$jr$, 'Noovit', 'published', '2026-11-23T14:00:00.000Z', $jr$When to Take Magnesium for Sleep, and How Much | Noovit$jr$, $jr$Sleep trials gave about 250 mg of magnesium 30–60 minutes before bed. What they found, how soon to expect a change, and the 350 mg supplement limit.$jr$)
+$jr$, 'Noovit', 'published', '2026-11-23T14:00:00.000Z', $jr$Magnesium Glycinate Before Bed: When and How Much | Noovit$jr$, $jr$Sleep trials gave about 250 mg of magnesium 30–60 minutes before bed. What they found, how soon to expect a change, and the 350 mg supplement limit.$jr$)
 on conflict (slug) do update set
   status = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.status else posts.status end,
   published_at = case when posts.status = 'draft' and posts.published_at is null and excluded.published_at is not null then excluded.published_at else posts.published_at end,
   seo_title = excluded.seo_title, seo_description = excluded.seo_description;
+
+-- 20 Nov keyword plan: two posts moved earlier so they are live at launch (existing scheduled posts keep their date
+-- unless updated here), and the new "best creatine for women" section in an existing post.
+update posts set published_at = '2026-11-24T14:00:00Z' where slug = 'magnesium-glycinate-vs-threonate' and status = 'published';
+update posts set published_at = '2026-11-25T14:00:00Z' where slug = 'ubiquinol-vs-ubiquinone' and status = 'published';
+update posts set body = $jr$**Short answer:** creatine appears to help women build strength and exercise performance, much as it does men, especially alongside resistance training [1][2]. But women are under-studied [1], and in a large analysis the extra lean muscle seen in women was small and not statistically significant [3]. It's one of the best-researched supplements there is, just with fewer studies in women than you'd hope.
+
+## Why this question keeps coming up
+
+Most of the classic creatine research was done in young men. A 2021 review of creatine in women's health put it plainly: despite extensive research on creatine, use in women is understudied [1]. A 2025 review by some of the same authors added that early studies often ignored the menstrual cycle, and that research is only now catching up [2].
+
+Both reviews are optimistic about creatine for women. Worth knowing: several of their authors are scientific advisors to a company that makes creatine, which the papers disclose [1][2].
+
+## What the trials found
+
+### Strength and performance
+
+The 2021 review concluded that creatine appears effective for improving strength and exercise performance in women before menopause [1]. Large analyses that pooled men and women found the strength benefit did not depend on sex. A meta-analysis of 53 trials found improved upper-body strength regardless of age or sex [4].
+
+### Lean muscle: smaller in women
+
+A 2022 meta-analysis of 35 randomized trials found that creatine plus resistance training added about 1.1 kg more lean mass than placebo overall. Split by sex, men gained 1.46 kg more than placebo, while women gained 0.29 kg more, a difference that wasn't statistically significant [3]. This may partly reflect how few women were studied, but it's an honest reason to expect smaller muscle-size changes.
+
+### After menopause
+
+Muscle and bone both decline with age. The 2021 review reported that women after menopause may see benefits in muscle size and function at higher doses (about 0.3 g per kg of body weight a day), and favorable effects on bone when creatine is combined with resistance training [1]. A meta-analysis of older adults (men and women, average age 57–70) found creatine plus resistance training added 1.37 kg more lean mass than training alone [5]. This research is still early, and most of the benefit came when creatine was paired with training.
+
+### Memory and mood
+
+In a study of 128 young women, 20 g a day for 5 days improved memory scores, but only in vegetarians, not in meat-eaters, likely because vegetarians get little creatine from food [6]. The 2025 review describes possible benefits for mood and cognition as promising but still emerging [2].
+
+## The water-weight question
+
+Many women worry about looking "puffy". Here's what's known:
+
+- **Loading** (about 20 g a day for 5–7 days) usually adds 1–3 kg in the first week, mostly water held *inside* muscle, not under the skin [7][8].
+- **In longer studies** at normal doses, several found no increase in total body water [8].
+- **Easy fix:** skip loading. Taking 3–5 g a day fills muscle stores in about 3–4 weeks with less early water gain (see [do you need a creatine loading phase?](/blog/creatine-loading-phase)).
+- Randomized trials have not found that creatine increases body fat [8].
+
+## The best creatine for women, and how to take it
+
+There's no special women's creatine. The molecule is the same; "for women" products differ only in label, flavor or added ingredients. What to look for:
+
+- **Form:** creatine monohydrate, the form used in almost all research [7]. Newer forms haven't been shown to work better.
+- **Dose:** 3–5 g a day, the same as men [7]. Check the label shows grams of creatine per serving.
+- **Few extras:** plain or lightly flavored powder is enough. Added sugar, caffeine or "fat burners" aren't needed.
+- **Testing:** if you compete in tested sport, choose a product certified by a third-party sport program.
+- **Timing:** any time of day, consistently. Taking it with a meal or a shake is fine.
+- **With training:** the clearest benefits came when creatine was combined with resistance training [3][5].
+
+## Who should check with a doctor first
+
+- **Pregnant or breastfeeding:** reviews describe early research in pregnancy as promising, but it isn't established [2]. Don't take creatine while pregnant or breastfeeding unless your doctor advises it.
+- **Kidney disease** or reduced kidney function, or conditions such as diabetes or high blood pressure that affect the kidneys [7].
+- **Under 18:** we sell creatine for adults only.
+
+Creatine can raise creatinine on blood tests without harming the kidneys, so tell your doctor you take it [8]. More in our [creatine guide](/guides/creatine).
+
+Our [Creatine](/products/creatine-monohydrate) is pure creatine monohydrate: 5 g per scoop, unflavored, 50 servings.
+
+## Sources
+
+1. Smith-Ryan AE et al. Nutrients, 2021. [Creatine supplementation in women's health: a lifespan perspective](https://pmc.ncbi.nlm.nih.gov/articles/PMC7998865/).
+2. Smith-Ryan AE et al. Journal of the International Society of Sports Nutrition, 2025. [Creatine in women's health: bridging the gap from menstruation through pregnancy to menopause](https://pmc.ncbi.nlm.nih.gov/articles/PMC12086928/).
+3. Delpino FM et al. Nutrition, 2022. [Influence of age, sex, and type of exercise on the efficacy of creatine supplementation on lean body mass: a systematic review and meta-analysis of randomized clinical trials](https://pubmed.ncbi.nlm.nih.gov/35986981/).
+4. Lanhers C et al. Sports Medicine, 2017. [Creatine supplementation and upper limb strength performance: a systematic review and meta-analysis](https://pubmed.ncbi.nlm.nih.gov/27328852/).
+5. Chilibeck PD et al. Open Access Journal of Sports Medicine, 2017. [Effect of creatine supplementation during resistance training on lean tissue mass and muscular strength in older adults: a meta-analysis](https://pmc.ncbi.nlm.nih.gov/articles/PMC5679696/).
+6. Benton D, Donohoe R. British Journal of Nutrition, 2011. [The influence of creatine supplementation on the cognitive functioning of vegetarians and omnivores](https://pubmed.ncbi.nlm.nih.gov/21118604/).
+7. Kreider RB et al. Journal of the International Society of Sports Nutrition, 2017. [International Society of Sports Nutrition position stand: safety and efficacy of creatine supplementation in exercise, sport, and medicine](https://pmc.ncbi.nlm.nih.gov/articles/PMC5469049/).
+8. Antonio J et al. Journal of the International Society of Sports Nutrition, 2021. [Common questions and misconceptions about creatine supplementation: what does the scientific evidence really show?](https://pmc.ncbi.nlm.nih.gov/articles/PMC7871530/)
+$jr$ where slug = 'creatine-for-women';

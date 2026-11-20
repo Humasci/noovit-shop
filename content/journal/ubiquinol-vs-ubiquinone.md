@@ -2,9 +2,9 @@
 slug: ubiquinol-vs-ubiquinone
 title: "Ubiquinol vs ubiquinone (CoQ10): does the form matter?"
 excerpt: Ubiquinol is sold as the "active", better-absorbed CoQ10. But your body converts between the two forms, most research used ubiquinone, and how you take it may matter more. Here's the evidence.
-seoTitle: "Ubiquinol vs Ubiquinone: Which CoQ10 Form? | Noovit"
+seoTitle: "Ubiquinol vs CoQ10: Does the Form Matter? | Noovit"
 seoDescription: Ubiquinol or ubiquinone? Your body converts between the two CoQ10 forms, and most trials used ubiquinone. What absorption studies show, and how to take either.
-publishAt: 2026-12-28T14:00:00Z
+publishAt: 2026-11-25T14:00:00Z
 ---
 
 **Short answer:** for most people, the form matters less than the label suggests. **Ubiquinone** is the form used in most CoQ10 research, including the largest heart trial, and it usually costs less [1][2]. **Ubiquinol** is often sold as better absorbed, but in a head-to-head study it **wasn't significantly better absorbed**, and your body converts one form into the other anyway [3]. Taking either **with a meal that contains fat** makes a bigger difference [2][4].

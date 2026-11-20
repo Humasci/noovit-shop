@@ -2,7 +2,7 @@
 slug: when-to-take-magnesium-for-sleep
 title: "When to take magnesium for sleep, and how much"
 excerpt: Sleep trials gave magnesium 30 to 60 minutes before bed, at about 250 mg. What those trials found, what to realistically expect, and the limits to stay under.
-seoTitle: When to Take Magnesium for Sleep, and How Much | Noovit
+seoTitle: "Magnesium Glycinate Before Bed: When and How Much | Noovit"
 seoDescription: Sleep trials gave about 250 mg of magnesium 30–60 minutes before bed. What they found, how soon to expect a change, and the 350 mg supplement limit.
 publishAt: 2026-11-23T14:00:00Z
 ---

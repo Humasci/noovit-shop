@@ -6,6 +6,7 @@
 // Usage: npx tsx scripts/journal-sql.ts <output.sql>
 import { readdirSync, readFileSync, writeFileSync } from 'fs';
 import { SEED_PRODUCTS } from '@/data/products';
+import { productSlugFromUrl } from '@/lib/urls';
 
 const DIR = 'content/journal';
 const out = process.argv[2];
@@ -54,7 +55,7 @@ for (const p of posts) {
     if (kind === 'guides' && !GUIDE_SLUGS.has(slug)) e(`links to missing guide /guides/${slug}`);
     if (kind === 'blog' && !(when.get(slug)! < (when.get(p.slug) ?? Infinity))) e(`links to /blog/${slug}, which isn't live before this post`);
     if (kind === 'products') {
-      const st = productStatus(slug);
+      const st = productStatus(productSlugFromUrl(slug)); // links use the public URL (lib/urls.ts)
       if (!st) e(`links to unknown product /products/${slug}`);
       else if (st === 'hidden') warnings.push(`${p.slug}: links to /products/${slug}, hidden in the seed catalog; make sure it's active in Admin before ${p.publishAt?.slice(0, 10) ?? 'publishing'}`);
     }

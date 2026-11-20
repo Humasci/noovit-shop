@@ -6,36 +6,57 @@ import type { Product } from '@/types';
 // characters and descriptions under ~155, with structure/function wording only.
 const PRODUCT_SEO: Record<string, { title: string; description: string }> = {
   'magnesium-complex': {
-    title: 'Magnesium Glycinate 275 mg — Magnesium Sleep+ | Noovit',
+    title: 'Magnesium Glycinate 275 mg for Sleep | Noovit',
     description: 'Magnesium Sleep+ gives 275 mg of elemental magnesium as gentle, well-absorbed glycinate per serving. 90 capsules. Free US shipping, 90-day guarantee.',
   },
   ashwagandha: {
-    title: 'KSM-66 Ashwagandha 600 mg — Ashwagandha Calm+ | Noovit',
+    title: 'KSM-66 Ashwagandha 600 mg Capsules | Noovit',
     description: 'KSM-66® ashwagandha root extract at 600 mg, the dose used in the main stress studies, plus D3, B vitamins, maca and ginseng. Free US shipping.',
   },
   'lions-mane': {
-    title: "Lion's Mane Mushroom 1,000 mg Capsules | Noovit",
+    title: "Lion's Mane Capsules, 1,000 mg Mushroom | Noovit",
     description: "Lion's mane mushroom: 1,000 mg of fruiting body and mycelium per serving. Free US shipping, subscribe & save, 90-day guarantee.",
   },
   creatine: {
-    title: 'Creatine Monohydrate Powder, 5 g per Scoop | Noovit',
+    title: 'Creatine Monohydrate Powder, 5 g Unflavored | Noovit',
     description: 'Pure creatine monohydrate: 5 g per scoop, 50 servings (281 g). One ingredient, unflavored, mixes into any drink. For adults 18+. Free US shipping.',
   },
   'creatine-for-women': {
-    title: 'Creatine for Her: Creatine Monohydrate for Women, 5 g | Noovit',
+    title: 'Creatine for Women: Pure Monohydrate, 5 g | Noovit',
     description: 'Creatine monohydrate for women: 5 g per scoop, 50 servings (281 g). One ingredient, unflavored. Supports strength, lean muscle and memory.* Adults 18+. Free US shipping.',
   },
   coq10: {
-    title: 'CoQ10 200 mg Capsules | Noovit',
+    title: 'CoQ10 200 mg Capsules (Ubiquinone) | Noovit',
     description: 'CoQ10 at 200 mg per serving, within the 100–300 mg range used in studies. Free US shipping, subscribe & save, 90-day guarantee.',
   },
   'turmeric-complex': {
-    title: 'Turmeric Curcumin with Glucosamine & Chondroitin | Noovit',
+    title: 'Turmeric and Glucosamine with Chondroitin | Noovit',
     description: 'Turmeric Complex: 800 mg turmeric root plus 100 mg of 95% curcuminoid extract, with glucosamine and chondroitin. Contains shellfish. Free US shipping.',
   },
   'sleep-calm-stack': {
-    title: 'Magnesium Glycinate + KSM-66 Ashwagandha Stack | Noovit',
+    title: 'Magnesium and Ashwagandha Stack (KSM-66) | Noovit',
     description: 'Sleep & Calm Stack: Magnesium Sleep+ (275 mg as glycinate) and Ashwagandha Calm+ (KSM-66®, 600 mg), together for less. Free US shipping.',
+  },
+  // Ahrefs keyword plan (20 Nov): drafts get keyword titles ready for launch.
+  'creatine-hydration': {
+    title: 'Creatine with Electrolytes: Creatine Hydration+ | Noovit',
+    description: '5 g creatine monohydrate with sodium, potassium and magnesium in one lemon drink, sweetened with stevia. For adults 18+. Free US shipping.',
+  },
+  'menopause-complex': {
+    title: 'Menopause Supplement: Black Cohosh, Sage, D3 & B6 | Noovit',
+    description: 'Menopause Balance+: black cohosh, sage, vitamin D3 and B6 to support balance through menopause.* Every amount listed. Free US shipping.',
+  },
+  'iron-complex': {
+    title: 'Iron Bisglycinate: Gentle Iron Supplement | Noovit',
+    description: 'Gentle iron as bisglycinate with vitamin C. Test your ferritin first; take iron only if you need it. Free US shipping, 90-day guarantee.',
+  },
+  'collagen-complex': {
+    title: 'Collagen with Hyaluronic Acid & Vitamin C | Noovit',
+    description: 'Collagen Glow+: collagen with hyaluronic acid and vitamin C to support skin, hair and nails.* Every amount listed. Free US shipping.',
+  },
+  'biotin-complex': {
+    title: 'Biotin Supplement with Zinc & Selenium | Noovit',
+    description: 'High-strength biotin with zinc and selenium to support hair, skin and nails.* Every amount listed. Free US shipping, 90-day guarantee.',
   },
 };
 

@@ -222,3 +222,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 20 Nov (56): scene-shot bottle base and cap fixed; scenes on homepage/men; tests hub + 10 kit pages; Pets button; cart icon.
 - [x] 20 Nov (57): tests hub grid; admin subscribers source filters + waitlist counts + kit column + export; waitlist confirmation emails (tests, pets).
 - [x] 20 Nov (58): descriptive URLs for hubs, tests and products with 301 redirects (lib/urls.ts).
+- [x] 20 Nov (59): Ahrefs keyword plan (`docs/seo/KEYWORD_PLAN.md`): 72 keywords tiered by KD; keyword titles for products (incl. drafts), tests and 4 articles; new Vitamin D and A1c kit pages; journal checker understands the new product URLs; `2026-11-20-journal-keywords.sql` replaces the 19 Nov schedule.

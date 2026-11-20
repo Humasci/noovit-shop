@@ -2,7 +2,7 @@
 slug: magnesium-glycinate-vs-citrate-vs-oxide
 title: "Magnesium glycinate vs citrate vs oxide: which form, for what?"
 excerpt: The form changes how much magnesium you get per capsule, how well it's absorbed and whether it acts as a laxative. A plain comparison, with what the (thin) research actually shows.
-seoTitle: Magnesium Glycinate vs Citrate vs Oxide | Noovit
+seoTitle: "Magnesium Glycinate vs Citrate vs Oxide: Which? | Noovit"
 seoDescription: Glycinate, citrate or oxide? How much magnesium each gives, what absorption studies show, which ones loosen stools, and how to pick by goal.
 publishAt: 2026-11-16T14:00:00Z
 ---

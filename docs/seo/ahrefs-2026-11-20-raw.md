@@ -70,3 +70,16 @@ No export allowed on the plan, so transcribed from screenshots. SV = monthly US 
 | how do i know if i need magnesium | 28 | 100 | 17,000 |
 | tsh test at home | 29 | 30 | 450 |
 | low ferritin symptoms | 32 | 7,000 | 3,600 |
+
+## Part 3
+| Keyword | KD | SV | TP |
+|---|---|---|---|
+| ashwagandha for women | 33 | 3,200 | 6,900 |
+| testosterone test at home | 44 | 350 | 1,100 |
+| at home health tests | 44 | 450 | 1,200 |
+| lion's mane supplement | 51 | 12,000 | 4,000 |
+| how much magnesium glycinate for sleep | 51 | 14,000 | 47,000 |
+| ashwagandha for cortisol | 51 | 450 | 203,000 |
+| ashwagandha for stress | 53 | 450 | 205,000 |
+| lion's mane for focus | 57 | 150 | 2,000 |
+| at home blood test | 74 | 7,200 | 9,300 |

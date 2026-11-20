@@ -4,7 +4,7 @@ title: "Magnesium glycinate vs threonate: what each gives you, and what the stud
 excerpt: Threonate is sold for the brain, glycinate for sleep and everyday intake. How much magnesium each gives per gram, what the (often maker-funded) studies found, cost per mg, and how to choose.
 seoTitle: Magnesium Glycinate vs Threonate: Dose, Evidence, Cost
 seoDescription: Threonate gives about half the magnesium per gram of glycinate. What the brain and sleep studies found, who funded them, cost per mg, and how to choose.
-publishAt: 2026-12-05T14:00:00Z
+publishAt: 2026-11-24T14:00:00Z
 ---
 
 **Short answer:** they do different jobs. **Glycinate** packs about twice as much magnesium per gram, so it's the practical way to top up your daily intake [1][2][3]. **Threonate** (sold as Magtein) is marketed for the brain. That idea comes mainly from rat studies and a handful of small human trials, most of them funded by companies behind the ingredient [4][5][6][7]. One independent trial found no benefit [8]. No study has compared the two forms head to head.
