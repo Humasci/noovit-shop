@@ -108,12 +108,13 @@ export default async function PetsPage({ searchParams }: { searchParams: Promise
       <MasonryGallery
         title="For dogs, cats and the people who love them"
         images={[
+          // Order matters: slot 1 large, 3 tall, 6 wide (MasonryGallery), so landscape photos go to 1 and 6.
           { src: PET_IMAGES.hero, alt: 'A woman relaxing on a sofa with her dog' },
+          { src: PET_IMAGES.care, alt: 'A shar-pei puppy resting its head on a hand' },
+          { src: PET_IMAGES.teaser, alt: 'A dog and a cat side by side' },
           { src: PET_IMAGES.dna, alt: 'A vet holding a small fluffy dog' },
           { src: PET_IMAGES.urine, alt: 'A cat and a small dog sitting in a meadow' },
-          { src: PET_IMAGES.care, alt: 'A shar-pei puppy resting its head on a hand' },
           { src: PET_IMAGES.supplements, alt: 'A woman playing with her dog and cat at home' },
-          { src: PET_IMAGES.teaser, alt: 'A dog and a cat side by side' },
         ]}
       />
 
