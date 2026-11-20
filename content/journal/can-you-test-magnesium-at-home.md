@@ -102,7 +102,7 @@ If you fall short and add a supplement, keep supplements at or below **350 mg a 
 
 Your doctor can order a serum test and interpret it alongside your symptoms, medicines and other blood work. More on forms, doses and safety in our [magnesium guide](/guides/magnesium) and [glycinate vs citrate vs oxide](/blog/magnesium-glycinate-vs-citrate-vs-oxide).
 
-If food alone doesn't get you there, our [Magnesium Sleep+](/products/magnesium-complex) gives 275 mg of elemental magnesium as glycinate in three capsules.
+If food alone doesn't get you there, our [Magnesium Sleep+](/products/magnesium-glycinate) gives 275 mg of elemental magnesium as glycinate in three capsules.
 
 ## Sources
 

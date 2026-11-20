@@ -82,7 +82,7 @@ The same rules apply to both:
 
 Compare other forms in [magnesium glycinate vs citrate vs oxide](/blog/magnesium-glycinate-vs-citrate-vs-oxide), and see the full evidence in our [magnesium guide](/guides/magnesium).
 
-Our [Magnesium Sleep+](/products/magnesium-complex) uses glycinate: 275 mg of elemental magnesium in three capsules, taken after an evening meal. It's also in our [Sleep & Calm Stack](/products/sleep-calm-stack) with ashwagandha.
+Our [Magnesium Sleep+](/products/magnesium-glycinate) uses glycinate: 275 mg of elemental magnesium in three capsules, taken after an evening meal. It's also in our [Sleep & Calm Stack](/products/sleep-calm-stack) with ashwagandha.
 
 ## Sources
 

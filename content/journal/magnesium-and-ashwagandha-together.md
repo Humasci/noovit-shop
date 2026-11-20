@@ -61,7 +61,7 @@ NCCIH says ashwagandha may be safe for up to 3 months; long-term safety isn't kn
 
 ## If you want both in one order
 
-Our [Sleep & Calm Stack](/products/sleep-calm-stack) pairs [Magnesium Sleep+](/products/magnesium-complex) (275 mg of magnesium as glycinate, taken after an evening meal) with [Ashwagandha Calm+](/products/ashwagandha) (600 mg of KSM-66, the dose used in the main stress trials, usually taken in the morning). Ashwagandha Calm+ also contains vitamins D3, B6 and B12, L-arginine, maca, Panax ginseng and shatavari, which weren't part of those trials, so read the full label and check it with your doctor if you take any medication.
+Our [Sleep & Calm Stack](/products/sleep-calm-stack) pairs [Magnesium Sleep+](/products/magnesium-glycinate) (275 mg of magnesium as glycinate, taken after an evening meal) with [Ashwagandha Calm+](/products/ashwagandha-ksm-66) (600 mg of KSM-66, the dose used in the main stress trials, usually taken in the morning). Ashwagandha Calm+ also contains vitamins D3, B6 and B12, L-arginine, maca, Panax ginseng and shatavari, which weren't part of those trials, so read the full label and check it with your doctor if you take any medication.
 
 ## Sources
 

@@ -16,8 +16,9 @@ import { advisorEnabled } from '@/lib/advisor';
 import { WOMEN_FEATURED } from '@/lib/women';
 import { MEN_FEATURED, MEN_LIVE } from '@/lib/men';
 import { findKit } from '@/lib/tests';
+import { productPath } from '@/lib/urls';
 
-const HOME_TESTS = ['nutrient-check', 'perimenopause-check', 'thyroid-check', 'heart-metabolic'].map((s) => findKit(s)!).filter(Boolean);
+const HOME_TESTS = ['iron-test', 'perimenopause-test', 'thyroid-test', 'cholesterol-test'].map((s) => findKit(s)!).filter(Boolean);
 
 const SCENES = [
   { slug: 'lions-mane', src: '/images/scenes/lions-mane.jpg', alt: "Noovit Lion's Mane bottle on lion's mane mushrooms: 1,000 mg per serving, fruiting body and mycelium, vegan capsule" },
@@ -111,7 +112,7 @@ export default async function HomePage() {
           </div>
           <div className="grid gap-4 sm:grid-cols-3">
             {SCENES.map((sc) => (
-              <Link key={sc.slug} href={`/products/${sc.slug}`} className="group overflow-hidden rounded-3xl">
+              <Link key={sc.slug} href={productPath(sc.slug)} className="group overflow-hidden rounded-3xl">
                 <img src={sc.src} alt={sc.alt} loading="lazy" className="aspect-square w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
               </Link>
             ))}
@@ -130,13 +131,13 @@ export default async function HomePage() {
                 <p className="mt-4 max-w-md text-[var(--color-ink)]/80">Creatine for strength at every age, magnesium and ashwagandha for sleep and stress, and support through perimenopause and menopause.</p>
                 <div className="mt-6 grid grid-cols-3 gap-3">
                   {women.map((p) => (
-                    <Link key={p.id} href={`/products/${p.slug}`} className="group text-center">
+                    <Link key={p.id} href={productPath(p.slug)} className="group text-center">
                       <ProductImage product={p} sizes="(min-width: 768px) 12vw, 30vw" className="mx-auto aspect-square w-full [mask-image:radial-gradient(closest-side,#000_72%,transparent)] transition-transform duration-700 group-hover:scale-[1.04]" />
                       <span className="mt-1 block text-xs font-semibold text-[var(--color-navy)] md:text-sm">{p.name}</span>
                     </Link>
                   ))}
                 </div>
-                <Link href="/women" className="btn btn-primary mt-7 self-start">Shop Women&apos;s Health</Link>
+                <Link href="/womens-health" className="btn btn-primary mt-7 self-start">Shop Women&apos;s Health</Link>
               </div>
               <img src={WOMEN_IMAGES.banner} alt="Three women in sportswear" className="h-64 w-full object-cover object-top md:h-full" loading="lazy" />
             </div>
@@ -153,11 +154,11 @@ export default async function HomePage() {
               <h2 className="mt-2 text-4xl md:text-5xl">At-home health tests</h2>
               <p className="mt-3 max-w-xl text-[var(--color-ink)]/80">Know your numbers, then choose what helps. Simple kits you collect at home, processed by a certified US lab.</p>
             </div>
-            <Link href="/tests" className="hidden items-center gap-1 text-sm font-semibold text-[var(--color-navy)] hover:underline sm:inline-flex">All tests <ArrowRight className="h-4 w-4" /></Link>
+            <Link href="/at-home-tests" className="hidden items-center gap-1 text-sm font-semibold text-[var(--color-navy)] hover:underline sm:inline-flex">All tests <ArrowRight className="h-4 w-4" /></Link>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {HOME_TESTS.map((k) => (
-              <Link key={k.slug} href={`/tests/${k.slug}`} className="group flex flex-col rounded-3xl bg-white p-6 transition hover:shadow-md">
+              <Link key={k.slug} href={`/at-home-tests/${k.slug}`} className="group flex flex-col rounded-3xl bg-white p-6 transition hover:shadow-md">
                 <h3 className="text-xl">{k.name}</h3>
                 <p className="mt-2 flex-1 text-sm text-[var(--color-ink)]/80">{k.short}</p>
                 <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-[var(--color-navy)]">Join the waitlist <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
@@ -179,13 +180,13 @@ export default async function HomePage() {
                 <p className="mt-4 max-w-md text-[var(--color-ink)]/80">Creatine for strength and power, lion&apos;s mane and CoQ10 for focus and energy, magnesium and ashwagandha for sleep and stress.</p>
                 <div className="mt-6 grid grid-cols-3 gap-3">
                   {men.map((p) => (
-                    <Link key={p.id} href={`/products/${p.slug}`} className="group text-center">
+                    <Link key={p.id} href={productPath(p.slug)} className="group text-center">
                       <ProductImage product={p} sizes="(min-width: 768px) 12vw, 30vw" className="mx-auto aspect-square w-full [mask-image:radial-gradient(closest-side,#000_72%,transparent)] transition-transform duration-700 group-hover:scale-[1.04]" />
                       <span className="mt-1 block text-xs font-semibold text-[var(--color-navy)] md:text-sm">{p.name}</span>
                     </Link>
                   ))}
                 </div>
-                <Link href="/men" className="btn btn-primary mt-7 self-start">Shop Men&apos;s Health</Link>
+                <Link href="/mens-health" className="btn btn-primary mt-7 self-start">Shop Men&apos;s Health</Link>
               </div>
               
             </div>

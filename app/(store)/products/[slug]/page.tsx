@@ -26,20 +26,21 @@ import { FAQSection, SectionHeading } from '@/components/sections/Sections';
 import { heroDose, netQuantity } from '@/lib/labels/svg';
 import { PUBLIC_DIETARY_TAGS, asLowAs } from '@/data/products';
 import { formatPrice } from '@/lib/utils/format';
+import { productPath, productSlugFromUrl, productUrlSlug } from '@/lib/urls';
 
 export async function generateStaticParams() {
-  return (await getStoreProducts()).map((p) => ({ slug: p.slug }));
+  return (await getStoreProducts()).map((p) => ({ slug: productUrlSlug(p.slug) }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const product = await getStoreProduct((await params).slug);
+  const product = await getStoreProduct(productSlugFromUrl((await params).slug));
   if (!product) return {};
   const { title, description } = productSeo(product);
   return {
     title,
     description,
-    alternates: { canonical: `/products/${product.slug}` },
-    openGraph: { title, description, url: `/products/${product.slug}`, images: [{ url: productImageUrl(product) }] },
+    alternates: { canonical: productPath(product.slug) },
+    openGraph: { title, description, url: productPath(product.slug), images: [{ url: productImageUrl(product) }] },
   };
 }
 
@@ -72,7 +73,7 @@ function Panel({ id, title, children }: { id?: string; title: string; children: 
 }
 
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
-  const product = await getStoreProduct((await params).slug);
+  const product = await getStoreProduct(productSlugFromUrl((await params).slug));
   if (!product) notFound();
   const all = await getStoreProducts();
   const placeholders = placeholdersOn(await getSettings());
@@ -211,7 +212,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                   <li key={c.slug} className="flex items-center gap-4 px-5 py-4">
                     <ProductImageServer product={c} />
                     <div className="min-w-0 flex-1">
-                      <Link href={`/products/${c.slug}`} className="font-semibold text-[var(--color-navy)] hover:underline">{c.name}</Link>
+                      <Link href={productPath(c.slug)} className="font-semibold text-[var(--color-navy)] hover:underline">{c.name}</Link>
                       <p className="text-sm text-[var(--color-muted)]">{c.shortBenefit}*</p>
                     </div>
                     <span className="text-sm text-[var(--color-muted)]">{formatPrice(c.basePrice)}</span>
@@ -411,7 +412,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                 <p>
                   It pairs well with{' '}
                   {related.slice(0, 3).map((r, i) => (
-                    <span key={r.slug}>{i > 0 && (i === Math.min(related.length, 3) - 1 ? ' and ' : ', ')}<Link href={`/products/${r.slug}`} className="underline">{r.name}</Link></span>
+                    <span key={r.slug}>{i > 0 && (i === Math.min(related.length, 3) - 1 ? ' and ' : ', ')}<Link href={productPath(r.slug)} className="underline">{r.name}</Link></span>
                   ))}
                   . If you take medication, check with your pharmacist first.
                 </p>
@@ -426,7 +427,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               <p className="mt-1 text-sm text-[var(--color-muted)]">{bundles[0].shortBenefit}</p>
               <div className="mt-3 flex items-center justify-between gap-4">
                 <span className="font-semibold">{formatPrice(bundles[0].basePrice)}</span>
-                <Link href={`/products/${bundles[0].slug}`} className="btn btn-primary px-5 py-2.5">View bundle</Link>
+                <Link href={productPath(bundles[0].slug)} className="btn btn-primary px-5 py-2.5">View bundle</Link>
               </div>
             </div>
           )}

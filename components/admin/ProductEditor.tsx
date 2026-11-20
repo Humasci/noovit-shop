@@ -13,6 +13,7 @@ import { formatPrice } from '@/lib/utils/format';
 import { ProductImage } from '@/components/product/ProductImage';
 import { Card, btnSm, btnSmOutline, inputCls } from './ui';
 import { MosaicLoader } from '@/components/brand/MosaicLoader';
+import { productPath } from '@/lib/urls';
 
 const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 
@@ -314,7 +315,7 @@ export function ProductEditor({
           </div>
           <div className="mt-4 rounded-xl border border-[var(--color-line)] p-4 text-sm">
             <p className="truncate text-[#1a0dab]">{seoTitle || `${d.name || 'Product'} — Noovit`}</p>
-            <p className="text-xs text-[#006621]">noovit.com/products/{slug}</p>
+            <p className="text-xs text-[#006621]">noovit.com{productPath(slug)}</p>
             <p className="line-clamp-2 text-xs text-[var(--color-muted)]">{seoDescription || d.description}</p>
           </div>
         </Card>
@@ -332,7 +333,7 @@ export function ProductEditor({
             {pending ? <span className="inline-flex items-center gap-2"><MosaicLoader size={14} color="#fff" label="Saving" /> Saving…</span> : isNew ? 'Create product' : 'Save changes'}
           </button>
           {!isNew && (
-            <Link href={`/products/${slug}`} target="_blank" className="mt-3 flex items-center justify-center gap-1 text-sm text-[var(--color-accent)]">
+            <Link href={productPath(slug)} target="_blank" className="mt-3 flex items-center justify-center gap-1 text-sm text-[var(--color-accent)]">
               View in store <ExternalLink className="h-3.5 w-3.5" />
             </Link>
           )}

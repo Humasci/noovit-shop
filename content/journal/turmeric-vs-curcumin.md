@@ -54,7 +54,7 @@ Full details in our [turmeric guide](/guides/turmeric).
 
 ## Our turmeric
 
-Our [Turmeric Complex](/products/turmeric-complex) combines 800 mg of turmeric root powder with 100 mg of a 95% curcuminoid extract, plus glucosamine, chondroitin, ginger, boswellia and BioPerine® black pepper extract. It **contains shellfish** (crab, lobster, crawfish), as the label states, so it isn't suitable if you have a shellfish allergy.
+Our [Turmeric Complex](/products/turmeric-glucosamine-chondroitin) combines 800 mg of turmeric root powder with 100 mg of a 95% curcuminoid extract, plus glucosamine, chondroitin, ginger, boswellia and BioPerine® black pepper extract. It **contains shellfish** (crab, lobster, crawfish), as the label states, so it isn't suitable if you have a shellfish allergy.
 
 ## Sources
 

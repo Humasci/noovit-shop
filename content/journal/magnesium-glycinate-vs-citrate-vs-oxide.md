@@ -56,7 +56,7 @@ A 2021 systematic review found only 14 studies comparing forms. Organic forms (l
 
 Diarrhea, nausea and cramps are the common side effects, mostly at high doses [1]. If you have **kidney disease**, don't take magnesium supplements unless your doctor prescribes them, because excess magnesium can build up [1]. Magnesium binds to some **antibiotics** (tetracyclines and quinolones) and **osteoporosis drugs** (bisphosphonates), so space the doses, and long-term **acid-reducing drugs** (PPIs) and some **diuretics** change magnesium levels [1]. More detail in our [magnesium guide](/guides/magnesium).
 
-Our [Magnesium Sleep+](/products/magnesium-complex) uses magnesium glycinate: 275 mg of elemental magnesium in three capsules, taken after an evening meal.
+Our [Magnesium Sleep+](/products/magnesium-glycinate) uses magnesium glycinate: 275 mg of elemental magnesium in three capsules, taken after an evening meal.
 
 ## Sources
 

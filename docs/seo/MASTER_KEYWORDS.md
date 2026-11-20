@@ -3,7 +3,7 @@
 One primary keyword per page (the page's title and H1 target it), plus secondaries for the copy and FAQs.
 Volumes: **SA** = Search Atlas (owner export 19 Nov), **TR** = Google Trends estimate (±2–4×, research 19 Nov), "–" = not
 measured yet. **Check everything in Ahrefs** (paste the block at the bottom into Keywords Explorer, US).
-Proposed URL = what the page would move to if we rename (see "URLs" at the end).
+URLs: renamed on 20 Nov to the proposed addresses below (old ones redirect).
 
 ## Categories and hubs
 | Page | Proposed URL | Primary keyword | Secondaries |

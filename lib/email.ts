@@ -164,7 +164,7 @@ export function sendWaitlistConfirmation(to: string, kind: 'tests' | 'pets', kit
   const body = tests
     ? `<p>Thanks for your interest in ${what}. We're finalizing our US lab partner, and we'll email you the day kits are available, with the price and how it works.</p>
       <p>Until then, our free guides explain what each marker can and can't tell you.</p>
-      <p><a href="${SITE_URL}/tests" style="display:inline-block;background:#14213d;color:#fff;padding:12px 24px;border-radius:999px;text-decoration:none;font-weight:bold">See all at-home tests</a></p>
+      <p><a href="${SITE_URL}/at-home-tests" style="display:inline-block;background:#14213d;color:#fff;padding:12px 24px;border-radius:999px;text-decoration:none;font-weight:bold">See all at-home tests</a></p>
       <p style="font-size:12px;color:#6b7280">At-home tests are wellness screens, not a diagnosis.</p>`
     : `<p>Thanks for joining the waitlist. Our first Noovit Pets products are at-home health checks for dogs and cats: urine wellness strips and DNA health tests. We'll email you the day they launch.</p>
       <p><a href="${SITE_URL}/pets" style="display:inline-block;background:#14213d;color:#fff;padding:12px 24px;border-radius:999px;text-decoration:none;font-weight:bold">See what's coming</a></p>`;

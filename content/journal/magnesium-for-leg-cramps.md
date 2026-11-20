@@ -43,7 +43,7 @@ In the Cochrane review, stomach side effects such as diarrhea affected **11% to 
 - **If cramps are frequent, severe, or come with weakness, swelling or numbness,** see a doctor to look for a cause.
 - **Magnesium may still make sense for other reasons:** about half of US adults get less than they need from food, and it's studied for sleep and other uses [3]. See [when to take magnesium for sleep](/blog/when-to-take-magnesium-for-sleep) and our [magnesium guide](/guides/magnesium).
 
-If you do take magnesium for general intake, glycinate is less likely to upset your stomach than oxide: see [magnesium glycinate vs citrate vs oxide](/blog/magnesium-glycinate-vs-citrate-vs-oxide). Our [Magnesium Sleep+](/products/magnesium-complex) gives 275 mg as glycinate, and we don't sell it as a cramp remedy.
+If you do take magnesium for general intake, glycinate is less likely to upset your stomach than oxide: see [magnesium glycinate vs citrate vs oxide](/blog/magnesium-glycinate-vs-citrate-vs-oxide). Our [Magnesium Sleep+](/products/magnesium-glycinate) gives 275 mg as glycinate, and we don't sell it as a cramp remedy.
 
 ## Sources
 

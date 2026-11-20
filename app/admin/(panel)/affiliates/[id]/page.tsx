@@ -67,7 +67,7 @@ export default async function AffiliatePage({ params, searchParams }: { params: 
           <div className="space-y-4">
             <CopyField label="Code" value={a.code} />
             <CopyField label="Share link" value={shareLink(a.code)} />
-            <CopyField label="Link to a product (example)" value={shareLink(a.code, '/products/magnesium-complex')} />
+            <CopyField label="Link to a product (example)" value={shareLink(a.code, '/products/magnesium-glycinate')} />
             <CopyField label="Their private dashboard" value={portalLink(a.portal_token)} />
           </div>
           <div className="mt-4 flex flex-wrap gap-2">

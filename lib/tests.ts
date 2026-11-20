@@ -35,7 +35,7 @@ const m = (name: string, why: string, note: string): Marker => ({ name, why, not
 
 const KITS: TestKit[] = [
   {
-    slug: 'nutrient-check',
+    slug: 'iron-test',
     category: 'nutrients',
     name: 'Iron & Nutrient Check',
     short: 'Ferritin, iron, vitamin D, B12, folate and magnesium.',
@@ -51,10 +51,10 @@ const KITS: TestKit[] = [
     collection: 'Finger-prick sample at home',
     seoTitle: 'At-Home Iron & Nutrient Test: Ferritin, Vitamin D, B12 | Noovit',
     seoDescription: 'An at-home finger-prick test for iron stores (ferritin), iron, vitamin D, B12, folate and magnesium is coming. What each marker shows and why test first.',
-    related: [{ href: '/guides/magnesium', label: 'Magnesium guide' }, { href: '/women#energy', label: "Women's Health: energy & iron" }],
+    related: [{ href: '/guides/magnesium', label: 'Magnesium guide' }, { href: '/womens-health#energy', label: "Women's Health: energy & iron" }],
   },
   {
-    slug: 'perimenopause-check',
+    slug: 'perimenopause-test',
     category: 'womens',
     name: 'Perimenopause Check',
     short: 'FSH, LH, estradiol, progesterone and TSH.',
@@ -69,10 +69,10 @@ const KITS: TestKit[] = [
     collection: 'Finger-prick sample at home',
     seoTitle: 'Perimenopause Test at Home: FSH, Estradiol, LH | Noovit',
     seoDescription: 'An at-home perimenopause hormone test (FSH, LH, estradiol, progesterone and TSH) is coming. What each hormone can and can’t tell you, and when to test.',
-    related: [{ href: '/women#midlife', label: "Women's Health: perimenopause & menopause" }],
+    related: [{ href: '/womens-health#midlife', label: "Women's Health: perimenopause & menopause" }],
   },
   {
-    slug: 'womens-wellness',
+    slug: 'womens-health-test',
     category: 'womens',
     name: "Women's Wellness Panel",
     short: 'Hormones plus vitamin D, cholesterol, hs-CRP and HbA1c.',
@@ -88,10 +88,10 @@ const KITS: TestKit[] = [
     collection: 'Finger-prick sample at home',
     seoTitle: "Women's Health Test at Home: Hormones, Vitamin D, Heart | Noovit",
     seoDescription: "An at-home women's wellness panel is coming: FSH, LH, estradiol, progesterone, TSH, vitamin D, cholesterol, hs-CRP and HbA1c from one finger-prick sample.",
-    related: [{ href: '/women', label: "Women's Health" }],
+    related: [{ href: '/womens-health', label: "Women's Health" }],
   },
   {
-    slug: 'thyroid-check',
+    slug: 'thyroid-test',
     category: 'thyroid',
     name: 'Thyroid Check',
     short: 'TSH, free T4, free T3 and TPO antibodies.',
@@ -107,7 +107,7 @@ const KITS: TestKit[] = [
     seoDescription: 'An at-home thyroid test (TSH, free T4, free T3 and TPO antibodies) is coming. What each marker shows and when to follow up with your doctor.',
   },
   {
-    slug: 'heart-metabolic',
+    slug: 'cholesterol-test',
     category: 'heart',
     name: 'Heart & Metabolic Check',
     short: 'Cholesterol, ApoB, HbA1c and hs-CRP.',
@@ -124,7 +124,7 @@ const KITS: TestKit[] = [
     related: [{ href: '/guides/coq10', label: 'CoQ10 guide' }],
   },
   {
-    slug: 'stress-check',
+    slug: 'cortisol-test',
     category: 'stress',
     name: 'Stress & Cortisol Check',
     short: 'Cortisol and DHEA-S.',
@@ -139,7 +139,7 @@ const KITS: TestKit[] = [
     related: [{ href: '/guides/ashwagandha', label: 'Ashwagandha guide' }, { href: '/guides/magnesium', label: 'Magnesium guide' }],
   },
   {
-    slug: 'omega-3-index',
+    slug: 'omega-3-test',
     category: 'nutrients',
     name: 'Omega-3 Index',
     short: 'EPA and DHA in your red blood cells.',
@@ -150,7 +150,7 @@ const KITS: TestKit[] = [
     seoDescription: 'An at-home omega-3 index test is coming: EPA and DHA in your red blood cells from one finger-prick blood spot. What the result reflects and its limits.',
   },
   {
-    slug: 'mens-health-check',
+    slug: 'testosterone-test',
     category: 'mens',
     name: "Men's Health Check",
     short: 'Total and free testosterone, SHBG and estradiol.',
@@ -167,7 +167,7 @@ const KITS: TestKit[] = [
     hidden: !MEN_LIVE,
   },
   {
-    slug: 'pet-urine-strips',
+    slug: 'pet-urine-test-strips',
     category: 'pets',
     pets: true,
     name: 'Pet Urine Wellness Strips',

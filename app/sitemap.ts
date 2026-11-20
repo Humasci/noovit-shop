@@ -9,8 +9,9 @@ import { ADVISORS } from '@/data/content';
 import { siteLive } from '@/lib/launch';
 import { MEN_LIVE } from '@/lib/men';
 import { TEST_KITS } from '@/lib/tests';
+import { productPath } from '@/lib/urls';
 
-const PAGES = ['', '/women', ...(MEN_LIVE ? ['/men'] : []), '/tests', ...TEST_KITS.map((k) => `/tests/${k.slug}`), '/shop', '/quiz', '/about', '/reviews', '/faq', '/contact', '/policies/delivery-returns', '/policies/privacy', '/policies/terms'];
+const PAGES = ['', '/womens-health', ...(MEN_LIVE ? ['/mens-health'] : []), '/at-home-tests', ...TEST_KITS.map((k) => `/at-home-tests/${k.slug}`), '/shop', '/quiz', '/about', '/reviews', '/faq', '/contact', '/policies/delivery-returns', '/policies/privacy', '/policies/terms'];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Pre-launch every page is noindex (the coming-soon page), so listing them would only produce "noindex page in
@@ -26,7 +27,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...GUIDES.map((g) => ({ url: `${SITE_URL}/guides/${g.slug}`, lastModified: g.updated, changeFrequency: 'monthly' as const, priority: 0.7, images: [`${SITE_URL}/guide-image/${g.slug}`] })),
     ...GOAL_PAGES.map((g) => ({ url: `${SITE_URL}/goals/${g.slug}`, changeFrequency: 'weekly' as const, priority: 0.7 })),
     // Image entries help Google Images / Shopping find the bottle photos.
-    ...products.map((p) => ({ url: `${SITE_URL}/products/${p.slug}`, changeFrequency: 'weekly' as const, priority: 0.8, images: [productImageUrl(p)] })),
+    ...products.map((p) => ({ url: `${SITE_URL}${productPath(p.slug)}`, changeFrequency: 'weekly' as const, priority: 0.8, images: [productImageUrl(p)] })),
     ...collections.map((c) => ({ url: `${SITE_URL}/collections/${c.slug}`, changeFrequency: 'weekly' as const, priority: 0.7 })),
     ...posts.map((p) => ({ url: `${SITE_URL}/blog/${p.slug}`, lastModified: p.updatedAt, changeFrequency: 'monthly' as const, priority: 0.5, images: [p.coverImage ? (p.coverImage.startsWith('/') ? `${SITE_URL}${p.coverImage}` : p.coverImage) : `${SITE_URL}/journal-image/${p.slug}`] })),
   ];

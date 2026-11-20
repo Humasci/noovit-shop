@@ -76,7 +76,7 @@ Germany's risk assessor BfR also advises people with liver disease to avoid it [
 - **Give it about 8 weeks.** That's when most trials measured results [1][3].
 - **Don't use it long term without advice.** NCCIH says it may be safe for up to 3 months; longer-term safety isn't known [8].
 
-[Ashwagandha Calm+](/products/ashwagandha) contains 600 mg of KSM-66 root extract in two capsules a day. It also contains vitamins D3, B6 and B12, L-arginine, maca, Panax ginseng and shatavari, which weren't part of the trials above, so read the full label and check it with your doctor if you take any medication.
+[Ashwagandha Calm+](/products/ashwagandha-ksm-66) contains 600 mg of KSM-66 root extract in two capsules a day. It also contains vitamins D3, B6 and B12, L-arginine, maca, Panax ginseng and shatavari, which weren't part of the trials above, so read the full label and check it with your doctor if you take any medication.
 
 ## Sources
 

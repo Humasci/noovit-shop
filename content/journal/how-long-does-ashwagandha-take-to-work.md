@@ -50,7 +50,7 @@ Stop and see a doctor if you notice yellowing of the skin or eyes, itching, naus
 
 ## Our product
 
-[Ashwagandha Calm+](/products/ashwagandha) gives 600 mg of KSM-66 root extract in two capsules a day, the dose used in the main stress trials. It also contains vitamins D3, B6 and B12, L-arginine, maca, Panax ginseng and shatavari, which weren't part of those trials, so read the full label and check it with your doctor if you take any medication.
+[Ashwagandha Calm+](/products/ashwagandha-ksm-66) gives 600 mg of KSM-66 root extract in two capsules a day, the dose used in the main stress trials. It also contains vitamins D3, B6 and B12, L-arginine, maca, Panax ginseng and shatavari, which weren't part of those trials, so read the full label and check it with your doctor if you take any medication.
 
 ## Sources
 

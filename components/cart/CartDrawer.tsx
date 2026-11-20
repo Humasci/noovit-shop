@@ -11,6 +11,7 @@ import { Product } from '@/types';
 import { CheckoutButton } from './CheckoutButton';
 import { AutoDiscountNote } from './AutoDiscountNote';
 import { packOptions } from '@/data/products';
+import { productPath } from '@/lib/urls';
 
 export function CartDrawer({ suggestions }: { suggestions: Product[] }) {
   const { items, isOpen, close, updateQuantity, removeItem } = useCart();
@@ -54,7 +55,7 @@ export function CartDrawer({ suggestions }: { suggestions: Product[] }) {
               </Link>
               <div className="mt-10 grid grid-cols-2 gap-4 text-left">
                 {suggestions.slice(0, 4).map((p) => (
-                  <Link key={p.id} href={`/products/${p.slug}`} onClick={close} className="text-sm font-semibold">
+                  <Link key={p.id} href={productPath(p.slug)} onClick={close} className="text-sm font-semibold">
                     <ProductImage product={p} sizes="160px" className="mb-2 aspect-square w-full rounded-xl" />
                     {p.name}
                   </Link>

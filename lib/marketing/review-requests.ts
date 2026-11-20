@@ -4,6 +4,7 @@ import { getSettings } from '@/lib/settings';
 import { SITE_URL } from '@/lib/site';
 import { sendReviewRequest } from '@/lib/email';
 import { marketingFooter } from './subscribers';
+import { productPath } from '@/lib/urls';
 
 const BATCH = 100;
 const SKIP_ORDER = ['refunded', 'cancelled'];
@@ -36,7 +37,7 @@ export async function sendReviewRequests() {
       await sendReviewRequest(
         o.email,
         o.shipping_name,
-        unique.map((i) => ({ name: i.product_name, url: `${SITE_URL}/products/${i.product_slug}#write` })),
+        unique.map((i) => ({ name: i.product_name, url: `${SITE_URL}${productPath(i.product_slug)}#write` })),
         await marketingFooter(o.email)
       );
       sent++;

@@ -52,7 +52,7 @@ Talk to your doctor before taking creatine if you have **kidney disease** or red
 
 ## Our creatine
 
-Our [Creatine](/products/creatine) is pure creatine monohydrate: 5 g of creatine per scoop, 50 servings per tub. The label gives both options: four scoops a day for the first 5 days if you want to load, then one or two a day. Note that loading uses 20 scoops in that first week, so a tub lasts about 5 weeks with loading, or up to 50 days at one scoop a day.
+Our [Creatine](/products/creatine-monohydrate) is pure creatine monohydrate: 5 g of creatine per scoop, 50 servings per tub. The label gives both options: four scoops a day for the first 5 days if you want to load, then one or two a day. Note that loading uses 20 scoops in that first week, so a tub lasts about 5 weeks with loading, or up to 50 days at one scoop a day.
 
 ## Sources
 

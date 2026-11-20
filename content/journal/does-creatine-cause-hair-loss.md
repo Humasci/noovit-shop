@@ -43,7 +43,7 @@ In 2025, researchers ran the first randomized trial designed to answer the quest
 
 More in our [creatine guide](/guides/creatine).
 
-Our [Creatine](/products/creatine) is pure creatine monohydrate, 5 g per scoop, for adults 18 and over.
+Our [Creatine](/products/creatine-monohydrate) is pure creatine monohydrate, 5 g per scoop, for adults 18 and over.
 
 ## Sources
 

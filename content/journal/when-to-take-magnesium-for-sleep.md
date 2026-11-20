@@ -49,7 +49,7 @@ Glycinate (bisglycinate) is the form usually chosen for evening use because it's
 - **Diuretics** or long-term **acid reducers** (PPIs): these change magnesium levels [2].
 - **Ongoing insomnia:** see a doctor. Poor sleep can have many causes worth checking.
 
-Our [Magnesium Sleep+](/products/magnesium-complex) gives 275 mg of elemental magnesium as glycinate in three capsules, taken after an evening meal. Many people pair it with ashwagandha in the morning: that's our [Sleep & Calm Stack](/products/sleep-calm-stack).
+Our [Magnesium Sleep+](/products/magnesium-glycinate) gives 275 mg of elemental magnesium as glycinate in three capsules, taken after an evening meal. Many people pair it with ashwagandha in the morning: that's our [Sleep & Calm Stack](/products/sleep-calm-stack).
 
 ## Sources
 

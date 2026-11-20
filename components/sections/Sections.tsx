@@ -10,6 +10,7 @@ import { Stars } from '@/components/ui/Stars';
 import { SocialLinks } from '@/components/layout/Footer';
 import { brandify } from '@/components/brand/Brand';
 import { trackSignup } from '@/lib/analytics';
+import { productPath } from '@/lib/urls';
 
 export function SectionHeading({ eyebrow, title, sub, center = true }: { eyebrow?: string; title: string; sub?: string; center?: boolean }) {
   return (
@@ -82,7 +83,7 @@ export function ReviewsSection({ title = 'What customers say', reviews, placehol
                       </span>
                     )}
                   </span>
-                  <Link href={`/products/${r.productSlug}`} className="text-xs font-bold text-[var(--color-accent)]">
+                  <Link href={productPath(r.productSlug)} className="text-xs font-bold text-[var(--color-accent)]">
                     View Product
                   </Link>
                 </div>

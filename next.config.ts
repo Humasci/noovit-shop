@@ -1,4 +1,5 @@
 import type { NextConfig } from 'next';
+import { URL_REDIRECTS } from './lib/urls';
 
 const nextConfig: NextConfig = {
   // Native PNG renderer for product images; fonts (assets/fonts) and the bottle photo template (assets/mockups) are read at runtime.
@@ -15,6 +16,10 @@ const nextConfig: NextConfig = {
     formats: ['image/avif', 'image/webp'],
   },
   poweredByHeader: false,
+  // Descriptive URLs (20 Nov): old addresses redirect permanently (lib/urls.ts).
+  async redirects() {
+    return URL_REDIRECTS.map((r) => ({ ...r, permanent: true }));
+  },
   async headers() {
     return [
       // Pre-launch (lib/launch.ts): keep the whole site out of search results until SITE_LIVE=true.

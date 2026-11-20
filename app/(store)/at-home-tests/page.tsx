@@ -7,7 +7,7 @@ import { TestsWaitlist } from '@/components/tests/TestsWaitlist';
 export const metadata: Metadata = {
   title: 'At-Home Health Tests: Iron, Hormones, Thyroid, Cholesterol | Noovit',
   description: 'At-home test kits are coming to Noovit: iron and nutrients, perimenopause hormones, thyroid, heart and metabolic, cortisol, and checks for pets. Join the waitlist.',
-  alternates: { canonical: '/tests' },
+  alternates: { canonical: '/at-home-tests' },
 };
 
 const ICONS: Record<TestCategoryId, typeof Droplet> = { nutrients: Droplet, womens: Flower2, thyroid: Activity, heart: HeartPulse, stress: Brain, mens: User, pets: PawPrint };
@@ -42,7 +42,7 @@ export default function TestsPage() {
               const c = TEST_CATEGORY_LIST.find((x) => x.id === k.category)!;
               const Icon = ICONS[k.category];
               return (
-                <Link key={k.slug} href={`/tests/${k.slug}`} className={`group flex flex-col rounded-3xl border p-6 transition hover:border-[var(--color-navy)] ${k.pets ? 'border-[var(--color-pets-soft)] bg-[var(--color-pets-soft)]/40' : 'border-[var(--color-line)] bg-white'}`}>
+                <Link key={k.slug} href={`/at-home-tests/${k.slug}`} className={`group flex flex-col rounded-3xl border p-6 transition hover:border-[var(--color-navy)] ${k.pets ? 'border-[var(--color-pets-soft)] bg-[var(--color-pets-soft)]/40' : 'border-[var(--color-line)] bg-white'}`}>
                   <div className="flex items-center gap-2">
                     <span className={`flex h-8 w-8 items-center justify-center rounded-full ${k.pets ? 'bg-[var(--color-pets)]' : 'bg-[var(--color-navy)] text-white'}`}><Icon className="h-4 w-4" /></span>
                     <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-muted)]">{c.name}</span>

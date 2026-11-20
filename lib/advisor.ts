@@ -1,6 +1,7 @@
 import 'server-only';
 import { Product } from '@/types';
 import { GUIDES } from '@/lib/guides';
+import { productPath } from '@/lib/urls';
 
 // AI wellness advisor (Gemini 3.1 Flash-Lite, owner's choice for the launch budget). The system instruction holds
 // the rules and a short catalog list; the facts come from retrieved passages (lib/advisor-rag.ts) added to each
@@ -49,7 +50,7 @@ Safety and compliance (always)
 function productLine(p: Product) {
   const flags = [p.ageRestricted ? '18+ only' : '', /shellfish/i.test(p.otherIngredients) ? 'contains shellfish' : '', /milk/i.test(p.otherIngredients) ? 'contains milk' : '']
     .filter(Boolean).join(', ');
-  return `- ${p.name} (/products/${p.slug}) $${p.basePrice}: ${p.shortBenefit}${flags ? ` (${flags})` : ''}`;
+  return `- ${p.name} (${productPath(p.slug)}) $${p.basePrice}: ${p.shortBenefit}${flags ? ` (${flags})` : ''}`;
 }
 
 export function advisorSystemPrompt(products: Product[]) {

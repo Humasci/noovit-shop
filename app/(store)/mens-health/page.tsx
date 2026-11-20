@@ -7,7 +7,7 @@ import { HealthHub } from '@/components/hub/HealthHub';
 export const metadata: Metadata = {
   title: "Men's Health Supplements: Strength, Focus, Sleep | Noovit",
   description: "Evidence-led supplements for men: creatine for strength, lion's mane and CoQ10 for focus and energy, magnesium and ashwagandha for sleep and stress. Free US shipping.",
-  alternates: { canonical: '/men' },
+  alternates: { canonical: '/mens-health' },
 };
 
 export default function MenPage() {

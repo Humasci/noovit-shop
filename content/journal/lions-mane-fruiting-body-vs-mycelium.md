@@ -53,7 +53,7 @@ Trials of up to 49 weeks found it generally well tolerated, with mostly mild sto
 
 ## Our lion's mane
 
-Our [Lion's Mane](/products/lions-mane) contains 1,000 mg of lion's mane per serving, from both fruiting body and mycelium, and the label states both parts.
+Our [Lion's Mane](/products/lions-mane-mushroom) contains 1,000 mg of lion's mane per serving, from both fruiting body and mycelium, and the label states both parts.
 
 ## Sources
 

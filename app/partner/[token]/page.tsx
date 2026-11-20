@@ -63,7 +63,7 @@ export default async function PartnerDashboard({ params }: { params: Promise<{ t
           <CopyField label="Your link" value={shareLink(a.code)} />
           <p className="text-xs text-[var(--color-muted)] sm:col-span-2">
             Your link remembers visitors for {REF_DAYS} days and applies your code automatically. To link to a product, add <span className="font-mono">?to=</span> and the product
-            address, e.g. <span className="font-mono">{shareLink(a.code, '/products/magnesium-complex')}</span>. Commissions are approved {hold} days after the order (after any
+            address, e.g. <span className="font-mono">{shareLink(a.code, '/products/magnesium-glycinate')}</span>. Commissions are approved {hold} days after the order (after any
             returns) and then paid out. Please disclose the partnership in your posts (#ad).
           </p>
         </div>

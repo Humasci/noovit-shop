@@ -13,6 +13,7 @@ import { DIETS, GOALS, SYMPTOMS, QuizAnswers, recommend } from '@/lib/quiz';
 import { ProductImage } from '@/components/product/ProductImage';
 import { MosaicLoader } from '@/components/brand/MosaicLoader';
 import { trackSignup } from '@/lib/analytics';
+import { productPath } from '@/lib/urls';
 
 type Step = 'intro' | 'sex' | 'age' | 'goals' | 'symptoms' | 'activity' | 'diet' | 'pregnant' | 'medication' | 'email' | 'calculating' | 'results';
 
@@ -176,7 +177,7 @@ export function Quiz({ products, code }: { products: Product[]; code: string }) 
               const [single] = packOptions(product, 'one-time');
               return (
                 <div key={product.slug} className="flex flex-col rounded-3xl border border-[var(--color-line)] bg-white p-4">
-                  <Link href={`/products/${product.slug}`} className="relative block overflow-hidden rounded-2xl">
+                  <Link href={productPath(product.slug)} className="relative block overflow-hidden rounded-2xl">
                     <ProductImage product={product} sizes="(min-width: 768px) 30vw, 90vw" className="aspect-square w-full" />
                     {i === 0 && <span className="absolute left-3 top-3 rounded-full bg-[var(--color-navy)] px-3 py-1 text-xs font-bold text-white">Best match</span>}
                   </Link>

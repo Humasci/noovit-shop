@@ -86,8 +86,8 @@ export default async function PetsPage({ searchParams }: { searchParams: Promise
             <SectionHeading eyebrow="What's coming" title="Know more about their health, at home" />
             <div className="grid gap-6 md:grid-cols-3">
               {[
-                { img: PET_IMAGES.urine, alt: 'A cat and a small dog sitting in a meadow', title: 'Urine wellness strips', href: '/tests/pet-urine-strips', text: 'Check pH, protein, glucose and blood at home in minutes. A result outside the range is your cue to call the vet.', tag: 'First' },
-                { img: PET_IMAGES.dna, alt: 'A vet holding a small fluffy dog', title: 'DNA health tests', href: '/tests/pet-dna-test', text: 'A cheek swab for breed and inherited health risks, from trusted testing partners.', tag: 'First' },
+                { img: PET_IMAGES.urine, alt: 'A cat and a small dog sitting in a meadow', title: 'Urine wellness strips', href: '/at-home-tests/pet-urine-test-strips', text: 'Check pH, protein, glucose and blood at home in minutes. A result outside the range is your cue to call the vet.', tag: 'First' },
+                { img: PET_IMAGES.dna, alt: 'A vet holding a small fluffy dog', title: 'DNA health tests', href: '/at-home-tests/pet-dna-test', text: 'A cheek swab for breed and inherited health risks, from trusted testing partners.', tag: 'First' },
                 { img: PET_IMAGES.supplements, alt: 'A woman playing with her dog and cat at home', title: 'Supplements', text: 'Joint and gut chews for dogs, and more for cats, made to the same clear-label standards as our human range.', tag: 'Later' },
               ].map((c) => (
                 <div key={c.title} className="overflow-hidden rounded-3xl bg-[var(--color-pets-soft)]">

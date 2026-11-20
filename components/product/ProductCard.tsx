@@ -12,6 +12,7 @@ import { ProductImage } from './ProductImage';
 import { GOAL_PAGES } from '@/lib/goals';
 import { goalsForProduct } from '@/lib/quiz';
 import { Stars } from '@/components/ui/Stars';
+import { productPath } from '@/lib/urls';
 
 // Hover: orange tiles assemble in the image corner, one after another.
 const CORNER: [number, number, number][] = [[0, 0, 0.95], [1, 0, 0.6], [0, 1, 0.7], [2, 0, 0.3], [1, 1, 0.35], [0, 2, 0.4], [3, 0, 0.15], [0, 3, 0.15]];
@@ -34,7 +35,7 @@ export function ProductCard({ product }: { product: Product }) {
   return (
     // Phones: one product per row (image left, details right). From sm up: the classic vertical card.
     <div className="group flex flex-row overflow-hidden bg-transparent sm:flex-col">
-      <Link href={`/products/${product.slug}`} className="relative block w-[42%] shrink-0 overflow-hidden rounded-2xl bg-[var(--color-soft)] sm:w-full">
+      <Link href={productPath(product.slug)} className="relative block w-[42%] shrink-0 overflow-hidden rounded-2xl bg-[var(--color-soft)] sm:w-full">
         <ProductImage product={product} className="h-full w-full transition-transform duration-500 group-hover:scale-105 sm:aspect-square sm:h-auto" />
         <span aria-hidden className="pointer-events-none absolute right-3 top-3">
           {CORNER.map(([c, r, o], k) => (
@@ -66,7 +67,7 @@ export function ProductCard({ product }: { product: Product }) {
             <span className="text-xs text-[var(--color-muted)]">{product.rating.toFixed(1)} ({product.reviewCount.toLocaleString()})</span>
           </div>
         )}
-        <Link href={`/products/${product.slug}`}>
+        <Link href={productPath(product.slug)}>
           <h3 className="text-[15px] font-semibold leading-snug hover:text-[var(--color-accent)] sm:text-base md:text-lg">{product.name}</h3>
         </Link>
         <p className="mt-1 line-clamp-2 flex-1 text-xs text-[var(--color-muted)] sm:text-sm">{product.tagline || product.shortBenefit}</p>

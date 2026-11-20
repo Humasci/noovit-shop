@@ -44,7 +44,7 @@ Much of the concern traces back to a 1998 case report of kidney problems in a pe
 
 Other myths? See [does creatine cause hair loss?](/blog/does-creatine-cause-hair-loss) and our full [creatine guide](/guides/creatine).
 
-Our [Creatine](/products/creatine) is pure creatine monohydrate: 5 g per scoop, for adults 18 and over.
+Our [Creatine](/products/creatine-monohydrate) is pure creatine monohydrate: 5 g per scoop, for adults 18 and over.
 
 ## Sources
 

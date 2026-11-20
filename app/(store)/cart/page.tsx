@@ -8,6 +8,7 @@ import { ProductImage } from '@/components/product/ProductImage';
 import { CheckoutButton } from '@/components/cart/CheckoutButton';
 import { AutoDiscountNote } from '@/components/cart/AutoDiscountNote';
 import { useHydrated } from '@/lib/useHydrated';
+import { productPath } from '@/lib/urls';
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity } = useCart();
@@ -30,13 +31,13 @@ export default function CartPage() {
         <ul className="divide-y divide-[var(--color-line)] border-y border-[var(--color-line)]">
           {items.map((item) => (
             <li key={item.key} className="flex gap-5 py-6">
-              <Link href={`/products/${item.product.slug}`}>
+              <Link href={productPath(item.product.slug)}>
                 <ProductImage product={item.product} sizes="112px" className="h-28 w-28 rounded-2xl" />
               </Link>
               <div className="flex flex-1 flex-col">
                 <div className="flex justify-between gap-4">
                   <div>
-                    <Link href={`/products/${item.product.slug}`} className="text-lg font-bold">{item.product.name}</Link>
+                    <Link href={productPath(item.product.slug)} className="text-lg font-bold">{item.product.name}</Link>
                     <p className="text-sm text-[var(--color-muted)]">
                       {item.product.bundleItems?.length ? `Bundle (${item.product.bundleItems.length} bottles)` : `${item.bottles} ${item.bottles === 1 ? 'bottle' : 'bottles'}`} × {formatPrice(item.pricePerBottle)}
                     </p>

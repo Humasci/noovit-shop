@@ -57,7 +57,7 @@ Many women worry about looking "puffy". Here's what's known:
 
 Creatine can raise creatinine on blood tests without harming the kidneys, so tell your doctor you take it [8]. More in our [creatine guide](/guides/creatine).
 
-Our [Creatine](/products/creatine) is pure creatine monohydrate: 5 g per scoop, unflavored, 50 servings.
+Our [Creatine](/products/creatine-monohydrate) is pure creatine monohydrate: 5 g per scoop, unflavored, 50 servings.
 
 ## Sources
 

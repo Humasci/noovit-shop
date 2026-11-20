@@ -90,7 +90,7 @@ So we can't say magnesium helps with premenstrual symptoms. If your symptoms aff
 
 Many women don't get enough magnesium, and glycinate is a gentle way to top up. Start with food: pumpkin seeds, chia seeds, almonds, spinach and black beans are all good sources [1]. If you add a supplement, keep it at or below 350 mg a day, and take it for your overall intake rather than to fix a specific symptom.
 
-Our [Magnesium Sleep+](/products/magnesium-complex) gives 275 mg of elemental magnesium as glycinate in three capsules, taken after an evening meal. That's under the 350 mg limit, but count any multivitamin or prenatal you take too.
+Our [Magnesium Sleep+](/products/magnesium-glycinate) gives 275 mg of elemental magnesium as glycinate in three capsules, taken after an evening meal. That's under the 350 mg limit, but count any multivitamin or prenatal you take too.
 
 ## Sources
 

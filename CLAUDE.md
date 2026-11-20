@@ -53,7 +53,7 @@ Read this first. It is the standing context for any session working on this repo
   bottle photos + line-ups (`scripts/site-images.ts` → `public/images/lineup-*.png`, backdrop cream `--studio` #EFE9DF, sage `--sage` #D9E0D2; `BACKDROP`/`SAGE` in `lib/labels/studio.ts`, bottles
   placed by mask so any backdrop works) and Unsplash-License sports photos (`IMAGES.*`, women and men). Best Sellers section/nav and Pets nav show only when real.
   Homepage order (20 Nov, owner): hero · shop by goal · subscribe & save · Women's Health · Men's Health · Pets ·
-  community · quiz · FAQ · newsletter. Hubs `/women`, `/men` share `components/hub/HealthHub.tsx` (fading hero photo, sections, `MasonryGallery`); data `lib/women.ts`, `lib/men.ts`.
+  community · quiz · FAQ · newsletter. Hubs `/womens-health`, `/mens-health` (old `/women`, `/men` redirect) share `components/hub/HealthHub.tsx` (fading hero photo, sections, `MasonryGallery`); data `lib/women.ts`, `lib/men.ts`.
 - **Science palette (3 Nov, website art and accents only):** night `#141A4D`, indigo `#26307E`, cobalt `#3E5BD6`, violet
   `#7A5CE0`, lavender `#B9A9F2`, teal `#2DB6A8`, magenta `#C4458F`, haze `#D9DFF5` (CSS `--sci-*`). Microscopy-style cell
   art: `/art/cells-dark[-seed].svg`, `/art/cells-light[-seed].svg` (evidence band, advisor card, guides index + every guide
@@ -86,6 +86,7 @@ Read this first. It is the standing context for any session working on this repo
 - US spelling on the site. Plain, short sentences.
 
 ## Tech
+- **URLs (20 Nov, owner):** descriptive public addresses in `lib/urls.ts`. Products keep their internal slug as the ID (DB, Stripe, orders, labels, image routes); the web path comes from `productPath(slug)` (e.g. `magnesium-complex` → `/products/magnesium-glycinate`). Tests live at `/at-home-tests/<keyword>-test`. Every old address 301-redirects (`URL_REDIRECTS` in next.config.ts). Always link products with `productPath`, never `/products/${slug}`.
 - Next.js 16 (App Router), React 19, Supabase (Postgres + PostgREST), Stripe (Checkout + subscriptions), Resend,
   Vercel. Fonts self-hosted (Inter, Manrope, Funnel Display for the wordmark).
 - **AI wellness advisor (3 Nov, Gemini):** model `gemini-3.1-flash-lite` (`ADVISOR_MODEL`), key `GEMINI_API_KEY`, via

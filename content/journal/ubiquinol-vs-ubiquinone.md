@@ -45,7 +45,7 @@ Most research used ubiquinone [2]. A few studies used ubiquinol, and one of the 
 
 CoQ10 is well tolerated in trials. Mild stomach upset is the most common complaint [4]. **Warfarin:** CoQ10 is chemically similar to vitamin K and may reduce warfarin's effect, so don't start or stop it without your doctor [8][9]. **Cancer treatment:** as an antioxidant, it may make some treatments less effective; check with your oncologist [8]. **Statins** lower your body's CoQ10, but never stop a statin because of muscle pain without talking to your doctor [8]. More in our [CoQ10 guide](/guides/coq10).
 
-Our [CoQ10](/products/coq10) is ubiquinone, 200 mg per capsule. Take one capsule a day with a meal that contains some fat.
+Our [CoQ10](/products/coq10-200mg) is ubiquinone, 200 mg per capsule. Take one capsule a day with a meal that contains some fat.
 
 ## Sources
 

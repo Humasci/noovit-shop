@@ -73,7 +73,7 @@ LactMed notes that shatavari's safety has not been rigorously studied [17]. At 5
 - **A blend can make sense** if you want the studied ashwagandha dose plus everyday vitamins in one product, and you accept that the extra herbs are there in small, supporting amounts.
 - **Either way,** the ashwagandha cautions apply: avoid it in pregnancy and while breastfeeding, and talk to your doctor first if you have a thyroid or liver condition or take sedatives, thyroid, diabetes, blood-pressure or immune-suppressing medicines [19]. Women can read more in [ashwagandha for women](/blog/ashwagandha-for-women).
 
-Our [Ashwagandha Calm+](/products/ashwagandha) is the blend described above: 600 mg of KSM-66 in two capsules a day, plus the vitamins and herbs in the table. Every ingredient and amount is on the label, so you and your doctor can check it.
+Our [Ashwagandha Calm+](/products/ashwagandha-ksm-66) is the blend described above: 600 mg of KSM-66 in two capsules a day, plus the vitamins and herbs in the table. Every ingredient and amount is on the label, so you and your doctor can check it.
 
 ## Sources
 

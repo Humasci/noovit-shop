@@ -4,6 +4,7 @@ import { GUIDES } from '@/lib/guides';
 import { GENERAL_FAQS } from '@/data/content';
 import type { Post } from '@/lib/blog';
 import SNAPSHOTS from '@/data/advisor-snapshots.json';
+import { productPath } from '@/lib/urls';
 
 // Retrieval for the AI advisor (RAG): before each answer we pick the most relevant passages from (1) our own site:
 // evidence guides with their verified sources, product data, FAQs and published Journal posts, and (2) snapshots
@@ -47,7 +48,7 @@ function buildCorpus(products: Product[], posts: Post[]): Passage[] {
   }
   for (const p of products) {
     if (p.status !== 'active' || p.productType === 'pets') continue;
-    const url = `/products/${p.slug}`;
+    const url = productPath(p.slug);
     out.push({
       id: `p-${p.slug}`, title: `${p.name} (product, $${p.basePrice})`, url,
       text: `${p.description} ${p.shortBenefit} Ingredients per serving: ${p.ingredients.map((i) => `${i.name} ${i.amount}`).join('; ')}. Directions: ${p.dosage} Other ingredients: ${p.otherIngredients}${p.ageRestricted ? ' Adults 18+ only.' : ''} ${(p.faqs ?? []).map((f) => `${f.q} ${f.a}`).join(' ')}`,

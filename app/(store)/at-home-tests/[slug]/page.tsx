@@ -12,7 +12,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const k = findKit((await params).slug);
   if (!k) return {};
-  return { title: k.seoTitle, description: k.seoDescription, alternates: { canonical: `/tests/${k.slug}` } };
+  return { title: k.seoTitle, description: k.seoDescription, alternates: { canonical: `/at-home-tests/${k.slug}` } };
 }
 
 export default async function TestKitPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -26,7 +26,7 @@ export default async function TestKitPage({ params }: { params: Promise<{ slug: 
       <section className={k.pets ? 'bg-[var(--color-pets-soft)]' : 'bg-[var(--studio)]'}>
         <div className="container px-6 py-14 md:py-20">
           <nav className="mb-4 text-xs text-[var(--color-muted)]">
-            <Link href="/">Home</Link> / <Link href="/tests">At-home tests</Link> / <span className="text-[var(--color-ink)]">{k.name}</span>
+            <Link href="/">Home</Link> / <Link href="/at-home-tests">At-home tests</Link> / <span className="text-[var(--color-ink)]">{k.name}</span>
           </nav>
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-navy)]/70">Coming soon</p>
           <h1 className="mt-3 max-w-2xl text-balance text-4xl text-[var(--color-navy)] md:text-5xl">{k.name}</h1>
@@ -70,7 +70,7 @@ export default async function TestKitPage({ params }: { params: Promise<{ slug: 
           </ul>
 
           <div className="mt-10 flex flex-wrap gap-3">
-            <Link href="/tests" className="btn btn-outline">All at-home tests</Link>
+            <Link href="/at-home-tests" className="btn btn-outline">All at-home tests</Link>
             {k.related?.map((r) => (
               <Link key={r.href} href={r.href} className="btn btn-outline inline-flex items-center gap-1">{r.label} <ArrowRight className="h-4 w-4" /></Link>
             ))}

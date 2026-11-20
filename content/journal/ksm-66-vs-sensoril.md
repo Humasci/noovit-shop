@@ -62,7 +62,7 @@ Root is the part traditionally used in Ayurveda. Safety data on leaf preparation
 
 Ashwagandha may be safe for up to 3 months; long-term safety isn't known. Avoid it if you're pregnant or breastfeeding. Talk to your doctor first if you have a thyroid condition or take thyroid medication, take sedatives, anti-seizure, diabetes, blood-pressure or immune-suppressing medicines, or have liver disease or an autoimmune condition. Rare but serious liver injury has been reported [11][12].
 
-Our [Ashwagandha Calm+](/products/ashwagandha) uses KSM-66: 600 mg of root extract in two capsules a day. It also contains vitamins D3, B6 and B12, L-arginine, maca, Panax ginseng and shatavari, which weren't part of the KSM-66 trials, so read the full label.
+Our [Ashwagandha Calm+](/products/ashwagandha-ksm-66) uses KSM-66: 600 mg of root extract in two capsules a day. It also contains vitamins D3, B6 and B12, L-arginine, maca, Panax ginseng and shatavari, which weren't part of the KSM-66 trials, so read the full label.
 
 ## Sources
 
