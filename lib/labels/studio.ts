@@ -323,6 +323,30 @@ export async function studioCutout(p: Product, tint: [number, number, number] = 
     if (cnt < (t.x1 - t.x0) * 0.12) { if (y > maxY + 4) break; continue; } // base ends where bright pixels stop
     base.set(y, [l, rr]);
   }
+  // The cap's rounded top rim is also missed by the mask (white on a light backdrop): grow upwards from the mask's top
+  // while the row has pixels clearly brighter than the backdrop, and widen the first rows of the cap the same way.
+  const capTop = new Map<number, [number, number]>();
+  {
+    // Full cap width, measured well inside the cap where the mask is solid.
+    const origTop = minY;
+    let l0 = -1, r0 = -1;
+    for (let x = minX; x <= maxX; x++) if (t.mask[(origTop + 30) * t.W + x] > 0.5) { if (l0 < 0) l0 = x; r0 = x; }
+    // Top of the cap: the highest row that still has bright (white plastic) pixels over the backdrop.
+    let capY = origTop;
+    for (let y = origTop + 10; y >= 0; y--) {
+      let cnt = 0;
+      for (let x = l0; x <= r0; x++) { const k = (y * t.W + x) * 3; if (lum(t.data, k) - lum(t.plate, k) > 3) cnt++; }
+      if (cnt < (r0 - l0) * 0.1) break;
+      capY = y;
+    }
+    // Rows from there to 30 px down take the full cap width, with the top corners rounded.
+    for (let y = capY; y <= origTop + 30; y++) {
+      const k = Math.max(0, capY + 7 - y);
+      const inset = Math.round(k * k * 1.2);
+      capTop.set(y, [l0 + inset, r0 - inset]);
+    }
+    minY = Math.min(minY, capY);
+  }
   // Fill every row from the label's bottom to the end of the base across the bottle's full width (its shaded right
   // side is darker than the backdrop, so brightness alone would only find the left half), rounding the bottom corners.
   const maskBottom = maxY;
@@ -343,7 +367,7 @@ export async function studioCutout(p: Product, tint: [number, number, number] = 
   for (let y = minY; y <= maxY; y++) {
     let l = -1, r = -1;
     for (let x = minX; x <= maxX; x++) if (t.mask[y * t.W + x] > 0.5) { if (l < 0) l = x; r = x; }
-    const b = base.get(y);
+    const b = base.get(y) ?? capTop.get(y);
     if (b) { l = l < 0 ? b[0] : Math.min(l, b[0]); r = Math.max(r, b[1]); }
     for (let x = minX; x <= maxX; x++) { const m = y * t.W + x; fill[m] = l >= 0 && x >= l && x <= r ? 1 : t.mask[m]; }
   }
