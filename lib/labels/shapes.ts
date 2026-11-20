@@ -127,6 +127,8 @@ const SHAPES: Record<string, () => Mask> = {
   'magnesium-complex': oreMask,
   creatine: triskeleMask,
   'creatine-for-women': triskeleMask,
+  'creatine-for-men': triskeleMask,
+  'magnesium-for-men': oreMask,
   'creatine-hydration': triskeleMask,
 };
 export const hasShape = (slug: string) => slug in SHAPES;

@@ -9,6 +9,8 @@ export const PRODUCT_SPECS: Record<string, string> = {
   'lions-mane': "Lion's Mane Mushroom 1,000 mg",
   creatine: 'Creatine Monohydrate Powder 5 g',
   'creatine-for-women': 'Creatine for Women, Monohydrate Powder 5 g',
+  'creatine-for-men': 'Creatine for Men, Monohydrate Powder 5 g',
+  'magnesium-for-men': 'Magnesium Glycinate for Men 275 mg',
   'creatine-hydration': 'Creatine Monohydrate 5 g with Electrolytes, Lemon',
   coq10: 'CoQ10 Ubiquinone 200 mg',
   'turmeric-complex': 'Turmeric Curcumin with Glucosamine & Chondroitin',
@@ -58,6 +60,14 @@ const PRODUCT_SEO: Record<string, { title: string; description: string }> = {
     description: 'Sleep & Calm Stack: Magnesium Sleep+ (275 mg as glycinate) and Ashwagandha Calm+ (KSM-66®, 600 mg), together for less. Free US shipping.',
   },
   // Ahrefs keyword plan (20 Nov): drafts get keyword titles ready for launch.
+  'creatine-for-men': {
+    title: 'Creatine for Men: Pure Monohydrate, 5 g | Noovit',
+    description: 'Creatine for men: pure creatine monohydrate, 5 g per scoop, 50 servings. Unflavored. Supports strength, power and lean muscle with training.* Free US shipping.',
+  },
+  'magnesium-for-men': {
+    title: 'Magnesium Glycinate for Men, 275 mg | Noovit',
+    description: 'Magnesium glycinate for men: 275 mg elemental magnesium per serving, the gentle form. Supports muscle function, sleep and recovery.* Free US shipping.',
+  },
   'creatine-hydration': {
     title: 'Creatine with Electrolytes: Creatine Hydration+ | Noovit',
     description: '5 g creatine monohydrate with sodium, potassium and magnesium in one lemon drink, sweetened with stevia. For adults 18+. Free US shipping.',

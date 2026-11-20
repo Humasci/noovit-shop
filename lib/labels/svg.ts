@@ -142,6 +142,7 @@ const SUBTITLES: Record<string, string> = {
   'collagen-complex': 'With Hyaluronic Acid & Vitamin C',
   'menopause-complex': 'Black Cohosh, Sage, D3 & B6',
   'magnesium-complex': '275mg Magnesium as Glycinate',
+  'magnesium-for-men': '275mg Magnesium as Glycinate',
   zinc: 'Zinc Picolinate 25mg + Copper',
   'iron-complex': 'Gentle Bisglycinate + Vitamin C',
   'vitamin-d3-k2': '2000 IU D3 + 75mcg K2 (MK-7)',
@@ -152,6 +153,7 @@ const SUBTITLES: Record<string, string> = {
   'biotin-complex': 'With Zinc & Selenium',
   creatine: 'Pure Monohydrate, 5g Serving',
   'creatine-for-women': 'Pure Monohydrate, 5g Serving',
+  'creatine-for-men': 'Pure Monohydrate, 5g Serving',
   'creatine-hydration': '5g Creatine + Electrolytes, Lemon',
   'mushroom-blend-powder': "Lion's Mane, Cordyceps, Reishi & Chaga",
   'focus-complex': "Lion's Mane, Bacopa & L-Theanine",
@@ -230,10 +232,12 @@ function labelMosaic(p: Product, pattern: LabelPattern) {
 // Category line above the product name. Falls back to the product's strongest quiz goal.
 const CATEGORIES: Record<string, string> = {
   'magnesium-complex': 'Sleep · Recovery',
+  'magnesium-for-men': 'Muscle · Sleep',
   ashwagandha: 'Stress · Calm',
   'lions-mane': 'Focus · Clarity',
   creatine: 'Strength · Power',
   'creatine-for-women': 'Strength · Memory',
+  'creatine-for-men': 'Strength · Power',
   'creatine-hydration': 'Strength · Hydration',
   coq10: 'Heart · Energy',
   nmn: 'Energy · Healthy Aging',
@@ -250,10 +254,12 @@ export function labelCategory(p: Product) {
 // What the hero dose is, under the number. Falls back to the ingredient's short name.
 const DOSE_LINES: Record<string, string> = {
   'magnesium-complex': 'Magnesium as glycinate',
+  'magnesium-for-men': 'Magnesium as glycinate',
   ashwagandha: 'KSM-66® ashwagandha root',
   'lions-mane': "Lion's mane mushroom",
   creatine: 'Creatine monohydrate',
   'creatine-for-women': 'Creatine monohydrate',
+  'creatine-for-men': 'Creatine monohydrate',
   'creatine-hydration': 'Creatine + electrolytes',
   coq10: 'Coenzyme Q10 (ubiquinone)',
   nmn: 'Nicotinamide mononucleotide',
@@ -366,6 +372,7 @@ export function frontPanel(p: Product, mode: FontMode, bleed = 0, pattern: Label
 // pixel texture, ingredient-first name (descriptor such as "Sleep+" smaller underneath), every line ≥ 5 pt (7 units).
 const V2_DOSE_LINES: Record<string, string> = {
   'magnesium-complex': 'Elemental magnesium',
+  'magnesium-for-men': 'Elemental magnesium',
   creatine: 'Creatine per scoop',
   coq10: 'CoQ10 (ubiquinone)',
   ashwagandha: 'KSM-66® ashwagandha',
@@ -621,7 +628,8 @@ export const elegantPaper = (col: string) => {
 };
 // Products whose label paper isn't simply a deep shade of their colour. Turmeric (owner's pick E, 14 Nov): saffron gold
 // on charcoal, because any deep orange reads brown.
-const ELEGANT_PAPER: Record<string, string> = { 'turmeric-complex': '#232327' };
+// Men's versions (20 Nov): spare palette G, gold on navy.
+const ELEGANT_PAPER: Record<string, string> = { 'turmeric-complex': '#232327', 'creatine-for-men': '#1E2A3A', 'magnesium-for-men': '#1E2A3A' };
 // Spare palettes kept for future products (owner, 14 Nov; first tried for Turmeric). To use one: set the product's colour
 // to `color` and add its slug to ELEGANT_PAPER with `paper`. Previews: design/label-v3-2026-11/spare-palettes-G-H.png.
 export const SPARE_LABEL_PALETTES = {

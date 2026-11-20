@@ -12,6 +12,7 @@ export const PRODUCT_URL: Record<string, string> = {
   'iron-complex': 'iron-bisglycinate',
   'collagen-complex': 'collagen-hyaluronic-acid',
   'biotin-complex': 'biotin-zinc-selenium',
+  'magnesium-for-men': 'magnesium-glycinate-for-men',
 };
 const FROM_URL = Object.fromEntries(Object.entries(PRODUCT_URL).map(([k, v]) => [v, k]));
 

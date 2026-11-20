@@ -76,8 +76,10 @@ const WEIGHTS: Record<string, Weights> = {
   multivitamin: { goals: { energy: 1, immunity: 1, brain: 1 }, symptoms: { tired: 1 }, base: 1 },
   'biotin-complex': { goals: { beauty: 3 }, symptoms: { nails: 3, skin: 1 } },
   // Women get the women's version, everyone else the regular one (same powder), so the quiz never shows both.
-  creatine: { goals: { muscle: 4, brain: 1 }, sex: 'male', bonus: (a) => (a.activity === 'high' ? 2 : 0) },
+  creatine: { goals: { muscle: 4, brain: 1 }, bonus: (a) => (a.activity === 'high' ? 2 : 0) },
   'creatine-for-women': { goals: { muscle: 4, brain: 2 }, sex: 'female', bonus: (a) => (a.activity === 'high' ? 2 : 0) },
+  'creatine-for-men': { goals: { muscle: 4, brain: 1 }, sex: 'male', bonus: (a) => (a.activity === 'high' ? 2 : 0) + (a.age === '45-59' || a.age === '60+' ? 1 : 0) },
+  'magnesium-for-men': { goals: { sleep: 3, muscle: 2, energy: 1 }, symptoms: { sleep: 3, stress: 2, cramps: 3, tired: 1 }, sex: 'male' },
   'creatine-hydration': { goals: { muscle: 3, energy: 1 }, bonus: (a) => (a.activity === 'high' ? 2 : 0) },
   'mushroom-blend-powder': { goals: { brain: 2, energy: 2, immunity: 1 }, symptoms: { fog: 2, tired: 1 } },
   'focus-complex': { goals: { brain: 4 }, symptoms: { fog: 3, stress: 1 } },
@@ -98,12 +100,21 @@ export interface Recommendation {
 
 const label = (list: { id: string; label: string }[], id: string) => list.find((x) => x.id === id)?.label ?? id;
 
+// Same formula sold as a women's or men's version (20 Nov): people who give their sex see their version (when it is live)
+// instead of the regular one; everyone else sees the regular one. Never both.
+const VERSIONS: Record<string, Partial<Record<'female' | 'male', string>>> = {
+  creatine: { female: 'creatine-for-women', male: 'creatine-for-men' },
+  'magnesium-complex': { male: 'magnesium-for-men' },
+};
+
 // Diet and life-stage filters always win over scores.
-function allowed(p: Product, a: QuizAnswers, womensCreatine = true) {
+function allowed(p: Product, a: QuizAnswers, live: Set<string>) {
   const w = WEIGHTS[p.slug];
-  // Regular creatine stays open to women until the women's version is live.
-  const sexOnly = p.slug === 'creatine' && !womensCreatine ? undefined : w?.sex;
-  if (sexOnly && a.sex && a.sex !== sexOnly && a.sex !== 'other') return false;
+  const isVersion = Object.values(VERSIONS).some((v) => Object.values(v).includes(p.slug));
+  if (isVersion && a.sex !== w?.sex) return false; // a women's/men's version only for that answer
+  if (!isVersion && w?.sex && a.sex && a.sex !== w.sex && a.sex !== 'other') return false; // e.g. menopause
+  const version = a.sex === 'female' || a.sex === 'male' ? VERSIONS[p.slug]?.[a.sex] : undefined;
+  if (version && live.has(version)) return false; // their own version is live: show that instead
   if (a.diet.includes('vegan') && !p.dietaryTags.includes('vegan')) return false;
   if (a.diet.includes('gluten-free') && !p.dietaryTags.includes('gluten-free')) return false;
   if (a.pregnant === 'pregnant' && !p.dietaryTags.includes('pregnancy-safe')) return false;
@@ -112,9 +123,9 @@ function allowed(p: Product, a: QuizAnswers, womensCreatine = true) {
 }
 
 export function recommend(products: Product[], a: QuizAnswers, count = 3): Recommendation[] {
-  const womensCreatine = products.some((p) => p.slug === 'creatine-for-women' && p.status === 'active');
+  const live = new Set(products.filter((p) => p.status === 'active').map((p) => p.slug));
   const scored = products
-    .filter((p) => p.productType !== 'pets' && p.status === 'active' && allowed(p, a, womensCreatine))
+    .filter((p) => p.productType !== 'pets' && p.status === 'active' && allowed(p, a, live))
     .map((p) => {
       const w = WEIGHTS[p.slug] ?? {};
       const reasons: string[] = [];

@@ -28,6 +28,16 @@ export const HIGHLIGHTS: Record<string, [string, string][]> = {
     ['1', 'ingredient, and nothing else'],
     ['50', 'servings per tub, unflavored'],
   ],
+  'creatine-for-men': [
+    ['5 g', 'creatine monohydrate per scoop'],
+    ['1', 'ingredient, and nothing else'],
+    ['50', 'servings per tub, unflavored'],
+  ],
+  'magnesium-for-men': [
+    ['275 mg', 'elemental magnesium in every serving'],
+    ['Glycinate', 'the gentle, well-absorbed form'],
+    ['3 a day', 'after your evening meal'],
+  ],
   'creatine-for-women': [
     ['5 g', 'creatine monohydrate per scoop'],
     ['1', 'ingredient, and nothing else'],
@@ -49,6 +59,13 @@ export interface Comparison {
   footnote: string;
 }
 export const COMPARE: Record<string, Comparison> = {
+  'magnesium-for-men': {
+    heading: '275 mg of elemental magnesium per serving',
+    unit: 'mg',
+    ours: { label: 'Noovit Magnesium for Men', value: 275 },
+    typical: { label: 'Typical magnesium glycinate product', low: 120, high: 200 },
+    footnote: 'Elemental magnesium per serving. Typical range from the labels of leading US magnesium glycinate products, October 2026.',
+  },
   'magnesium-complex': {
     heading: '275 mg of elemental magnesium per serving',
     unit: 'mg',

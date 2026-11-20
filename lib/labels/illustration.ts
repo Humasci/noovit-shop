@@ -207,11 +207,11 @@ export function skeleton(sk: Skel, box: [number, number, number], atomR: number,
 }
 function subject(slug: string): Shape[] | null {
   switch (slug) {
-    case 'magnesium-complex': return crystal();
+    case 'magnesium-complex': case 'magnesium-for-men': return crystal();
     case 'ashwagandha': return ashwagandha();
     case 'lions-mane': return lionsMane();
     case 'turmeric-complex': return turmeric();
-    case 'creatine': return cubes();
+    case 'creatine': case 'creatine-for-men': return cubes();
     case 'coq10': return [...gem(0.84, 0.82, 0.2, 0.5), ...gem(0.5, 0.46, 0.86, 0)];
     default: return null;
   }

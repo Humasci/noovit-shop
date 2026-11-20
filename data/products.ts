@@ -356,6 +356,53 @@ const seeds: Seed[] = [
     ],
   },
   {
+    // 20 Nov (owner): men's versions for the Men's Health hub, same formulas, own gold-on-navy label (spare palette G).
+    // Same Supliful creatine as `creatine` (5 g per 5.6 g scoop, 50 servings, 281 g; delivered $14.69). The copy says so.
+    name: 'Creatine for Men',
+    slug: 'creatine-for-men',
+    status: 'hidden',
+    tagline: 'Strength, Power & Muscle',
+    shortBenefit: 'Supports strength, power and lean muscle.',
+    description: 'Pure creatine monohydrate, 5 g a scoop, for men. The same single ingredient as our Creatine, with guidance written for men\'s training at every age.',
+    whoFor: 'Men who lift, run or play sport, and men over 40 who want to keep strength and muscle as they age.',
+    benefits: ['Supports strength and power with training', 'Supports lean muscle with resistance training', 'Unflavored, mixes into anything', 'Single ingredient, no fillers'],
+    ingredients: [{ name: 'Creatine Monohydrate', amount: '5g' }],
+    otherIngredients: 'None.',
+    dosage: 'Mix 1 scoop (5.6 g) with 8 oz (237 ml) of water, juice or a shake once a day, any time. A loading phase is optional.',
+    servings: 50, netWeight: '281 g (9.9 oz)', form: 'powder', basePrice: 32, color: '#D9A21B',
+    productType: 'sports', dietaryTags: ['vegan', 'gluten-free', 'sugar-free'],
+    audiences: ['men'], bestSeller: false, reviewCount: 0, ageRestricted: true,
+    faqs: [
+      { q: 'Is it different from your regular Creatine?', a: 'The powder is the same: 5 g of pure creatine monohydrate per scoop and nothing else. This version has guidance written for men, and the price is the same.' },
+      { q: 'Does creatine help after 40 or 50?', a: 'Muscle and strength decline with age. In adults aged about 57–70, creatine taken with resistance training added more lean mass and strength than training alone.' },
+      { q: 'Will it cause hair loss?', a: 'That worry comes from one small 2009 study that measured a hormone (DHT), not hair. No trial has shown that creatine causes hair loss.' },
+      { q: 'Is it safe for my kidneys?', a: 'In healthy people, creatine at 3–5 g a day has not been shown to harm the kidneys. It can raise creatinine on blood tests, so tell your doctor you take it. If you have kidney disease, ask your doctor first.' },
+    ],
+  },
+  {
+    // 20 Nov (owner): Magnesium Sleep+ for men. Same capsules (275 mg elemental as glycinate, 90 caps), own label.
+    name: 'Magnesium for Men',
+    slug: 'magnesium-for-men',
+    status: 'hidden',
+    tagline: 'Muscle, Sleep & Recovery',
+    shortBenefit: 'Supports muscle function, sleep and recovery.',
+    description: 'Magnesium glycinate, the gentle, well-absorbed form, at 275 mg of elemental magnesium per serving. The same capsules as our Magnesium Sleep+, for men.',
+    whoFor: 'Men who train, sleep poorly or eat little magnesium-rich food. Men need 400–420 mg of magnesium a day, and many get less from food.',
+    benefits: ['Supports muscle and nerve function', 'Supports restful sleep', 'Supports normal energy levels', 'Gentle on the stomach'],
+    ingredients: [{ name: 'Magnesium (as Magnesium Glycinate)', amount: '275mg', description: 'From 2,500 mg magnesium glycinate' }],
+    otherIngredients: 'Vegetable capsule (hypromellose), magnesium stearate, silicon dioxide, rice flour.',
+    dosage: 'Take 3 capsules daily, ideally after an evening meal.',
+    servings: 30, form: 'capsules', basePrice: 29, color: '#D9A21B',
+    productType: 'supplements', dietaryTags: ['vegan', 'gluten-free', 'sugar-free'],
+    audiences: ['men'], bestSeller: false, reviewCount: 0,
+    faqs: [
+      { q: 'Is it different from Magnesium Sleep+?', a: 'The capsules are the same: 275 mg of elemental magnesium as glycinate per serving. This version has guidance written for men, and the price is the same.' },
+      { q: 'How much magnesium do men need?', a: 'Men need 400 mg a day at ages 19–30 and 420 mg from 31, counting food. Keep magnesium from supplements at or below 350 mg a day unless your doctor advises more.' },
+      { q: 'Can I take it with creatine?', a: 'Yes. They work in different ways and are often taken together.' },
+      { q: 'When should I take it?', a: 'Any time of day works. For sleep, take it after your evening meal, 30–60 minutes before bed.' },
+    ],
+  },
+  {
     // 19 Nov: Supliful "Creatine Hydration Powder" (catalog page checked 19 Nov 2026): lemon, 1 scoop (10 g), 300 g,
     // ~30 servings, sweetened with stevia, made in the USA (per Supliful; not claimed on our label). Price not public:
     // basePrice is a placeholder until the owner sends the delivered cost. Hidden until then.
