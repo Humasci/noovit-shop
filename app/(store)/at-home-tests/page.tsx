@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { ArrowRight, Droplet, Flower2, Activity, HeartPulse, Brain, User, PawPrint } from 'lucide-react';
+import { ArrowRight, Droplet, Flower2, Activity, HeartPulse, Brain, User, PawPrint, FlaskConical, ShieldCheck } from 'lucide-react';
 import { TEST_CATEGORY_LIST, TEST_KITS, type TestCategoryId } from '@/lib/tests';
 import { TestsWaitlist } from '@/components/tests/TestsWaitlist';
 import { JsonLd } from '@/components/seo/JsonLd';
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   alternates: { canonical: '/at-home-tests' },
 };
 
-const ICONS: Record<TestCategoryId, typeof Droplet> = { nutrients: Droplet, womens: Flower2, thyroid: Activity, heart: HeartPulse, stress: Brain, mens: User, pets: PawPrint };
+const ICONS: Record<TestCategoryId, typeof Droplet> = { nutrients: Droplet, womens: Flower2, thyroid: Activity, heart: HeartPulse, organs: FlaskConical, stress: Brain, mens: User, sexual: ShieldCheck, pets: PawPrint };
 
 export default function TestsPage() {
   return (
