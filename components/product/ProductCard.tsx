@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { FOR_HER_BERRY, FOR_HER_WEB } from '@/lib/for-her';
 import Link from 'next/link';
 import { Product } from '@/types';
 import { formatPrice } from '@/lib/utils/format';
@@ -48,6 +49,9 @@ export function ProductCard({ product }: { product: Product }) {
         <span className="absolute left-2 top-2 flex flex-col items-start gap-1 sm:left-3 sm:top-3 sm:gap-1.5">
           {goal && (
             <span className={`${product.bestSeller ? 'hidden sm:inline-block' : ''} max-w-full truncate rounded-full bg-white/90 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-[var(--color-navy)] sm:px-2.5 sm:py-1 sm:text-[10px] sm:tracking-wider`}>{goal}</span>
+          )}
+          {FOR_HER_WEB.has(product.slug) && (
+            <span className="rounded-full px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-white sm:px-2.5 sm:py-1 sm:text-[10px] sm:tracking-wider" style={{ background: FOR_HER_BERRY }}>For Her</span>
           )}
           {product.bestSeller && (
             <span className="rounded-full bg-[var(--color-navy)] px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-white sm:px-2.5 sm:py-1 sm:text-[10px] sm:tracking-wider">Best seller</span>

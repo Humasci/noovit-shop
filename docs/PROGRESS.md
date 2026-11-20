@@ -217,3 +217,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 19 Nov (51): Women's Health hub (/women, first in nav, homepage banner), Nutrient Check waitlist page (leads with iron/ferritin after the Search Atlas data), 6 new sourced Journal posts and schedule SQL.
 - [x] 19 Nov (52): card prices without strikethrough; supplier catalogues (tests, pets, digital/wearables); Stripe expansion plan; FourFive-style scene-shot drafts.
 - [x] 20 Nov (53): owner photos placed across Women's Health, homepage, Journal covers and Pets; Pets repositioned to at-home checks first.
+- [x] 20 Nov (54): For Her badge on 5 labels + card tag; front-panel exports for Gemini.

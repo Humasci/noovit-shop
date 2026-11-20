@@ -1,4 +1,5 @@
 import { moleculeArt, hasMolecule, moleculeField, ballStickArt, hasBallStick } from './molecule';
+import { FOR_HER_BERRY, FOR_HER_LABEL } from '@/lib/for-her';
 import { illustrationField, hasIllustration } from './illustration';
 import { particleShape, hasShape } from './shapes';
 import { Product } from '@/types';
@@ -15,7 +16,7 @@ import { LEGAL_NAME } from '@/lib/site';
 export type FontMode = 'web' | 'print';
 
 // Bump when the photo mockup (lib/labels/photo.ts) changes, so cached product image URLs refresh.
-export const MOCKUP_VERSION = 'studio-v9'; // v9 (19 Nov): "organic" removed from Lion's Mane // v6 (17 Nov): cream backdrop // studio-v1 (16 Nov): photoreal studio bottle (lib/labels/studio.ts); was photo-v14 // v12 (14 Nov): elegant dark label; v13: studio lighting; v14: label edges curve round the bottle
+export const MOCKUP_VERSION = 'studio-v10'; // v10 (20 Nov): For Her badge // v9 (19 Nov): "organic" removed from Lion's Mane // v6 (17 Nov): cream backdrop // studio-v1 (16 Nov): photoreal studio bottle (lib/labels/studio.ts); was photo-v14 // v12 (14 Nov): elegant dark label; v13: studio lighting; v14: label edges curve round the bottle
 
 const NAVY = '#14213d';
 const INK = '#4b5563';
@@ -704,12 +705,18 @@ export function frontPanelElegant(p: Product, mode: FontMode, bleed = 0, opts: {
   // Bottom zone (net quantity at legal size, 21 CFR 101.105), fixed: the count shares a baseline with "Dietary
   // supplement" and its unit line sits below the count's descender ("281 g").
   const ruleY = 182; // bottom block raised 4 units (17 Nov) so it clears the safe zone
+  // "For Her" badge (owner, 20 Nov): top-right, level with the wordmark, so the vertical rhythm is unchanged.
+  const herW = 40, herH = 12.5, herX = FRONT.w - 20 - herW, herY = logoY - 16;
+  const forHer = FOR_HER_LABEL.has(p.slug)
+    ? `<rect x="${n(herX)}" y="${n(herY)}" width="${herW}" height="${herH}" rx="${n(herH / 2)}" fill="${FOR_HER_BERRY}"/>${caps(herY + herH / 2 + 2.4, 'For Her', 6.6, '#fff', 700, herX + herW / 2, 'middle')}`
+    : '';
   if (bottom > ruleY - 8) console.warn(`[labels] ${p.slug}: elegant front content ends at ${n(bottom)}, needs to end by ${ruleY - 8}`);
   return `<g>
     <rect x="0" y="${-bleed}" width="${FRONT.w}" height="${FRONT.h + bleed * 2}" fill="${paper}"/>
     ${center ? '' : `<rect x="0" y="${-bleed}" width="7" height="${FRONT.h + bleed * 2}" fill="${accent}"/>`}
     ${center ? wordmark(x0, logoY, logo, mode, ink) : wordmarkRaw(x0, logoY, logo, mode, ink, ink)}
     <rect x="${n(center ? x0 - 12 : x0)}" y="${ruleTop}" width="24" height="1.1" fill="${accent}"/>
+    ${forHer}
     ${category ? caps(catY, category, capsSize, colText, 600) : ''}
     <text x="${n(x0)}" y="${n(nameY)}" text-anchor="${anchor}" font-size="${n(nameSize)}" font-weight="500" letter-spacing="${n(-0.02 * nameSize)}" fill="${ink}" ${font('head', mode)}>${esc(main)}</text>
     ${descriptor ? `<text x="${n(x0)}" y="${n(descY)}" text-anchor="${anchor}" font-size="${descSize}" font-weight="400" letter-spacing="-0.1" fill="${colText}" ${font('head', mode)}>${esc(descriptor)}</text>` : ''}
