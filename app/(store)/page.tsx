@@ -17,7 +17,7 @@ import { getStoreProducts } from '@/lib/catalog/server';
 import { getContent, lines, safeLink } from '@/lib/content';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { LEGAL_NAME, SITE_URL } from '@/lib/site';
-import { ADVISORS, GENERAL_FAQS, IMAGES, PET_IMAGES } from '@/data/content';
+import { ADVISORS, GENERAL_FAQS, IMAGES, PET_IMAGES, WOMEN_IMAGES } from '@/data/content';
 import { unsplashSrcSet } from '@/lib/utils/format';
 import { PLACEHOLDER_EXPERTS, PLACEHOLDER_REVIEWS } from '@/data/placeholders';
 import { getSettings, placeholdersOn } from '@/lib/settings';
@@ -110,7 +110,7 @@ export default async function HomePage() {
                 </div>
                 <Link href="/women" className="btn btn-primary mt-7 self-start">Shop Women&apos;s Health</Link>
               </div>
-              <img src={IMAGES.womanTrain} srcSet={unsplashSrcSet(IMAGES.womanTrain)} sizes="(min-width: 768px) 45vw, 100vw" alt="Woman training with weights" className="h-64 w-full object-cover md:h-full" loading="lazy" />
+              <img src={WOMEN_IMAGES.banner} alt="Three women in sportswear" className="h-64 w-full object-cover object-top md:h-full" loading="lazy" />
             </div>
           </div>
         </section>
@@ -347,11 +347,11 @@ export default async function HomePage() {
               <p className="mb-3 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-pets-dark)]">
                 <PawPrint className="h-4 w-4" /> {petsLive ? 'New' : 'Coming soon'} · <Brand /> Pets
               </p>
-              <h2 className="text-3xl md:text-4xl">Clean supplements for dogs and cats</h2>
-              <p className="mt-3 text-[var(--color-muted)]">Soft chews for digestion, joints, calm and coat, in the same cart as yours.</p>
+              <h2 className="text-3xl md:text-4xl">At-home health checks for dogs and cats</h2>
+              <p className="mt-3 text-[var(--color-muted)]">Simple urine wellness strips and DNA health tests, so you can spot changes early and know when to call your vet.</p>
               <span className="btn mt-6 bg-[var(--color-pets)] text-[var(--color-navy)] group-hover:brightness-95">{petsLive ? 'Shop Pets' : 'Join the waitlist'}</span>
             </div>
-            <img src={PET_IMAGES.hero} srcSet={unsplashSrcSet(PET_IMAGES.hero)} sizes="(min-width: 768px) 50vw, 100vw" alt="A cat and dog cuddling" className="h-full min-h-64 w-full object-cover" loading="lazy" />
+            <img src={PET_IMAGES.teaser} alt="A dog and a cat side by side" className="h-full min-h-64 w-full object-cover" loading="lazy" />
           </Link>
         </div>
       </section>

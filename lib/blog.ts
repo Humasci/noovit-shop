@@ -33,12 +33,19 @@ interface PostRow {
   updated_at: string;
 }
 
+// Default cover photos for Journal posts without one set in Admin (owner photos, 20 Nov).
+const JOURNAL_COVERS: Record<string, string> = {
+  'creatine-for-women': '/images/women/creatine-for-women.jpg',
+  'magnesium-glycinate-for-women': '/images/women/magnesium-glycinate-for-women-2.jpg',
+  'ashwagandha-for-women': '/images/women/ashwagandha-for-women.jpg',
+};
+
 export const toPost = (r: PostRow): Post => ({
   slug: r.slug,
   title: r.title,
   excerpt: r.excerpt,
   body: r.body,
-  coverImage: r.cover_image,
+  coverImage: r.cover_image || JOURNAL_COVERS[r.slug] || null,
   author: r.author,
   status: r.status,
   publishedAt: r.published_at,

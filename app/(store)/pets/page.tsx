@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
         description: 'Probiotic, hip & joint, calming and skin & coat supplements for dogs and cats, dosed by weight.',
         alternates: { canonical: '/pets' },
       }
-    : { title: 'Noovit Pets — Coming Soon', description: 'Soft chews for dogs from Noovit. Join the waitlist to hear when they launch.', robots: { index: false } };
+    : { title: 'Noovit Pets: At-Home Health Checks for Dogs & Cats', description: 'At-home urine wellness strips and DNA health tests for dogs and cats are coming to Noovit Pets. Join the waitlist to hear first.', robots: { index: false } };
 }
 
 const PET_TRUST = [
@@ -36,7 +36,7 @@ export default async function PetsPage({ searchParams }: { searchParams: Promise
   return (
     <>
       <section className="relative overflow-hidden">
-        <img src={PET_IMAGES.hero} alt="A cat and dog cuddling" className="absolute inset-0 h-full w-full object-cover" />
+        <img src={PET_IMAGES.hero} alt="A woman relaxing on a sofa with her dog" className="absolute inset-0 h-full w-full object-cover object-right" />
         <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-pets-soft)] via-[var(--color-pets-soft)]/85 to-transparent" />
         <div className="container relative px-6 py-20 md:py-32">
           <div className="max-w-xl">
@@ -47,7 +47,7 @@ export default async function PetsPage({ searchParams }: { searchParams: Promise
             <p className="mt-5 text-lg text-[var(--color-ink)]/80">
               {live
                 ? 'Vet-formulated supplements for dogs and cats — same clean standards as our human range, in chews they actually look forward to.'
-                : 'Soft chews for dogs, made to the same clean standards as our human range. Launching soon.'}
+                : 'At-home health checks for dogs and cats: simple urine wellness strips and DNA health tests, with clear guidance on when to call your vet.'}
             </p>
             {!live && <p className="mt-6 text-sm font-semibold text-[var(--color-pets-dark)]">Coming soon</p>}
             <div className="mt-8 flex flex-wrap gap-3">
@@ -76,6 +76,32 @@ export default async function PetsPage({ searchParams }: { searchParams: Promise
             ))}
           </div>
         </div>
+      )}
+
+      {!live && (
+        // Pets starts with at-home checks (owner, 20 Nov); supplements follow once there is warehouse space.
+        <section className="section">
+          <div className="container px-6">
+            <SectionHeading eyebrow="What's coming" title="Know more about their health, at home" />
+            <div className="grid gap-6 md:grid-cols-3">
+              {[
+                { img: PET_IMAGES.urine, alt: 'A cat and a small dog sitting in a meadow', title: 'Urine wellness strips', text: 'Check pH, protein, glucose and blood at home in minutes. A result outside the range is your cue to call the vet.', tag: 'First' },
+                { img: PET_IMAGES.dna, alt: 'A vet holding a small fluffy dog', title: 'DNA health tests', text: 'A cheek swab for breed and inherited health risks, from trusted testing partners.', tag: 'First' },
+                { img: PET_IMAGES.supplements, alt: 'A woman playing with her dog and cat at home', title: 'Supplements', text: 'Joint and gut chews for dogs, and more for cats, made to the same clear-label standards as our human range.', tag: 'Later' },
+              ].map((c) => (
+                <div key={c.title} className="overflow-hidden rounded-3xl bg-[var(--color-pets-soft)]">
+                  <img src={c.img} alt={c.alt} loading="lazy" className="aspect-[4/3] w-full object-cover" />
+                  <div className="p-6">
+                    <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-pets-dark)]">{c.tag}</p>
+                    <h3 className="mt-2 text-xl">{c.title}</h3>
+                    <p className="mt-2 text-sm text-[var(--color-muted)]">{c.text}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <p className="mt-6 text-center text-xs text-[var(--color-muted)]">At-home checks are screening tools, not a diagnosis. Always talk to your vet about results or symptoms.</p>
+          </div>
+        </section>
       )}
 
       {live ? <PetsShop key={species} products={products} initialSpecies={species === 'dog' || species === 'cat' ? species : 'all'} /> : <PetsWaitlist />}

@@ -8,7 +8,7 @@ import { SITE_URL } from '@/lib/site';
 import { reviewFor } from '@/lib/experts';
 
 const find = async (slug: string) => (await getPublishedPosts()).find((p) => p.slug === slug);
-const shareImage = (post: Post) => post.coverImage || `${SITE_URL}/journal-image/${post.slug}`;
+const shareImage = (post: Post) => (post.coverImage ? (post.coverImage.startsWith('/') ? `${SITE_URL}${post.coverImage}` : post.coverImage) : `${SITE_URL}/journal-image/${post.slug}`);
 
 export async function generateStaticParams() {
   return (await getPublishedPosts()).map((p) => ({ slug: p.slug }));

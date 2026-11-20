@@ -16,7 +16,7 @@ export function PetsWaitlist() {
           <PawPrint className="mx-auto h-10 w-10 text-[var(--color-pets)]" />
           <h2 className="mt-4 text-3xl md:text-4xl">Noovit Pets is coming soon</h2>
           <p className="mt-3 text-[var(--color-muted)]">
-            Soft chews for dogs (hip &amp; joint, calming, digestion, skin &amp; coat) are on the way. Join the waitlist and we&apos;ll email you the day they launch.
+            At-home urine wellness strips and DNA health tests for dogs and cats are on the way. Join the waitlist and we&apos;ll email you the day they launch.
           </p>
           {done ? (
             <p className="mt-6 font-semibold text-[var(--color-pets-dark)]">You&apos;re on the list — we&apos;ll be in touch.</p>

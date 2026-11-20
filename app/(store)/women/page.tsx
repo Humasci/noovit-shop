@@ -7,8 +7,7 @@ import { findProduct } from '@/data/products';
 import { WOMEN_SECTIONS } from '@/lib/women';
 import { ProductCard } from '@/components/product/ProductCard';
 import { TrustSection } from '@/components/sections/Sections';
-import { IMAGES } from '@/data/content';
-import { unsplashSrcSet } from '@/lib/utils/format';
+import { WOMEN_IMAGES } from '@/data/content';
 
 export const metadata: Metadata = {
   title: "Women's Health Supplements: Strength, Sleep, Menopause | Noovit",
@@ -45,10 +44,8 @@ export default async function WomenPage() {
             </nav>
           </div>
           <img
-            src={IMAGES.womanTrain}
-            srcSet={unsplashSrcSet(IMAGES.womanTrain)}
-            sizes="(min-width: 768px) 50vw, 100vw"
-            alt="Woman training with weights"
+            src={WOMEN_IMAGES.hub}
+            alt="Four women dancing in a circle in a sunny garden"
             className="aspect-[4/3] w-full rounded-3xl object-cover"
           />
         </div>
@@ -57,9 +54,12 @@ export default async function WomenPage() {
       {sections.map((s, i) => (
         <section key={s.id} id={s.id} className={`section scroll-mt-24 ${i % 2 ? 'bg-[var(--color-soft)]' : ''}`}>
           <div className="container px-6">
-            <div className="mb-8 max-w-2xl">
-              <h2 className="text-3xl md:text-4xl">{s.title}</h2>
-              <p className="mt-3 text-[var(--color-ink)]/80">{s.intro}</p>
+            <div className="mb-8 grid items-center gap-6 md:grid-cols-[1.4fr_1fr]">
+              <div className="max-w-2xl">
+                <h2 className="text-3xl md:text-4xl">{s.title}</h2>
+                <p className="mt-3 text-[var(--color-ink)]/80">{s.intro}</p>
+              </div>
+              {s.image && <img src={s.image} alt={s.imageAlt ?? ''} loading="lazy" className="aspect-[16/10] w-full rounded-3xl object-cover" />}
             </div>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-x-5 sm:gap-y-10 lg:grid-cols-4">
               {s.items.map((p) => (

@@ -48,8 +48,24 @@ export const SUBSCRIPTION_PERKS = [
 
 const u = (id: string, w = 1200, h?: number) => `https://images.unsplash.com/${id}?w=${w}${h ? `&h=${h}` : ''}&q=80&fit=crop`;
 
+// Owner-supplied photos (20 Nov), web-sized in public/images/women and public/images/pets, named as the owner named them.
+export const WOMEN_IMAGES = {
+  hub: '/images/women/womens-health-friend-circle.jpg',
+  banner: '/images/women/best-supplements-for-women.jpg',
+  strength: '/images/women/creatine-for-women.jpg',
+  sleep: '/images/women/magnesium-glycinate-for-women.jpg',
+  calm: '/images/women/ashwagandha-for-women.jpg',
+  midlife: '/images/women/menopause.jpg',
+  energy: '/images/women/womens-health-supplements.jpg',
+};
+
 export const PET_IMAGES = {
-  hero: u('photo-1450778869180-41d0601e046e', 1920),
+  hero: '/images/pets/pet-health-at-home-test-kits.jpg',
+  teaser: '/images/pets/pets-at-home-health-tests.jpg',
+  urine: '/images/pets/pets-urine-test-strips.jpg',
+  dna: '/images/pets/dog-health-test.jpg',
+  supplements: '/images/pets/best-pets-supplements.jpg',
+  care: '/images/pets/pet-care-shar-pei.jpg',
   dog: u('photo-1543466835-00a7907e9de1', 900),
   cat: u('photo-1514888286974-6c03e2ca1dba', 900),
   community: [

@@ -1,17 +1,23 @@
 // Women's Health hub (/women, owner 19 Nov: the most prominent category on the human side).
 // Sections by need/life stage; each lists products in order and shows only the ones on sale (hidden drop out).
 // Copy follows FDA structure/function rules: "supports", never treats/relieves; no hormone-balancing claims.
+import { WOMEN_IMAGES } from '@/data/content';
+
 export interface WomenSection {
   id: string;
   title: string;
   intro: string;
   products: string[];
   guides: { href: string; label: string }[];
+  image?: string;
+  imageAlt?: string;
 }
 
 export const WOMEN_SECTIONS: WomenSection[] = [
   {
     id: 'strength',
+    image: WOMEN_IMAGES.strength,
+    imageAlt: 'Women in a dance fitness class',
     title: 'Strength at every age',
     intro: 'Creatine is one of the most studied supplements there is, and research in women shows gains in strength and lean muscle alongside resistance training. It matters more with every decade.',
     products: ['creatine-for-women', 'creatine-hydration'],
@@ -19,6 +25,8 @@ export const WOMEN_SECTIONS: WomenSection[] = [
   },
   {
     id: 'sleep-stress',
+    image: WOMEN_IMAGES.sleep,
+    imageAlt: 'A woman holding supplement capsules and a glass of water',
     title: 'Sleep & everyday stress',
     intro: 'Magnesium glycinate in the evening and KSM-66® ashwagandha for busy days. Taken together or on their own.',
     products: ['magnesium-complex', 'ashwagandha', 'sleep-calm-stack'],
@@ -30,6 +38,8 @@ export const WOMEN_SECTIONS: WomenSection[] = [
   },
   {
     id: 'midlife',
+    image: WOMEN_IMAGES.midlife,
+    imageAlt: 'A smiling woman in her fifties drinking water',
     title: 'Perimenopause & menopause',
     intro: 'A natural life stage, with changing needs: muscle and bone, sleep, and the nutrients women need more of after 40.',
     products: ['menopause-complex', 'creatine-for-women', 'magnesium-complex', 'vitamin-d3-k2'],
@@ -37,6 +47,8 @@ export const WOMEN_SECTIONS: WomenSection[] = [
   },
   {
     id: 'energy',
+    image: WOMEN_IMAGES.energy,
+    imageAlt: 'A woman holding a capsule',
     title: 'Energy, iron & focus',
     intro: 'Low iron is common in women who menstruate. Iron, vitamin D and B vitamins all play a part in normal energy.',
     products: ['iron-complex', 'lions-mane', 'coq10', 'multivitamin'],
