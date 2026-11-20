@@ -133,11 +133,25 @@ function BentoSection({ s, index }: { s: WomenSection & { items: Product[] }; in
     const left = index % 2 === 0;
     const [a, b] = left ? [3, 4] : [1, 2]; // the half that holds products and facts
     const rows = 2 * Math.ceil(n / 2) + (n % 2 === 0 ? 1 : 0);
-    tiles.push(
-      <div key="img" style={place({ col: `${left ? 1 : 3} / span 2`, row: `1 / span ${rows}` })} className={`${PLACED} relative min-h-[300px] overflow-hidden rounded-[2rem] sm:col-span-2 sm:min-h-[380px] lg:min-h-0`}>
-        <img src={s.image} alt={s.imageAlt ?? ''} loading="lazy" className={`absolute inset-0 h-full w-full object-cover ${s.portrait ? 'object-[center_35%]' : 'object-center'}`} />
-      </div>,
+    const c0 = left ? 1 : 3;
+    const photo = (key: string, src: string, alt: string, pos: string, cell: Cell, wide: boolean) => (
+      <div key={key} style={place(cell)} className={`${PLACED} relative min-h-[300px] overflow-hidden rounded-[2rem] ${wide ? 'sm:col-span-2' : ''} sm:min-h-[380px] lg:min-h-0`}>
+        <img src={src} alt={alt} loading="lazy" className={`absolute inset-0 h-full w-full object-cover ${pos}`} />
+      </div>
     );
+    const pos1 = s.portrait ? 'object-[center_35%]' : 'object-center';
+    if (!s.image2) {
+      tiles.push(photo('img', s.image, s.imageAlt ?? '', pos1, { col: `${c0} / span 2`, row: `1 / span ${rows}` }, true));
+    } else if (rows === 2) {
+      // Two photos side by side, each one column wide and full height.
+      tiles.push(photo('img', s.image, s.imageAlt ?? '', pos1, { col: `${c0}`, row: '1 / span 2' }, false));
+      tiles.push(photo('img2', s.image2.src, s.image2.alt, s.image2.position ?? 'object-center', { col: `${c0 + 1}`, row: '1 / span 2' }, false));
+    } else {
+      // Stacked: the main photo on top, the second below, together filling the half.
+      const top = rows - (rows >= 4 ? 2 : 1);
+      tiles.push(photo('img', s.image, s.imageAlt ?? '', pos1, { col: `${c0} / span 2`, row: `1 / span ${top}` }, true));
+      tiles.push(photo('img2', s.image2.src, s.image2.alt, s.image2.position ?? 'object-center', { col: `${c0} / span 2`, row: `${top + 1} / span ${rows - top}` }, true));
+    }
     s.items.forEach((p, k) =>
       tiles.push(
         <div key={p.id} style={place({ col: `${k % 2 ? b : a}`, row: `${1 + 2 * Math.floor(k / 2)} / span 2` })} className={PLACED}>

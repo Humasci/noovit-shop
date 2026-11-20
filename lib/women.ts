@@ -12,6 +12,7 @@ export interface WomenSection {
   image?: string;
   imageAlt?: string;
   portrait?: boolean; // portrait photo: shown taller instead of cropped to 16:10
+  image2?: { src: string; alt: string; position?: string }; // second photo beside the first (owner, 20 Nov)
   // Fact and benefit tiles in the section's bento grid (owner, 20 Nov: "products, images, facts"). Benefit claims carry *.
   facts?: { eyebrow: string; big?: string; text: string; tone?: 'dark' | 'light' | 'accent' }[];
 }
@@ -22,6 +23,7 @@ export const WOMEN_SECTIONS: WomenSection[] = [
     image: WOMEN_IMAGES.strength,
     imageAlt: 'A smiling woman holding out a tub of Noovit Creatine for Her',
     portrait: true,
+    image2: { src: '/images/women/creatine-for-women.jpg', alt: 'A woman smiling in a dance fitness class', position: 'object-[38%_center]' },
     title: 'Strength at every age',
     intro: 'Creatine is one of the most studied supplements there is, and research in women shows gains in strength and lean muscle alongside resistance training. It matters more with every decade.',
     facts: [
@@ -36,6 +38,7 @@ export const WOMEN_SECTIONS: WomenSection[] = [
     id: 'sleep-stress',
     image: WOMEN_IMAGES.sleep,
     imageAlt: 'A woman holding supplement capsules and a glass of water',
+    image2: { src: '/images/women/magnesium-glycinate-for-women-2.jpg', alt: 'A woman holding a softgel', position: 'object-[center_40%]' },
     title: 'Sleep & everyday stress',
     intro: 'Magnesium glycinate in the evening and KSM-66® ashwagandha for busy days. Taken together or on their own.',
     facts: [
