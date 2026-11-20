@@ -19,8 +19,9 @@ export const MEN_SECTIONS: WomenSection[] = [
     intro: "Lion's mane for focus and CoQ10 for cellular energy, at clear doses printed on the front.",
     products: ['lions-mane', 'coq10'],
     guides: [{ href: '/guides/lions-mane', label: "Lion's mane: the evidence" }, { href: '/guides/coq10', label: 'CoQ10: what the research shows' }],
-    image: MEN_IMAGES.trail,
-    imageAlt: 'A man running on a mountain trail',
+    image: '/images/scenes/lions-mane.jpg',
+    imageAlt: "Noovit Lion's Mane on lion's mane mushrooms",
+    image2: { src: '/images/scenes/coq10.jpg', alt: 'Noovit CoQ10 on golden softgels' },
   },
   {
     id: 'sleep-stress',
@@ -28,6 +29,8 @@ export const MEN_SECTIONS: WomenSection[] = [
     intro: 'Magnesium glycinate in the evening and KSM-66® ashwagandha for busy days.',
     products: ['magnesium-complex', 'ashwagandha', 'sleep-calm-stack'],
     guides: [{ href: '/guides/magnesium', label: 'Magnesium: forms, doses and evidence' }, { href: '/guides/ashwagandha', label: 'Ashwagandha: what the research shows' }],
+    image: '/images/scenes/magnesium.jpg',
+    imageAlt: 'Noovit Magnesium Sleep+ on capsules',
   },
   {
     id: 'joints',
@@ -48,4 +51,6 @@ export const MEN_GALLERY = [
   { src: MEN_IMAGES.run, alt: 'A man running a road race' },
   { src: MEN_IMAGES.banner, alt: 'A runner sprinting at sunset' },
   { src: MEN_IMAGES.trail, alt: 'A man running on a mountain trail' },
+  { src: '/images/scenes/lions-mane.jpg', alt: "Noovit Lion's Mane on lion's mane mushrooms" },
+  { src: '/images/scenes/magnesium.jpg', alt: 'Noovit Magnesium Sleep+ on capsules' },
 ];

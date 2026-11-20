@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { Menu, X, ShoppingBag, ChevronDown, PawPrint, User } from 'lucide-react';
+import { Menu, X, ShoppingCart, ChevronDown, PawPrint, User } from 'lucide-react';
 import { useCart, cartCount } from '@/lib/store/cart';
 import { useHydrated } from '@/lib/useHydrated';
 import { Logo, CrossIcon } from '@/components/layout/Logo';
@@ -175,8 +175,8 @@ export function Header({ trustBar, announcement, advisor = false, bestSellers = 
                 <CrossIcon className="h-3.5 w-3.5" /> Ask Noovit AI
               </button>
             )}
-            {/* Noovit Pets sits apart from the human range as its own button; on the Pets pages it leads back to the human shop. */}
-            {!pets && !onPets ? null : onPets ? (
+            {/* Noovit Pets: always a button top right (owner, 20 Nov); on the Pets pages it leads back to the human shop. */}
+            {onPets ? (
               <Link
                 href="/shop"
                 className="hidden items-center gap-1.5 rounded-full bg-[var(--color-opal)] px-4 py-1.5 text-[14px] font-medium text-[var(--color-navy)] transition-colors hover:bg-[var(--color-accent-light)] lg:flex"
@@ -186,7 +186,7 @@ export function Header({ trustBar, announcement, advisor = false, bestSellers = 
             ) : (
               <Link
                 href="/pets"
-                className="hidden items-center gap-1.5 rounded-full border border-[var(--color-line)] px-4 py-1.5 text-[14px] font-medium text-[var(--color-navy)] transition-colors hover:brightness-95 lg:flex"
+                className="flex items-center gap-1.5 rounded-full bg-[var(--color-pets)] px-3 py-1.5 text-[14px] font-semibold text-[var(--color-navy)] transition hover:brightness-95 sm:px-4"
               >
                 <PawPrint className="h-4 w-4" /> Pets
               </Link>
@@ -195,7 +195,7 @@ export function Header({ trustBar, announcement, advisor = false, bestSellers = 
               Sign in
             </Link>
             <button onClick={openCart} className="relative -m-2 p-2" aria-label={`Cart, ${count} ${count === 1 ? 'item' : 'items'}`}>
-              <ShoppingBag className="h-6 w-6" aria-hidden />
+              <ShoppingCart className="h-6 w-6" aria-hidden />
               {count > 0 && (
                 <span aria-hidden className="absolute right-0 top-0 flex h-5 w-5 items-center justify-center rounded-full bg-[var(--color-accent)] text-[10px] font-bold text-white">
                   {count}

@@ -16,6 +16,12 @@ import { advisorEnabled } from '@/lib/advisor';
 import { WOMEN_FEATURED } from '@/lib/women';
 import { MEN_FEATURED, MEN_LIVE } from '@/lib/men';
 
+const SCENES = [
+  { slug: 'lions-mane', src: '/images/scenes/lions-mane.jpg', alt: "Noovit Lion's Mane bottle on lion's mane mushrooms: 1,000 mg per serving, fruiting body and mycelium, vegan capsule" },
+  { slug: 'magnesium-complex', src: '/images/scenes/magnesium.jpg', alt: 'Noovit Magnesium Sleep+ bottle on capsules: 275 mg magnesium, gentle glycinate form, three capsules' },
+  { slug: 'coq10', src: '/images/scenes/coq10.jpg', alt: 'Noovit CoQ10 bottle on golden softgels: 200 mg per serving, ubiquinone form, one a day' },
+];
+
 // Shop by goal: one tile per core product, tinted in its label colour.
 // The first four active ones show (owner, 17 Nov: four columns); the rest are fallbacks.
 const GOAL_TILES: { label: string; line: string; slug: string; href: string }[] = [
@@ -92,6 +98,23 @@ export default async function HomePage() {
       )}
 
       <SubscriptionPerks />
+
+      {/* Inside the bottle (owner, 20 Nov): scene shots of the core formulas with their key facts (scripts/scene-shots.ts). */}
+      <section className="section">
+        <div className="container px-6">
+          <div className="mb-8 flex items-end justify-between gap-4">
+            <h2 className="text-4xl md:text-5xl">The dose on the front</h2>
+            <Link href="/shop" className="hidden items-center gap-1 text-sm font-semibold text-[var(--color-navy)] hover:underline sm:inline-flex">Shop all <ArrowRight className="h-4 w-4" /></Link>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-3">
+            {SCENES.map((sc) => (
+              <Link key={sc.slug} href={`/products/${sc.slug}`} className="group overflow-hidden rounded-3xl">
+                <img src={sc.src} alt={sc.alt} loading="lazy" className="aspect-square w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Women's Health: the lead category on the human side (owner, 19 Nov), straight under the hero. */}
       {women.length > 0 && (

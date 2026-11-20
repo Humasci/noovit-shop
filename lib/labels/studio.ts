@@ -309,6 +309,33 @@ export async function studioCutout(p: Product, tint: [number, number, number] = 
   const r = await studioPhotoRaw(p);
   let minX = t.W, maxX = 0, minY = t.H, maxY = 0;
   for (let m = 0; m < t.W * t.H; m++) if (t.mask[m] > 0.02) { const x = m % t.W, y = (m / t.W) | 0; if (x < minX) minX = x; if (x > maxX) maxX = x; if (y < minY) minY = y; if (y > maxY) maxY = y; }
+  // The mask stops at the label's bottom edge; the white base below it is found here: pixels clearly brighter than
+  // the empty backdrop (plate), between the bottle's sides, row by row until the base ends.
+  const lum = (b: ArrayLike<number>, k: number) => 0.299 * b[k] + 0.587 * b[k + 1] + 0.114 * b[k + 2];
+  const base = new Map<number, [number, number]>();
+  for (let y = maxY - 4; y < t.H; y++) {
+    let l = -1, rr = -1, cnt = 0;
+    for (let x = Math.max(0, t.x0 - 4); x <= Math.min(t.W - 1, t.x1 + 4); x++) {
+      const k = (y * t.W + x) * 3;
+      const d = lum(t.data, k) - lum(t.plate, k);
+      if (d > 2.5) { if (l < 0) l = x; rr = x; cnt++; }
+    }
+    if (cnt < (t.x1 - t.x0) * 0.12) { if (y > maxY + 4) break; continue; } // base ends where bright pixels stop
+    base.set(y, [l, rr]);
+  }
+  // Fill every row from the label's bottom to the end of the base across the bottle's full width (its shaded right
+  // side is darker than the backdrop, so brightness alone would only find the left half), rounding the bottom corners.
+  const maskBottom = maxY;
+  const baseEnd = Math.max(maxY, ...base.keys());
+  base.clear();
+  let labelBottomMin = maskBottom; // the label's bottom edge curves up at the sides
+  for (let x = t.x0; x <= t.x1; x++) if (t.bot[x] && t.bot[x] < labelBottomMin) labelBottomMin = Math.floor(t.bot[x]);
+  for (let y = labelBottomMin - 2; y <= baseEnd; y++) {
+    const k = Math.max(0, y - (baseEnd - 12));
+    const inset = Math.round((k * k) / 5);
+    base.set(y, [t.x0 + inset, t.x1 - inset]);
+  }
+  maxY = baseEnd;
   const w = maxX - minX + 1, h = maxY - minY + 1;
   // The bottle is convex in every row: fill each row between its outermost solid pixels, so small mask gaps (the
   // ribbed cap's highlights) don't show the new background through.
@@ -316,7 +343,9 @@ export async function studioCutout(p: Product, tint: [number, number, number] = 
   for (let y = minY; y <= maxY; y++) {
     let l = -1, r = -1;
     for (let x = minX; x <= maxX; x++) if (t.mask[y * t.W + x] > 0.5) { if (l < 0) l = x; r = x; }
-    for (let x = minX; x <= maxX; x++) { const m = y * t.W + x; fill[m] = l >= 0 && x > l && x < r ? 1 : t.mask[m]; }
+    const b = base.get(y);
+    if (b) { l = l < 0 ? b[0] : Math.min(l, b[0]); r = Math.max(r, b[1]); }
+    for (let x = minX; x <= maxX; x++) { const m = y * t.W + x; fill[m] = l >= 0 && x >= l && x <= r ? 1 : t.mask[m]; }
   }
   const out = Buffer.alloc(w * h * 4);
   for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
