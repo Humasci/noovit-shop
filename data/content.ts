@@ -59,12 +59,18 @@ export const WOMEN_IMAGES = {
   energy: '/images/women/womens-health-supplements.jpg',
 };
 
-// Men's Health (20 Nov): placeholder sports photos already on the site until the owner sends men's photos.
+// Men's Health (owner's photos, 20 Nov; file names are the owner's). The tub, jar and bottle in three of them carry our
+// Creatine for Men / Magnesium for Men labels (wrapped onto the photo; masters in design/men-2026-11/).
 export const MEN_IMAGES = {
-  hub: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=1920&q=80&fit=crop', // barbell deadlift
-  banner: 'https://images.unsplash.com/photo-1744060204728-f68e434a3edf?w=1200&q=80&fit=crop', // sunset sprint
-  run: 'https://images.unsplash.com/photo-1560073742-bc295f81c3c0?w=1200&q=80&fit=crop', // road race
-  trail: 'https://images.unsplash.com/photo-1522040942177-269680274214?w=1200&q=80&fit=crop', // trail run
+  hub: '/images/men/best-supplements-for-men.jpg', // rowing class
+  banner: '/images/men/creatine-for-men.jpg', // dumbbell curl
+  creatine: '/images/men/best-creatine-for-men.jpg', // holding Creatine for Men
+  magnesium: '/images/men/mens-supplements.jpg', // pouring Magnesium for Men
+  magnesiumJar: '/images/men/best-magnesium-glycinate-supplement-for-men.jpg', // Magnesium for Men in mid-air
+  over50: '/images/men/magnesium-glycinate-for-men-over-50.jpg', // two men running on a track
+  bike: '/images/men/mens-health-test-and-supplements.jpg', // indoor cycling
+  run: '/images/men/noovit-mens-health.jpg', // city run
+  community: '/images/men/noovit-community.jpg', // laughing, lacing shoes
 };
 
 export const PET_IMAGES = {

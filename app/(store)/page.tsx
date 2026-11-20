@@ -174,7 +174,7 @@ export default async function HomePage() {
         <section className="section">
           <div className="container px-6">
             <div className="grid overflow-hidden rounded-3xl bg-[var(--studio)] md:grid-cols-[1fr_1.1fr]">
-              <img src={MEN_IMAGES.banner} alt="A runner sprinting at sunset" className="h-64 w-full object-cover md:h-full" loading="lazy" />
+              <img src={MEN_IMAGES.banner} alt="A man doing dumbbell curls in a gym" className="h-64 w-full object-cover md:h-full" loading="lazy" />
               <div className="flex flex-col justify-center p-8 md:p-12">
                 <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-navy)]/70">Men&apos;s Health</p>
                 <h2 className="mt-3 text-balance text-3xl text-[var(--color-navy)] md:text-[2.6rem] md:leading-tight">Strength, focus and recovery, backed by evidence</h2>
