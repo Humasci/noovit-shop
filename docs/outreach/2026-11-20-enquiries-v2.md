@@ -98,3 +98,68 @@ Email information@biminipethealth.com or call 1-800-948-9089. **Subject:** Priva
 > Thank you,
 > [Your name]
 > Noovit LLC · [Your email]
+
+---
+
+## 4. Coastline Global (maker of CheckUp): own-label pet urine strips
+Contact form at checkupdiagnostics.com / coastlineglobal (find the B2B or OEM contact). **Subject:** OEM / private-label pet urine test strips
+
+> Hello,
+>
+> I run Noovit (noovit.com), a US direct-to-consumer health brand launching a pets range. We'd like to sell at-home
+> urine wellness tests for dogs and cats under our own brand, and your CheckUp strips and collection products are the
+> best fit we've found. Could you tell us:
+> 1. Whether you offer OEM or private-label versions of the multi-parameter urine strips, the cat litter kit and the
+>    dog collection pole, with our packaging and inserts.
+> 2. Minimum order quantities, unit prices at those minimums, and any setup or artwork fees.
+> 3. Which parameters the strips read (pH, glucose, protein, blood, ketones, specific gravity, leukocytes?), shelf life,
+>    and any veterinary validation data we can cite.
+> 4. Lead times, and whether you can ship single orders to our customers or only bulk to a warehouse.
+> 5. If private label isn't possible, your wholesale or reseller terms for the CheckUp brand.
+>
+> We sell in the US only. Thank you,
+> [Your name]
+> Noovit LLC · [Your email]
+
+---
+
+## 5. Abingdon Simply Test: own-label pet urine dipsticks
+Contact via simplytest.co.uk / abingdonhealth.com ("Private & own label solutions"). **Subject:** Own-label veterinary urine dipsticks for the US market
+
+> Hello,
+>
+> I run Noovit (noovit.com), a US direct-to-consumer health brand. We'd like an own-label at-home urine wellness test
+> for dogs and cats, sold in the US. Could you tell us:
+> 1. Whether you supply multi-parameter urine reagent strips suitable for veterinary or pet use, in own-label pouches
+>    and boxes, and which parameters they cover.
+> 2. Minimum order quantities, unit prices and any setup or artwork fees.
+> 3. Shelf life, storage needs, and the performance data you provide.
+> 4. Lead times and shipping to a US warehouse, and any US import or registration requirements you handle.
+>
+> Thank you,
+> [Your name]
+> Noovit LLC · [Your email]
+
+---
+
+## 6. Supplement suppliers: price check against Supliful
+Same short email to each (fill in the contact from their site): **On Demand Fulfillment** (West Jordan, UT; no
+minimum, direct API), **Professional Nutritionals** (Tampa, FL; 1-bottle minimum, 170+ formulas, has iron and zinc),
+**Rocktomic** (Lawrenceville, GA; from 1 unit, monthly plan + per-order fee). **Subject:** Private-label dropship: price list
+and samples
+
+> Hello,
+>
+> I run Noovit (noovit.com), a US direct-to-consumer supplement brand. We dropship private-label products today and
+> are comparing suppliers. Could you send:
+> 1. Your stock formula list with Supplement Facts, and the per-bottle price (with our label) at 1–50 units a month.
+> 2. Per-order fulfilment and shipping costs to US customers, plus any monthly, setup or label fees.
+> 3. How orders reach you from a custom website (API, CSV, email) and how tracking comes back.
+> 4. Certificates: cGMP/NSF facility, a sample certificate of analysis, and whether you test every batch.
+> 5. Whether you carry: magnesium glycinate (elemental amount), KSM-66 ashwagandha, lion's mane fruiting body,
+>    creatine monohydrate powder, CoQ10 200 mg, iron bisglycinate, zinc.
+> 6. How to order samples.
+>
+> Thank you,
+> [Your name]
+> Noovit LLC · [Your email]
