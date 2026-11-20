@@ -23,15 +23,16 @@ export const MEN_SECTIONS: WomenSection[] = [
   {
     id: 'sleep-stress',
     title: 'Sleep, stress & recovery',
-    intro: 'Magnesium glycinate in the evening supports muscle function, relaxation and restful sleep.* Men need 400–420 mg of magnesium a day, and many get less from food.',
-    products: ['magnesium-for-men'],
-    guides: [{ href: '/guides/magnesium-glycinate', label: 'Magnesium glycinate: benefits, dosage and timing' }],
+    intro: 'Magnesium glycinate in the evening and KSM-66® ashwagandha for busy days. Men need 400–420 mg of magnesium a day, and many get less from food.',
+    products: ['magnesium-for-men', 'ashwagandha', 'sleep-calm-stack'],
+    guides: [{ href: '/guides/magnesium-glycinate', label: 'Magnesium glycinate: benefits, dosage and timing' }, { href: '/guides/ashwagandha', label: 'Ashwagandha: what the research shows' }],
     image: MEN_IMAGES.magnesium,
     imageAlt: 'A man pouring capsules from a bottle of Noovit Magnesium for Men',
     portrait: true,
     facts: [
       { eyebrow: 'Magnesium', big: '275 mg', text: 'Elemental magnesium per serving, as gentle glycinate.', tone: 'dark' },
       { eyebrow: 'Daily need', big: '420 mg', text: 'Magnesium a day for men from age 31, food included (NIH).', tone: 'light' },
+      { eyebrow: 'Ashwagandha', big: '600 mg', text: 'KSM-66® root extract, the dose used in the main studies.', tone: 'accent' },
     ],
   },
   {

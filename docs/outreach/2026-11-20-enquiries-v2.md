@@ -2,7 +2,7 @@
 
 Replaces the 19 Nov drafts for IHD Lab and Spot (our test range has grown: vitamin D, A1c, thyroid, cholesterol, cortisol
 and a men's kit). Replace the [brackets] before sending. Send IHD Lab and Spot the same day so the quotes compare.
-Don't sign anything or share revenue, customer or bank details yet. Forward the replies and I'll compare them.
+We sell in the US only. Don't sign anything or share revenue, customer or bank details yet. Forward the replies and I'll compare them.
 
 ---
 
@@ -32,6 +32,8 @@ Web form at ihdlab.com (Contact / white-label kits) or call (800) 820-8803.
 > 4. Your sample failure rate and recollection policy, and typical turnaround from receipt to results.
 > 5. How ordering works (LabFlow API, CSV or manual), and whether results can sit in a portal branded with our name.
 > 6. Whether you sign a BAA, and who is named as the kit manufacturer for FDA purposes.
+> 7. Whether customer emails and texts (kit shipped, sample received, results ready) can be sent under our brand from
+>    our domain (noovit.com), or through a webhook so we send them ourselves.
 >
 > A price sheet and a sample results report would be very helpful.
 >
@@ -68,6 +70,8 @@ Email hello@spotkits.com and book a 30-minute call (calendly.com/jajack/30minute
 > 4. Sample failure rate, free recollection, and turnaround.
 > 5. API v1 or v2 for new integrations, a sandbox, and typical time to launch.
 > 6. Whether you sign a BAA, and who is the named kit manufacturer for FDA purposes.
+> 7. Whether customer emails and texts (kit shipped, sample received, results ready) can go out under our brand from
+>    our domain (noovit.com), or via webhooks so we send them ourselves.
 >
 > Thank you,
 > [Your name]
