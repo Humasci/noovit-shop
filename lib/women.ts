@@ -66,7 +66,7 @@ export const WOMEN_SECTIONS: WomenSection[] = [
       { eyebrow: 'Pair it', big: '5 g', text: 'Creatine alongside strength training supports muscle at every age*', tone: 'accent' },
     ],
     products: ['menopause-complex', 'creatine-for-women', 'magnesium-complex', 'vitamin-d3-k2'],
-    guides: [{ href: '/guides/creatine', label: 'Creatine after 40' }],
+    guides: [{ href: '/tests/perimenopause-check', label: 'At-home Perimenopause Check (coming soon)' }, { href: '/guides/creatine', label: 'Creatine after 40' }],
   },
   {
     id: 'energy',
@@ -80,7 +80,7 @@ export const WOMEN_SECTIONS: WomenSection[] = [
       { eyebrow: 'Benefit', text: 'Supports normal energy levels*', tone: 'light' },
     ],
     products: ['iron-complex', 'lions-mane', 'coq10', 'multivitamin'],
-    guides: [{ href: '/tests/nutrient-check', label: 'At-home Nutrient Check (coming soon)' }, { href: '/guides/lions-mane', label: "Lion's mane: the evidence" }],
+    guides: [{ href: '/tests/nutrient-check', label: 'At-home Iron & Nutrient Check (coming soon)' }, { href: '/guides/lions-mane', label: "Lion's mane: the evidence" }],
   },
   {
     id: 'beauty',

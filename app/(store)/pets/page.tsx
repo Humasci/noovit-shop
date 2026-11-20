@@ -86,15 +86,15 @@ export default async function PetsPage({ searchParams }: { searchParams: Promise
             <SectionHeading eyebrow="What's coming" title="Know more about their health, at home" />
             <div className="grid gap-6 md:grid-cols-3">
               {[
-                { img: PET_IMAGES.urine, alt: 'A cat and a small dog sitting in a meadow', title: 'Urine wellness strips', text: 'Check pH, protein, glucose and blood at home in minutes. A result outside the range is your cue to call the vet.', tag: 'First' },
-                { img: PET_IMAGES.dna, alt: 'A vet holding a small fluffy dog', title: 'DNA health tests', text: 'A cheek swab for breed and inherited health risks, from trusted testing partners.', tag: 'First' },
+                { img: PET_IMAGES.urine, alt: 'A cat and a small dog sitting in a meadow', title: 'Urine wellness strips', href: '/tests/pet-urine-strips', text: 'Check pH, protein, glucose and blood at home in minutes. A result outside the range is your cue to call the vet.', tag: 'First' },
+                { img: PET_IMAGES.dna, alt: 'A vet holding a small fluffy dog', title: 'DNA health tests', href: '/tests/pet-dna-test', text: 'A cheek swab for breed and inherited health risks, from trusted testing partners.', tag: 'First' },
                 { img: PET_IMAGES.supplements, alt: 'A woman playing with her dog and cat at home', title: 'Supplements', text: 'Joint and gut chews for dogs, and more for cats, made to the same clear-label standards as our human range.', tag: 'Later' },
               ].map((c) => (
                 <div key={c.title} className="overflow-hidden rounded-3xl bg-[var(--color-pets-soft)]">
                   <img src={c.img} alt={c.alt} loading="lazy" className="aspect-[4/3] w-full object-cover" />
                   <div className="p-6">
                     <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-pets-dark)]">{c.tag}</p>
-                    <h3 className="mt-2 text-xl">{c.title}</h3>
+                    <h3 className="mt-2 text-xl">{c.href ? <Link href={c.href} className="hover:underline">{c.title}</Link> : c.title}</h3>
                     <p className="mt-2 text-sm text-[var(--color-muted)]">{c.text}</p>
                   </div>
                 </div>

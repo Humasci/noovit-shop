@@ -27,6 +27,7 @@ const NAV: NavItem[] = [
   // Women's Health leads the human side (owner, 19 Nov).
   { name: "Women's Health", href: '/women' },
   ...(MEN_LIVE ? [{ name: "Men's Health", href: '/men' }] : []),
+  { name: 'At-Home Tests', href: '/tests' },
   {
     name: 'Shop',
     href: '/shop',
