@@ -228,3 +228,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 20 Nov (62): Men's range (Creatine for Men, Magnesium for Men), labels and print files, quiz versions, men's photos on the Men's Health hub (sections with fact tiles, gallery), labels wrapped onto the 3 product photos.
 - [x] 20 Nov (63): guide template with answer-ready blocks (short answers, dosage/timing/comparison tables, question headings, FAQ + DietarySupplement data) filled for magnesium, creatine and ashwagandha; `/llms.txt`.
 - [x] 20 Nov (64): Men's Health live: header nav, homepage section, footer links (Women's, Men's, At-Home Tests), sitemap; men's versions fall back to the regular products until active.
+- [x] 20 Nov (65): answer-ready blocks for lion's mane, CoQ10 and turmeric; new pillar guide /guides/magnesium-glycinate.
