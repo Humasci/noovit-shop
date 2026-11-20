@@ -133,6 +133,7 @@ Read this first. It is the standing context for any session working on this repo
 **Strategy & research (docs/)**
 - `research/COMPETITORS_CORE5.md` — core-5 competitors, prices, label patterns, Shopping screenshots, decisions.
 - `research/deep-research-*.md` — the owner's deep-research results, reviewed (what's usable, what isn't, decisions).
+- `seo/NOOVIT_SEO_MASTER.xlsx` — SEO master (keywords, clusters, Q&A answers, related terms); built by `scripts/seo-master.py` from `docs/seo/ahrefs/*` + `data/seo-questions.json`. `seo/KEYWORD_PLAN.md` — tiered plan.
 - `SHOPPING_ANALYSIS_*.md` (ashwagandha, berberine, lion's mane, methylene blue, NAD+, turmeric) — Google Shopping teardowns.
 - `SUPLIFUL_PRODUCT_SCREEN.md` — every checked Supliful product with verdicts (recap at top).
 - `SUPPLIER_RESEARCH.md` — dropship/private-label suppliers incl. pets. `pricing/noovit-pricing.xlsx`, `PRICING_NOTES.md`, `PRICE_LIST.md`.

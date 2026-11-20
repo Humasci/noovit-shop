@@ -1,0 +1,8 @@
+Item,Detail
+Noovit SEO master,Built by scripts/seo-master.py from every Ahrefs export in docs/seo (screenshots + saved pages) and data/seo-questions.json. Re-run the script after adding data; do not edit numbers by hand.
+Totals,644 keywords · 32 topic clusters · 62 questions with draft answers · 208 question-style keywords
+Priority tiers,P1 act now = KD 0–10 · P2 next = KD 11–25 · P3 build up = KD 26–50 · P4 long game = KD 51+ · LT = no KD yet (use as FAQ or heading) · Skip = off-topic or competitor brand
+Columns,KD keyword difficulty · SV US monthly searches · TP traffic potential (traffic the #1 page gets) · GSV/GTP global · CPC cost per click · CPS clicks per search · SF number of SERP features
+Rich snippets,"Featured snippets and AI answers quote pages that answer the question in the first 40–60 words under a heading phrased as the question, with numbers and a source. Each question has that answer drafted. Google shows FAQ rich results only for well-known government/health sites since 2023, but the FAQPage markup still helps AI tools read the page."
+Rules,"Structure/function wording only (supports, never treats); every claim sourced; benefit claims carry * to the FDA disclaimer; answers marked ""verify"" need the source checked before publishing; never put competitor brand names in our titles or ads."
+Next step,Build the new pillar /guides/magnesium-glycinate and add the answers as question headings + FAQ on each target page (see the Questions tab).
