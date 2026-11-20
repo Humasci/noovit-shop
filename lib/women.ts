@@ -11,13 +11,15 @@ export interface WomenSection {
   guides: { href: string; label: string }[];
   image?: string;
   imageAlt?: string;
+  portrait?: boolean; // portrait photo: shown taller instead of cropped to 16:10
 }
 
 export const WOMEN_SECTIONS: WomenSection[] = [
   {
     id: 'strength',
     image: WOMEN_IMAGES.strength,
-    imageAlt: 'Women in a dance fitness class',
+    imageAlt: 'A smiling woman holding out a tub of Noovit Creatine for Her',
+    portrait: true,
     title: 'Strength at every age',
     intro: 'Creatine is one of the most studied supplements there is, and research in women shows gains in strength and lean muscle alongside resistance training. It matters more with every decade.',
     products: ['creatine-for-women', 'creatine-hydration'],

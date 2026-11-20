@@ -59,7 +59,7 @@ export default async function WomenPage() {
                 <h2 className="text-3xl md:text-4xl">{s.title}</h2>
                 <p className="mt-3 text-[var(--color-ink)]/80">{s.intro}</p>
               </div>
-              {s.image && <img src={s.image} alt={s.imageAlt ?? ''} loading="lazy" className="aspect-[16/10] w-full rounded-3xl object-cover" />}
+              {s.image && <img src={s.image} alt={s.imageAlt ?? ''} loading="lazy" className={s.portrait ? 'aspect-[4/5] w-full max-w-sm justify-self-end rounded-3xl object-cover object-[center_65%]' : 'aspect-[16/10] w-full rounded-3xl object-cover'} />}
             </div>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-x-5 sm:gap-y-10 lg:grid-cols-4">
               {s.items.map((p) => (

@@ -52,7 +52,7 @@ const u = (id: string, w = 1200, h?: number) => `https://images.unsplash.com/${i
 export const WOMEN_IMAGES = {
   hub: '/images/women/womens-health-friend-circle.jpg',
   banner: '/images/women/best-supplements-for-women.jpg',
-  strength: '/images/women/creatine-for-women.jpg',
+  strength: '/images/women/creatine-for-her-scene.jpg', // Gemini scene with the real Creatine for Her label (20 Nov)
   sleep: '/images/women/magnesium-glycinate-for-women.jpg',
   calm: '/images/women/ashwagandha-for-women.jpg',
   midlife: '/images/women/menopause.jpg',
