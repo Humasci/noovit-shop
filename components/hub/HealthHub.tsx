@@ -35,18 +35,21 @@ export async function HealthHub({ cfg }: { cfg: HubConfig }) {
 
   return (
     <>
+      {/* Hero (owner, 20 Nov): the whole photo shows on the right, fading softly into the page colour under the text;
+          on phones the photo sits on top and fades into the text below. */}
       <section className="relative overflow-hidden bg-[var(--studio)]">
-        <img src={cfg.hero.src} alt={cfg.hero.alt} className={`absolute inset-0 h-full w-full object-cover ${cfg.hero.position ?? 'object-center'}`} fetchPriority="high" />
-        {/* Phones: a soft wash so the text reads over the photo. From md: solid behind the text only, then the photo
-            shows clearly on the right (owner, 20 Nov: "show the picture better"). */}
-        <div className="absolute inset-0 bg-[var(--studio)]/75 md:hidden" />
-        <div className="absolute inset-0 hidden bg-gradient-to-r from-[var(--studio)] from-30% via-[var(--studio)]/60 via-45% to-transparent to-65% md:block" />
-        <div className="container relative px-6 py-16 md:py-28 lg:py-36">
-          <div className="max-w-xl">
+        <img
+          src={cfg.hero.src}
+          alt={cfg.hero.alt}
+          fetchPriority="high"
+          className={`aspect-[3/2] w-full object-cover [mask-image:linear-gradient(to_bottom,#000_70%,transparent)] md:absolute md:inset-y-0 md:right-0 md:aspect-auto md:h-full md:w-[64%] md:[mask-image:linear-gradient(to_right,transparent,#000_35%)] ${cfg.hero.position ?? 'object-center'}`}
+        />
+        <div className="container relative px-6 pb-14 md:py-28 lg:py-32">
+          <div className="max-w-md lg:max-w-lg">
             <nav className="mb-4 text-xs text-[var(--color-muted)]">
               <Link href="/">Home</Link> / <span className="text-[var(--color-ink)]">{cfg.crumb}</span>
             </nav>
-            <h1 className="text-balance text-4xl text-[var(--color-navy)] md:text-6xl">{cfg.title}</h1>
+            <h1 className="text-balance text-4xl text-[var(--color-navy)] md:text-5xl lg:text-6xl">{cfg.title}</h1>
             <p className="mt-5 text-lg text-[var(--color-ink)]/80">{cfg.intro}</p>
             <nav aria-label="Sections" className="mt-7 flex flex-wrap gap-2">
               {sections.map((s) => (
@@ -64,20 +67,34 @@ export async function HealthHub({ cfg }: { cfg: HubConfig }) {
               <h2 className="text-3xl md:text-4xl">{s.title}</h2>
               <p className="mt-3 text-[var(--color-ink)]/80">{s.intro}</p>
             </div>
-            {/* One grid per section (owner, 20 Nov): the photo is a wide tile beside the product cards (alternating
-                sides), so rows line up with no empty space. Phones: photo on top, then the cards. */}
+            {/* Bento grid per section (owner, 20 Nov): a large photo tile, the product cards and fact/benefit tiles in one
+                symmetrical grid. Desktop: 4 columns, the photo 2×2 (alternating sides), facts fill the remaining cells.
+                Tablet: 2 columns. Phone: one column. */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-flow-dense lg:grid-cols-4">
               {s.image && (
-                <img
-                  src={s.image}
-                  alt={s.imageAlt ?? ''}
-                  loading="lazy"
-                  className={`aspect-[4/3] h-full w-full rounded-3xl object-cover sm:col-span-2 lg:aspect-auto ${i % 2 ? 'lg:col-start-3' : 'lg:col-start-1'} ${s.portrait ? 'object-[center_30%]' : 'object-center'}`}
-                />
+                <div className={`relative min-h-[300px] overflow-hidden rounded-[2rem] sm:col-span-2 sm:min-h-[380px] lg:row-span-2 lg:min-h-0 ${i % 2 ? 'lg:col-start-3' : 'lg:col-start-1'}`}>
+                  <img src={s.image} alt={s.imageAlt ?? ''} loading="lazy" className={`absolute inset-0 h-full w-full object-cover ${s.portrait ? 'object-[center_35%]' : 'object-center'}`} />
+                </div>
               )}
               {s.items.map((p) => (
                 <ProductCard key={p.id} product={p} />
               ))}
+              {(() => {
+                const used = (s.image ? 4 : 0) + s.items.length;
+                const need = (4 - (used % 4)) % 4;
+                return (s.facts ?? []).slice(0, need).map((f) => (
+                  <div
+                    key={f.eyebrow + f.text}
+                    className={`flex min-h-[200px] flex-col justify-between rounded-[2rem] p-7 ${f.tone === 'dark' ? 'bg-[var(--color-navy)] text-white' : f.tone === 'accent' ? 'bg-[var(--sage)]' : 'bg-[var(--studio)]'}`}
+                  >
+                    <p className={`text-xs font-semibold uppercase tracking-[0.2em] ${f.tone === 'dark' ? 'text-white/60' : 'text-[var(--color-muted)]'}`}>{f.eyebrow}</p>
+                    <div>
+                      {f.big && <p className={`font-display text-5xl ${f.tone === 'dark' ? '' : 'text-[var(--color-navy)]'}`}>{f.big}</p>}
+                      <p className={f.big ? `mt-2 ${f.tone === 'dark' ? 'text-white/75' : 'text-[var(--color-ink)]/75'}` : 'font-display text-2xl text-[var(--color-navy)]'}>{f.text}</p>
+                    </div>
+                  </div>
+                ));
+              })()}
             </div>
             {s.guides.length > 0 && (
               <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm">
