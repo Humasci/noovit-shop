@@ -15,6 +15,7 @@ export default function WomenPage() {
       cfg={{
         crumb: "Women's Health",
         path: '/womens-health',
+        audience: 'women',
         title: "Women's health, backed by evidence",
         intro: 'Strength, sleep, stress and the changes of midlife. Researched ingredients at clear doses, printed on the front of every bottle.',
         hero: { src: WOMEN_IMAGES.hub, alt: 'Four women dancing in a circle in a sunny garden', position: 'object-center' },

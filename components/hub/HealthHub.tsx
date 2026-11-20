@@ -3,6 +3,7 @@ import { ArrowRight } from 'lucide-react';
 import { getStoreProducts } from '@/lib/catalog/server';
 import { getPublishedPosts } from '@/lib/blog';
 import { pickVersioned } from '@/lib/men';
+import { FOR_HER_LABEL } from '@/lib/for-her';
 import type { WomenSection } from '@/lib/women';
 import { ProductCard } from '@/components/product/ProductCard';
 import type { Product } from '@/types';
@@ -24,6 +25,18 @@ export interface HubConfig {
   gallery: { src: string; alt: string }[];
   galleryTitle: string;
   footnote?: string;
+  audience: 'women' | 'men'; // filters out the other audience's products (owner, 20 Nov)
+}
+
+// Women's page: no men's products; men's page: no women's products and nothing with a "For Her" label (Ashwagandha's
+// bottle carries the badge, so it and bundles containing it stay off the men's page). Owner, 20 Nov.
+function forAudience(p: Product, audience: 'women' | 'men', all: Product[]) {
+  if (p.audiences?.length && !p.audiences.includes(audience)) return false;
+  if (audience === 'men') {
+    if (FOR_HER_LABEL.has(p.slug)) return false;
+    if (p.bundleItems?.some((b) => FOR_HER_LABEL.has(b.slug) || all.find((x) => x.slug === b.slug)?.audiences?.every((a) => a === 'women'))) return false;
+  }
+  return true;
 }
 
 export async function HealthHub({ cfg }: { cfg: HubConfig }) {
@@ -32,11 +45,17 @@ export async function HealthHub({ cfg }: { cfg: HubConfig }) {
   const sections = cfg.sections
     .map((s) => ({
       ...s,
-      items: pickVersioned(products, s.products),
+      items: pickVersioned(products, s.products).filter((p) => forAudience(p, cfg.audience, products)),
       // Journal links only once the post is published (scheduled posts would 404).
       guides: s.guides.filter((g) => !g.href.startsWith('/blog/') || live.has(g.href.slice(6))),
     }))
     .filter((s) => s.items.length > 0);
+
+  // Every photo appears once on the page (owner, 20 Nov): the gallery skips photos used in the hero or a section, and is
+  // trimmed so it still ends flush (whole blocks of six, or one row of four).
+  const used = new Set([cfg.hero.src, ...sections.flatMap((s) => [s.image, s.image2?.src].filter(Boolean) as string[])]);
+  const unused = cfg.gallery.filter((g) => !used.has(g.src));
+  const gallery = unused.length >= 6 ? unused.slice(0, Math.floor(unused.length / 6) * 6) : unused.slice(0, Math.floor(unused.length / 4) * 4);
 
   const ld = pageLd({
     path: cfg.path,
@@ -85,7 +104,7 @@ export async function HealthHub({ cfg }: { cfg: HubConfig }) {
                 4-column grid (225 px rows). The photo fills one half for the full height (alternating sides); in the
                 other half product cards are 2 rows tall and fact tiles fill the leftover cells (two small stacked, or
                 one wide), so the section always ends in a neat rectangle. Tablet: 2 columns; phone: 1. */}
-            <BentoSection s={s} index={i} />
+            <BentoSection s={s} index={i} hideForHer={cfg.audience === 'men'} />
             {s.guides.length > 0 && (
               <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm">
                 {s.guides.map((g) => (
@@ -99,7 +118,7 @@ export async function HealthHub({ cfg }: { cfg: HubConfig }) {
         </section>
       ))}
 
-      <MasonryGallery images={cfg.gallery} title={cfg.galleryTitle} />
+      <MasonryGallery images={gallery} title={cfg.galleryTitle} />
 
       <section className="section">
         <div className="container px-6">
@@ -138,7 +157,7 @@ function FactTile({ f, cell }: { f: Fact; cell?: Cell }) {
   );
 }
 
-function BentoSection({ s, index }: { s: WomenSection & { items: Product[] }; index: number }) {
+function BentoSection({ s, index, hideForHer = false }: { s: WomenSection & { items: Product[] }; index: number; hideForHer?: boolean }) {
   const n = s.items.length;
   const facts = s.facts ?? [];
   const tiles: React.ReactNode[] = [];
@@ -168,7 +187,7 @@ function BentoSection({ s, index }: { s: WomenSection & { items: Product[] }; in
     s.items.forEach((p, k) =>
       tiles.push(
         <div key={p.id} style={place({ col: `${k % 2 ? b : a}`, row: `${1 + 2 * Math.floor(k / 2)} / span 2` })} className={PLACED}>
-          <ProductCard product={p} />
+          <ProductCard product={p} hideForHer={hideForHer} />
         </div>,
       ),
     );
@@ -182,7 +201,7 @@ function BentoSection({ s, index }: { s: WomenSection & { items: Product[] }; in
     s.items.slice(0, 4).forEach((p, k) =>
       tiles.push(
         <div key={p.id} style={place({ col: `${k + 1}`, row: '1 / span 2' })} className={PLACED}>
-          <ProductCard product={p} />
+          <ProductCard product={p} hideForHer={hideForHer} />
         </div>,
       ),
     );

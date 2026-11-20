@@ -17,7 +17,8 @@ import { productPath } from '@/lib/urls';
 // Hover: orange tiles assemble in the image corner, one after another.
 const CORNER: [number, number, number][] = [[0, 0, 0.95], [1, 0, 0.6], [0, 1, 0.7], [2, 0, 0.3], [1, 1, 0.35], [0, 2, 0.4], [3, 0, 0.15], [0, 3, 0.15]];
 
-export function ProductCard({ product }: { product: Product }) {
+// hideForHer: the Men's Health page shows shared products (e.g. Magnesium Sleep+) without the "For Her" tag.
+export function ProductCard({ product, hideForHer = false }: { product: Product; hideForHer?: boolean }) {
   const addItem = useCart((s) => s.addItem);
   const [added, setAdded] = useState(false);
 
@@ -51,7 +52,7 @@ export function ProductCard({ product }: { product: Product }) {
           {goal && (
             <span className={`${product.bestSeller ? 'hidden sm:inline-block' : ''} max-w-full truncate rounded-full bg-white/90 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-[var(--color-navy)] sm:px-2.5 sm:py-1 sm:text-[10px] sm:tracking-wider`}>{goal}</span>
           )}
-          {FOR_HER_WEB.has(product.slug) && (
+          {!hideForHer && FOR_HER_WEB.has(product.slug) && (
             <span className="rounded-full px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-white sm:px-2.5 sm:py-1 sm:text-[10px] sm:tracking-wider" style={{ background: FOR_HER_BERRY }}>For Her</span>
           )}
           {product.bestSeller && (

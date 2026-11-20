@@ -67,8 +67,8 @@ export const MEN_IMAGES = {
   creatine: '/images/men/best-creatine-for-men.jpg', // holding Creatine for Men
   magnesium: '/images/men/mens-supplements.jpg', // pouring Magnesium for Men
   magnesiumJar: '/images/men/best-magnesium-glycinate-supplement-for-men.jpg', // Magnesium for Men in mid-air
-  over50: '/images/men/magnesium-glycinate-for-men-over-50.jpg', // two men running on a track
-  bike: '/images/men/mens-health-test-and-supplements.jpg', // indoor cycling
+  runners: '/images/men/mens-health-test-and-supplements.jpg', // two men running on a track
+  bike: '/images/men/magnesium-glycinate-for-men-over-50.jpg', // indoor cycling
   run: '/images/men/noovit-mens-health.jpg', // city run
   community: '/images/men/noovit-community.jpg', // laughing, lacing shoes
 };

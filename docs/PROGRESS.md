@@ -230,3 +230,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 20 Nov (64): Men's Health live: header nav, homepage section, footer links (Women's, Men's, At-Home Tests), sitemap; men's versions fall back to the regular products until active.
 - [x] 20 Nov (65): answer-ready blocks for lion's mane, CoQ10 and turmeric; new pillar guide /guides/magnesium-glycinate.
 - [x] 20 Nov (66): new evidence guide /guides/biotin (answer-ready blocks; 19 sources opened, ODS/FDA items flagged for the owner to confirm).
+- [x] 20 Nov (67): Women's/Men's hubs: every photo once (gallery skips used photos, ends flush), Men's runners under the creatine photo and one photo per later section, no For Her products or tags on the Men's page (Ashwagandha + Stack off; Magnesium shown without the tag), no men's products on the Women's page.

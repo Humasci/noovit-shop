@@ -16,6 +16,7 @@ export default function MenPage() {
     <HealthHub
       cfg={{
         path: '/mens-health',
+        audience: 'men',
         crumb: "Men's Health",
         title: "Men's health, backed by evidence",
         intro: 'Strength, focus, sleep and recovery. Researched ingredients at clear doses, printed on the front of every bottle.',

@@ -13,7 +13,7 @@ export const MEN_SECTIONS: WomenSection[] = [
     image: MEN_IMAGES.creatine,
     imageAlt: 'A man drinking from a shaker, holding a tub of Noovit Creatine for Men',
     portrait: true,
-    image2: { src: MEN_IMAGES.banner, alt: 'A man doing dumbbell curls in a gym', position: 'object-[45%_center]' },
+    image2: { src: MEN_IMAGES.runners, alt: 'Two men running on a track', position: 'object-[center_30%]' }, // under the creatine photo (owner, 20 Nov)
     facts: [
       { eyebrow: 'The dose', big: '5 g', text: 'Creatine a day, the amount most studies use.', tone: 'dark' },
       { eyebrow: 'Benefit', text: 'Supports strength, power and lean muscle with training*', tone: 'light' },
@@ -23,18 +23,15 @@ export const MEN_SECTIONS: WomenSection[] = [
   {
     id: 'sleep-stress',
     title: 'Sleep, stress & recovery',
-    intro: 'Magnesium glycinate in the evening and KSM-66® ashwagandha for busy days. Men need 400–420 mg of magnesium a day, and many get less from food.',
-    products: ['magnesium-for-men', 'ashwagandha', 'sleep-calm-stack'],
-    guides: [{ href: '/guides/magnesium', label: 'Magnesium: forms, doses and evidence' }, { href: '/guides/ashwagandha', label: 'Ashwagandha: what the research shows' }],
+    intro: 'Magnesium glycinate in the evening supports muscle function, relaxation and restful sleep.* Men need 400–420 mg of magnesium a day, and many get less from food.',
+    products: ['magnesium-for-men'],
+    guides: [{ href: '/guides/magnesium-glycinate', label: 'Magnesium glycinate: benefits, dosage and timing' }],
     image: MEN_IMAGES.magnesium,
     imageAlt: 'A man pouring capsules from a bottle of Noovit Magnesium for Men',
     portrait: true,
-    image2: { src: MEN_IMAGES.magnesiumJar, alt: 'A jar of Noovit Magnesium for Men in mid-air', position: 'object-center' },
     facts: [
       { eyebrow: 'Magnesium', big: '275 mg', text: 'Elemental magnesium per serving, as gentle glycinate.', tone: 'dark' },
       { eyebrow: 'Daily need', big: '420 mg', text: 'Magnesium a day for men from age 31, food included (NIH).', tone: 'light' },
-      { eyebrow: 'Ashwagandha', big: '600 mg', text: 'KSM-66® root extract, the dose used in the main studies.', tone: 'accent' },
-      { eyebrow: 'Benefit', text: 'Supports muscle function, relaxation and restful sleep*', tone: 'light' },
     ],
   },
   {
@@ -43,8 +40,8 @@ export const MEN_SECTIONS: WomenSection[] = [
     intro: 'Muscle and strength decline faster with age. Creatine with strength training helps hold on to both, and magnesium and CoQ10 support normal muscle and energy.',
     products: ['creatine-for-men', 'magnesium-for-men', 'coq10', 'turmeric-complex'],
     guides: [{ href: '/guides/creatine', label: 'Creatine after 40' }, { href: '/guides/coq10', label: 'CoQ10: what the research shows' }],
-    image: MEN_IMAGES.over50,
-    imageAlt: 'Two men running on a track',
+    image: MEN_IMAGES.magnesiumJar,
+    imageAlt: 'A jar of Noovit Magnesium for Men in mid-air',
     portrait: true,
     facts: [
       { eyebrow: 'After 40', big: '40+', text: 'Muscle and strength fall faster, so training and protein matter more.', tone: 'dark' },
@@ -61,7 +58,6 @@ export const MEN_SECTIONS: WomenSection[] = [
     image: MEN_IMAGES.bike,
     imageAlt: 'A man training on an indoor bike',
     portrait: true,
-    image2: { src: '/images/scenes/lions-mane.jpg', alt: "Noovit Lion's Mane on lion's mane mushrooms", position: 'object-center' },
     facts: [
       { eyebrow: 'Focus', big: '1,000 mg', text: "Lion's mane per serving, fruiting body and mycelium.", tone: 'dark' },
       { eyebrow: 'Benefit', text: 'Supports focus and normal energy levels*', tone: 'light' },
@@ -105,7 +101,7 @@ export const MEN_GALLERY = [
   { src: MEN_IMAGES.creatine, alt: 'A man holding a tub of Noovit Creatine for Men' },
   { src: MEN_IMAGES.hub, alt: 'Men on rowing machines in a class' },
   { src: MEN_IMAGES.magnesiumJar, alt: 'A jar of Noovit Magnesium for Men in mid-air' },
-  { src: MEN_IMAGES.over50, alt: 'Two men running on a track' },
+  { src: MEN_IMAGES.runners, alt: 'Two men running on a track' },
   { src: MEN_IMAGES.community, alt: 'A man laughing as he laces his running shoes' },
   { src: MEN_IMAGES.banner, alt: 'A man doing dumbbell curls in a gym' },
   { src: MEN_IMAGES.magnesium, alt: 'A man pouring capsules from a bottle of Noovit Magnesium for Men' },
