@@ -5,6 +5,7 @@ import { useDialog } from '@/lib/useDialog';
 import Link from 'next/link';
 import { X, Minus, Plus, Truck, Trash2 } from 'lucide-react';
 import { useCart, cartTotal, cartCount, lineTotal } from '@/lib/store/cart';
+import { cartPairings, swappableStack } from '@/lib/stacks';
 import { formatPrice } from '@/lib/utils/format';
 import { ProductImage } from '@/components/product/ProductImage';
 import { Product } from '@/types';
@@ -13,7 +14,7 @@ import { AutoDiscountNote } from './AutoDiscountNote';
 import { packOptions } from '@/data/products';
 import { productPath } from '@/lib/urls';
 
-export function CartDrawer({ suggestions }: { suggestions: Product[] }) {
+export function CartDrawer({ suggestions, catalog = [] }: { suggestions: Product[]; catalog?: Product[] }) {
   const { items, isOpen, close, updateQuantity, removeItem } = useCart();
   const panel = useRef<HTMLElement>(null);
   useDialog(panel, isOpen, close);
@@ -95,7 +96,8 @@ export function CartDrawer({ suggestions }: { suggestions: Product[] }) {
               ))}
             </ul>
           )}
-          {items.length > 0 && <PairsWellWith suggestions={suggestions} />}
+          {items.length > 0 && <StackSwap catalog={catalog} />}
+          {items.length > 0 && <PairsWellWith suggestions={suggestions} catalog={catalog} />}
         </div>
 
         {items.length > 0 && (
@@ -118,11 +120,33 @@ export function CartDrawer({ suggestions }: { suggestions: Product[] }) {
   );
 }
 
-// Cross-sell: best sellers not already in the cart, one tap to add a single bottle.
-function PairsWellWith({ suggestions }: { suggestions: Product[] }) {
+// Upsell (20 Nov): every part of a live stack is in the cart as single bottles, so offer the stack for less.
+function StackSwap({ catalog }: { catalog: Product[] }) {
+  const { items, addItem, removeItem } = useCart();
+  const stack = swappableStack(items.map((i) => ({ slug: i.product.slug, mode: i.mode, bottles: i.bottles })), catalog);
+  if (!stack) return null;
+  const parts = stack.bundleItems!.map((b) => items.find((i) => i.product.slug === b.slug && i.mode === 'one-time' && i.bottles === 1)!);
+  const separately = parts.reduce((s, i) => s + i.pricePerBottle, 0);
+  const save = separately - stack.basePrice;
+  if (save <= 0) return null;
+  const swap = () => {
+    for (const i of parts) removeItem(i.key);
+    const [single] = packOptions(stack, 'one-time');
+    addItem({ product: stack, mode: 'one-time', ...single });
+  };
+  return (
+    <div className="mt-2 rounded-2xl bg-[var(--studio)] p-4">
+      <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-navy)]">Save with a stack</p>
+      <p className="mt-1 text-sm">These are the <b>{stack.name}</b>: get both for {formatPrice(stack.basePrice)} and save {formatPrice(save)}.</p>
+      <button onClick={swap} className="mt-3 rounded-full bg-[var(--color-navy)] px-4 py-2 text-xs font-bold uppercase tracking-wide text-white">Switch to the stack</button>
+    </div>
+  );
+}
+
+// Cross-sell (20 Nov): partners of what's in the cart first (lib/stacks PAIRINGS), then best sellers; one tap to add.
+function PairsWellWith({ suggestions, catalog }: { suggestions: Product[]; catalog: Product[] }) {
   const { items, addItem } = useCart();
-  const inCart = new Set(items.map((i) => i.product.slug));
-  const picks = suggestions.filter((p) => !inCart.has(p.slug)).slice(0, 2);
+  const picks = cartPairings(items.map((i) => i.product.slug), catalog, suggestions).filter((p) => !p.bundleItems?.length).slice(0, 2);
   if (!picks.length) return null;
   return (
     <div className="mt-2 border-t border-[var(--color-line)] pt-4">

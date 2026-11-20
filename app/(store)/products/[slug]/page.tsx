@@ -8,6 +8,8 @@ import { SITE_URL, productImageUrl, productUrl } from '@/lib/site';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { Gallery, PurchaseBox, TrackViewItem } from '@/components/product/ProductClient';
 import { ProductCard } from '@/components/product/ProductCard';
+import { StackFolder } from '@/components/stacks/StackFolder';
+import { stackParts } from '@/lib/stacks';
 import { ProductImage } from '@/components/product/ProductImage';
 import { Product } from '@/types';
 import { Stars } from '@/components/ui/Stars';
@@ -458,14 +460,13 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
       {/* Bundles that include this product */}
       {bundles.length > 0 && (
-        <section className="section bg-[var(--color-soft)]">
+        <section className="section">
           <div className="container px-6">
-            <SectionHeading eyebrow="Save with a bundle" title={`Bundles with ${product.name}`} />
-            <div className="mx-auto grid max-w-4xl grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-x-5 sm:gap-y-10 lg:grid-cols-3">
-              {bundles.map((p) => (
-                <ProductCard key={p.id} product={p} />
-              ))}
+            <SectionHeading eyebrow="Complete the stack" title={`Pair ${product.name} and save`} />
+            <div className="space-y-10">
+              {bundles.slice(0, 2).map((s, i) => <StackFolder key={s.id} stack={s} parts={stackParts(s, all)} index={i + 1} compact />)}
             </div>
+            <p className="mt-6 text-center text-sm"><Link href="/stacks" className="font-semibold text-[var(--color-navy)] hover:underline">See all stacks</Link></p>
           </div>
         </section>
       )}

@@ -1,4 +1,6 @@
-import { getStoreProduct } from '@/lib/catalog/server';
+import { getStoreProduct, getStoreProducts } from '@/lib/catalog/server';
+import { SEED_PRODUCTS } from '@/data/products';
+import { studioGroupPng, BACKDROP } from '@/lib/labels/studio';
 import { BottleVariant } from '@/lib/labels/svg';
 import { renderBottlePng } from '@/lib/labels/png';
 import { GalleryVariant, galleryVariants } from '@/lib/labels/gallery-data';
@@ -14,6 +16,17 @@ export async function GET(_req: Request, { params }: { params: Promise<{ slug: s
   const product = await getStoreProduct(slug);
   if (!product) return new Response('Not found', { status: 404 });
   if ((variant === 'highlights' || variant === 'compare') && !galleryVariants(product).includes(variant)) return new Response('Not found', { status: 404 });
+
+  // Stacks and bundles (20 Nov): the front is a studio group shot of the bottles in the stack, on the cream backdrop.
+  if (variant === 'front' && product.bundleItems?.length) {
+    const all = await getStoreProducts();
+    const parts = product.bundleItems.map((b) => all.find((p) => p.slug === b.slug) ?? SEED_PRODUCTS.find((p) => p.slug === b.slug)).filter((p) => p !== undefined);
+    if (parts.length) {
+      const n = parts.length, size = n > 2 ? 620 : 780, step = n > 2 ? 360 : 440;
+      const png = await studioGroupPng(parts as never, 1200, 1200, { size, step, y: 1200 / 2 - size / 2 + 40, bg: BACKDROP });
+      return new Response(new Uint8Array(png), { headers: { 'Content-Type': 'image/png', 'Cache-Control': 'public, max-age=31536000, immutable' } });
+    }
+  }
 
   return new Response(new Uint8Array(await renderBottlePng(product, variant)), {
     headers: { 'Content-Type': 'image/png', 'Cache-Control': 'public, max-age=31536000, immutable' },

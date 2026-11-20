@@ -1,4 +1,5 @@
 import 'server-only';
+import { TEST_KITS } from '@/lib/tests';
 import { formatPrice } from '@/lib/utils/format';
 import { LEGAL_NAME, SITE_URL } from '@/lib/site';
 
@@ -156,9 +157,13 @@ export function sendNewsletterWelcome(to: string, code: string, f: MarketingFoot
   );
 }
 
+const SENSITIVE_KIT_NAMES = new Set(TEST_KITS.filter((k) => k.sensitive).map((k) => k.name));
+
 // Waitlist confirmations (20 Nov): at-home tests (optionally for one kit) and Noovit Pets.
 export function sendWaitlistConfirmation(to: string, kind: 'tests' | 'pets', kitName: string | undefined, f: MarketingFooter) {
   const tests = kind === 'tests';
+  // Privacy (20 Nov): never name a sensitive kit (STI) in a subject line or body; inbox previews are visible to others.
+  if (kitName && SENSITIVE_KIT_NAMES.has(kitName)) kitName = undefined;
   const what = tests ? (kitName ? `the ${esc(kitName)}` : 'our at-home health tests') : 'Noovit Pets';
   const subject = tests ? (kitName ? `You're on the list: ${kitName}` : "You're on the list for Noovit at-home tests") : "You're on the list for Noovit Pets";
   const body = tests

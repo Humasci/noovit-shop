@@ -19,6 +19,12 @@ export const PRODUCT_SPECS: Record<string, string> = {
   'biotin-complex': 'Biotin 5,000 mcg with Zinc & Selenium',
   'menopause-complex': 'Menopause Supplement with Black Cohosh & Sage',
   'sleep-calm-stack': 'Magnesium Glycinate + KSM-66 Ashwagandha',
+  'strength-stack': 'Creatine Monohydrate + Magnesium Glycinate',
+  'her-strength-stack': 'Creatine for Women + Magnesium Glycinate',
+  'men-strength-stack': 'Creatine for Men + Magnesium Glycinate',
+  'focus-stack': "Lion's Mane + CoQ10 200 mg",
+  'calm-focus-stack': "KSM-66 Ashwagandha + Lion's Mane",
+  'glow-stack': 'Collagen with Hyaluronic Acid + Biotin',
 };
 export const productSpec = (p: Product) => PRODUCT_SPECS[p.slug] ?? (p.bundleItems?.length ? '' : labelSubtitle(p));
 

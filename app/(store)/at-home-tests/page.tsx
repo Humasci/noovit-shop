@@ -45,7 +45,7 @@ export default function TestsPage() {
               const c = TEST_CATEGORY_LIST.find((x) => x.id === k.category)!;
               const Icon = ICONS[k.category];
               return (
-                <Link key={k.slug} href={`/at-home-tests/${k.slug}`} className={`group flex flex-col rounded-3xl border p-6 transition hover:border-[var(--color-navy)] ${k.pets ? 'border-[var(--color-pets-soft)] bg-[var(--color-pets-soft)]/40' : 'border-[var(--color-line)] bg-white'}`}>
+                <KitLink key={k.slug} sensitive={k.sensitive} href={`/at-home-tests/${k.slug}`} className={`group flex flex-col rounded-3xl border p-6 transition hover:border-[var(--color-navy)] ${k.pets ? 'border-[var(--color-pets-soft)] bg-[var(--color-pets-soft)]/40' : 'border-[var(--color-line)] bg-white'}`}>
                   <div className="flex items-center gap-2">
                     <span className={`flex h-8 w-8 items-center justify-center rounded-full ${k.pets ? 'bg-[var(--color-pets)]' : 'bg-[var(--color-navy)] text-white'}`}><Icon className="h-4 w-4" /></span>
                     <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--color-muted)]">{c.name}</span>
@@ -54,7 +54,7 @@ export default function TestsPage() {
                   <p className="mt-2 flex-1 text-sm text-[var(--color-ink)]/80">{k.short}</p>
                   <p className="mt-4 text-xs text-[var(--color-muted)]">Coming soon · {k.markers.length} {k.markers.length === 1 ? 'marker' : 'markers'} · {k.collection}</p>
                   <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-[var(--color-navy)]">See what it measures <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
-                </Link>
+                </KitLink>
               );
             })}
           </div>
@@ -66,4 +66,9 @@ export default function TestsPage() {
       </p>
     </>
   );
+}
+
+// Privacy-sensitive kits open with a full page load (plain <a>), so analytics tags from this page don't carry over.
+function KitLink({ sensitive, ...props }: React.ComponentProps<typeof Link> & { sensitive?: boolean }) {
+  return sensitive ? <a {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)} href={String(props.href)} /> : <Link {...props} />;
 }

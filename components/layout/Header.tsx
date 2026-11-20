@@ -33,6 +33,7 @@ const NAV: NavItem[] = [
     href: '/shop',
     children: [
       { name: 'Shop all', href: '/shop' },
+      { name: 'Stacks', href: '/stacks' },
       { name: 'Supplements', href: '/shop?type=supplements' },
       { name: 'Sports', href: '/shop?type=sports' },
       { name: 'Specialties', href: '/shop?type=specialties' },

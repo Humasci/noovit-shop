@@ -16,8 +16,10 @@ export interface TestKit {
   seoTitle: string;
   seoDescription: string;
   related?: { href: string; label: string }[];
+  figure?: { src: string; alt: string; caption?: string }; // full-width illustration under the hero
   pets?: boolean;
   hidden?: boolean;
+  sensitive?: boolean; // privacy-sensitive (STI): no tracking tags on its page, never named in emails or analytics
 }
 export type TestCategoryId = 'nutrients' | 'womens' | 'thyroid' | 'heart' | 'organs' | 'stress' | 'mens' | 'sexual' | 'pets';
 
@@ -278,6 +280,7 @@ const KITS: TestKit[] = [
   {
     slug: 'sti-test',
     category: 'sexual',
+    sensitive: true,
     name: 'STI Test',
     short: 'Chlamydia, gonorrhea, trichomoniasis, HIV, syphilis and hepatitis C.',
     intro: 'Private screening for the most common sexually transmitted infections, collected at home and processed by a certified lab, with a clinician available if anything comes back positive.',
@@ -287,6 +290,7 @@ const KITS: TestKit[] = [
       m('HIV, syphilis and hepatitis C', 'Blood-borne infections screened from a finger-prick sample.', 'Very recent exposure may not show yet; the kit explains the window periods.'),
     ],
     collection: 'Urine or swab, plus a finger-prick sample, at home',
+    figure: { src: '/images/tests/sti-organisms.jpg', alt: 'Schematic illustrations of HIV, hepatitis C, gonorrhea, syphilis, chlamydia and trichomoniasis', caption: 'The six infections this test screens for. Schematic illustrations, not to scale.' },
     seoTitle: 'STI Test at Home: Chlamydia, Gonorrhea, HIV & More | Noovit',
     seoDescription: 'A private at-home STI test is coming: chlamydia, gonorrhea, trichomoniasis, HIV, syphilis and hepatitis C, with clinician support for positive results.',
   },
@@ -331,3 +335,8 @@ export const TEST_KITS = KITS.filter((k) => !k.hidden);
 export const findKit = (slug: string) => TEST_KITS.find((k) => k.slug === slug);
 export const kitsIn = (c: TestCategoryId) => TEST_KITS.filter((k) => k.category === c);
 export const TEST_CATEGORY_LIST = TEST_CATEGORIES.filter((c) => kitsIn(c.id).length > 0);
+
+// Pages where no analytics or ad tags may run (FTC Health Breach Notification Rule; GoodRx/BetterHelp cases):
+// sharing that someone viewed or joined the waitlist for an STI test with Google/Meta/TikTok would be a disclosure.
+export const SENSITIVE_PATHS = KITS.filter((k) => k.sensitive).map((k) => `/at-home-tests/${k.slug}`);
+export const isSensitivePath = (pathname: string | null | undefined) => !!pathname && SENSITIVE_PATHS.some((p) => pathname === p || pathname.startsWith(`${p}/`));

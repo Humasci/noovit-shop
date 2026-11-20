@@ -4,6 +4,7 @@ import { useEffect, useSyncExternalStore } from 'react';
 import { usePathname } from 'next/navigation';
 import Script from 'next/script';
 import { CONSENT_KEY } from '@/lib/analytics';
+import { isSensitivePath } from '@/lib/tests';
 
 export interface PixelIds {
   gtm: string;
@@ -42,6 +43,7 @@ export function openCookiePreferences() {
 function PageViews() {
   const pathname = usePathname();
   useEffect(() => {
+    if (isSensitivePath(pathname)) return; // never report views of privacy-sensitive pages
     window.gtag?.('event', 'page_view', { page_path: pathname, page_location: window.location.href });
     window.fbq?.('track', 'PageView');
     window.ttq?.page();
@@ -53,8 +55,10 @@ function PageViews() {
 // Opt-out model (US store): tags load straight away; "Decline" turns them off for this browser.
 export function Analytics({ ids }: { ids: PixelIds }) {
   const consent = useSyncExternalStore(subscribe, readConsent, () => 'pending');
+  const pathname = usePathname();
   const any = Boolean(ids.gtm || ids.ga4 || ids.meta || ids.tiktok);
-  if (!any || consent === 'pending' || consent === 'denied') return null;
+  // Sensitive pages (STI test) load no tags at all; links to them are full page loads, so earlier tags don't carry over.
+  if (!any || consent === 'pending' || consent === 'denied' || isSensitivePath(pathname)) return null;
 
   return (
     <>

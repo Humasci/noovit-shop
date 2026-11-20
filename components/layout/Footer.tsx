@@ -21,6 +21,7 @@ const COLUMNS = [
     title: 'Our Products',
     links: [
       { name: 'Shop All', href: '/shop' },
+      { name: 'Stacks', href: '/stacks' },
       { name: "Women's Health", href: '/womens-health' },
       { name: "Men's Health", href: '/mens-health' },
       { name: 'At-Home Tests', href: '/at-home-tests' },
