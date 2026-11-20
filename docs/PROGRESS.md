@@ -220,3 +220,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 20 Nov (54): For Her badge on 5 labels + card tag; front-panel exports for Gemini.
 - [x] 20 Nov (55): Gemini scene text fixes; Women hero fade + masonry; Pets masonry; Men's Health hub; homepage reorder (hero, goals, subscription, Women, Men, Pets, community, quiz, FAQ, newsletter).
 - [x] 20 Nov (56): scene-shot bottle base and cap fixed; scenes on homepage/men; tests hub + 10 kit pages; Pets button; cart icon.
+- [x] 20 Nov (57): tests hub grid; admin subscribers source filters + waitlist counts + kit column + export; waitlist confirmation emails (tests, pets).

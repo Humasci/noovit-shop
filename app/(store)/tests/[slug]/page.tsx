@@ -33,7 +33,7 @@ export default async function TestKitPage({ params }: { params: Promise<{ slug: 
           <p className="mt-4 max-w-xl text-lg text-[var(--color-ink)]/80">{k.intro}</p>
           <p className="mt-3 text-sm font-semibold text-[var(--color-navy)]">{k.collection}</p>
           <p className="mt-6 max-w-xl text-[var(--color-ink)]/80">We&apos;re finalizing our {k.pets ? 'testing partners' : 'US lab partner'}. Join the list and we&apos;ll email you when it&apos;s ready.</p>
-          <TestsWaitlist />
+          <TestsWaitlist kit={k.slug} />
         </div>
       </section>
 

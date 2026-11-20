@@ -3,13 +3,15 @@ import { Download } from 'lucide-react';
 import { db } from '@/lib/db/server';
 import { dbConfigured } from '@/lib/config';
 import { GOALS } from '@/lib/quiz';
+import { findKit } from '@/lib/tests';
 import { Badge, FilterLinks, NotConfigured, PageTitle, Stat, Table, btnSm, btnSmOutline, dateTime, inputCls, td } from '@/components/admin/ui';
 
 const STATUSES = ['subscribed', 'unsubscribed'];
+const SOURCES = ['newsletter', 'quiz', 'checkout', 'launch-waitlist', 'tests-waitlist', 'pets-waitlist'];
 
-export default async function SubscribersPage({ searchParams }: { searchParams: Promise<{ status?: string; q?: string }> }) {
+export default async function SubscribersPage({ searchParams }: { searchParams: Promise<{ status?: string; source?: string; q?: string }> }) {
   await requireAdmin('marketing');
-  const { status, q } = await searchParams;
+  const { status, source, q } = await searchParams;
   if (!dbConfigured()) return (<><PageTitle title="Subscribers" /><NotConfigured what="The database" /></>);
 
   const count = async (filter?: string) => {
@@ -19,14 +21,18 @@ export default async function SubscribersPage({ searchParams }: { searchParams: 
   };
   // eslint-disable-next-line react-hooks/purity -- server component, evaluated once per request
   const since = new Date(Date.now() - 30 * 86_400_000).toISOString();
-  const [subscribed, unsubscribed, recent] = await Promise.all([
+  const bySource = async (src: string) => (await db().from('subscribers').select('id', { count: 'exact', head: true }).eq('status', 'subscribed').eq('source', src)).count ?? 0;
+  const [subscribed, unsubscribed, testsWait, petsWait, recent] = await Promise.all([
     count('subscribed'),
     count('unsubscribed'),
+    bySource('tests-waitlist'),
+    bySource('pets-waitlist'),
     db().from('subscribers').select('id', { count: 'exact', head: true }).eq('status', 'subscribed').gte('created_at', since).then((r) => r.count ?? 0),
   ]);
 
   let query = db().from('subscribers').select('*').order('created_at', { ascending: false }).limit(200);
   if (status && STATUSES.includes(status)) query = query.eq('status', status);
+  if (source && SOURCES.includes(source)) query = query.eq('source', source);
   const term = q?.trim().replace(/[%_,()"\\*]/g, '');
   if (term) query = query.ilike('email', `%${term}%`);
   const { data } = await query;
@@ -38,28 +44,31 @@ export default async function SubscribersPage({ searchParams }: { searchParams: 
           <input name="q" defaultValue={q} placeholder="Search email" className={inputCls} />
           <button className={btnSm}>Search</button>
         </form>
-        <a href="/admin/subscribers/export" className={`${btnSmOutline} inline-flex items-center gap-1`}>
-          <Download className="h-3.5 w-3.5" /> Export subscribed (CSV)
+        <a href={`/admin/subscribers/export${source && SOURCES.includes(source) ? `?source=${source}` : ''}`} className={`${btnSmOutline} inline-flex items-center gap-1`}>
+          <Download className="h-3.5 w-3.5" /> Export {source && SOURCES.includes(source) ? source : 'subscribed'} (CSV)
         </a>
       </PageTitle>
-      <div className="mb-6 grid grid-cols-3 gap-4">
+      <div className="mb-6 grid grid-cols-2 gap-4 md:grid-cols-5">
         <Stat label="Subscribed" value={String(subscribed)} />
         <Stat label="New (30 days)" value={String(recent)} />
+        <Stat label="Tests waitlist" value={String(testsWait)} />
+        <Stat label="Pets waitlist" value={String(petsWait)} />
         <Stat label="Unsubscribed" value={String(unsubscribed)} />
       </div>
       <p className="mb-4 text-sm text-[var(--color-muted)]">
-        People join from the newsletter form or by ticking the marketing box at checkout. Export the list to import into an email tool such as Klaviyo; unsubscribes are
+        People join from the newsletter form, the quiz, the at-home tests and Pets waitlists, or by ticking the marketing box at checkout. For the tests waitlist, the Goal column shows which kit they asked about. Export the list to import into an email tool such as Klaviyo; unsubscribes are
         handled automatically by the link in every marketing email.
       </p>
       <div className="mb-4">
         <FilterLinks base="/admin/subscribers" param="status" current={status} options={STATUSES} />
+        <div className="mt-2"><FilterLinks base="/admin/subscribers" param="source" current={source} options={SOURCES} /></div>
       </div>
-      <Table head={['Email', 'Source', 'Goal', 'Status', 'Joined', 'Unsubscribed']} empty={!data?.length}>
+      <Table head={['Email', 'Source', 'Goal / kit', 'Status', 'Joined', 'Unsubscribed']} empty={!data?.length}>
         {data?.map((s) => (
           <tr key={s.id}>
             <td className={td}>{s.email}</td>
             <td className={td}>{s.source}</td>
-            <td className={td}>{GOALS.find((g) => g.id === s.goal)?.label ?? '—'}</td>
+            <td className={td}>{GOALS.find((g) => g.id === s.goal)?.label ?? findKit(s.goal ?? '')?.name ?? '—'}</td>
             <td className={td}><Badge status={s.status === 'subscribed' ? 'active' : 'cancelled'} /></td>
             <td className={td}>{dateTime(s.created_at)}</td>
             <td className={td}>{dateTime(s.unsubscribed_at)}</td>

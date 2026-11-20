@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { dbConfigured } from '@/lib/config';
-import { subscribe, welcome } from '@/lib/marketing/subscribers';
+import { subscribe, welcome, waitlistConfirm } from '@/lib/marketing/subscribers';
+import { findKit } from '@/lib/tests';
 import { GOALS } from '@/lib/quiz';
 
 export async function POST(req: NextRequest) {
@@ -16,10 +17,15 @@ export async function POST(req: NextRequest) {
   const tests = body.source === 'tests'; // at-home Nutrient Check waitlist
   const source = launch ? 'launch-waitlist' : waitlist ? 'pets-waitlist' : tests ? 'tests-waitlist' : body.source === 'quiz' ? 'quiz' : 'newsletter';
   // No welcome code before launch: there's no shop to use it in yet.
-  const goal = GOALS.some((g) => g.id === body.goal) ? (body.goal as string) : undefined;
-  if ((await subscribe(email, source, goal)) && !launch) {
-    await welcome(email).catch((err) => console.error('Welcome email failed', err));
+  // goal: the quiz goal from the pop-up, or for the tests waitlist the kit slug (shown in Admin → Subscribers).
+  const kit = tests && typeof body.kit === 'string' ? findKit(body.kit) : undefined;
+  const goal = kit ? kit.slug : GOALS.some((g) => g.id === body.goal) ? (body.goal as string) : undefined;
+  if (await subscribe(email, source, goal)) {
+    // Waitlists get a short "you're on the list" note (no shop code: nothing to buy yet); the launch waitlist gets
+    // nothing until the shop opens; everyone else gets the welcome email with the first-order code.
+    const sendIt = tests ? waitlistConfirm(email, 'tests', kit?.name) : waitlist ? waitlistConfirm(email, 'pets') : launch ? null : welcome(email);
+    await sendIt?.catch((err) => console.error('Welcome email failed', err));
   }
   if (launch) return NextResponse.json({ ok: true, message: "You're on the list. We'll email you the day Noovit opens." });
-  return NextResponse.json({ ok: true, message: waitlist ? "You're on the list — we'll email you when Noovit Pets launches." : tests ? "You're on the list — we'll email you when the Nutrient Check launches." : "You're in! Check your inbox for your welcome code." });
+  return NextResponse.json({ ok: true, message: waitlist ? "You're on the list — we'll email you when Noovit Pets launches." : tests ? "You're on the list — we'll email you when it launches." : "You're in! Check your inbox for your welcome code." });
 }
