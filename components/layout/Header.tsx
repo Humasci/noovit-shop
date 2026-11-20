@@ -25,6 +25,7 @@ const GOAL_LINKS = GOAL_PAGES.map((g) => ({ name: g.name, href: `/goals/${g.slug
 const NAV: NavItem[] = [
   // Women's Health leads the human side (owner, 19 Nov).
   { name: "Women's Health", href: '/women' },
+  { name: "Men's Health", href: '/men' },
   {
     name: 'Shop',
     href: '/shop',

@@ -1,0 +1,26 @@
+import type { Metadata } from 'next';
+import { MEN_SECTIONS, MEN_GALLERY } from '@/lib/men';
+import { MEN_IMAGES } from '@/data/content';
+import { HealthHub } from '@/components/hub/HealthHub';
+
+export const metadata: Metadata = {
+  title: "Men's Health Supplements: Strength, Focus, Sleep | Noovit",
+  description: "Evidence-led supplements for men: creatine for strength, lion's mane and CoQ10 for focus and energy, magnesium and ashwagandha for sleep and stress. Free US shipping.",
+  alternates: { canonical: '/men' },
+};
+
+export default function MenPage() {
+  return (
+    <HealthHub
+      cfg={{
+        crumb: "Men's Health",
+        title: "Men's health, backed by evidence",
+        intro: 'Strength, focus, sleep and recovery. Researched ingredients at clear doses, printed on the front of every bottle.',
+        hero: { src: MEN_IMAGES.hub, alt: 'A man lifting a barbell in a gym', position: 'object-[65%_center]' },
+        sections: MEN_SECTIONS,
+        gallery: MEN_GALLERY,
+        galleryTitle: 'Built for training and everyday life',
+      }}
+    />
+  );
+}

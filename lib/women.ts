@@ -67,3 +67,19 @@ export const WOMEN_SECTIONS: WomenSection[] = [
 
 // Homepage banner picks (first four on sale).
 export const WOMEN_FEATURED = ['creatine-for-women', 'magnesium-complex', 'ashwagandha', 'menopause-complex', 'iron-complex', 'collagen-complex'];
+
+// Masonry gallery on /women: every women's photo the owner supplied (20 Nov), plus the Gemini product scenes.
+export const WOMEN_GALLERY = [
+  { src: '/images/women/creatine-for-her-scene.jpg', alt: 'A smiling woman holding out a tub of Noovit Creatine for Her' },
+  { src: '/images/women/best-supplements-for-women.jpg', alt: 'Three women in sportswear' },
+  { src: '/images/women/collagen-menopause-scene.jpg', alt: 'Noovit Collagen Glow+ and Menopause Balance+ bottles on pink' },
+  { src: '/images/women/menopause.jpg', alt: 'A smiling woman drinking a glass of water' },
+  { src: '/images/women/magnesium-glycinate-for-women.jpg', alt: 'A woman holding capsules and a glass of water' },
+  { src: '/images/women/iron-collagen-scene.jpg', alt: 'Noovit Iron Complex and Collagen Glow+ bottles on peach' },
+  { src: '/images/women/ashwagandha-for-women.jpg', alt: 'Women lying down and relaxing' },
+  { src: '/images/women/creatine-for-women.jpg', alt: 'Women in a dance fitness class' },
+  { src: '/images/women/biotin-menopause-scene.jpg', alt: 'Noovit Biotin Complex and Menopause Balance+ bottles on pink' },
+  { src: '/images/women/womens-health-supplements.jpg', alt: 'A woman holding a capsule' },
+  { src: '/images/women/magnesium-glycinate-for-women-2.jpg', alt: 'A woman holding a softgel' },
+  { src: '/images/women/womens-health-friend-circle.jpg', alt: 'Four women dancing in a circle in a garden' },
+];

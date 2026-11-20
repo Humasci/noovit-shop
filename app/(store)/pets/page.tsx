@@ -6,6 +6,7 @@ import { PetsWaitlist } from '@/components/pets/PetsWaitlist';
 import { petProducts } from '@/data/products';
 import { getStoreProducts } from '@/lib/catalog/server';
 import { FAQSection, CommunitySection, SectionHeading } from '@/components/sections/Sections';
+import { MasonryGallery } from '@/components/hub/MasonryGallery';
 import { PET_IMAGES, PET_FAQS, VETS } from '@/data/content';
 
 // Until pet products are published this is a waitlist page, kept out of search results.
@@ -103,6 +104,18 @@ export default async function PetsPage({ searchParams }: { searchParams: Promise
           </div>
         </section>
       )}
+
+      <MasonryGallery
+        title="For dogs, cats and the people who love them"
+        images={[
+          { src: PET_IMAGES.hero, alt: 'A woman relaxing on a sofa with her dog' },
+          { src: PET_IMAGES.dna, alt: 'A vet holding a small fluffy dog' },
+          { src: PET_IMAGES.urine, alt: 'A cat and a small dog sitting in a meadow' },
+          { src: PET_IMAGES.care, alt: 'A shar-pei puppy resting its head on a hand' },
+          { src: PET_IMAGES.supplements, alt: 'A woman playing with her dog and cat at home' },
+          { src: PET_IMAGES.teaser, alt: 'A dog and a cat side by side' },
+        ]}
+      />
 
       {live ? <PetsShop key={species} products={products} initialSpecies={species === 'dog' || species === 'cat' ? species : 'all'} /> : <PetsWaitlist />}
 

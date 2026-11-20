@@ -52,8 +52,8 @@ Read this first. It is the standing context for any session working on this repo
 - **Website look (17 Nov):** particle/cell/helix art retired from the site (generators remain for social). Site imagery = studio
   bottle photos + line-ups (`scripts/site-images.ts` → `public/images/lineup-*.png`, backdrop cream `--studio` #EFE9DF, sage `--sage` #D9E0D2; `BACKDROP`/`SAGE` in `lib/labels/studio.ts`, bottles
   placed by mask so any backdrop works) and Unsplash-License sports photos (`IMAGES.*`, women and men). Best Sellers section/nav and Pets nav show only when real.
-  Homepage order (17 Nov): hero · values · 4 goal tiles · subscribe & save · Lion's Mane highlight masonry · evidence ·
-  trust · Ask AI · quiz · advisors (2) · approach · reviews · community · pets · FAQ · newsletter.
+  Homepage order (20 Nov, owner): hero · shop by goal · subscribe & save · Women's Health · Men's Health · Pets ·
+  community · quiz · FAQ · newsletter. Hubs `/women`, `/men` share `components/hub/HealthHub.tsx` (fading hero photo, sections, `MasonryGallery`); data `lib/women.ts`, `lib/men.ts`.
 - **Science palette (3 Nov, website art and accents only):** night `#141A4D`, indigo `#26307E`, cobalt `#3E5BD6`, violet
   `#7A5CE0`, lavender `#B9A9F2`, teal `#2DB6A8`, magenta `#C4458F`, haze `#D9DFF5` (CSS `--sci-*`). Microscopy-style cell
   art: `/art/cells-dark[-seed].svg`, `/art/cells-light[-seed].svg` (evidence band, advisor card, guides index + every guide

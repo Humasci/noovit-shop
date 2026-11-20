@@ -59,6 +59,14 @@ export const WOMEN_IMAGES = {
   energy: '/images/women/womens-health-supplements.jpg',
 };
 
+// Men's Health (20 Nov): placeholder sports photos already on the site until the owner sends men's photos.
+export const MEN_IMAGES = {
+  hub: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=1920&q=80&fit=crop', // barbell deadlift
+  banner: 'https://images.unsplash.com/photo-1744060204728-f68e434a3edf?w=1200&q=80&fit=crop', // sunset sprint
+  run: 'https://images.unsplash.com/photo-1560073742-bc295f81c3c0?w=1200&q=80&fit=crop', // road race
+  trail: 'https://images.unsplash.com/photo-1522040942177-269680274214?w=1200&q=80&fit=crop', // trail run
+};
+
 export const PET_IMAGES = {
   hero: '/images/pets/pet-health-at-home-test-kits.jpg',
   teaser: '/images/pets/pets-at-home-health-tests.jpg',
