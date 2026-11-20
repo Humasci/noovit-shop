@@ -1,5 +1,5 @@
 # Ahrefs related keywords (US), owner screenshots 20 Nov 2026: part 1
-Transcribed from screenshots (no export on the plan). Matching-terms report: 5,494 keywords in total.
+Transcribed from screenshots `screenshots/ahrefs-related-p1-1..5.png` (no export on the plan). Matching-terms report: 5,494 keywords in total.
 SV = monthly US volume, GSV = global volume, TP = traffic potential, GTP = global TP, CPS = clicks per search.
 Intent: I = informational, C = commercial, T = transactional.
 

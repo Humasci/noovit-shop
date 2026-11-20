@@ -1,5 +1,5 @@
 # Ahrefs Keywords Explorer (US), owner screenshots 20 Nov 2026, part 1 (sorted by KD)
-No export allowed on the plan, so transcribed from screenshots. SV = monthly US volume, TP = traffic potential.
+No export allowed on the plan, so transcribed from screenshots `screenshots/ahrefs-batch1-01..12.png` (all columns: `ahrefs-2026-11-20-full.md`). SV = monthly US volume, TP = traffic potential.
 
 | Keyword | KD | SV | TP |
 |---|---|---|---|
