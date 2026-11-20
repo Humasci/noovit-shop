@@ -16,7 +16,7 @@ export default function MenPage() {
         crumb: "Men's Health",
         title: "Men's health, backed by evidence",
         intro: 'Strength, focus, sleep and recovery. Researched ingredients at clear doses, printed on the front of every bottle.',
-        hero: { src: MEN_IMAGES.hub, alt: 'A man lifting a barbell in a gym', position: 'object-[65%_center]' },
+        hero: { src: MEN_IMAGES.hub, alt: 'A man lifting a barbell in a gym', position: 'object-[65%_35%]' },
         sections: MEN_SECTIONS,
         gallery: MEN_GALLERY,
         galleryTitle: 'Built for training and everyday life',

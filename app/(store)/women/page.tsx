@@ -16,7 +16,7 @@ export default function WomenPage() {
         crumb: "Women's Health",
         title: "Women's health, backed by evidence",
         intro: 'Strength, sleep, stress and the changes of midlife. Researched ingredients at clear doses, printed on the front of every bottle.',
-        hero: { src: WOMEN_IMAGES.hub, alt: 'Four women dancing in a circle in a sunny garden', position: 'object-[70%_center]' },
+        hero: { src: WOMEN_IMAGES.hub, alt: 'Four women dancing in a circle in a sunny garden', position: 'object-[70%_25%]' },
         sections: WOMEN_SECTIONS,
         gallery: WOMEN_GALLERY,
         galleryTitle: 'Strong at every age',

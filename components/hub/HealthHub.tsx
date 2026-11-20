@@ -37,8 +37,11 @@ export async function HealthHub({ cfg }: { cfg: HubConfig }) {
     <>
       <section className="relative overflow-hidden bg-[var(--studio)]">
         <img src={cfg.hero.src} alt={cfg.hero.alt} className={`absolute inset-0 h-full w-full object-cover ${cfg.hero.position ?? 'object-center'}`} fetchPriority="high" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[var(--studio)] via-[var(--studio)]/85 to-transparent" />
-        <div className="container relative px-6 py-20 md:py-32">
+        {/* Phones: a soft wash so the text reads over the photo. From md: solid behind the text only, then the photo
+            shows clearly on the right (owner, 20 Nov: "show the picture better"). */}
+        <div className="absolute inset-0 bg-[var(--studio)]/75 md:hidden" />
+        <div className="absolute inset-0 hidden bg-gradient-to-r from-[var(--studio)] from-30% via-[var(--studio)]/60 via-45% to-transparent to-65% md:block" />
+        <div className="container relative px-6 py-16 md:py-28 lg:py-36">
           <div className="max-w-xl">
             <nav className="mb-4 text-xs text-[var(--color-muted)]">
               <Link href="/">Home</Link> / <span className="text-[var(--color-ink)]">{cfg.crumb}</span>
