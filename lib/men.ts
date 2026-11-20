@@ -83,8 +83,20 @@ export const MEN_SECTIONS: WomenSection[] = [
   },
 ];
 
-// Hidden for now (owner, 20 Nov): no nav link, no homepage section, /men returns 404. Set true to show.
-export const MEN_LIVE = false;
+// Live (owner, 20 Nov): nav link, homepage section, /mens-health, sitemap.
+export const MEN_LIVE = true;
+
+// Until a men's version is live in the catalog, its slot shows the regular product (same formula), so no section or
+// card is empty; once the men's version is active it takes over automatically.
+export const VERSION_FALLBACK: Record<string, string> = { 'creatine-for-men': 'creatine', 'magnesium-for-men': 'magnesium-complex' };
+export const pickVersioned = <T extends { slug: string }>(list: T[], slugs: string[]) => {
+  const out: T[] = [];
+  for (const s of slugs) {
+    const p = list.find((x) => x.slug === s) ?? (VERSION_FALLBACK[s] ? list.find((x) => x.slug === VERSION_FALLBACK[s]) : undefined);
+    if (p && !out.includes(p)) out.push(p);
+  }
+  return out;
+};
 
 export const MEN_FEATURED = ['creatine-for-men', 'magnesium-for-men', 'lions-mane', 'coq10'];
 

@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { getStoreProducts } from '@/lib/catalog/server';
 import { getPublishedPosts } from '@/lib/blog';
-import { findProduct } from '@/data/products';
+import { pickVersioned } from '@/lib/men';
 import type { WomenSection } from '@/lib/women';
 import { ProductCard } from '@/components/product/ProductCard';
 import type { Product } from '@/types';
@@ -32,7 +32,7 @@ export async function HealthHub({ cfg }: { cfg: HubConfig }) {
   const sections = cfg.sections
     .map((s) => ({
       ...s,
-      items: s.products.map((slug) => findProduct(products, slug)).filter((p): p is NonNullable<typeof p> => Boolean(p)),
+      items: pickVersioned(products, s.products),
       // Journal links only once the post is published (scheduled posts would 404).
       guides: s.guides.filter((g) => !g.href.startsWith('/blog/') || live.has(g.href.slice(6))),
     }))

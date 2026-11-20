@@ -14,7 +14,7 @@ import { Brand, brandify } from '@/components/brand/Brand';
 import { AskButton } from '@/components/advisor/AskButton';
 import { advisorEnabled } from '@/lib/advisor';
 import { WOMEN_FEATURED } from '@/lib/women';
-import { MEN_FEATURED, MEN_LIVE } from '@/lib/men';
+import { MEN_FEATURED, MEN_LIVE, pickVersioned } from '@/lib/men';
 import { findKit } from '@/lib/tests';
 import { productPath } from '@/lib/urls';
 import { organizationLd, websiteLd } from '@/lib/structured-data';
@@ -49,7 +49,7 @@ export default async function HomePage() {
   const tiles = GOAL_TILES.map((t) => ({ ...t, product: findProduct(products, t.slug) })).filter((t) => t.product && t.product.status !== 'hidden').slice(0, 4);
   const ask = advisorEnabled();
   const petsLive = petProducts(products).some((p) => p.status === 'active');
-  const men = MEN_FEATURED.map((s) => findProduct(products, s)).filter((p): p is NonNullable<typeof p> => Boolean(p)).slice(0, 3);
+  const men = pickVersioned(products, MEN_FEATURED).slice(0, 3);
   const women = WOMEN_FEATURED.map((s) => findProduct(products, s)).filter((p): p is NonNullable<typeof p> => Boolean(p)).slice(0, 3);
 
   return (
