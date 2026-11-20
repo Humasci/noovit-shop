@@ -5,6 +5,7 @@ import { getPublishedPosts } from '@/lib/blog';
 import { findProduct } from '@/data/products';
 import type { WomenSection } from '@/lib/women';
 import { ProductCard } from '@/components/product/ProductCard';
+import type { Product } from '@/types';
 import { TrustSection } from '@/components/sections/Sections';
 import { MasonryGallery } from '@/components/hub/MasonryGallery';
 
@@ -67,35 +68,11 @@ export async function HealthHub({ cfg }: { cfg: HubConfig }) {
               <h2 className="text-3xl md:text-4xl">{s.title}</h2>
               <p className="mt-3 text-[var(--color-ink)]/80">{s.intro}</p>
             </div>
-            {/* Bento grid per section (owner, 20 Nov): a large photo tile, the product cards and fact/benefit tiles in one
-                symmetrical grid. Desktop: 4 columns, the photo 2×2 (alternating sides), facts fill the remaining cells.
-                Tablet: 2 columns. Phone: one column. */}
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-flow-dense lg:grid-cols-4">
-              {s.image && (
-                <div className={`relative min-h-[300px] overflow-hidden rounded-[2rem] sm:col-span-2 sm:min-h-[380px] lg:row-span-2 lg:min-h-0 ${i % 2 ? 'lg:col-start-3' : 'lg:col-start-1'}`}>
-                  <img src={s.image} alt={s.imageAlt ?? ''} loading="lazy" className={`absolute inset-0 h-full w-full object-cover ${s.portrait ? 'object-[center_35%]' : 'object-center'}`} />
-                </div>
-              )}
-              {s.items.map((p) => (
-                <ProductCard key={p.id} product={p} />
-              ))}
-              {(() => {
-                const used = (s.image ? 4 : 0) + s.items.length;
-                const need = (4 - (used % 4)) % 4;
-                return (s.facts ?? []).slice(0, need).map((f) => (
-                  <div
-                    key={f.eyebrow + f.text}
-                    className={`flex min-h-[200px] flex-col justify-between rounded-[2rem] p-7 ${f.tone === 'dark' ? 'bg-[var(--color-navy)] text-white' : f.tone === 'accent' ? 'bg-[var(--sage)]' : 'bg-[var(--studio)]'}`}
-                  >
-                    <p className={`text-xs font-semibold uppercase tracking-[0.2em] ${f.tone === 'dark' ? 'text-white/60' : 'text-[var(--color-muted)]'}`}>{f.eyebrow}</p>
-                    <div>
-                      {f.big && <p className={`font-display text-5xl ${f.tone === 'dark' ? '' : 'text-[var(--color-navy)]'}`}>{f.big}</p>}
-                      <p className={f.big ? `mt-2 ${f.tone === 'dark' ? 'text-white/75' : 'text-[var(--color-ink)]/75'}` : 'font-display text-2xl text-[var(--color-navy)]'}>{f.text}</p>
-                    </div>
-                  </div>
-                ));
-              })()}
-            </div>
+            {/* Asymmetric masonry per section (owner, 20 Nov) that still ends flush: on desktop every tile is placed on a
+                4-column grid (225 px rows). The photo fills one half for the full height (alternating sides); in the
+                other half product cards are 2 rows tall and fact tiles fill the leftover cells (two small stacked, or
+                one wide), so the section always ends in a neat rectangle. Tablet: 2 columns; phone: 1. */}
+            <BentoSection s={s} index={i} />
             {s.guides.length > 0 && (
               <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm">
                 {s.guides.map((g) => (
@@ -127,4 +104,62 @@ export async function HealthHub({ cfg }: { cfg: HubConfig }) {
       </p>
     </>
   );
+}
+
+
+type Fact = NonNullable<WomenSection['facts']>[number];
+type Cell = { col: string; row: string };
+const place = (c: Cell) => ({ ['--gc' as string]: c.col, ['--gr' as string]: c.row });
+const PLACED = 'lg:[grid-column:var(--gc)] lg:[grid-row:var(--gr)]';
+
+function FactTile({ f, cell }: { f: Fact; cell?: Cell }) {
+  const dark = f.tone === 'dark';
+  return (
+    <div style={cell ? place(cell) : undefined} className={`${PLACED} flex min-h-[180px] flex-col justify-between rounded-[2rem] p-6 lg:min-h-0 ${dark ? 'bg-[var(--color-navy)] text-white' : f.tone === 'accent' ? 'bg-[var(--sage)]' : 'bg-[var(--studio)]'}`}>
+      <p className={`text-xs font-semibold uppercase tracking-[0.2em] ${dark ? 'text-white/60' : 'text-[var(--color-muted)]'}`}>{f.eyebrow}</p>
+      <div>
+        {f.big && <p className={`font-display text-4xl xl:text-5xl ${dark ? '' : 'text-[var(--color-navy)]'}`}>{f.big}</p>}
+        <p className={f.big ? `mt-2 text-sm xl:text-base ${dark ? 'text-white/75' : 'text-[var(--color-ink)]/75'}` : 'font-display text-xl text-[var(--color-navy)] xl:text-2xl'}>{f.text}</p>
+      </div>
+    </div>
+  );
+}
+
+function BentoSection({ s, index }: { s: WomenSection & { items: Product[] }; index: number }) {
+  const n = s.items.length;
+  const facts = s.facts ?? [];
+  const tiles: React.ReactNode[] = [];
+  if (s.image) {
+    const left = index % 2 === 0;
+    const [a, b] = left ? [3, 4] : [1, 2]; // the half that holds products and facts
+    const rows = 2 * Math.ceil(n / 2) + (n % 2 === 0 ? 1 : 0);
+    tiles.push(
+      <div key="img" style={place({ col: `${left ? 1 : 3} / span 2`, row: `1 / span ${rows}` })} className={`${PLACED} relative min-h-[300px] overflow-hidden rounded-[2rem] sm:col-span-2 sm:min-h-[380px] lg:min-h-0`}>
+        <img src={s.image} alt={s.imageAlt ?? ''} loading="lazy" className={`absolute inset-0 h-full w-full object-cover ${s.portrait ? 'object-[center_35%]' : 'object-center'}`} />
+      </div>,
+    );
+    s.items.forEach((p, k) =>
+      tiles.push(
+        <div key={p.id} style={place({ col: `${k % 2 ? b : a}`, row: `${1 + 2 * Math.floor(k / 2)} / span 2` })} className={PLACED}>
+          <ProductCard product={p} />
+        </div>,
+      ),
+    );
+    if (n % 2) {
+      const r = 2 * Math.floor((n - 1) / 2) + 1; // two small facts stacked beside the last card
+      facts.slice(0, 2).forEach((f, k) => tiles.push(<FactTile key={f.text} f={f} cell={{ col: `${b}`, row: `${r + k}` }} />));
+    } else if (facts[0]) {
+      tiles.push(<FactTile key={facts[0].text} f={facts[0]} cell={{ col: `${a} / span 2`, row: `${rows}` }} />); // one wide fact closes the half
+    }
+  } else {
+    s.items.slice(0, 4).forEach((p, k) =>
+      tiles.push(
+        <div key={p.id} style={place({ col: `${k + 1}`, row: '1 / span 2' })} className={PLACED}>
+          <ProductCard product={p} />
+        </div>,
+      ),
+    );
+    facts.slice(0, Math.max(0, 4 - n)).forEach((f, k) => tiles.push(<FactTile key={f.text} f={f} cell={{ col: `${n + k + 1}`, row: '1 / span 2' }} />));
+  }
+  return <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4 lg:auto-rows-[225px]">{tiles}</div>;
 }
