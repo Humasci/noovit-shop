@@ -70,19 +70,25 @@ const EVIDENCE_STYLE: Record<Evidence, string> = {
 
 const fmt = (d: string) => new Date(`${d}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
-const SECTIONS = [
-  ['what-is', 'What is it?'],
-  ['benefits', 'Benefits & evidence'],
-  ['dosage', 'Dosage'],
-  ['side-effects', 'Side effects'],
-  ['interactions', 'Interactions'],
-  ['avoid', 'Who should avoid it'],
-  ['choose', 'How to choose a supplement'],
-  ['faq', 'FAQ'],
-  ['sources', 'Sources'],
-] as const;
-// Topic guides' custom headings also label the table of contents.
-const TOC_KEYS: Record<string, string> = { 'what-is': 'what', benefits: 'benefits', dosage: 'dosage', 'side-effects': 'sideEffects', interactions: 'interactions', avoid: 'avoid', choose: 'choose', faq: 'faq' };
+// Topic guides' custom headings also label the table of contents (jump links Google can show under the result).
+const TOC_KEYS: Record<string, string> = { 'what-is': 'what', benefits: 'benefits', dosage: 'dosage', timing: 'timing', 'side-effects': 'sideEffects', interactions: 'interactions', avoid: 'avoid', compare: 'compare', choose: 'choose', faq: 'faq' };
+
+// Question headings (20 Nov): phrased the way people search, so the answer under them can be lifted as it is.
+function headings(g: NonNullable<ReturnType<typeof findGuide>>) {
+  const x = g.ingredient.toLowerCase(), t = g.sectionTitles ?? {};
+  return {
+    what: t.what ?? `What is ${x}?`,
+    benefits: t.benefits ?? `What are the benefits of ${x}?`,
+    dosage: t.dosage ?? `How much ${x} per day?`,
+    timing: t.timing ?? `When is the best time to take ${x}?`,
+    sideEffects: t.sideEffects ?? `What are the side effects of ${x}?`,
+    interactions: t.interactions ?? 'Interactions with medications and supplements',
+    avoid: t.avoid ?? `Who should avoid ${x}?`,
+    compare: t.compare ?? g.compare?.title ?? '',
+    choose: t.choose ?? `How to choose a ${x} supplement`,
+    faq: t.faq ?? `${g.ingredient} FAQ`,
+  };
+}
 
 export default async function GuidePage({ params }: { params: Promise<{ slug: string }> }) {
   const g = findGuide((await params).slug);
@@ -92,7 +98,19 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
   const goals = g.relatedGoals.map(findGoal).filter((x) => x !== undefined);
   const url = `${SITE_URL}/guides/${g.slug}`;
   const title = g.h1 ?? `${g.ingredient}: benefits, uses, dosage & side effects`;
-  const t = g.sectionTitles ?? {};
+  const h = headings(g);
+  const A = g.answers ?? {};
+  const toc: [string, string][] = [
+    ['what-is', h.what], ['benefits', h.benefits], ['dosage', h.dosage],
+    ...(g.timing || A.timing ? [['timing', h.timing] as [string, string]] : []),
+    ['side-effects', h.sideEffects], ['interactions', h.interactions], ['avoid', h.avoid],
+    ...(g.compare ? [['compare', h.compare] as [string, string]] : []),
+    ['choose', h.choose], ['faq', h.faq], ['sources', 'Sources'],
+  ];
+  // The short answers are questions too: they join the FAQ markup so AI tools get question + answer pairs.
+  const blockQA = ([['benefits', h.benefits], ['dosage', h.dosage], ['timing', h.timing], ['sideEffects', h.sideEffects], ['compare', h.compare]] as const)
+    .filter(([k]) => A[k])
+    .map(([k, q]) => ({ q, a: A[k]! }));
 
   const review = reviewFor(`guide:${g.slug}`);
   const structured = [
@@ -118,14 +136,16 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
         '@type': 'DietarySupplement',
         name: g.ingredient,
         activeIngredient: g.ingredient,
-        safetyConsideration: g.avoidIf.join('; '),
+        safetyConsideration: g.avoidIf.map(plain).join('; '),
+        ...(g.intake ? { recommendedIntake: { '@type': 'RecommendedDoseSchedule', name: plain(g.intake.recommended), targetPopulation: 'Adults' } } : {}),
+        ...(g.intake?.maximum ? { maximumIntake: { '@type': 'MaximumDoseSchedule', name: plain(g.intake.maximum), targetPopulation: 'Adults' } } : {}),
       },
       citation: g.sources.map((s) => ({ '@type': 'CreativeWork', name: s.title, url: s.url })),
     },
     {
       '@context': 'https://schema.org',
       '@type': 'FAQPage',
-      mainEntity: g.faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: plain(f.a) } })),
+      mainEntity: [...blockQA, ...g.faqs].map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: plain(f.a) } })),
     },
     {
       '@context': 'https://schema.org',
@@ -144,6 +164,31 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
         <li key={t}><Cited text={t} /></li>
       ))}
     </ul>
+  );
+
+  // Answer first: one short paragraph directly under the question heading.
+  const answer = (text?: string) =>
+    text ? (
+      <p className="mt-3 rounded-2xl border-l-4 border-[var(--color-accent)] bg-[var(--color-soft)] px-5 py-4 text-[var(--color-ink)]">
+        <b>Short answer:</b> <Cited text={text} />
+      </p>
+    ) : null;
+  const table = (head: string[], rows: string[][], caption?: string, firstColHeader = true) => (
+    <div className="mt-4 overflow-x-auto">
+      <table className="w-full min-w-[28rem] border-collapse text-left text-sm">
+        {caption && <caption className="mb-2 text-left text-sm text-[var(--color-muted)]"><Cited text={caption} /></caption>}
+        <thead>
+          <tr>{head.map((c, i) => <th key={i} scope="col" className="border-b-2 border-[var(--color-navy)] px-3 py-2 font-semibold">{c}</th>)}</tr>
+        </thead>
+        <tbody>
+          {rows.map((r, i) => (
+            <tr key={i} className="border-b border-[var(--color-line)] align-top">
+              {r.map((c, j) => (j === 0 && firstColHeader ? <th key={j} scope="row" className="px-3 py-2 font-semibold"><Cited text={c} /></th> : <td key={j} className="px-3 py-2"><Cited text={c} /></td>))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 
   return (
@@ -187,61 +232,88 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
       <nav aria-label="On this page" className="mt-8 rounded-2xl border border-[var(--color-line)] p-5 text-sm">
         <p className="font-semibold">On this page</p>
         <ol className="mt-2 grid gap-1 sm:grid-cols-2">
-          {SECTIONS.map(([id, label]) => (
-            <li key={id}><a href={`#${id}`} className="text-[var(--color-accent)] hover:underline">{t[TOC_KEYS[id] as keyof typeof t] ?? label}</a></li>
+          {toc.map(([id, label]) => (
+            <li key={id}><a href={`#${id}`} className="text-[var(--color-accent)] hover:underline">{label}</a></li>
           ))}
         </ol>
       </nav>
 
       <div className="prose-noovit mt-10">
-        <h2 id="what-is">{t.what ?? `What is ${g.ingredient.toLowerCase()}?`}</h2>
+        <h2 id="what-is">{h.what}</h2>
         {g.whatItIs.map((p) => <p key={p}><Cited text={p} /></p>)}
 
-        <h2 id="benefits">{t.benefits ?? `${g.ingredient} benefits: what the evidence says`}</h2>
+        <h2 id="benefits">{h.benefits}</h2>
+      </div>
+      {answer(A.benefits)}
+      <div className="prose-noovit mt-4">
         <p className="text-sm text-[var(--color-muted)]">
           Evidence ratings: <b>Moderate</b> = several good human trials; <b>Limited</b> = few or small trials, or mixed results; <b>Early</b> = lab or
           biomarker studies only; <b>Insufficient</b> = trials found no clear effect.
         </p>
       </div>
-      <div className="mt-4 space-y-4">
+      <ul className="mt-4 space-y-4">
         {g.benefits.map((b) => (
-          <div key={b.title} className="rounded-2xl border border-[var(--color-line)] p-5">
+          <li key={b.title} className="rounded-2xl border border-[var(--color-line)] p-5">
             <div className="flex flex-wrap items-center gap-3">
               <h3 className="text-lg">{b.title}</h3>
               <span className={`rounded-full px-2.5 py-0.5 text-xs font-bold ${EVIDENCE_STYLE[b.evidence]}`}>Evidence: {b.evidence}</span>
             </div>
             <p className="mt-2 text-[var(--color-ink)]"><Cited text={b.text} /></p>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
 
       <div className="prose-noovit mt-10">
-        <h2 id="dosage">{t.dosage ?? `${g.ingredient} dosage`}</h2>
+        <h2 id="dosage">{h.dosage}</h2>
       </div>
+      {answer(A.dosage)}
+      {g.dosageTable && table(g.dosageTable.head, g.dosageTable.rows, g.dosageTable.caption)}
       {list(g.dosage)}
 
+      {(g.timing || A.timing) && (
+        <>
+          <div className="prose-noovit mt-10">
+            <h2 id="timing">{h.timing}</h2>
+          </div>
+          {answer(A.timing)}
+          {g.timing && table(['Goal', 'When to take it'], g.timing.rows)}
+        </>
+      )}
+
       <div className="prose-noovit mt-10">
-        <h2 id="side-effects">{t.sideEffects ?? 'Side effects'}</h2>
+        <h2 id="side-effects">{h.sideEffects}</h2>
       </div>
+      {answer(A.sideEffects)}
       {list(g.sideEffects)}
 
       <div className="prose-noovit mt-10">
-        <h2 id="interactions">{t.interactions ?? 'Interactions with medications and supplements'}</h2>
+        <h2 id="interactions">{h.interactions}</h2>
       </div>
       {list(g.interactions)}
 
       <section id="avoid" className="mt-10 rounded-2xl border border-red-200 bg-red-50 p-5">
-        <h2 className="text-xl">{t.avoid ?? `Who should avoid ${g.ingredient.toLowerCase()}`}</h2>
+        <h2 className="text-xl">{h.avoid}</h2>
         {list(g.avoidIf)}
       </section>
 
+      {g.compare && (
+        <>
+          <div className="prose-noovit mt-10">
+            <h2 id="compare">{h.compare}</h2>
+          </div>
+          {answer(A.compare)}
+          {table(g.compare.head, g.compare.rows.map((r) => [r.label, ...r.values]))}
+          {g.compare.note && <p className="mt-2 text-sm text-[var(--color-muted)]"><Cited text={g.compare.note} /></p>}
+        </>
+      )}
+
       <div className="prose-noovit mt-10">
-        <h2 id="choose">{t.choose ?? `How to choose a ${g.ingredient.toLowerCase()} supplement`}</h2>
+        <h2 id="choose">{h.choose}</h2>
       </div>
       {list(g.howToChoose)}
 
       <section id="faq" className="mt-10">
-        <h2 className="text-2xl">{t.faq ?? `${g.ingredient} FAQ`}</h2>
+        <h2 className="text-2xl">{h.faq}</h2>
         <div className="mt-4 divide-y divide-[var(--color-line)] border-y border-[var(--color-line)]">
           {g.faqs.map((f) => (
             <details key={f.q} className="group py-4">

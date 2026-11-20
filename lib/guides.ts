@@ -34,7 +34,14 @@ export interface Guide {
   reviewer?: { name: string; credentials: string; url?: string }; // a real, consenting medical reviewer
   // Topic guides (not a single ingredient) override the page title and section headings.
   h1?: string;
-  sectionTitles?: Partial<Record<'what' | 'benefits' | 'dosage' | 'sideEffects' | 'interactions' | 'avoid' | 'choose' | 'faq', string>>;
+  // Answer-ready blocks (20 Nov): each section opens with a 40–60 word answer under a question heading, then a real table or
+  // list, which answer boxes and AI tools quote. All optional; [n] cites the sources like everywhere else.
+  answers?: Partial<Record<'benefits' | 'dosage' | 'timing' | 'sideEffects' | 'compare', string>>;
+  dosageTable?: { caption: string; head: string[]; rows: string[][] };
+  timing?: { rows: [string, string][] }; // goal → when
+  compare?: { title: string; head: string[]; rows: { label: string; values: string[] }[]; note?: string };
+  intake?: { recommended: string; maximum?: string }; // for the DietarySupplement structured data
+  sectionTitles?: Partial<Record<'what' | 'benefits' | 'dosage' | 'timing' | 'sideEffects' | 'interactions' | 'avoid' | 'compare' | 'choose' | 'faq', string>>;
 }
 
 export const GUIDES: Guide[] = [
@@ -292,6 +299,43 @@ export const GUIDES: Guide[] = [
         a: 'Denmark banned it in food supplements from 2023 because its experts could not set a safe intake level, citing hormone, thyroid and pregnancy concerns [23]. Risk assessors in Germany and the Netherlands advised consumers against it in 2024 [21][22].',
       },
     ],
+    answers: {
+      benefits: 'In small trials, ashwagandha root extract lowered stress scores and cortisol and modestly improved sleep, especially in people with insomnia, after about 8 weeks [2][4][9]. Smaller studies suggest gains in strength with training [11][12]. Long-term safety beyond about 3 months is unknown [1].',
+      dosage: 'Trials used 240–600 mg of extract a day, depending on the extract: 600 mg of KSM-66 (often 300 mg twice a day), 125–500 mg of Sensoril or 240 mg of Shoden [2][4][5][10]. Use the dose studied for the extract you buy. There is no official recommended intake or upper limit [1][22].',
+      timing: 'No time of day has been shown to work best. Trials gave ashwagandha once or twice a day, with water or milk, for 8–12 weeks [2][4][10][12]. Sleep benefits were larger after 8 weeks or more [9], so taking it every day matters more than the hour.',
+      sideEffects: 'In trials of up to about 3 months, side effects were usually mild and similar to placebo, such as drowsiness, stomach upset, nausea, diarrhea and headache [1][2][6]. Rare but serious liver injury has been reported [16][17], and it can raise thyroid hormones [19].',
+      compare: 'Both are branded extracts with human trials, and no trial has compared them head to head. KSM-66 is a root-only extract studied at 600 mg a day [2][10]; Sensoril uses root and leaf at 125–500 mg [5][12][24]. Match your product to the dose studied for that extract.',
+    },
+    dosageTable: {
+      caption: 'Doses used in trials, by extract [2][4][5][10]',
+      head: ['Extract', 'Dose in trials'],
+      rows: [
+        ['KSM-66', '600 mg a day, often 300 mg twice a day'],
+        ['Sensoril', '125–500 mg a day'],
+        ['Shoden', '240 mg a day'],
+        ['Upper limit', 'None set; NCCIH says it may be safe for up to 3 months [1]'],
+      ],
+    },
+    timing: {
+      rows: [
+        ['Stress', 'Once or twice a day, as in the trials [2][4]'],
+        ['Sleep', 'Trials split 300 mg twice a day [10]; many people take the second dose in the evening'],
+        ['How long before judging', 'About 8 weeks [9]'],
+      ],
+    },
+    compare: {
+      title: 'KSM-66 vs Sensoril: which ashwagandha extract is better?',
+      head: ['', 'KSM-66', 'Sensoril'],
+      rows: [
+        { label: 'Plant part', values: ['Root only', 'Root and leaf'] },
+        { label: 'Standardized to', values: ['At least 5% withanolides', 'At least 10% withanolide glycosides'] },
+        { label: 'Dose in trials', values: ['600 mg a day [2][10]', '125–500 mg a day [5][12][24]'] },
+        { label: 'Trial results', values: ['Stress and cortisol [2], sleep [10], strength with training [11]', 'Stress measures [5], strength with training [12]'] },
+        { label: 'Head-to-head trial', values: ['None', 'None'] },
+      ],
+      note: 'The percentages measure different things, so a higher number does not mean a stronger extract.',
+    },
+    intake: { recommended: '240–600 mg of extract a day, depending on the extract', maximum: 'No upper limit set; studied for up to about 3 months' },
     sources: [
       { label: 'National Center for Complementary and Integrative Health (NCCIH)', title: 'Ashwagandha: usefulness and safety', url: 'https://www.nccih.nih.gov/health/ashwagandha' },
       { label: 'Chandrasekhar K et al. Indian Journal of Psychological Medicine, 2012', title: 'A prospective, randomized double-blind, placebo-controlled study of safety and efficacy of a high-concentration full-spectrum extract of ashwagandha root in reducing stress and anxiety in adults', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3573577/' },
@@ -655,6 +699,44 @@ export const GUIDES: Guide[] = [
         a: 'Older adults, people with type 2 diabetes, people with digestive conditions such as Crohn’s or celiac disease, and people with alcohol dependence [1]. Long-term use of PPIs or loop and thiazide diuretics can also lower magnesium [1].',
       },
     ],
+    answers: {
+      benefits: 'Magnesium supports muscle and nerve function, energy, bone and normal blood pressure.* In trials, supplements lowered blood pressure by about 2 mmHg [11] and helped constipation at laxative doses [18]. Effects on sleep were small, mostly in people who sleep poorly [3][5], and magnesium did not help most leg cramps [9].',
+      dosage: 'Adults need 310–420 mg of magnesium a day from all sources [1]. The upper limit for supplements is 350 mg a day of elemental magnesium; food does not count [1]. Read the elemental amount on the label: glycinate is only about 14% magnesium by weight, so the compound weight can look far bigger than the dose [3].',
+      timing: 'Any time of day works for topping up magnesium; taking it every day matters more than the hour. Sleep trials gave it 30–60 minutes before bed, or 2 hours before bed for threonate [3][7]. Take it with food if it upsets your stomach, and space it from tetracycline or quinolone antibiotics and bisphosphonates [1].',
+      sideEffects: 'The most common side effects are diarrhea, nausea and stomach cramps, mainly at high doses; carbonate, chloride, gluconate and oxide are the forms most often linked to diarrhea [1]. Toxicity is rare and mostly linked to very high doses of laxatives or antacids. With kidney disease, take magnesium only if your doctor agrees [1].',
+      compare: 'For everyday intake and sleep, glycinate is the usual pick because it is the form most chosen to avoid a laxative effect. Citrate is well absorbed and loosens stools at higher doses. Oxide holds the most magnesium per gram but is poorly absorbed, which is why it is used for constipation [1][20][21].',
+    },
+    dosageTable: {
+      caption: 'Magnesium per day from all sources (RDA), and the limit for supplements [1]',
+      head: ['Age', 'Men', 'Women'],
+      rows: [
+        ['19–30', '400 mg', '310 mg (350 mg in pregnancy)'],
+        ['31 and over', '420 mg', '320 mg (360 mg in pregnancy)'],
+        ['Upper limit from supplements', '350 mg', '350 mg'],
+      ],
+    },
+    timing: {
+      rows: [
+        ['Daily top-up', 'Any time, with a meal if it upsets your stomach'],
+        ['Sleep', '30–60 minutes before bed [3]'],
+        ['Magnesium L-threonate for sleep', 'About 2 hours before bed [7]'],
+        ['With tetracycline or quinolone antibiotics', 'Antibiotic at least 2 hours before, or 4–6 hours after, magnesium [1]'],
+        ['With bisphosphonates', 'At least 2 hours apart [1]'],
+      ],
+    },
+    compare: {
+      title: 'Magnesium glycinate vs citrate vs oxide vs threonate: which is best?',
+      head: ['', 'Glycinate', 'Citrate', 'Oxide', 'L-threonate'],
+      rows: [
+        { label: 'Magnesium per gram', values: ['About 14% [3]', 'Check the label', 'About 60% [2]', 'About 7.5% [7]'] },
+        { label: 'Absorption', values: ['Better than oxide in small studies [20][23]', 'Better than oxide in several small studies [20][22]', 'Poor, about 4% in one study [21]', 'Not compared with cheaper forms in people [7]'] },
+        { label: 'On the stomach', values: ['Chosen to avoid a laxative effect (no large trial)', 'Laxative at higher doses [1]', 'Laxative; used for constipation [18]', 'Not well studied'] },
+        { label: 'Best for', values: ['Everyday intake, sleep', 'Everyday intake, constipation', 'Constipation', 'Marketed for the brain'] },
+        { label: 'Evidence', values: ['Small sleep trial [3]', 'Migraine trial (as dicitrate) [13]', 'Constipation trials [18][19]', 'Small, often company-funded trials [7][8]'] },
+      ],
+      note: 'Studies comparing forms are small and short; all forms can keep levels normal in healthy people [24].',
+    },
+    intake: { recommended: '310–420 mg a day from all sources (RDA)', maximum: '350 mg a day from supplements (upper limit)' },
     sources: [
       { label: 'NIH Office of Dietary Supplements', title: 'Magnesium: fact sheet for health professionals', url: 'https://ods.od.nih.gov/factsheets/Magnesium-HealthProfessional/' },
       { label: 'Blancquaert L et al. Nutrients, 2019', title: 'Predicting and testing bioavailability of magnesium supplements', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6683096/' },
@@ -997,6 +1079,41 @@ export const GUIDES: Guide[] = [
         a: 'Creatine monohydrate. Trials comparing it with buffered creatine, creatine ethyl ester and creatine HCl found none of them worked better, and ethyl ester worked worse [19][20][21][22].',
       },
     ],
+    answers: {
+      benefits: 'With resistance training, creatine monohydrate reliably increases strength and adds about 1 kg of extra lean mass over several weeks, including in older adults [1][5][6]. Without exercise it adds almost nothing [5]. Effects on memory and the brain are promising but still early [8][13].',
+      dosage: '3–5 g of creatine monohydrate a day fills muscle stores in about 3–4 weeks [1][3]. A loading phase, about 20 g a day split into four doses for 5–7 days, fills them within a week but adds more short-term water weight [1][2]. There is no official upper limit; 3–5 g is all most people need [1].',
+      timing: 'Any time of day; taking it every day matters more than when. Mix it into water, juice or a shake, before or after training. Taking it with carbohydrate or protein may increase uptake into muscle, but has not clearly improved performance more than creatine alone [1].',
+      sideEffects: 'Weight gain is the only consistently reported side effect: loading usually adds 1–3 kg in a week, mostly water held inside muscle [1][2]. In healthy people, creatine at recommended doses has not been shown to harm the kidneys [1][18], but it can raise creatinine on blood tests without kidney harm [19].',
+      compare: 'Creatine monohydrate is the form used in almost all research. Head-to-head trials have not shown creatine HCl, ethyl ester or buffered creatine to work better [22], and creatine in water-based gummies or liquids can break down before you take it [2][29].',
+    },
+    dosageTable: {
+      caption: 'Creatine monohydrate dosing used in research [1][2][3]',
+      head: ['Approach', 'Dose', 'How long'],
+      rows: [
+        ['Daily, no loading', '3–5 g a day', 'Ongoing; stores fill in about 3–4 weeks [3]'],
+        ['Loading', 'About 0.3 g per kg a day (usually 4 × 5 g) [1]', '5–7 days, then 3–5 g a day'],
+        ['Larger athletes', '5–10 g a day [1]', 'Ongoing'],
+        ['Upper limit', 'None set; up to 30 g a day studied for up to 5 years [1]', '–'],
+      ],
+    },
+    timing: {
+      rows: [
+        ['Training days', 'Before or after your workout, whichever you will remember'],
+        ['Rest days', 'Any time, often with a meal'],
+        ['Loading week', 'Split about 20 g into four 5 g doses through the day [1]'],
+      ],
+    },
+    compare: {
+      title: 'Creatine monohydrate vs HCl vs other forms: which is best?',
+      head: ['', 'Monohydrate', 'Creatine HCl', 'Buffered (Kre-Alkalyn)', 'Gummies and liquids'],
+      rows: [
+        { label: 'Creatine per gram', values: ['About 88% [22]', 'Check the label', 'Check the label', 'Check the label'] },
+        { label: 'Compared with monohydrate', values: ['The reference form', 'Not shown to work better [22]', 'No better in a 28-day trial [19]', 'May break down to creatinine before you take it [2][29]'] },
+        { label: 'Best for', values: ['Almost everyone: best studied, low cost', 'No proven advantage', 'No proven advantage', 'Convenience, if the dose holds up'] },
+        { label: 'Evidence', values: ['Moderate (strength and lean mass) [1][5]', 'Insufficient', 'Insufficient', 'Insufficient'] },
+      ],
+    },
+    intake: { recommended: '3–5 g of creatine monohydrate a day', maximum: 'No official upper limit; up to 30 g a day studied for up to 5 years' },
     sources: [
       { label: 'Kreider RB et al. Journal of the International Society of Sports Nutrition, 2017', title: 'International Society of Sports Nutrition position stand: safety and efficacy of creatine supplementation in exercise, sport, and medicine', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5469049/' },
       { label: 'Antonio J et al. Journal of the International Society of Sports Nutrition, 2021', title: 'Common questions and misconceptions about creatine supplementation: what does the scientific evidence really show?', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7871530/' },
