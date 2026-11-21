@@ -19,7 +19,7 @@ export function StackFolder({ stack, parts, index, isNew = false, compact = fals
   return (
     <article className="relative pt-8">
       {/* folder tab in the stack's colour */}
-      <div className="absolute left-0 top-0 flex h-9 items-center gap-2 rounded-t-2xl px-5 text-[11px] font-semibold uppercase tracking-wider text-white" style={{ background: stack.color }}>
+      <div className="absolute left-0 top-0 flex h-9 items-center gap-2 rounded-t-2xl px-5 text-[11px] font-semibold uppercase tracking-wider text-white" style={{ background: `color-mix(in srgb, ${stack.color} 70%, #000)` }}>
         Stack {n}
       </div>
       <div className="overflow-hidden rounded-3xl rounded-tl-none border border-[var(--color-line)] bg-white" style={{ borderTop: `4px solid ${stack.color}` }}>

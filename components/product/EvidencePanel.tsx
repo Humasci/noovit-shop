@@ -21,7 +21,8 @@ export function EvidenceTrials({ evidence, color, guideSlug }: { evidence: Produ
               return (
                 <div key={r.label}>
                   <dt className="text-sm text-[var(--color-ink)]">{r.label}</dt>
-                  <dd className="mt-1.5 space-y-1.5" aria-label={`${evidence.arm}: ${fmt(r.ours)}; placebo: ${fmt(r.placebo)}`}>
+                  <dd className="mt-1.5 space-y-1.5">
+                    <span className="sr-only">{`${evidence.arm}: ${fmt(r.ours)}; placebo: ${fmt(r.placebo)}`}</span>
                     {[
                       { v: r.ours, fill: color, who: evidence.arm },
                       { v: r.placebo, fill: '#b8bec7', who: 'Placebo' },
