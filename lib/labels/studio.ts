@@ -5,6 +5,7 @@ import sharp from 'sharp';
 import { Resvg } from '@resvg/resvg-js';
 import { Product } from '@/types';
 import { FRONT, frontLabel, labelPaper } from './svg';
+import { hasTubPhoto, placeTub, tubPhotoPng } from './tub';
 
 // Studio photo (16 Nov, owner's pick): a photoreal studio shot of our white bottle (assets/mockups/studio-bottle.jpg,
 // 2000 × 1493, soft grey backdrop, ribbed cap) with our label wrapped onto it. The template's own label area is
@@ -233,6 +234,7 @@ export async function studioOnBackdrop(p: Product, bg: [number, number, number] 
 
 // Square product image (PNG). 'front': the whole bottle at ~85% of the height; 'closeup': the label, filling the frame.
 export async function studioPhotoPng(p: Product, size = 1000, crop: 'front' | 'closeup' = 'front', bg: [number, number, number] = BACKDROP) {
+  if (hasTubPhoto(p.slug)) return tubPhotoPng(p.slug, size, crop, bg); // powders: the owner's tub photos (lib/labels/tub.ts)
   const r = await studioOnBackdrop(p, bg);
   const t = await (cached ??= analyse());
   const cxp = (r.box.x0 + r.box.x1) / 2;
@@ -274,7 +276,14 @@ export async function studioGroupPng(products: Product[], width: number, height:
     return { data, ch: info.channels };
   };
   const full = fullBottleMask(t); // includes the white base and cap rim
+  // Bottle height and base in the crop (template px), so tubs can stand on the same floor at the same height.
+  const bTop = (full.minY - top) / side, bBot = (full.maxY - top) / side;
   for (const [i, p] of products.entries()) {
+    if (hasTubPhoto(p.slug)) {
+      const ox = Math.round(x0 + i * opts.step), oy = Math.round(opts.y);
+      await placeTub(canvas, width, height, p.slug, ox + opts.size / 2, oy + bBot * opts.size, (bBot - bTop) * opts.size * 0.96);
+      continue;
+    }
     const r = await studioPhotoRaw(p);
     const left = Math.round((r.box.x0 + r.box.x1) / 2 - side / 2);
     const rgba = Buffer.alloc(t.W * t.H * 4);

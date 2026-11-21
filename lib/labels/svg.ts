@@ -16,7 +16,7 @@ import { LEGAL_NAME } from '@/lib/site';
 export type FontMode = 'web' | 'print';
 
 // Bump when the photo mockup (lib/labels/photo.ts) changes, so cached product image URLs refresh.
-export const MOCKUP_VERSION = 'studio-v13'; // v13 (20 Nov): stacks use studio group shots // v12 (20 Nov): For Her badge off Ashwagandha // v11 (20 Nov): women's range colours // v10 (20 Nov): For Her badge // v9 (19 Nov): "organic" removed from Lion's Mane // v6 (17 Nov): cream backdrop // studio-v1 (16 Nov): photoreal studio bottle (lib/labels/studio.ts); was photo-v14 // v12 (14 Nov): elegant dark label; v13: studio lighting; v14: label edges curve round the bottle
+export const MOCKUP_VERSION = 'studio-v14'; // v14 (21 Nov): creatine products use the owner's tub photos (lib/labels/tub.ts) // v13 (20 Nov): stacks use studio group shots // v12 (20 Nov): For Her badge off Ashwagandha // v11 (20 Nov): women's range colours // v10 (20 Nov): For Her badge // v9 (19 Nov): "organic" removed from Lion's Mane // v6 (17 Nov): cream backdrop // studio-v1 (16 Nov): photoreal studio bottle (lib/labels/studio.ts); was photo-v14 // v12 (14 Nov): elegant dark label; v13: studio lighting; v14: label edges curve round the bottle
 
 const NAVY = '#14213d';
 const INK = '#4b5563';

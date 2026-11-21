@@ -71,7 +71,7 @@ Read this first. It is the standing context for any session working on this repo
   ribbed cap, soft natural shadow; the portrait one had a hard streak shadow) with our label mapped on by `lib/labels/studio.ts` (cylinder unwrap; the template's light is measured from its
   label background and applied to ours, `HIGHLIGHT` 0.6, `SHADOW` 0.7). Used for the front, the label close-up and inside the gallery
   images (`lib/labels/png.ts`). Group shots: `studioGroupPng` (each bottle = its difference from the empty backdrop, added onto one shared
-  backdrop, so shadows overlap and no tiles show). Older Supliful-photo path (`lib/labels/photo.ts`) is legacy. Framed tight (~85% height). Gallery: front, "In every serving" fact image,
+  backdrop, so shadows overlap and no tiles show). Older Supliful-photo path (`lib/labels/photo.ts`) is legacy. **Powder tubs (21 Nov):** creatine products use the owner's tub renders (`assets/mockups/tub-*.jpg`, `lib/labels/tub.ts`), placed by studioPhotoPng/studioGroupPng. Framed tight (~85% height). Gallery: front, "In every serving" fact image,
   dose comparison (Mg, CoQ10), label close-up, Supplement Facts. Bump `MOCKUP_VERSION` when images change.
 - **Analytics:** GTM `GTM-5LKW5HGS` built in; GA4 lives inside GTM (leave the site GA4 field empty). Consent is
   opt-out (banner; Decline = denied). GA4 ecommerce events + `generate_lead` with `lead_source`.
