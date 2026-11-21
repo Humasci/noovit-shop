@@ -26,7 +26,8 @@ const subscribe = (cb: () => void) => {
     window.removeEventListener('storage', cb);
   };
 };
-const readConsent = () => localStorage.getItem(CONSENT_KEY) ?? 'unset';
+// Global Privacy Control (browser opt-out signal) counts as Decline (CCPA "do not sell or share").
+const readConsent = () => ((navigator as Navigator & { globalPrivacyControl?: boolean }).globalPrivacyControl ? 'denied' : localStorage.getItem(CONSENT_KEY) ?? 'unset');
 
 function setConsent(value: 'granted' | 'denied') {
   localStorage.setItem(CONSENT_KEY, value);
@@ -43,8 +44,14 @@ export function openCookiePreferences() {
 function PageViews() {
   const pathname = usePathname();
   useEffect(() => {
-    if (isSensitivePath(pathname)) return; // never report views of privacy-sensitive pages
-    window.gtag?.('event', 'page_view', { page_path: pathname, page_location: window.location.href });
+    if (isSensitivePath(pathname)) {
+      // never report views of health pages; if tags already loaded on an earlier page (client navigation or back
+      // button), reload so this page runs without them
+      const w = window as unknown as Record<string, unknown>;
+      if (w.google_tag_manager || w.fbq || w.ttq || w.gtag) window.location.reload();
+      return;
+    }
+    window.gtag?.('event', 'page_view', { page_path: pathname, page_location: window.location.href.replace(/([?&])session_id=[^&]*&?/, '$1').replace(/[?&]$/, '') });
     window.fbq?.('track', 'PageView');
     window.ttq?.page();
   }, [pathname]);
@@ -96,7 +103,7 @@ function Tags({ ids }: { ids: PixelIds }) {
         <>
           <Script src={`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(ids.ga4)}`} strategy="afterInteractive" />
           <Script id="ga4-init" strategy="afterInteractive">
-            {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;gtag('js',new Date());gtag('config',${JSON.stringify(ids.ga4)},{send_page_view:false});gtag('event','page_view',{page_path:location.pathname,page_location:location.href});`}
+            {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;gtag('js',new Date());gtag('config',${JSON.stringify(ids.ga4)},{send_page_view:false});gtag('event','page_view',{page_path:location.pathname,page_location:location.href.replace(/([?&])session_id=[^&]*&?/,'$1').replace(/[?&]$/,'')});`}
           </Script>
         </>
       )}

@@ -345,5 +345,7 @@ export const TEST_CATEGORY_LIST = TEST_CATEGORIES.filter((c) => kitsIn(c.id).len
 
 // Pages where no analytics or ad tags may run (FTC Health Breach Notification Rule; GoodRx/BetterHelp cases):
 // sharing that someone viewed or joined the waitlist for an STI test with Google/Meta/TikTok would be a disclosure.
-export const SENSITIVE_PATHS = KITS.filter((k) => k.sensitive).map((k) => `/at-home-tests/${k.slug}`);
+// No analytics or ad tags on any human test page (21 Nov audit: health pages under the FTC Health Breach Notification
+// Rule and Washington's My Health My Data Act). `sensitive` kits (STI) are also never named in emails.
+export const SENSITIVE_PATHS = KITS.filter((k) => !k.pets).map((k) => `/at-home-tests/${k.slug}`);
 export const isSensitivePath = (pathname: string | null | undefined) => !!pathname && SENSITIVE_PATHS.some((p) => pathname === p || pathname.startsWith(`${p}/`));

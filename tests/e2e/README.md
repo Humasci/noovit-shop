@@ -21,6 +21,7 @@ phase1 47/47, phase2 60/60, aff 55/55, batch3 15/15.
    - `STRIPE_SECRET_KEY=sk_test_123`, `STRIPE_WEBHOOK_SECRET=whsec_test_secret`, `STRIPE_MOCK_PORT=` (fake-stripe's port, see `fake-stripe.mjs`)
    - `SUPABASE_URL=http://127.0.0.1:54321`, `SUPABASE_SERVICE_ROLE_KEY=` (the key from step 4)
    - `ADMIN_PASSWORD=test-admin-pass` (the suites sign in with it), `SITE_LIVE=true`, `NEXT_PUBLIC_SITE_URL=http://localhost:3100`
+   - `RATE_LIMIT_OFF=1` (the suites submit many forms from one address; never set it in production)
    - any random strings for `APP_SECRET` and `CRON_SECRET`; `KLAVIYO_PRIVATE_KEY` any value, `KLAVIYO_API_BASE` = the fake server URL.
 
 ## AI advisor

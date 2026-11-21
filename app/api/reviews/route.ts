@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { formLimited } from '@/lib/rate-limit';
 import { db } from '@/lib/db/server';
 import { dbConfigured } from '@/lib/config';
 import { findProduct } from '@/data/products';
@@ -30,6 +31,7 @@ export async function POST(req: NextRequest) {
   const slug = clean(body.slug, 100);
   const name = clean(body.name, 80);
   const email = clean(body.email, 200).toLowerCase();
+  if (formLimited(req, 'reviews', email)) return NextResponse.json({ error: 'Too many requests. Please try again in a few minutes.' }, { status: 429 });
   const title = clean(body.title, 120);
   const text = clean(body.body, 2000);
   const rating = Number(body.rating);

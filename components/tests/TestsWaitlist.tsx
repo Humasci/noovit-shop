@@ -23,7 +23,7 @@ export function TestsWaitlist({ kit }: { kit?: string }) {
         });
         const data = await res.json().catch(() => ({}));
         if (!res.ok) return void toast.error(data.error || 'Something went wrong. Please try again.');
-        trackSignup('tests_waitlist');
+        if (!kit) trackSignup('tests_waitlist'); // never report which health test someone is interested in
         setDone(true);
       }}
     >

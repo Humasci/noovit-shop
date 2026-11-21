@@ -68,7 +68,8 @@ export function validateCheckout(body: unknown, catalog: Product[]): ValidationR
   const frequency = [...frequencies][0];
   if (frequency && !req.autoRenewConsent) return { ok: false, error: 'Please agree to the subscription terms to continue.' };
 
-  const ageRestricted = lines.some((l) => l.product.ageRestricted);
+  // A bundle is 18+ when any part is (21 Nov audit: bundles made in Admin don't copy the flag).
+  const ageRestricted = lines.some((l) => l.product.ageRestricted || l.product.bundleItems?.some((b) => catalog.find((p) => p.slug === b.slug)?.ageRestricted));
   if (ageRestricted && !req.ageConfirmed) return { ok: false, error: 'Please confirm you are 18 or older to buy Creatine.' };
 
   return { ok: true, lines, frequency, ageRestricted };

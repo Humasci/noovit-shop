@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { formLimited } from '@/lib/rate-limit';
 import { stripe } from '@/lib/stripe/server';
 import { dbConfigured, stripeConfigured } from '@/lib/config';
 import { db } from '@/lib/db/server';
@@ -13,6 +14,7 @@ export async function POST(req: NextRequest) {
   const { email } = await req.json().catch(() => ({}));
   if (typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return NextResponse.json({ error: 'Please enter a valid email address.' }, { status: 400 });
+  if (formLimited(req, 'portal', email)) return NextResponse.json({ error: 'Too many requests. Please try again in a few minutes.' }, { status: 429 });
   }
 
   // Same response whether or not the customer exists, so emails can't be enumerated.

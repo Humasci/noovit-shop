@@ -24,7 +24,8 @@ async function send(to: string, subject: string, html: string, headers?: Record<
     body: JSON.stringify({ from, to, subject, html, ...(headers ? { headers } : {}), reply_to: reply }),
     signal: AbortSignal.timeout(8000),
   });
-  if (!res.ok) console.error(`Email to ${to} failed: ${res.status} ${await res.text()}`);
+  // log the domain only, never the full address (21 Nov audit)
+  if (!res.ok) console.error(`Email to *@${String(to).split('@').pop()} failed: ${res.status} ${await res.text()}`);
   return res.ok;
 }
 

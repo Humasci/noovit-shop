@@ -1,6 +1,7 @@
 'use server';
 
 import { redirect } from 'next/navigation';
+import { pgq } from '@/lib/db-filter';
 import { revalidatePath } from 'next/cache';
 import { requireAdmin } from '@/lib/admin/auth';
 import { db } from '@/lib/db/server';
@@ -32,7 +33,7 @@ export async function eraseCustomer(f: FormData) {
   }
   const placeholder = `deleted-${id.slice(0, 8)}@deleted.invalid`;
   const steps = await Promise.all([
-    db().from('orders').update({ email: placeholder, shipping_name: null, shipping_address: null }).or(`customer_id.eq.${id},email.eq.${c.email}`),
+    db().from('orders').update({ email: placeholder, shipping_name: null, shipping_address: null }).or(`customer_id.eq.${pgq(id)},email.eq.${pgq(c.email)}`),
     db().from('reviews').delete().eq('email', c.email),
     db().from('subscribers').delete().eq('email', c.email),
     db().from('abandoned_checkouts').delete().eq('email', c.email),

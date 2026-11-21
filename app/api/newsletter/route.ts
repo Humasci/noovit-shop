@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { formLimited } from '@/lib/rate-limit';
 import { dbConfigured } from '@/lib/config';
 import { subscribe, welcome, waitlistConfirm } from '@/lib/marketing/subscribers';
 import { findKit } from '@/lib/tests';
@@ -12,6 +13,7 @@ export async function POST(req: NextRequest) {
 
   const email = typeof body.email === 'string' ? body.email.trim().slice(0, 200) : '';
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return NextResponse.json({ error: 'Please enter a valid email address.' }, { status: 400 });
+  if (formLimited(req, 'newsletter', email)) return NextResponse.json({ error: 'Too many requests. Please try again in a few minutes.' }, { status: 429 });
 
   const waitlist = body.source === 'pets';
   const launch = body.source === 'launch'; // pre-launch "coming soon" page

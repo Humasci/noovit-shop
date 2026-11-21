@@ -122,7 +122,7 @@ export function CartDrawer({ suggestions, catalog = [] }: { suggestions: Product
 
 // Upsell (20 Nov): every part of a live stack is in the cart as single bottles, so offer the stack for less.
 function StackSwap({ catalog }: { catalog: Product[] }) {
-  const { items, addItem, removeItem } = useCart();
+  const { items, addItem, removeItem, updateQuantity } = useCart();
   const stack = swappableStack(items.map((i) => ({ slug: i.product.slug, mode: i.mode, bottles: i.bottles })), catalog);
   if (!stack) return null;
   const parts = stack.bundleItems!.map((b) => items.find((i) => i.product.slug === b.slug && i.mode === 'one-time' && i.bottles === 1)!);
@@ -130,7 +130,8 @@ function StackSwap({ catalog }: { catalog: Product[] }) {
   const save = separately - stack.basePrice;
   if (save <= 0) return null;
   const swap = () => {
-    for (const i of parts) removeItem(i.key);
+    // one bottle of each part becomes the stack; any extra bottles stay in the cart
+    for (const i of parts) (i.quantity > 1 ? updateQuantity(i.key, i.quantity - 1) : removeItem(i.key));
     const [single] = packOptions(stack, 'one-time');
     addItem({ product: stack, mode: 'one-time', ...single });
   };

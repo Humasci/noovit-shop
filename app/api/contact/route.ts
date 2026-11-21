@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { formLimited } from '@/lib/rate-limit';
 import { sendContactMessage } from '@/lib/email';
 import { supportEmail } from '@/lib/settings';
 
@@ -11,6 +12,7 @@ export async function POST(req: NextRequest) {
 
   const name = clean(body.name, 80);
   const email = clean(body.email, 200);
+  if (formLimited(req, 'contact', email)) return NextResponse.json({ error: 'Too many requests. Please try again in a few minutes.' }, { status: 429 });
   const topic = TOPICS.includes(body.topic) ? body.topic : 'Other';
   const message = clean(body.message, 5000);
   if (!name || !message || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {

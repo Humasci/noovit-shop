@@ -7,6 +7,9 @@ const eslintConfig = defineConfig([
   ...nextTs,
   // Override default ignores of eslint-config-next.
   globalIgnores([
+    // Vercel build output and one-off design scripts (not app code)
+    ".vercel/**",
+    "design/**",
     // Default ignores of eslint-config-next:
     ".next/**",
     "out/**",

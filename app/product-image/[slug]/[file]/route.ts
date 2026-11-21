@@ -4,6 +4,7 @@ import { studioGroupPng, BACKDROP } from '@/lib/labels/studio';
 import { BottleVariant } from '@/lib/labels/svg';
 import { renderBottlePng } from '@/lib/labels/png';
 import { GalleryVariant, galleryVariants } from '@/lib/labels/gallery-data';
+import { productImageSrc } from '@/lib/labels/image-url';
 
 const VARIANTS: (BottleVariant | GalleryVariant)[] = ['front', 'duo', 'facts', 'highlights', 'compare'];
 
@@ -16,6 +17,10 @@ export async function GET(_req: Request, { params }: { params: Promise<{ slug: s
   const product = await getStoreProduct(slug);
   if (!product) return new Response('Not found', { status: 404 });
   if ((variant === 'highlights' || variant === 'compare') && !galleryVariants(product).includes(variant)) return new Response('Not found', { status: 404 });
+  // Only the current hash is rendered (21 Nov audit: random hashes would force a fresh render each time); old or
+  // made-up hashes redirect to the current image.
+  const current = productImageSrc(product, variant);
+  if (!current.endsWith(`/${file}`)) return Response.redirect(new URL(current, _req.url), 308);
 
   // Stacks and bundles (20 Nov): the front is a studio group shot of the bottles in the stack, on the cream backdrop.
   if (variant === 'front' && product.bundleItems?.length) {

@@ -7,12 +7,13 @@ import { loadCatalog } from '@/lib/catalog/server';
 import { getSettings } from '@/lib/settings';
 import { autoDiscountCoupon, autoDiscountFrom } from '@/lib/marketing/auto-discount';
 import { REF_COOKIE, activeAffiliateByCode } from '@/lib/affiliates';
+import { shopOpenFor } from '@/lib/launch-request';
 
 async function resolvePriceIds(lookupKeys: string[]) {
-  const ids = new Map<string, string>();
+  const ids = new Map<string, { id: string; amount: number | null }>();
   for (let i = 0; i < lookupKeys.length; i += 10) {
     const { data } = await stripe().prices.list({ lookup_keys: lookupKeys.slice(i, i + 10), active: true, limit: 10 });
-    for (const p of data) if (p.lookup_key) ids.set(p.lookup_key, p.id);
+    for (const p of data) if (p.lookup_key) ids.set(p.lookup_key, { id: p.id, amount: p.unit_amount });
   }
   return ids;
 }
@@ -20,6 +21,8 @@ async function resolvePriceIds(lookupKeys: string[]) {
 const CHECKOUT_TTL_SECONDS = 2 * 60 * 60;
 
 export async function POST(req: NextRequest) {
+  // Pre-launch only staff and preview-link holders can check out (21 Nov audit).
+  if (!shopOpenFor(req)) return NextResponse.json({ error: 'The shop opens soon.' }, { status: 503 });
   if (!stripeConfigured()) {
     return NextResponse.json({ error: 'Checkout is not set up yet. Please try again soon.' }, { status: 503 });
   }
@@ -34,11 +37,17 @@ export async function POST(req: NextRequest) {
     console.error(`Stripe price not found for ${missing.lookupKey} — run npm run stripe:sync`);
     return NextResponse.json({ error: `${missing.product.name} is temporarily unavailable.` }, { status: 409 });
   }
+  // Never charge a different price from the one shown: Stripe's price must match the catalog (a failed Stripe sync).
+  const stale = lines.find((l) => priceIds.get(l.lookupKey)!.amount !== l.unitAmount);
+  if (stale) {
+    console.error(`Stripe price for ${stale.lookupKey} is ${priceIds.get(stale.lookupKey)!.amount}, catalog says ${stale.unitAmount}: run Stripe sync`);
+    return NextResponse.json({ error: `${stale.product.name} is temporarily unavailable. Please try again shortly.` }, { status: 409 });
+  }
 
   const origin = process.env.NEXT_PUBLIC_SITE_URL || req.nextUrl.origin;
   const params: Stripe.Checkout.SessionCreateParams = {
     mode: frequency ? 'subscription' : 'payment',
-    line_items: lines.map((l) => ({ price: priceIds.get(l.lookupKey)!, quantity: l.quantity })),
+    line_items: lines.map((l) => ({ price: priceIds.get(l.lookupKey)!.id, quantity: l.quantity })),
     shipping_address_collection: { allowed_countries: ['US'] },
     // Suppliers (e.g. Supliful) may reject orders without a phone number for the carrier.
     phone_number_collection: { enabled: true },
@@ -90,7 +99,17 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const session = await stripe().checkout.sessions.create(params);
+    let session: Stripe.Checkout.Session;
+    try {
+      session = await stripe().checkout.sessions.create(params);
+    } catch (err) {
+      // A partner's promo code that was deactivated or used up in Stripe must not block checkout: retry without it.
+      if (!params.discounts?.some((d) => d.promotion_code)) throw err;
+      console.error('Partner promo code rejected; retrying without it', err);
+      delete params.discounts;
+      params.allow_promotion_codes = true;
+      session = await stripe().checkout.sessions.create(params);
+    }
     return NextResponse.json({ url: session.url });
   } catch (err) {
     console.error('Checkout session failed', err);

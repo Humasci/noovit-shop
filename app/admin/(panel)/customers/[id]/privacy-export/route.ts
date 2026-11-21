@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { pgq } from '@/lib/db-filter';
 import { currentStaff } from '@/lib/admin/auth';
 import { can } from '@/lib/admin/permissions';
 import { dbConfigured } from '@/lib/config';
@@ -16,7 +17,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
   const { data: customer } = await db().from('customers').select('*').eq('id', id).maybeSingle();
   if (!customer) return new NextResponse('Not found', { status: 404 });
   const [orders, subscriptions, reviews, subscriber, abandoned] = await Promise.all([
-    db().from('orders').select('*, order_items(*)').or(`customer_id.eq.${id},email.eq.${customer.email}`).order('created_at'),
+    db().from('orders').select('*, order_items(*)').or(`customer_id.eq.${pgq(id)},email.eq.${pgq(customer.email)}`).order('created_at'),
     db().from('subscriptions').select('*').eq('customer_id', id),
     db().from('reviews').select('*').eq('email', customer.email),
     db().from('subscribers').select('*').eq('email', customer.email).maybeSingle(),
