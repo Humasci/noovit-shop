@@ -198,16 +198,17 @@ export default async function HomePage() {
       {/* Noovit Pets teaser, above the FAQ (owner, 17 Nov): "Coming soon" until pet products are on sale. */}
       <section className="pb-4">
         <div className="container px-6">
-          <Link href="/pets" className="group grid overflow-hidden rounded-3xl bg-[var(--color-pets-soft)] md:grid-cols-2">
-            <div className="p-10 md:p-14">
+          <Link href="/pets" className="group grid overflow-hidden rounded-3xl bg-[var(--color-pets-soft)] md:h-[28rem] md:grid-cols-2">
+            {/* fixed height (owner, 21 Nov: ~40% shorter); the photo crops to fit */}
+            <div className="flex flex-col justify-center p-8 md:p-12">
               <p className="mb-3 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-pets-dark)]">
                 <PawPrint className="h-4 w-4" /> {petsLive ? 'New' : 'Coming soon'} · <Brand /> Pets
               </p>
               <h2 className="text-3xl md:text-4xl">At-home health checks for dogs and cats</h2>
               <p className="mt-3 text-[var(--color-muted)]">Simple urine wellness strips and DNA health tests, so you can spot changes early and know when to call your vet.</p>
-              <span className="btn mt-6 bg-[var(--color-pets)] text-[var(--color-navy)] group-hover:brightness-95">{petsLive ? 'Shop Pets' : 'Join the waitlist'}</span>
+              <span className="btn mt-6 self-start bg-[var(--color-pets)] text-[var(--color-navy)] group-hover:brightness-95">{petsLive ? 'Shop Pets' : 'Join the waitlist'}</span>
             </div>
-            <img src={PET_IMAGES.teaser} alt="A dog and a cat side by side" className="h-full min-h-64 w-full object-cover" loading="lazy" />
+            <img src={PET_IMAGES.teaser} alt="A dog and a cat side by side" className="h-56 w-full object-cover object-[50%_35%] md:h-[28rem]" loading="lazy" />
           </Link>
         </div>
       </section>

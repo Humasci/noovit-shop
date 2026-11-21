@@ -7,6 +7,7 @@ import { TestsWaitlist } from '@/components/tests/TestsWaitlist';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { pageLd } from '@/lib/structured-data';
 import { Reveal } from '@/components/ui/Reveal';
+import { MosaicField } from '@/components/brand/MosaicField';
 import { getStoreProducts } from '@/lib/catalog/server';
 import { ProductCard } from '@/components/product/ProductCard';
 import { KIT_PAIR_NOTE, supplementsForKit } from '@/lib/test-pairings';
@@ -48,7 +49,8 @@ export default async function TestKitPage({ params }: { params: Promise<{ slug: 
           </div>
           <div className="relative pt-8">
             <div className="absolute left-0 top-0 flex h-9 items-center rounded-t-2xl bg-[var(--color-navy)] px-5 text-[11px] font-semibold uppercase tracking-wider text-white">Test panel</div>
-            <div className="rounded-3xl rounded-tl-none border border-[var(--color-line)] bg-white p-6 shadow-[0_8px_24px_-12px_rgba(20,33,61,0.18)] sm:p-8">
+            <div className="relative overflow-hidden rounded-3xl rounded-tl-none border border-[var(--color-line)] bg-white p-6 shadow-[0_8px_24px_-12px_rgba(20,33,61,0.18)] sm:p-8">
+              <MosaicField cols={7} rows={5} tile={9} gap={3} anchor="top-right" maxOpacity={0.85} className="pointer-events-none absolute right-0 top-0" />
               <p className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted)]">What it measures</p>
               <ol className="mt-3 divide-y divide-[var(--color-line)] border-y border-[var(--color-line)]">
                 {k.markers.map((mk, i) => (
