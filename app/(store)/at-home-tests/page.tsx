@@ -46,7 +46,7 @@ export default function TestsPage() {
           </div>
           {hasHero() && (
             <div className="relative">
-              <img src={HERO} alt="Noovit at-home test kit boxes on a stone table (concept)" width={2000} height={1116} className="w-full rounded-3xl object-cover shadow-[0_20px_40px_-24px_rgba(20,33,61,0.35)]" />
+              <img src={HERO} alt="Noovit at-home test kit boxes on a stone table (concept)" width={1800} height={1004} className="w-full rounded-3xl object-cover shadow-[0_20px_40px_-24px_rgba(20,33,61,0.35)]" />
               <MosaicField cols={6} rows={5} tile={10} gap={3} anchor="top-right" maxOpacity={0.9} className="pointer-events-none absolute -right-3 -top-3" />
             </div>
           )}
