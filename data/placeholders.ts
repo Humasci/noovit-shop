@@ -29,7 +29,7 @@ export const PLACEHOLDER_EXPERTS: Expert[] = [
 export const PLACEHOLDER_PET_REVIEWS: Review[] = [
   { id: 'p1', name: 'Emma & Biscuit', productSlug: 'dog-probiotic-chews', rating: 5, title: 'No more upset tummy', body: 'Biscuit has a sensitive stomach and these sorted him out within a week. He thinks they are treats.', date: '2026-09-20' },
   { id: 'p2', name: 'Dan & Luna', productSlug: 'dog-hip-joint-chews', rating: 5, title: 'Our 11-year-old is bouncing again', body: 'Luna is taking the stairs again and is keen on longer walks. Huge difference.', date: '2026-09-11' },
-  { id: 'p3', name: 'Rachel & Miso', productSlug: 'cat-probiotic-powder', rating: 5, title: 'Even my picky cat eats it', body: 'Unflavoured, so Miso does not notice it in her food. Litter box is much better.', date: '2026-08-30' },
+  { id: 'p3', name: 'Rachel & Miso', productSlug: 'cat-probiotic-powder', rating: 5, title: 'Even my picky cat eats it', body: 'Unflavored, so Miso does not notice it in her food. Litter box is much better.', date: '2026-08-30' },
   { id: 'p4', name: 'Tom & Archie', productSlug: 'dog-calming-chews', rating: 5, title: 'Fireworks night was calm', body: 'Gave two an hour before and Archie actually slept through it.', date: '2026-08-12' },
 ];
 

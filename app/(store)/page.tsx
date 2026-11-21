@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { getSettings } from '@/lib/settings';
 import Link from 'next/link';
 import { Check, ArrowRight, PawPrint } from 'lucide-react';
 import { CommunitySection, FAQSection, NewsletterSection, SubscriptionPerks } from '@/components/sections/Sections';
@@ -24,7 +25,7 @@ const HOME_TESTS = ['iron-test', 'perimenopause-test', 'thyroid-test', 'choleste
 const SCENES = [
   { slug: 'lions-mane', src: '/images/scenes/lions-mane.jpg', alt: "Noovit Lion's Mane bottle on lion's mane mushrooms: 1,000 mg per serving, fruiting body and mycelium, vegan capsule" },
   { slug: 'magnesium-complex', src: '/images/scenes/magnesium.jpg', alt: 'Noovit Magnesium Sleep+ bottle on capsules: 275 mg magnesium, gentle glycinate form, three capsules' },
-  { slug: 'coq10', src: '/images/scenes/coq10.jpg', alt: 'Noovit CoQ10 bottle on golden softgels: 200 mg per serving, ubiquinone form, one a day' },
+  { slug: 'coq10', src: '/images/scenes/coq10.jpg', alt: 'Noovit CoQ10 bottle: 200 mg per serving, ubiquinone form, one a day' },
 ];
 
 // Shop by goal: one tile per core product, tinted in its label colour.
@@ -153,7 +154,7 @@ export default async function HomePage() {
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-navy)]/70">Coming soon</p>
               <h2 className="mt-2 text-4xl md:text-5xl">At-home health tests</h2>
-              <p className="mt-3 max-w-xl text-[var(--color-ink)]/80">Know your numbers, then choose what helps. Simple kits you collect at home, processed by a certified US lab.</p>
+              <p className="mt-3 max-w-xl text-[var(--color-ink)]/80">Know your numbers, then choose what helps. Simple kits you collect at home. We’re choosing a certified US lab partner now.</p>
             </div>
             <Link href="/at-home-tests" className="hidden items-center gap-1 text-sm font-semibold text-[var(--color-navy)] hover:underline sm:inline-flex">All tests <ArrowRight className="h-4 w-4" /></Link>
           </div>
@@ -235,7 +236,8 @@ export default async function HomePage() {
       </section>
 
       <FAQSection faqs={GENERAL_FAQS.slice(0, 5)} />
-      <NewsletterSection />
+      {/* the 10% promise shows only when a welcome code is set in Admin → Settings (21 Nov audit) */}
+      <NewsletterSection offer={Boolean((await getSettings()).newsletter_code)} />
     </>
   );
 }

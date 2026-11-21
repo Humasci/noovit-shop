@@ -114,7 +114,7 @@ export function sendPartnerWelcome(
     to,
     'Your Noovit partner code and link',
     layout(`
-      <h1 style="font-size:20px">Welcome to the Noovit partner programme, ${esc(p.name.split(' ')[0])}</h1>
+      <h1 style="font-size:20px">Welcome to the Noovit partner program, ${esc(p.name.split(' ')[0])}</h1>
       ${p.discountPct > 0 ? `<p>Your code gives your audience <b>${p.discountPct}% off</b> their first order:</p>
       <p style="font-size:24px;font-weight:800;letter-spacing:2px;color:#14213d">${esc(p.code)}</p>` : ''}
       <p>Your personal link (it remembers your followers for 30 days and applies your code automatically):<br/>

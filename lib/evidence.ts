@@ -39,8 +39,8 @@ export const EVIDENCE: Record<string, ProductEvidence> = {
         source: { label: 'Chandrasekhar et al., Indian Journal of Psychological Medicine, 2012', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3573577/' },
       },
       {
-        title: 'Falling asleep (adults with insomnia)',
-        design: '60 adults with insomnia, 10 weeks, randomized and placebo-controlled',
+        title: 'Falling asleep (adults with poor sleep)',
+        design: '60 adults with sleep complaints, 10 weeks, randomized and placebo-controlled',
         results: [{ label: 'Time to fall asleep fell by', unit: 'min', ours: 13, placebo: 8 }],
         note: 'From about 42 to 29 minutes, versus 42 to 34 with placebo. Total sleep time was not significantly different.',
         source: { label: 'Langade et al., Cureus, 2019', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6827862/' },
@@ -51,7 +51,7 @@ export const EVIDENCE: Record<string, ProductEvidence> = {
     timeline: [
       { when: 'Weeks 1–2', text: 'Take 2 capsules a day with food. Most people notice little at first, which is expected.' },
       { when: 'Weeks 4–8', text: 'The stress and cortisol results above were measured after 60 days of daily use.' },
-      { when: 'Week 10', text: 'In the insomnia trial, people fell asleep about 5 minutes faster than with placebo after 10 weeks.' },
+      { when: 'Week 10', text: 'In the sleep trial, people fell asleep about 5 minutes faster than with placebo after 10 weeks.' },
       { when: 'After 12 weeks', text: 'Safety beyond about 3 months hasn’t been well studied. Take a break, or check in with your doctor.' },
     ],
     faqs: [

@@ -1,7 +1,6 @@
 import { FAQ, Product, ProductData, ProductStatus } from '@/types';
 
 const COMMON_FAQS: FAQ[] = [
-  { q: 'Is it gluten free?', a: 'Yes. Every Noovit formula is made without gluten-containing ingredients.' },
   { q: 'Is it dairy and lactose free?', a: 'Yes, unless the label states otherwise.' },
   { q: 'What is your return policy?', a: 'Try it for 90 days. If you are not happy, contact us for a full refund — even on an empty bottle.' },
   { q: 'When will my order ship?', a: 'Orders usually ship within 1–2 business days, with tracking by email.' },

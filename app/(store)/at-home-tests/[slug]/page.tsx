@@ -29,7 +29,7 @@ export default async function TestKitPage({ params }: { params: Promise<{ slug: 
   const pairs = supplementsForKit(k.slug).map((s) => catalog.find((p) => p.slug === s && p.status === 'active')).filter((p) => p !== undefined);
   const steps = k.pets
     ? ['Order your kit; it ships free.', 'Collect a sample at home in minutes.', 'Read the result, or get it from our testing partner, and share it with your vet.']
-    : ['Order your kit; it ships free with a prepaid return.', 'Collect a small finger-prick sample at home and post it back.', 'Results arrive online, reviewed by an independent licensed physician.'];
+    : ['Order your kit; it ships free with a prepaid return.', `Collect your sample at home (${k.collection.replace(/, at home$/, '').toLowerCase()}) and post it back.`, 'Your results arrive online. Details on lab processing and physician review come at launch.'];
   return (
     <>
       <JsonLd data={pageLd({ path: `/at-home-tests/${k.slug}`, name: k.name, description: k.seoDescription, crumbs: [[k.pets ? 'Noovit Pets' : 'At-home tests', k.pets ? '/pets' : '/at-home-tests'], [k.name, `/at-home-tests/${k.slug}`]] })} />
@@ -62,7 +62,7 @@ export default async function TestKitPage({ params }: { params: Promise<{ slug: 
               </ol>
               <dl className="mt-6 grid gap-4 text-sm sm:grid-cols-2">
                 <div><dt className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted)]">Sample</dt><dd className="mt-1 font-semibold">{k.collection}</dd></div>
-                <div><dt className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted)]">Results</dt><dd className="mt-1 font-semibold">{k.pets ? 'Read at home, to share with your vet' : 'Online, reviewed by a licensed physician'}</dd></div>
+                <div><dt className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted)]">Results</dt><dd className="mt-1 font-semibold">{k.pets ? 'Read at home, to share with your vet' : 'Online (details at launch)'}</dd></div>
                 <div><dt className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted)]">Shipping</dt><dd className="mt-1 font-semibold">{k.pets ? 'Free' : 'Free, with a prepaid return'}</dd></div>
                 <div><dt className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted)]">Who it&apos;s for</dt><dd className="mt-1 font-semibold">{k.pets ? 'Dogs and cats' : 'Adults 18+'}</dd></div>
               </dl>

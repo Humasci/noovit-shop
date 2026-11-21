@@ -14,7 +14,7 @@ export const GOAL_PAGES: GoalPage[] = [
     slug: 'sleep-stress', goal: 'sleep', name: 'Sleep & Stress', title: 'Supplements for sleep & stress',
     intro: 'Wind down, sleep deeper and handle busy days with calm. Magnesium, ashwagandha and more, at researched doses.',
     seoTitle: 'Sleep & Stress Supplements — Magnesium, Ashwagandha | Noovit',
-    seoDescription: 'Clean supplements to support restful sleep and everyday calm: magnesium complex, ashwagandha and more. Free US shipping, 90-day guarantee.',
+    seoDescription: 'Supplements to support restful sleep and everyday calm: magnesium glycinate, ashwagandha and more. Free US shipping, 90-day guarantee.',
   },
   {
     slug: 'gut-health', goal: 'gut', name: 'Gut Health', title: 'Supplements for gut health',
@@ -62,7 +62,7 @@ export const GOAL_PAGES: GoalPage[] = [
     slug: 'muscle-performance', goal: 'muscle', name: 'Muscle & Performance', title: 'Supplements for muscle & performance',
     intro: 'Creatine and magnesium for training, strength and recovery. Simple, single-purpose formulas.',
     seoTitle: 'Muscle & Performance Supplements — Creatine | Noovit',
-    seoDescription: 'Sports supplements for strength and recovery: micronized creatine monohydrate and magnesium. Free US shipping.',
+    seoDescription: 'Sports supplements for strength and recovery: creatine monohydrate and magnesium. Free US shipping.',
   },
 ];
 

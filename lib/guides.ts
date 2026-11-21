@@ -1384,7 +1384,7 @@ export const GUIDES: Guide[] = [
     interactions: [
       'Medicines that can affect the kidneys (for example high-dose or long-term NSAIDs such as ibuprofen or naproxen, lithium, some diuretics, or cyclosporine): talk to your doctor first, as a precaution. The one well-known kidney case involved a person with kidney disease taking cyclosporine [2].',
       'Antidepressants: creatine has been studied as an add-on to an SSRI (escitalopram) without extra side effects [15]. Do not add it to depression treatment without your prescriber, and avoid it if you have bipolar disorder, because of reported switches to mania [17].',
-      'Caffeine: a 1996 study of 9 men found that a high daily caffeine dose (5 mg/kg) cancelled out the 10–23% strength gain from creatine loading [27]. A 2022 review of 10 studies found mixed results: creatine did not weaken the effect of a pre-exercise caffeine dose, but high daily caffeine during loading might blunt creatine’s effect [28]. Moderate coffee intake is unlikely to matter for most people.',
+      'Caffeine: a 1996 study of 9 men found that a high daily caffeine dose (5 mg/kg) canceled out the 10–23% strength gain from creatine loading [27]. A 2022 review of 10 studies found mixed results: creatine did not weaken the effect of a pre-exercise caffeine dose, but high daily caffeine during loading might blunt creatine’s effect [28]. Moderate coffee intake is unlikely to matter for most people.',
       'Blood tests: creatine can raise creatinine and lower your estimated kidney function (eGFR) on lab reports. Tell your doctor and lab that you take it [2][19].',
     ],
     avoidIf: [

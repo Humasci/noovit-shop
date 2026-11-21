@@ -185,7 +185,10 @@ export function Advisor() {
                 <ArrowUp className="h-4 w-4" />
               </button>
             </div>
-            <p className="mt-2 text-center text-[11px] text-[var(--color-muted)]">AI answers can be wrong. Not medical advice; talk to your doctor about supplements.</p>
+            <p className="mt-2 text-center text-[11px] text-[var(--color-muted)]">
+              Answers come from Google’s Gemini and can be wrong. Not medical advice. Please don’t share personal health details.{' '}
+              <Link href="/policies/privacy#ai-advisor" className="underline">Privacy</Link>
+            </p>
           </form>
         </section>
       )}

@@ -160,7 +160,7 @@ export function CommunitySection({
   );
 }
 
-export function NewsletterSection() {
+export function NewsletterSection({ offer = false }: { offer?: boolean }) {
   const [email, setEmail] = useState('');
   return (
     <section className="section">
@@ -168,7 +168,7 @@ export function NewsletterSection() {
         <div className="grid overflow-hidden rounded-3xl bg-[var(--color-navy)] text-white md:grid-cols-2">
           <div className="p-10 md:px-14 md:py-[66px]">
             <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-accent-light)]">Newsletter</p>
-            <h2 className="text-3xl text-white md:text-4xl">10% off your first order</h2>
+            <h2 className="text-3xl text-white md:text-4xl">{offer ? '10% off your first order' : 'Evidence, not hype, in your inbox'}</h2>
             <p className="mt-3 text-white/70">Sign up for nutrition tips, early access to launches, and member-only offers.</p>
             <form
               className="mt-6 flex flex-col gap-3 sm:flex-row"
@@ -202,7 +202,7 @@ export function NewsletterSection() {
                 />
               </div>
               <input name="company" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden />
-              <button className="btn bg-[var(--color-accent)] text-white hover:bg-[var(--color-accent-dark)]">Get 10% Off</button>
+              <button className="btn bg-[var(--color-accent)] text-white hover:bg-[var(--color-accent-dark)]">{offer ? 'Get 10% Off' : 'Sign up'}</button>
             </form>
           </div>
           {/* Absolutely positioned, so the photo fills the text's height instead of stretching the block (owner: shorter). */}

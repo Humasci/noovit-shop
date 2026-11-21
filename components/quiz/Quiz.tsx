@@ -141,7 +141,7 @@ export function Quiz({ products, code }: { products: Product[]; code: string }) 
         <p className="mx-auto mt-4 max-w-lg text-lg text-[var(--color-muted)]">
           Answer a few questions about your goals and routine, and we&apos;ll suggest the three supplements that fit you best.
         </p>
-        {code && <p className="mt-4 text-sm font-semibold text-[var(--color-pets-dark)]">Bonus: get {code.replace(/\D/g, '') || '10'}% off your first order when you finish.</p>}
+        {code && <p className="mt-4 text-sm font-semibold text-[var(--color-pets-dark)]">Bonus: a welcome code for your first order when you finish.</p>}
         <button onClick={() => go('sex')} className="btn btn-primary mt-8 min-w-56">Start the quiz</button>
         <p className="mx-auto mt-6 max-w-md text-xs text-[var(--color-muted)]">
           This quiz gives general wellness suggestions, not medical advice. Always check with your doctor before starting supplements if you take medication, are pregnant or have a medical condition.

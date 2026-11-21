@@ -1,6 +1,6 @@
 import { Expert, FAQ } from '@/types';
 
-export const TRUST_BAR = ['Clean Ingredients', 'Free US Shipping', 'Science-Driven', '90-Day Guarantee', 'Cancel Anytime'];
+export const TRUST_BAR = ['Dose on the Front', 'Free US Shipping', 'Evidence-Graded Guides', '90-Day Guarantee', 'Cancel Anytime'];
 
 export const IMAGES = {
   // Sports lifestyle (Unsplash License, free): sprinter by Jorge Alberto Vega Barrera; runner by Sherise Van Dyk.
@@ -30,7 +30,7 @@ export const IMAGES = {
 
 
 export const GENERAL_FAQS: FAQ[] = [
-  { q: 'Why should I trust Noovit with my health?', a: 'Every formula uses ingredient forms and doses from published research, and every ingredient and amount is printed on the label, with no proprietary blends. Our guides grade the evidence honestly, including studies that found no effect. We publish quality documents on product pages as we receive them.' },
+  { q: 'Why should I trust Noovit with my health?', a: 'Every ingredient and amount is printed on the label, with no proprietary blends. Our guides grade the evidence honestly, including studies that found no effect. We publish quality documents on product pages as we receive them.' },
   { q: 'Do you offer a money-back guarantee?', a: 'Yes. You have 90 days to try any product. If it is not for you, we will refund you in full.' },
   { q: 'Where are your products made?', a: 'By our contract manufacturing partner. We will list the facility certifications and batch test results on each product page as soon as we have the paperwork.' },
   { q: 'When will my order ship?', a: 'Orders usually ship within 1–2 business days, and delivery takes 2–5 business days after dispatch.' },
@@ -104,11 +104,11 @@ export const REVIEW_LOG: Record<string, string> = {};
 export const VETS: Expert[] = [];
 
 export const PET_FAQS: FAQ[] = [
-  { q: 'Are Noovit Pets products vet formulated?', a: 'Yes. Every pet formula is developed with veterinarians and dosed by body weight.' },
-  { q: 'How long until I see results?', a: 'Most pet parents notice a difference in 2–4 weeks with daily use. Joint and coat support can take 6–8 weeks.' },
+  { q: 'How are Noovit Pets products dosed?', a: 'By body weight, with the amount for your pet printed on the label. Check with your vet before starting a supplement.' },
+  { q: 'How long should we try it?', a: 'Give a supplement several weeks of daily use. If you have any concern about your pet, talk to your vet.' },
   { q: 'Can I give human supplements to my pet?', a: 'No — some human ingredients (like xylitol) are dangerous for pets, and doses differ. Use formulas made for pets.' },
   { q: 'What if my pet won’t eat it?', a: 'Our 90-day guarantee covers picky eaters too. Contact us for a full refund.' },
   { q: 'Can I add pet products to my existing subscription?', a: 'Yes — one cart, one checkout, one subscription for the whole family.' },
 ];
 
-export const PAYMENT_METHODS =['Visa', 'Mastercard', 'Amex', 'PayPal', 'Apple Pay', 'Google Pay', 'Shop Pay'];
+export const PAYMENT_METHODS = ['Visa', 'Mastercard', 'Amex', 'Apple Pay', 'Google Pay']; // what Stripe Checkout shows (no PayPal / Shop Pay)

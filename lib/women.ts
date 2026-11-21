@@ -38,7 +38,7 @@ export const WOMEN_SECTIONS: WomenSection[] = [
     id: 'sleep-stress',
     image: WOMEN_IMAGES.sleep,
     imageAlt: 'A woman holding supplement capsules and a glass of water',
-    image2: { src: '/images/women/magnesium-glycinate-for-women-2.jpg', alt: 'A woman holding a softgel', position: 'object-[center_40%]' },
+    image2: { src: '/images/women/magnesium-glycinate-for-women-2.jpg', alt: 'A woman holding a capsule', position: 'object-[center_40%]' },
     title: 'Sleep & everyday stress',
     intro: 'Magnesium glycinate in the evening and KSM-66® ashwagandha for busy days. Taken together or on their own.',
     facts: [
@@ -110,6 +110,6 @@ export const WOMEN_GALLERY = [
   { src: '/images/women/iron-collagen-scene.jpg', alt: 'Noovit Iron Complex and Collagen Glow+ bottles on peach' },
   { src: '/images/women/biotin-menopause-scene.jpg', alt: 'Noovit Biotin Complex and Menopause Balance+ bottles on pink' },
   { src: '/images/women/womens-health-supplements.jpg', alt: 'A woman holding a capsule' },
-  { src: '/images/women/magnesium-glycinate-for-women-2.jpg', alt: 'A woman holding a softgel' },
+  { src: '/images/women/magnesium-glycinate-for-women-2.jpg', alt: 'A woman holding a capsule' },
   { src: '/images/women/womens-health-friend-circle.jpg', alt: 'Four women dancing in a circle in a garden' },
 ];

@@ -25,7 +25,6 @@ const COLUMNS = [
       { name: "Women's Health", href: '/womens-health' },
       { name: "Men's Health", href: '/mens-health' },
       { name: 'At-Home Tests', href: '/at-home-tests' },
-      { name: 'Best Sellers', href: '/shop?type=best-sellers' },
       { name: 'Supplements', href: '/shop?type=supplements' },
       { name: 'Sports', href: '/shop?type=sports' },
       { name: 'Noovit Pets', href: '/pets' },
@@ -45,6 +44,9 @@ const COLUMNS = [
       { name: 'About Us', href: '/about' },
       { name: 'Privacy Policy', href: '/policies/privacy' },
       { name: 'Terms & Conditions', href: '/policies/terms' },
+      { name: 'Consumer Health Data', href: '/policies/consumer-health-data' },
+      { name: 'Your Privacy Choices', href: '/policies/privacy#choices' },
+      { name: 'Accessibility', href: '/policies/accessibility' },
     ],
   },
 ];

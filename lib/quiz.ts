@@ -43,7 +43,7 @@ export const SYMPTOMS: { id: string; label: string; female?: boolean }[] = [
   { id: 'skin', label: 'Dull or dry skin' },
   { id: 'colds', label: 'Catching colds often' },
   { id: 'cramps', label: 'Muscle cramps' },
-  { id: 'flushes', label: 'Hot flushes', female: true },
+  { id: 'flushes', label: 'Hot flashes', female: true },
 ];
 
 export const DIETS = [

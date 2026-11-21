@@ -40,7 +40,7 @@ export default function TestsPage() {
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-navy)]/70">Coming soon</p>
             <h1 className="mt-3 max-w-2xl text-balance text-4xl text-[var(--color-navy)] md:text-5xl">At-home health tests</h1>
             <p className="mt-4 max-w-xl text-lg text-[var(--color-ink)]/80">
-              Know your numbers, then choose what helps. Simple kits you collect at home, processed by a certified US lab and reviewed by a licensed physician. Launching with our lab partners soon.
+              Know your numbers, then choose what helps. Simple kits you collect at home. We’re choosing a certified US lab partner; details on lab processing and physician review come at launch.
             </p>
             <TestsWaitlist />
           </div>

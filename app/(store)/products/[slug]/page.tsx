@@ -49,7 +49,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
-const USPS = ['Evidence-based doses', 'Free US shipping', '90-day money-back guarantee', 'Cancel anytime online', 'Clean ingredients'];
+const USPS = ['Every dose on the front', 'Free US shipping', '90-day money-back guarantee', 'Cancel anytime online', 'No proprietary blends'];
 
 // Collapsible row for the right-hand column (native <details>: works without JavaScript and is crawlable).
 function Row({ title, children, open = false }: { title: string; children: React.ReactNode; open?: boolean }) {

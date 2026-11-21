@@ -56,7 +56,7 @@ export default async function PetsPage({ searchParams }: { searchParams: Promise
             <h1 className="text-balance text-4xl md:text-6xl">Because they&apos;re family too.</h1>
             <p className="mt-5 text-lg text-[var(--color-ink)]/80">
               {live
-                ? 'Vet-formulated supplements for dogs and cats — same clean standards as our human range, in chews they actually look forward to.'
+                ? 'Supplements for dogs and cats, dosed by body weight, in chews they actually look forward to.'
                 : 'At-home health checks for dogs and cats: simple urine wellness strips and DNA health tests, with clear guidance on when to call your vet.'}
             </p>
             {!live && <p className="mt-6 text-sm font-semibold text-[var(--color-pets-dark)]">Coming soon</p>}
