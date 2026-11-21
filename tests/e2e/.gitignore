@@ -7,3 +7,4 @@ storage/
 test.env
 keys.txt
 postgrest.conf
+shots/
