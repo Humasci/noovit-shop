@@ -20,6 +20,8 @@ async function storeVisible() {
   return isAdminToken(c.get(ADMIN_COOKIE)?.value) || isPreviewToken(c.get(PREVIEW_COOKIE)?.value);
 }
 import { PlaceholderNote } from '@/components/ui/Placeholder';
+import { GuideToc } from '@/components/guides/GuideToc';
+import { Reveal } from '@/components/ui/Reveal';
 import { ReviewedBy } from '@/components/experts/ReviewedBy';
 import { reviewFor } from '@/lib/experts';
 
@@ -201,6 +203,149 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
     </div>
   );
 
+  // ---------- Evidence-file layout (21 Nov prototype, owner: "medical file folder" guides) ----------
+  // Same content and structured data as the classic layout: a file header with meta fields and evidence stamps, a
+  // sticky TOC with scroll-spy, and each section as a numbered card on a soft page so sections stand out.
+  if (g.layout === 'file') {
+    const grades = (['Moderate', 'Limited', 'Early', 'Insufficient'] as Evidence[]).map((e) => [e, g.benefits.filter((b) => b.evidence === e).length] as const).filter(([, n]) => n > 0);
+    const idx = Object.fromEntries(toc.map(([id], i) => [id, String(i + 1).padStart(2, '0')]));
+    const Card = ({ id, title, children, tone }: { id: string; title: string; children: React.ReactNode; tone?: 'warn' }) => (
+      <Reveal as="section" id={id} className={`scroll-mt-32 rounded-3xl border p-6 shadow-[0_1px_2px_rgba(20,33,61,0.04),0_8px_24px_-12px_rgba(20,33,61,0.12)] sm:p-8 ${tone === 'warn' ? 'border-red-200 bg-red-50/60' : 'border-[var(--color-line)] bg-white'}`}>
+        <div className="flex items-center gap-3">
+          <span className="rounded-md bg-[var(--color-navy)] px-2 py-0.5 text-[11px] font-semibold tabular-nums text-white">{idx[id]}</span>
+          <span className="h-px flex-1 bg-[var(--color-line)]" />
+        </div>
+        <h2 className="mt-4 text-2xl text-[var(--color-navy)] sm:text-[1.7rem]">{title}</h2>
+        {children}
+      </Reveal>
+    );
+    const Stamp = ({ e }: { e: Evidence }) => (
+      <span className={`inline-block -rotate-2 rounded-md border-2 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.14em] ${e === 'Moderate' ? 'border-[var(--color-accent)] text-[var(--color-accent)]' : e === 'Limited' ? 'border-[var(--color-navy)]/60 text-[var(--color-navy)]' : e === 'Early' ? 'border-[var(--color-pets-dark)]/70 text-[var(--color-pets-dark)]' : 'border-gray-400 text-gray-600'}`}>{e}</span>
+    );
+    return (
+      <div className="bg-[var(--color-soft)]">
+        <JsonLd data={structured} />
+        <div className="container max-w-6xl px-6 pt-10">
+          <nav className="mb-6 text-xs text-[var(--color-muted)]">
+            <Link href="/">Home</Link> / <Link href="/guides">Supplement guides</Link> / <span className="text-[var(--color-ink)]">{g.ingredient}</span>
+          </nav>
+          {/* file header: tab + folder */}
+          <div className="relative pt-8">
+            <div className="absolute left-0 top-0 flex h-9 items-center rounded-t-2xl bg-[var(--color-navy)] px-5 text-[11px] font-semibold uppercase tracking-wider text-white">Evidence file</div>
+            <div className="rounded-3xl rounded-tl-none border border-[var(--color-line)] bg-white p-6 sm:p-10">
+              <h1 className="max-w-3xl text-balance text-3xl text-[var(--color-navy)] sm:text-4xl md:text-5xl">{title}</h1>
+              <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-4 border-t border-[var(--color-line)] pt-6 text-sm md:grid-cols-4">
+                <div><dt className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted)]">Updated</dt><dd className="mt-1 font-semibold">{fmt(g.updated)}</dd></div>
+                <div><dt className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted)]">Sources</dt><dd className="mt-1 font-semibold">{g.sources.length} studies and reviews</dd></div>
+                <div><dt className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted)]">Review</dt><dd className="mt-1 font-semibold">{g.reviewer ? `${g.reviewer.name}, ${g.reviewer.credentials}` : review ? <ReviewedBy reviewKey={`guide:${g.slug}`} /> : 'Every source opened and checked'}</dd></div>
+                <div><dt className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted)]">Evidence graded</dt><dd className="mt-1.5 flex flex-wrap gap-1.5">{grades.map(([e, n]) => <span key={e} className="flex items-center gap-1"><Stamp e={e} /><span className="text-xs text-[var(--color-muted)]">×{n}</span></span>)}</dd></div>
+              </dl>
+              <div className="mt-8 grid gap-6 rounded-2xl bg-[var(--color-soft)] p-5 sm:p-6 md:grid-cols-[1.2fr_1fr]">
+                <div>
+                  <p className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted)]">In short</p>
+                  <p className="mt-2 text-[var(--color-ink)]"><Cited text={g.summary} /></p>
+                </div>
+                <dl className="grid content-start gap-x-6 gap-y-3 text-sm sm:grid-cols-2">
+                  {g.quickFacts.map((f) => (
+                    <div key={f.label} className="border-t border-[var(--color-line)] pt-2">
+                      <dt className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted)]">{f.label}</dt>
+                      <dd className="mt-0.5 font-semibold">{f.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="container grid max-w-6xl grid-cols-1 gap-8 px-6 py-10 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-12">
+          <aside className="sticky top-[4.25rem] z-20 lg:static"><GuideToc items={toc} /></aside>
+          <article className="min-w-0 space-y-6">
+            <Card id="what-is" title={h.what}>
+              <div className="prose-noovit mt-3">{g.whatItIs.map((p) => <p key={p}><Cited text={p} /></p>)}</div>
+            </Card>
+            <Card id="benefits" title={h.benefits}>
+              {answer(A.benefits)}
+              <ul className="mt-5 space-y-3">
+                {g.benefits.map((b) => (
+                  <li key={b.title} className="rounded-2xl border border-[var(--color-line)] p-5">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <h3 className="text-lg">{b.title}</h3>
+                      <Stamp e={b.evidence} />
+                    </div>
+                    <p className="mt-2 text-[var(--color-ink)]"><Cited text={b.text} /></p>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-4 text-xs text-[var(--color-muted)]">
+                <b>Moderate</b> = several good human trials. <b>Limited</b> = few or small trials, or mixed results. <b>Early</b> = lab or biomarker studies only. <b>Insufficient</b> = trials found no clear effect.
+              </p>
+            </Card>
+            <Card id="dosage" title={h.dosage}>
+              {answer(A.dosage)}
+              {g.dosageTable && table(g.dosageTable.head, g.dosageTable.rows, g.dosageTable.caption)}
+              {list(g.dosage)}
+            </Card>
+            {(g.timing || A.timing) && (
+              <Card id="timing" title={h.timing}>
+                {answer(A.timing)}
+                {g.timing && table(['Goal', 'When to take it'], g.timing.rows)}
+              </Card>
+            )}
+            <Card id="side-effects" title={h.sideEffects}>
+              {answer(A.sideEffects)}
+              {list(g.sideEffects)}
+            </Card>
+            <Card id="interactions" title={h.interactions}>{list(g.interactions)}</Card>
+            <Card id="avoid" title={h.avoid} tone="warn">{list(g.avoidIf)}</Card>
+            {g.compare && (
+              <Card id="compare" title={h.compare}>
+                {answer(A.compare)}
+                {table(g.compare.head, g.compare.rows.map((r) => [r.label, ...r.values]))}
+                {g.compare.note && <p className="mt-2 text-sm text-[var(--color-muted)]"><Cited text={g.compare.note} /></p>}
+              </Card>
+            )}
+            <Card id="choose" title={h.choose}>{list(g.howToChoose)}</Card>
+            <Card id="faq" title={h.faq}>
+              <div className="mt-4 divide-y divide-[var(--color-line)] border-y border-[var(--color-line)]">
+                {g.faqs.map((f) => (
+                  <details key={f.q} className="group py-4">
+                    <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-bold">
+                      <span>{f.q}</span>
+                      <ChevronDown aria-hidden className="h-5 w-5 shrink-0 transition-transform group-open:rotate-180" />
+                    </summary>
+                    <p className="mt-2 text-[var(--color-ink)]"><Cited text={f.a} /></p>
+                  </details>
+                ))}
+              </div>
+            </Card>
+            {related.length > 0 && (
+              <Reveal className="rounded-3xl border border-[var(--color-line)] bg-white p-6 sm:p-8">
+                <h2 className="text-2xl">From our range</h2>
+                <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-5">{related.map((p) => <ProductCard key={p.id} product={p} />)}</div>
+              </Reveal>
+            )}
+            <Card id="sources" title="Sources">
+              <ol className="mt-4 space-y-2 text-sm">
+                {g.sources.map((s, i) => (
+                  <li key={s.url + i} id={`source-${i + 1}`} className="grid scroll-mt-32 grid-cols-[2.5rem_1fr] gap-2 border-b border-dashed border-[var(--color-line)] pb-2">
+                    <span className="font-semibold tabular-nums text-[var(--color-muted)]">[{i + 1}]</span>
+                    <span>{s.label}. <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-[var(--color-accent)] hover:underline">{s.title}</a></span>
+                  </li>
+                ))}
+              </ol>
+            </Card>
+            <p className="px-2 text-xs text-[var(--color-muted)]">
+              This article is for general information and is not medical advice. Talk to your doctor or pharmacist before taking a supplement, especially if
+              you are pregnant, breastfeeding, take medication or have a medical condition. These statements have not been evaluated by the Food and Drug
+              Administration. Supplements are not intended to diagnose, treat, cure, or prevent any disease.
+            </p>
+          </article>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
     {/* Plain soft header (the particle artwork was retired 17 Nov) */}
@@ -353,11 +498,11 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
         </section>
       )}
 
-      <div className="mt-12 rounded-3xl bg-[var(--color-soft)] p-6 text-center">
+      {shop && <div className="mt-12 rounded-3xl bg-[var(--color-soft)] p-6 text-center">
         <h2 className="text-xl">Not sure what’s right for you?</h2>
         <p className="mt-1 text-sm text-[var(--color-muted)]">Our 2-minute quiz suggests supplements based on your goals, diet and medications.</p>
         <Link href="/quiz" className="btn btn-primary mt-4">Take the quiz</Link>
-      </div>
+      </div>}
 
       <section id="sources" className="mt-12">
         <h2 className="text-2xl">Sources</h2>

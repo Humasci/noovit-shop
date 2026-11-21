@@ -63,7 +63,8 @@ Read this first. It is the standing context for any session working on this repo
   templates: `npm run social` → `design/social/` (evidence, dose, meet-the-molecule posts; Ask-AI and evidence stories).
   Infographics: `npm run infographic` (CoQ10, magnesium, creatine, ashwagandha). **Accuracy rule:** molecules are PubChem structures
   (`ballStick`, atoms as rounded tiles, CPK colours O red / N blue / P orange), only rotated or scaled, never redrawn;
-  facts from NIH ODS or peer-reviewed reviews; schematic biology marked "not to scale".
+  facts from NIH ODS or peer-reviewed reviews; schematic biology marked "not to scale". Test-kit figures (21 Nov): 3D ball-and-stick from
+  PubChem 3D conformers (`data/molecules3d.json`, `scripts/build-molecules3d.py`, rendered by `scripts/test-art.ts`), hydrogens shown, CPK colours (C grey, I violet).
 - **The cross:** only the five-tile mosaic cross, everywhere (logo, favicon, loader, brand name in text, emails, advisor icon).
 - **Product images (16 Nov): photoreal studio shot** `assets/mockups/studio-bottle.jpg` (owner-supplied render, 2000 × 1493, grey studio,
   ribbed cap, soft natural shadow; the portrait one had a hard streak shadow) with our label mapped on by `lib/labels/studio.ts` (cylinder unwrap; the template's light is measured from its
@@ -99,6 +100,8 @@ Read this first. It is the standing context for any session working on this repo
   (done in the widget). Rules + compliance in `lib/advisor.ts`; route `app/api/advisor/route.ts`; widget
   `components/advisor/Advisor.tsx`; shown only when the key is set. Tests: `tests/e2e/fake-gemini.mjs`.
 - Site look: Thorne-like (white, pill buttons, black announcement bar, shop-by-goal tiles).
+- **Guide layout (21 Nov):** `layout: 'file'` = evidence-file prototype (sticky TOC `components/guides/GuideToc.tsx`, `components/ui/Reveal.tsx`); magnesium glycinate only until approved. Motion: CSS + IntersectionObserver, no GSAP.
+- **Tests ↔ supplements:** `lib/test-pairings.ts` (no pairing for thyroid, kidney, liver, A1c, AMH, PSA, STI).
 - Key paths: catalog seed `data/products.ts` (live catalog is the `products` table, jsonb `data`; `status` is a column);
   labels `lib/labels/{svg,photo,png,gallery,gallery-data}.ts`; guides `lib/guides.ts`; quiz `lib/quiz.ts`;
   settings `lib/settings.ts` (admin values > env > defaults); pre-launch gate `proxy.ts` + `lib/launch.ts`;

@@ -6,5 +6,5 @@ export const PUBLIC_EARLY_GUIDES = ['magnesium', 'magnesium-glycinate', 'creatin
 export const PUBLIC_EARLY_PATHS = ['/guides', ...PUBLIC_EARLY_GUIDES.map((s) => `/guides/${s}`)];
 export const isPublicEarly = (pathname: string) => PUBLIC_EARLY_PATHS.includes(pathname.replace(/\/+$/, '') || '/');
 
-// next.config header source: every path except the public guides (path-to-regexp custom pattern).
-export const NOINDEX_SOURCE = `/:path((?!guides(?:/(?:${PUBLIC_EARLY_GUIDES.join('|')}))?/?$).*)`;
+// next.config header source: every path except the public guides and the crawler files (sitemap, robots, llms.txt).
+export const NOINDEX_SOURCE = `/:path((?!guides(?:/(?:${PUBLIC_EARLY_GUIDES.join('|')}))?/?$|sitemap\\.xml$|robots\\.txt$|llms\\.txt$).*)`;

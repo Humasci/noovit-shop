@@ -10,6 +10,8 @@ import { Gallery, PurchaseBox, TrackViewItem } from '@/components/product/Produc
 import { ProductCard } from '@/components/product/ProductCard';
 import { StackFolder } from '@/components/stacks/StackFolder';
 import { stackParts } from '@/lib/stacks';
+import { kitsForProduct } from '@/lib/test-pairings';
+import { findKit } from '@/lib/tests';
 import { ProductImage } from '@/components/product/ProductImage';
 import { Product } from '@/types';
 import { Stars } from '@/components/ui/Stars';
@@ -92,6 +94,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       : relatedByGoal(product, all);
   if (!isPet && related.length < 4) related.push(...bestSellers(all).filter((p) => p.id !== product.id && p.status === 'active' && !related.includes(p)).slice(0, 4 - related.length));
   const bundles = all.filter((p) => p.status === 'active' && p.bundleItems?.some((b) => b.slug === product.slug));
+  const pairedKits = kitsForProduct(product.slug, product.bundleItems?.map((b) => b.slug)).map(findKit).filter((k) => k !== undefined).slice(0, 4);
   const goals = goalsForProduct(product.slug).map((g) => GOAL_PAGES.find((x) => x.goal === g)).filter((x) => x !== undefined).slice(0, 3);
   const guides = guidesForProduct(product.slug);
   const guide = guides[0] ?? null;
@@ -467,6 +470,34 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               {bundles.slice(0, 2).map((s, i) => <StackFolder key={s.id} stack={s} parts={stackParts(s, all)} index={i + 1} compact />)}
             </div>
             <p className="mt-6 text-center text-sm"><Link href="/stacks" className="font-semibold text-[var(--color-navy)] hover:underline">See all stacks</Link></p>
+          </div>
+        </section>
+      )}
+
+      {/* Check your levels: the at-home tests that pair with this product (lib/test-pairings.ts) */}
+      {pairedKits.length > 0 && (
+        <section className="section pt-0">
+          <div className="container px-6">
+            <div className="grid gap-6 rounded-3xl bg-[var(--studio)] p-6 sm:p-10 md:grid-cols-[1fr_1.4fr] md:items-center">
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted)]">Check your levels</p>
+                <h2 className="mt-2 text-2xl text-[var(--color-navy)] sm:text-3xl">Test first, then track</h2>
+                <p className="mt-2 text-[var(--color-ink)]/80">Know your starting point at home, and retest in about 3 months.</p>
+              </div>
+              <ul className="grid gap-3 sm:grid-cols-2">
+                {pairedKits.map((kit) => (
+                  <li key={kit.slug}>
+                    <Link href={`/at-home-tests/${kit.slug}`} className="flex h-full items-center justify-between gap-3 rounded-2xl bg-white p-4 transition-colors hover:bg-[var(--color-soft)]">
+                      <span>
+                        <span className="block font-semibold text-[var(--color-navy)]">{kit.name}</span>
+                        <span className="block text-xs text-[var(--color-muted)]">Coming soon</span>
+                      </span>
+                      <span aria-hidden className="text-[var(--color-navy)]">→</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </section>
       )}

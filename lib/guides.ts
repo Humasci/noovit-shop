@@ -34,6 +34,7 @@ export interface Guide {
   reviewer?: { name: string; credentials: string; url?: string }; // a real, consenting medical reviewer
   // Topic guides (not a single ingredient) override the page title and section headings.
   h1?: string;
+  layout?: 'file'; // 'file' = evidence-file layout (21 Nov prototype: sticky TOC, section cards, evidence stamps)
   // Answer-ready blocks (20 Nov): each section opens with a 40–60 word answer under a question heading, then a real table or
   // list, which answer boxes and AI tools quote. All optional; [n] cites the sources like everywhere else.
   answers?: Partial<Record<'benefits' | 'dosage' | 'timing' | 'sideEffects' | 'compare', string>>;
@@ -772,6 +773,7 @@ export const GUIDES: Guide[] = [
     // 20 Nov: pillar for the "magnesium glycinate" topic (~200K searches/month: benefits, dosage, side effects, timing, vs).
     // Built only from sources already opened and verified for the magnesium guide; claims match what those sources support.
     slug: 'magnesium-glycinate',
+    layout: 'file',
     ingredient: 'Magnesium glycinate',
     h1: 'Magnesium glycinate: benefits, dosage, timing & side effects',
     metaTitle: 'Magnesium Glycinate: Benefits, Dosage, Side Effects',
