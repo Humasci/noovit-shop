@@ -5,6 +5,7 @@ import { Check, RefreshCw, ShieldCheck, Truck } from 'lucide-react';
 import { Frequency, Product, PurchaseMode } from '@/types';
 import { packOptions, maxSavingPercent } from '@/data/products';
 import { PAYMENT_METHODS } from '@/data/content';
+import { PaymentIcons } from '@/components/brand/PaymentIcons';
 import toast from 'react-hot-toast';
 import { track } from '@/lib/analytics';
 import { useCart, cartFrequency } from '@/lib/store/cart';
@@ -241,13 +242,7 @@ export function PurchaseBox({ product, sections = [] }: { product: Product; sect
         </>
       )}
 
-      <div className="mt-4 flex flex-wrap justify-center gap-1.5">
-        {PAYMENT_METHODS.map((m) => (
-          <span key={m} className="rounded-sm border border-[var(--color-line)] bg-white px-2 py-0.5 text-[10px] font-semibold text-[var(--color-muted)]">
-            {m}
-          </span>
-        ))}
-      </div>
+      <PaymentIcons methods={PAYMENT_METHODS} className="mt-4 justify-center" />
     </div>
   );
 }

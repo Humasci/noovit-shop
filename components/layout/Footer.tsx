@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Instagram, Facebook, Lock } from 'lucide-react';
 import { PAYMENT_METHODS } from '@/data/content';
+import { PaymentIcons } from '@/components/brand/PaymentIcons';
 import { GOAL_PAGES } from '@/lib/goals';
 import { CookiePreferencesLink } from '@/components/analytics/Analytics';
 import { Logo } from '@/components/layout/Logo';
@@ -26,9 +27,7 @@ const COLUMNS = [
       { name: "Men's Health", href: '/mens-health' },
       { name: 'At-Home Tests', href: '/at-home-tests' },
       { name: 'Supplements', href: '/shop?type=supplements' },
-      { name: 'Sports', href: '/shop?type=sports' },
       { name: 'Noovit Pets', href: '/pets' },
-      { name: 'Take the quiz', href: '/quiz' },
     ],
   },
   {
@@ -38,12 +37,16 @@ const COLUMNS = [
   {
     title: 'Info',
     links: [
-      { name: 'Reviews', href: '/reviews' },
       { name: 'Journal', href: '/blog' },
       { name: 'Supplement Guides', href: '/guides' },
       { name: 'About Us', href: '/about' },
-      { name: 'Privacy Policy', href: '/policies/privacy' },
+    ],
+  },
+  {
+    title: 'Legal',
+    links: [
       { name: 'Terms & Conditions', href: '/policies/terms' },
+      { name: 'Privacy Policy', href: '/policies/privacy' },
       { name: 'Consumer Health Data', href: '/policies/consumer-health-data' },
       { name: 'Your Privacy Choices', href: '/policies/privacy#choices' },
       { name: 'Accessibility', href: '/policies/accessibility' },
@@ -82,12 +85,12 @@ export function SocialLinks({ className = '' }: { className?: string }) {
 export function Footer() {
   return (
     <footer className="bg-[var(--color-navy)] text-white">
-      <div className="container grid gap-10 px-6 py-14 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+      <div className="container grid gap-10 px-6 py-14 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
         <div>
           <Link href="/" aria-label="Noovit home" className="mb-4 inline-block text-[2rem] leading-none text-white">
             <Logo />
           </Link>
-          <p className="max-w-xs text-sm text-white/70">Clean, science-driven supplements for everyday health.</p>
+          <p className="max-w-xs text-sm text-white/70">Evidence-led supplements, with every dose on the front.</p>
           <SocialLinks className="mt-5 text-white/80" />
         </div>
         {COLUMNS.map((col) => (
@@ -118,11 +121,7 @@ export function Footer() {
           </div>
           <div className="flex flex-wrap items-center justify-center gap-2">
             <span className="mr-2 flex items-center gap-1"><Lock className="h-3 w-3" /> Secure checkout</span>
-            {PAYMENT_METHODS.map((m) => (
-              <span key={m} className="rounded border border-white/20 px-2 py-1 text-[10px] font-semibold text-white/80">
-                {m}
-              </span>
-            ))}
+            <PaymentIcons methods={PAYMENT_METHODS} />
           </div>
         </div>
         <p className="container px-6 pb-6 text-[11px] leading-relaxed text-white/60">

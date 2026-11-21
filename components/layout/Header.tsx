@@ -41,7 +41,6 @@ const NAV: NavItem[] = [
     goals: true,
   },
   { name: 'Best Sellers', href: '/shop?type=best-sellers' },
-  { name: 'Journal', href: '/blog' },
   { name: 'Take the quiz', href: '/quiz' },
   {
     name: 'Pets',
@@ -98,7 +97,7 @@ export function Header({ trustBar, announcement, advisor = false, bestSellers = 
             <Logo />
           </Link>
           {/* Top-level items in caps (owner, 17 Nov); dropdown links stay in sentence case. */}
-          <nav aria-label="Main" className="hidden items-center gap-7 whitespace-nowrap text-[13px] font-semibold uppercase tracking-[0.12em] lg:flex">
+          <nav aria-label="Main" className="hidden items-center gap-7 whitespace-nowrap text-[13px] font-medium uppercase tracking-[0.06em] lg:flex">
             {NAV.filter((n) => !n.pets && (bestSellers || n.name !== 'Best Sellers')).map((n) => {
               const tone = n.pets ? 'text-[var(--color-pets)] hover:text-[var(--color-pets-dark)]' : 'hover:text-[var(--color-accent)]';
               if (!n.children) return <Link key={n.href} href={n.href} className={tone}>{n.name}</Link>;

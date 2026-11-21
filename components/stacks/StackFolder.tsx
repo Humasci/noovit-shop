@@ -15,12 +15,11 @@ const eyebrow = 'text-[11px] font-semibold uppercase tracking-wider text-[var(--
 export function StackFolder({ stack, parts, index, isNew = false, compact = false }: { stack: Product; parts: Product[]; index: number; isNew?: boolean; compact?: boolean }) {
   const separately = parts.reduce((s, p) => s + p.basePrice, 0);
   const save = separately - stack.basePrice;
-  const n = String(index).padStart(2, '0');
   return (
     <article className="relative pt-8">
       {/* folder tab in the stack's colour */}
       <div className="absolute left-0 top-0 flex h-9 items-center gap-2 rounded-t-2xl px-5 text-[11px] font-semibold uppercase tracking-wider text-white" style={{ background: `color-mix(in srgb, ${stack.color} 70%, #000)` }}>
-        Stack {n}
+        {stack.name}
       </div>
       <div className="overflow-hidden rounded-3xl rounded-tl-none border border-[var(--color-line)] bg-white" style={{ borderTop: `4px solid ${stack.color}` }}>
         <div className={`grid gap-6 p-5 sm:p-8 ${compact ? 'md:grid-cols-[1fr_1.1fr]' : 'lg:grid-cols-[1fr_1.1fr]'} lg:gap-10`}>
