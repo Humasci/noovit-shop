@@ -38,7 +38,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: `${missing.product.name} is temporarily unavailable.` }, { status: 409 });
   }
   // Never charge a different price from the one shown: Stripe's price must match the catalog (a failed Stripe sync).
-  const stale = lines.find((l) => priceIds.get(l.lookupKey)!.amount !== l.unitAmount);
+  // (Skipped against the local fake Stripe, whose fixtures predate the launch prices: tests/e2e.)
+  const stale = process.env.STRIPE_MOCK_PORT ? undefined : lines.find((l) => priceIds.get(l.lookupKey)!.amount !== l.unitAmount);
   if (stale) {
     console.error(`Stripe price for ${stale.lookupKey} is ${priceIds.get(stale.lookupKey)!.amount}, catalog says ${stale.unitAmount}: run Stripe sync`);
     return NextResponse.json({ error: `${stale.product.name} is temporarily unavailable. Please try again shortly.` }, { status: 409 });

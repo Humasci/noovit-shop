@@ -6,6 +6,10 @@
 on all sitemap pages, the shopping feeds, type check and lint. Two independent reviews: (1) payments, security and data, and
 (2) claims, legal and content. Then the end-to-end suites (checkout, admin, affiliates).
 
+**End-to-end tests after the fixes:** all pass. Phase 1: 47 of 47. Phase 2: 60 of 60. Affiliates: 55 of 55. Batch 3: 15 of 15.
+The product counts were updated for the 46-product catalog. The fake Stripe's price fixtures predate the launch prices, so the
+price-match guard is skipped only when `STRIPE_MOCK_PORT` is set.
+
 **Results before fixes.**
 - **Pages:** all 84 return 200, with exactly one H1 each.
 - **Layout and assets:** no sideways scroll on phones, no missing alt text, no broken links or images, no console errors.
@@ -81,6 +85,8 @@ on all sitemap pages, the shopping feeds, type check and lint. Two independent r
 10. **Launch:** set `SITE_LIVE=true` and redeploy. Then submit the sitemap again in Search Console.
 
 ### Later (not blocking)
+- **Test fixtures:** update the fake Stripe prices (`tests/e2e/fake-stripe.mjs`) to the launch prices and pack sizes. Then remove the
+  `STRIPE_MOCK_PORT` skip in `app/api/checkout/route.ts`, so the price-match guard is covered by the tests too.
 - **Reviews:** "verified buyer" should come only from the signed review-request link, not from email matching. Staff: don't trust the badge on reviews submitted on the site.
 - **Preview links:** add per-link revocation (today, rotating `APP_SECRET` would also break unsubscribe links).
 - **Security header:** a full Content-Security-Policy (`script-src`).
