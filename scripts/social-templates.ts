@@ -8,7 +8,8 @@
 // Usage: npm run social   (edit POSTS below to add more)
 import { mkdirSync, readdirSync, writeFileSync } from 'fs';
 import { Resvg } from '@resvg/resvg-js';
-import { cellsSvg, helixSvg, proteinSvg, SCIENCE as S } from '@/lib/labels/web-art';
+import { cellsSvg, helixSvg, SCIENCE as S } from '@/lib/labels/web-art';
+import { mol3d, mol3dSource } from '@/lib/labels/molecule3d';
 import { SEED_PRODUCTS } from '@/data/products';
 import { wordmark, wrap } from '@/lib/labels/svg';
 
@@ -67,21 +68,25 @@ function dosePost(p: (typeof POSTS)[number]) {
 </svg>`;
 }
 
-const MOLECULES: { slug: string; product: string; name: string; line: string; note?: string }[] = [
-  { slug: 'ashwagandha', product: 'ashwagandha', name: 'Withaferin A', line: 'One of the withanolides, the compounds ashwagandha extracts like KSM-66 are standardized for.' },
-  { slug: 'turmeric', product: 'turmeric-complex', name: 'Curcumin', line: "Turmeric's main active compound, and the reason a 95% curcuminoid extract is on the label.", note: 'Drawn from its structure in PubChem (ball-and-stick).' },
-  { slug: 'coq10', product: 'coq10', name: 'Coenzyme Q10', line: 'A compound your body makes and uses to produce energy in cells. Levels fall with age.' },
+// 21 Nov: 3D ball-and-stick (lib/labels/molecule3d.ts, PubChem 3D conformers), the owner-approved molecule style.
+const MOLECULES: { slug: string; product: string; key: string; name: string; line: string; hydrogens?: boolean; view?: [number, number, number]; box?: [number, number, number, number] }[] = [
+  { slug: 'ashwagandha', product: 'ashwagandha', key: 'withaferin', name: 'Withaferin A', line: 'One of the withanolides, the compounds ashwagandha extracts like KSM-66 are standardized for.', hydrogens: false },
+  { slug: 'turmeric', product: 'turmeric-complex', key: 'curcumin', name: 'Curcumin', line: "Turmeric's main active compound, and the reason a 95% curcuminoid extract is on the label.", view: [0, 0.35, 0], box: [540, 520, 1000, 420] },
+  { slug: 'coq10', product: 'coq10', key: 'coq10', name: 'Coenzyme Q10', line: 'A compound your body makes and uses to produce energy in cells. Levels fall with age.', view: [0, 0.3, 0], box: [540, 520, 1040, 420] },
+  { slug: 'creatine', product: 'creatine', key: 'creatine', name: 'Creatine', line: 'Made by your body from three amino acids, and stored in muscle as a quick energy reserve.' },
 ];
 function moleculePost(m: (typeof MOLECULES)[number]) {
   const W = 1080, H = 1080;
-  const p = SEED_PRODUCTS.find((x) => x.slug === m.product)!;
+  const [bx, by, bw, bh] = m.box ?? [720, 500, 660, 560];
+  const r = mol3d(m.key, bx, by, bw, bh, ...(m.view ?? [0.55, 0.45, 0] as [number, number, number]), { id: `post-${m.key}`, hydrogens: m.hydrogens });
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}">
-  <rect width="${W}" height="${H}" fill="${S.night}"/>
-  ${nest(proteinSvg(p as never, 640, 640), 640, 640, 460, 170)}
+  <defs>${r.defs}<radialGradient id="mbg" cx="65%" cy="45%" r="70%"><stop offset="0" stop-color="#1B2260"/><stop offset="1" stop-color="${S.night}"/></radialGradient></defs>
+  <rect width="${W}" height="${H}" fill="url(#mbg)"/>
+  ${r.body}
   ${text(80, 130, 'MEET THE MOLECULE', 24, '#fff', 'font-weight="600" letter-spacing="5" opacity="0.7"')}
   ${head(76, 240, wrap(m.name, 640, 84, 0.55).slice(0, 2), 84, '#fff')}
   ${head(80, 820, wrap(m.line, 900, 34, 0.5).slice(0, 3), 34, '#fff')}
-  ${text(80, 980, m.note ?? 'Built from its real 3D structure (PubChem).', 24, '#fff', 'opacity="0.6"')}
+  ${text(80, 980, mol3dSource(m.key).replace(/ \(.*\)$/, '') + '.', 22, '#fff', 'opacity="0.6"')}
   ${wordmark(1000 - (3.46 * 38) / 2, 990, 38, 'print', '#ffffff')}
 </svg>`;
 }

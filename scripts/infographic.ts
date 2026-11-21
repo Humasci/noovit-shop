@@ -1,12 +1,12 @@
 // Educational infographics in the "molecular city" style (3–4 Nov): a central bead-built illustration, hexagon
 // close-ups joined by thin lines, and short captions. Accuracy rules: captions are facts from NIH pages and our
-// verified guides (no product claims); every molecule is PubChem's own 2D structure (data/skeletons.json), drawn as
+// verified guides (no product claims); every molecule is a 3D ball-and-stick from PubChem's 3D conformer (data/molecules3d.json; 21 Nov, was 2D tiles), drawn as
 // is or cropped, never bent; schematic parts (cells, fibres, bone) are labelled "illustration, not to scale".
 // Writes design/social/infographic-<topic>.png (1800×1200). Usage: npm run infographic
 import { mkdirSync, readdirSync, writeFileSync } from 'fs';
 import { Resvg } from '@resvg/resvg-js';
 import { SEED_PRODUCTS } from '@/data/products';
-import { ballStick } from '@/lib/labels/molecule';
+import { mol3d } from '@/lib/labels/molecule3d';
 import { particleShape } from '@/lib/labels/shapes';
 import { wordmark, wrap } from '@/lib/labels/svg';
 
@@ -74,8 +74,15 @@ function hex(id: string, cx: number, cy: number, inner: string, r = 108) {
 }
 
 // ---- hexagon contents (all drawn in the hexagon's own box, ~210 px across) ----
-const mol = (key: string, cx: number, cy: number, w: number, h: number, opts: { rotate?: number; zoom?: number; zoomAt?: 'oxygen' | 'centre'; weight?: number } = {}) =>
-  ballStick(key, cx, cy, w, h, '#7FD6CC', { carbon: '#3A4466', rotate: opts.rotate ?? 0, zoom: opts.zoom, zoomAt: opts.zoomAt, weight: opts.weight });
+// Molecules (21 Nov): 3D ball-and-stick from PubChem 3D conformers (lib/labels/molecule3d.ts), the owner-approved style.
+const KEY3D: Record<string, string> = { 'creatine-h': 'creatine', 'withaferin-a': 'withaferin' };
+let molN = 0;
+const mol = (key: string, cx: number, cy: number, w: number, h: number, opts: { rotate?: number; zoom?: number; zoomAt?: 'oxygen' | 'centre'; weight?: number; hydrogens?: boolean } = {}) => {
+  const k = KEY3D[key] ?? key;
+  const r = mol3d(k, cx, cy, w, h, 0.55 + (opts.rotate ?? 0), 0.4, 0, { id: `${k}${molN++}`, scale: 1.3, zoom: opts.zoom, zoomAt: opts.zoomAt, hydrogens: opts.hydrogens ?? !['atp', 'withaferin', 'cortisol'].includes(k) });
+  defs.push(r.defs);
+  return r.body;
+};
 const atpSynthase = (cx: number, cy: number) => {
   const out: string[] = [blob(cx, cy + 55, 70, 10, [LAV, COBALT], 3.5, 1.2)];
   for (let k = 0; k < 9; k++) { const a = (k / 9) * Math.PI * 2; out.push(blob(cx + Math.cos(a) * 30, cy - 20 + Math.sin(a) * 30, 13, 13, [GOLD, '#F2D97A', '#C9A227'], 3.2)); }
@@ -265,7 +272,7 @@ for (const t of TOPICS) {
   const body = `<rect width="${W}" height="${H}" fill="${NIGHT}"/>${centre}${hexes}
     <text x="70" y="110" font-size="72" font-weight="300" fill="#fff" font-family="Manrope">${esc(t.title)}</text>
     <text x="70" y="160" font-size="34" font-weight="300" fill="#fff" fill-opacity="0.85" font-family="Manrope">${esc(t.subtitle)}</text>
-    <text x="70" y="1170" font-size="18" fill="#fff" fill-opacity="0.55" font-family="Inter">${esc(`Educational illustration, not to scale. Molecules: PubChem 2D structures. Sources: ${t.sources}`)}</text>
+    <text x="70" y="1170" font-size="18" fill="#fff" fill-opacity="0.55" font-family="Inter">${esc(`Educational illustration, not to scale. Molecules: ${t.slug === 'coq10' ? '3D model computed from the PubChem structure' : 'PubChem 3D structures'}. Sources: ${t.sources}`)}</text>
     ${wordmark(1660, 1165, 40, 'print', '#ffffff')}`;
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}"><defs><radialGradient id="mem" cx="0.42" cy="0.38" r="0.7"><stop offset="0" stop-color="#3B4DB8" stop-opacity="0.35"/><stop offset="0.85" stop-color="#1B2470" stop-opacity="0.55"/><stop offset="1" stop-color="#AFC2FF" stop-opacity="0.35"/></radialGradient>${defs.join('')}</defs>${body}</svg>`;
   const file = `design/social/infographic-${t.slug}.png`;

@@ -4,7 +4,12 @@
 # Run: python3 scripts/build-molecules3d.py <sdf-dir> data/molecules3d.json
 import sys, json
 D, out = sys.argv[1], sys.argv[2]
-CIDS = {'cortisol': 5754, 'testosterone': 6013, 'cholesterol': 5997, 'calcifediol': 5283731, 'thyroxine': 5819, 'estradiol': 5757}
+CIDS = {'cortisol': 5754, 'testosterone': 6013, 'cholesterol': 5997, 'calcifediol': 5283731, 'thyroxine': 5819, 'estradiol': 5757,
+        # infographics and social posts (21 Nov)
+        'creatine': 586, 'phosphocreatine': 9548602, 'atp': 5957, 'curcumin': 969516, 'withaferin': 265237, 'coq10': 5281915}
+# CoQ10 has no PubChem 3D conformer (too flexible). coq10.3d.sdf is computed from PubChem's 2D structure (CID 5281915)
+# with RDKit: AddHs, ETKDGv3 (seed 42, 30 conformers), MMFF94 optimisation, the lowest-energy of the 10 most extended.
+COMPUTED = {'coq10': 'RDKit ETKDG + MMFF94 from the PubChem structure'}
 def read(path):
     L = open(path).read().splitlines()
     na, nb = int(L[3][:3]), int(L[3][3:6])
@@ -33,6 +38,6 @@ def principal(atoms):
 res = {}
 for name, cid in CIDS.items():
     a, b = read(f"{D}/{name}.3d.sdf")
-    res[name] = {'cid': cid, 'atoms': principal(a), 'bonds': b}
+    res[name] = {'cid': cid, 'atoms': principal(a), 'bonds': b, **({'computed': COMPUTED[name]} if name in COMPUTED else {})}
 json.dump(res, open(out, 'w'))
 print({k: len(v['atoms']) for k, v in res.items()})

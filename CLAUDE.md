@@ -64,7 +64,7 @@ Read this first. It is the standing context for any session working on this repo
   Infographics: `npm run infographic` (CoQ10, magnesium, creatine, ashwagandha). **Accuracy rule:** molecules are PubChem structures
   (`ballStick`, atoms as rounded tiles, CPK colours O red / N blue / P orange), only rotated or scaled, never redrawn;
   facts from NIH ODS or peer-reviewed reviews; schematic biology marked "not to scale". Test-kit figures (21 Nov): 3D ball-and-stick from
-  PubChem 3D conformers (`data/molecules3d.json`, `scripts/build-molecules3d.py`, rendered by `scripts/test-art.ts`), hydrogens shown, CPK colours (C grey, I violet). **Owner approved (21 Nov): this 3D style is the standard for new molecule art**; the flat 2D
+  PubChem 3D conformers (`data/molecules3d.json`, `scripts/build-molecules3d.py`; shared renderer `lib/labels/molecule3d.ts`, used by test-art, infographic and social scripts; CoQ10 has no PubChem 3D, so it is computed with RDKit and labelled as computed), hydrogens shown, CPK colours (C grey, I violet). **Owner approved (21 Nov): this 3D style is the standard for new molecule art**; the flat 2D
   tiles stay only where already printed or posted.
 - **The cross:** only the five-tile mosaic cross, everywhere (logo, favicon, loader, brand name in text, emails, advisor icon).
 - **Product images (16 Nov): photoreal studio shot** `assets/mockups/studio-bottle.jpg` (owner-supplied render, 2000 × 1493, grey studio,
