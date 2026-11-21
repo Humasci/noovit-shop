@@ -101,14 +101,8 @@ const miniCells = (cx: number, cy: number) =>
   [[-45, -25, 42], [40, -35, 36], [-10, 40, 46], [60, 40, 30]].map(([x, y, r]) =>
     `<circle cx="${cx + x}" cy="${cy + y}" r="${r}" fill="#24308A" fill-opacity="0.6" stroke="#AFC2FF" stroke-opacity="0.5" stroke-width="2"/>` + blob(cx + x, cy + y, r * 0.45, r * 0.45, [CREAM, '#E9D6B4'], 2.6, 1.2)).join('');
 const enzyme = (cx: number, cy: number) => blob(cx, cy, 80, 62, [TEAL, '#1F8C83', LAV, COBALT], 4, 1.2) + dot(cx + 18, cy - 8, 11, '#B9C7D6') + `<circle cx="${cx + 18}" cy="${cy - 8}" r="17" fill="none" stroke="#fff" stroke-opacity="0.7" stroke-dasharray="3 3"/>`;
-const fibre = (cx: number, cy: number, w = 200) => {
-  const out: string[] = [];
-  for (let row = -2; row <= 2; row++) for (let x = -w / 2; x <= w / 2; x += 7) {
-    const band = Math.floor((x + w / 2) / 28) % 2;
-    out.push(dot(cx + x, cy + row * 15 + Math.sin(x / 30) * 2, 4.2, band ? '#D25A9C' : '#F2B6D4'));
-  }
-  return out.join('');
-};
+// Hexagon close-up: three striated muscle fibres (drawn with the same flesh cylinders as the centre illustration).
+const fibre = (cx: number, cy: number, w = 200) => [-48, 0, 48].map((dy, i) => fibreCyl(cx - w / 2 + 6, cx + w / 2 + 30, cy + dy, 48, (i - 1) * 2, 2.8, 12)).join('');
 const bone = (cx: number, cy: number) => {
   const out: string[] = [];
   for (let gy = -3; gy <= 3; gy++) for (let gx = -4; gx <= 4; gx++) {
@@ -122,13 +116,50 @@ const brandShape = (slug: string, cx: number, cy: number, size: number) =>
   particleShape(SEED_PRODUCTS.find((p) => p.slug === slug)! as never, cx - size / 2, cy - size / 2, size, '#7FA6D8', { spectrum: true, bead: 2.4 });
 
 // ---- central illustrations ----
-function muscle() {
-  const out: string[] = [`<ellipse cx="${CX}" cy="${CY}" rx="400" ry="230" fill="url(#mem)" stroke="#AFC2FF" stroke-opacity="0.3" stroke-width="3"/>`];
-  for (let k = -2; k <= 2; k++) out.push(fibre(CX, CY + k * 82, 640 - Math.abs(k) * 90));
-  for (const [x, y] of [[-200, -42], [120, -40], [-60, 40], [230, 42], [-260, 124], [40, -124]]) out.push(mito(CX + x, CY + y, 60, 0, 2.4));
+// Creatine (21 Nov, owner: "more flesh, less flat"): a skeletal-muscle fascicle. Each fibre is a round, flesh-coloured
+// cylinder shaded light-to-dark across its width, with the transverse striations (sarcomere bands) of skeletal muscle;
+// the left ends are cut to show the myofibrils packed inside, each fibre wrapped in pale connective tissue
+// (endomysium). Schematic, not to scale.
+const FLESH = ['#F9C2B4', '#EE9483', '#DC6A61', '#C4474B', '#A2303C', '#78202E', '#4A121D'];
+// One fibre: a cylinder of beads lit from above (highlight band in the upper third, dark underside), alternating
+// darker/lighter sarcomere bands along its length, a rounded far end, a cast shadow below, and a cut near end showing
+// the myofibrils (deep red dots) inside a pale endomysium rim.
+function fibreCyl(x0: number, x1: number, y: number, w: number, bow: number, r = 3.2, band = 14) {
+  const out: string[] = [], R = w / 2, L = x1 - x0;
+  out.push(`<path d="M${n(x0)} ${n(y + R * 0.9)} Q ${n((x0 + x1) / 2)} ${n(y + bow + R * 1.25)} ${n(x1)} ${n(y + R * 0.9)}" stroke="#05061a" stroke-opacity="0.55" stroke-width="${n(R * 0.7)}" fill="none" stroke-linecap="round"/>`);
+  const beads: { x: number; y: number; z: number; c: string; r: number }[] = [];
+  for (let x = x0; x <= x1; x += r * 0.8) {
+    const t = (x - x0) / L, yc = y + bow * Math.sin(Math.PI * t);
+    const dEnd = x1 - x, cap = dEnd < R ? Math.sqrt(Math.max(0, 1 - ((R - dEnd) / R) ** 2)) : 1;
+    const stripe = Math.floor((x - x0) / band) % 2 === 1;
+    for (let v = -1; v <= 1; v += (r * 0.8) / R) {
+      const vv = v * cap + (rnd() - 0.5) * 0.03;
+      const lit = 0.5 + 0.5 * Math.cos((vv + 0.35) * Math.PI * 0.62); // brightest just above centre
+      let ci = Math.round((1 - lit) * (FLESH.length - 2)) + (stripe ? 1 : 0);
+      if (lit > 0.95 && !stripe && rnd() < 0.35) ci = 0;
+      beads.push({ x: x + (rnd() - 0.5) * r * 0.25, y: yc + vv * R, z: Math.cos(vv * Math.PI / 2), c: FLESH[Math.max(0, Math.min(FLESH.length - 1, ci + 1))], r: r * (0.95 + 0.15 * rnd()) });
+    }
+  }
+  beads.sort((p, q) => p.z - q.z);
+  for (const bd of beads) out.push(dot(bd.x, bd.y, bd.r, bd.c));
+  // cut face
+  for (let i = 0; i < 40; i++) { const ang = (i / 40) * Math.PI * 2; out.push(dot(x0 + Math.cos(ang) * R * 0.4, y + Math.sin(ang) * R, r * 0.8, '#F7DDD4')); }
+  for (let i = 0; i < Math.round(R * 2.4); i++) { const ang = rnd() * Math.PI * 2, d = Math.sqrt(rnd()) * 0.84; out.push(dot(x0 + Math.cos(ang) * R * 0.36 * d, y + Math.sin(ang) * R * d, r * 0.7, ['#B23A49', '#8C2636', '#D45E66'][Math.floor(rnd() * 3)])); }
   return out.join('');
 }
-
+function muscle() {
+  const out: string[] = [`<ellipse cx="${CX}" cy="${CY + 10}" rx="430" ry="250" fill="#05061a" fill-opacity="0.35"/>`];
+  // back to front: upper fibres first so lower ones overlap them (reads as a round bundle)
+  const rows = [-150, -100, -50, 0, 50, 100, 150];
+  for (const [i, dy] of rows.entries()) {
+    const half = 380 * Math.sqrt(1 - (dy / 230) ** 2);
+    const shift = (i % 2 ? 14 : -10);
+    out.push(fibreCyl(CX - half + shift, CX + half + shift, CY + dy, 56, (i - 3) * 3));
+  }
+  // a few mitochondria sitting in the gaps between fibres
+  for (const [x, y] of [[-120, -76], [150, -25], [-20, 74], [210, 124]]) out.push(mito(CX + x, CY + y, 44, 0, 2));
+  return out.join('');
+}
 // Ashwagandha: a fleshy taproot that forks, with fine rootlets, shaded light-to-dark across its width so it reads as
 // round; above the ground line, oval leaves and the plant's orange-red berries in papery husks. Schematic, not to scale.
 const ROOT = ['#F6EBD6', '#EBD9B8', '#DCC49B', '#C7A97C', '#A88A5F'], LEAF = ['#8FCB8A', '#5FA66A', '#3F8552', '#2B6040'];
