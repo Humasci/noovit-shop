@@ -241,3 +241,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 21 Nov (75): creatine products shown as tubs from the owner's renders (lib/labels/tub.ts; studioPhotoPng and studioGroupPng use them; MOCKUP_VERSION studio-v14).
 - [x] 21 Nov (76): homepage Pets teaser ~40% shorter (fixed 28rem); /at-home-tests grouped by category with sticky jump links, pet kits moved to /pets only (link at the end); mosaic tile corners on the tests hero, kit cards (orange on hover) and the test panel card; hero image slot ready.
 - [x] 21 Nov (77): at-home tests hero image (owner's kit-box render); owner's Gemini-edited CoQ10 infographic saved for reference.
+- [x] 21 Nov (78): pre-launch audit: 84-page crawl (desktop + phone, axe), SEO + feeds, two reviews (payments/security, claims/legal); fixes in 8a3915c, 7e1a388, d7fb1f5; report and owner checklist in docs/LAUNCH_AUDIT.md.

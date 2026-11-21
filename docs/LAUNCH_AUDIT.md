@@ -1,5 +1,94 @@
 # Noovit — Launch Audit
 
+## 21 November 2026: pre-launch audit (latest)
+
+**Scope.** Every public page crawled on desktop and a 375 px phone (84 pages), WCAG 2 A/AA checks with axe-core, the SEO check
+on all sitemap pages, the shopping feeds, type check and lint. Two independent reviews: (1) payments, security and data, and
+(2) claims, legal and content. Then the end-to-end suites (checkout, admin, affiliates).
+
+**Results before fixes.**
+- **Pages:** all 84 return 200, with exactly one H1 each.
+- **Layout and assets:** no sideways scroll on phones, no missing alt text, no broken links or images, no console errors.
+- **SEO:** structured data on every page; the only short titles are on pages that are noindex.
+- **Feeds:** correct, with hidden products excluded and free shipping set.
+- **Accessibility:** colour-contrast and underline issues found (fixed, below).
+
+### Fixed in code (commits 8a3915c, 7e1a388, d7fb1f5)
+
+**Security and payments**
+- Checkout is closed to the public until `SITE_LIVE=true`; staff and preview links can still check out.
+- Checkout refuses a Stripe price that differs from the catalog, which catches a failed Stripe sync.
+- A dead partner promo code no longer blocks checkout.
+- Bundles inherit 18+ from their parts.
+- Rate limits on the contact form, newsletter and test waitlist, "My Subscriptions" link and reviews (5 per IP per 10 minutes, 3 per email per hour).
+- Product image routes render only the current version; anything else redirects to it.
+- Admin privacy filters are quoted.
+- Cart swap keeps extra bottles.
+- Stripe session ID removed from the success URL and analytics.
+- Email addresses are no longer logged in full.
+- Journal share-image fonts are included.
+
+**Privacy**
+- No analytics or ad tags on any human test page. If tags were already loaded, the page reloads clean.
+- Global Privacy Control counts as an opt-out.
+- Test interest is never reported to analytics.
+- The AI advisor tells visitors their questions go to Google Gemini.
+
+**Claims**
+- Test pages no longer promise a certified lab or physician review before a partner exists.
+- Unverified quality claims removed: clean ingredients, evidence-based doses, clinically studied strains, micronized, the gluten-free FAQ.
+- Dropped two test pairings that read as drug or disease claims: cholesterol → CoQ10, hs-CRP → turmeric.
+- Creatine for Her copy now matches the evidence.
+- EU-style "reduces tiredness" claims and pet vet claims removed.
+- Payment badges match what Stripe shows.
+- The 10% offer shows only when a welcome code is set.
+- US spelling and alt text corrected.
+
+**Legal pages (drafts)**
+- A full privacy policy: who we share data with, cookies and ads, GPC, US state rights, the AI advisor, health data.
+- A new Consumer Health Data policy, for Washington's My Health My Data Act and Nevada's SB 370.
+- Full terms: eligibility, subscriptions, liability, Wyoming law.
+- An accessibility statement.
+- Footer links, including "Your Privacy Choices".
+
+**Accessibility:** "For Her" badge and stack tab contrast raised to AA; links in body text underlined; evidence chart labels made valid.
+
+### ▶ Before you set SITE_LIVE=true (owner)
+1. **Lawyer review** of the privacy policy, Consumer Health Data policy and terms (brief `docs/hiring/02`).
+2. **Company and address.** Confirm the LLC is formed and the exact Wyoming Agents suite address, then put it in Admin → Settings → Business address. Labels and emails use it; the current fallback is a guess.
+3. **Live catalog check** (Admin → Products). The seed marks some formulas as drafts.
+   - Set to **Hidden** until a supplier and formula are confirmed: Zinc, Daily Multi+, and Gut & Immunity Reset (it contains zinc).
+   - Confirm the formulas against Supliful: Probiotic Gut+, Glucosamine Joint+, Collagen, Menopause, Iron, D3 & K2, Biotin, Mushroom Clarity+.
+   - Glucosamine is usually made from shellfish: add a shellfish warning to Glucosamine Joint+ and the Joint Support Trio, or hide them.
+   - Then run Stripe sync.
+4. **Men's Health photos** show "for Men" labels, but those products are hidden, so buyers would get the regular label. Either create Creatine for Men and Magnesium for Men on Supliful and set them Active, or replace the photos.
+5. **Ask Supliful:**
+   - Which products are vegan, and confirm the "Vegan" chips.
+   - Prop 65 (lead) for turmeric, maca and ginseng sold to California.
+6. **Admin → Content:** check the announcement bar doesn't say "Clean Ingredients".
+7. **Environment variables in Vercel (Production):**
+   - Must be set:
+     - `NEXT_PUBLIC_SITE_URL=https://noovit.com`
+     - live `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET`
+     - `STRIPE_TAX_*` once registered
+     - `RESEND_API_KEY`, `EMAIL_FROM`, `EMAIL_REPLY_TO`
+     - `CRON_SECRET`, `ADMIN_PATH`
+     - `APP_SECRET`, 32 or more characters
+     - `SUPPORT_EMAIL`, `BUSINESS_ADDRESS`
+   - Never set: `STRIPE_MOCK_PORT`, `GEMINI_BASE_URL`, `RATE_LIMIT_OFF`.
+8. **Vercel → Firewall:** add a rate-limit rule for `/api/*` (for example 30 requests per minute per IP), on top of the in-app limits.
+9. **Gemini:** use a paid API tier, so advisor questions aren't used for training.
+10. **Launch:** set `SITE_LIVE=true` and redeploy. Then submit the sitemap again in Search Console.
+
+### Later (not blocking)
+- **Reviews:** "verified buyer" should come only from the signed review-request link, not from email matching. Staff: don't trust the badge on reviews submitted on the site.
+- **Preview links:** add per-link revocation (today, rotating `APP_SECRET` would also break unsubscribe links).
+- **Security header:** a full Content-Security-Policy (`script-src`).
+
+---
+
+## 27 October 2026 audit (earlier)
+
 _27 October 2026. Three independent reviews of the whole store, followed by a round of fixes:_
 - **Code and functionality:** checkout, webhooks, admin, security, data.
 - **SEO, content, compliance and performance:** a crawl of 35 URLs plus Lighthouse.
