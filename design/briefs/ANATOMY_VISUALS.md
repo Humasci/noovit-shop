@@ -40,8 +40,8 @@ models, colors, text styles or scripts.
 - **Delivery:** send the results as file attachments (pasted chat images don't reach the site).
 
 ## Status (23 Nov)
-- **Done and on the site:** Creatine for Her, Turmeric Complex (woman gardening, knees and hands), Iron (woman on stairs, blood vessels), Magnesium Sleep+ (woman on bed, back), Ashwagandha Calm+ (man at desk, brain + adrenals), Creatine (squat, fixed tint) and Lion's Mane (woman writing). Images in `public/images/lifestyle/`; captions in `lib/lifestyle.ts`.
-- **Fix needed:** CoQ10 (man on stairs). The heart is drawn front-on and large on a body turned sideways. Ask: "rotate the heart to match his body angle (side view), make it smaller, sitting center-left behind the breastbone, more translucent".
+- **Done and on the site:** Creatine for Her, Turmeric Complex (woman gardening, knees and hands), Iron (woman on stairs, blood vessels), Magnesium Sleep+ (woman on bed, back), Ashwagandha Calm+ (man at desk, brain + adrenals), Creatine (squat, fixed tint), Lion's Mane (woman writing) and CoQ10 (man on stairs, fixed heart, with the mitochondria close-up as an inset). Images in `public/images/lifestyle/`; captions in `lib/lifestyle.ts`.
+- **Still to come:** Batch 2 (Vitamin D3 + K2, Collagen, Biotin, Probiotic Gut+, Creatine Hydration+, Glucosamine Joint+), the stomach fix, videos, and the program photos (`PROGRAM_PHOTOS.md`).
 
 ## Fix for the existing stomach image (woman drinking water)
 **Problem:** the tube starts at the voice box (larynx) and runs straight to the stomach, which reads as water going down the windpipe.

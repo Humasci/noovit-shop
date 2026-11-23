@@ -2,7 +2,8 @@
 // Shown on the product page below the buy box, never in the product-photo slot (photos must show what customers get).
 // Captions follow the brief: structure/function wording with an asterisk, nothing beyond our evidence.
 // `links`: our guide plus the source behind the caption, so readers can check the evidence themselves.
-export const LIFESTYLE: Record<string, { src: string; alt: string; eyebrow: string; title: string; text: string; links?: { href: string; label: string }[]; w?: number; h?: number }> = {
+// `detail`: an optional close-up shown overlapping the main image's corner (e.g. CoQ10's mitochondria).
+export const LIFESTYLE: Record<string, { src: string; alt: string; eyebrow: string; title: string; text: string; links?: { href: string; label: string }[]; w?: number; h?: number; detail?: { src: string; alt: string; w: number; h: number } }> = {
   'creatine-for-women': {
     src: '/images/women/creatine-for-her-strength-anatomy.jpg',
     alt: 'A woman standing hands on hips, with her arm and shoulder muscles and brain shown as a translucent illustration',
@@ -85,5 +86,19 @@ export const LIFESTYLE: Record<string, { src: string; alt: string; eyebrow: stri
     title: 'A mushroom for the mind',
     text: 'Lion’s mane is an edible mushroom that researchers are studying for focus and memory. Each serving gives 1,000 mg of lion’s mane mushroom, to support focus.* Our guide sets out what the studies show, including their limits.',
     links: [{ href: '/guides/lions-mane', label: 'Read our lion’s mane guide' }],
+  },
+  coq10: {
+    src: '/images/lifestyle/coq10-heart-anatomy.jpg',
+    w: 1200,
+    h: 1490,
+    alt: 'A man walking up white stairs, with his heart shown as a translucent illustration behind the breastbone',
+    detail: { src: '/images/lifestyle/coq10-mitochondria-closeup.jpg', alt: 'Close-up illustration of a muscle fiber cut open to show the mitochondria inside', w: 800, h: 993 },
+    eyebrow: 'Cellular energy',
+    title: 'Where CoQ10 works',
+    text: 'Your body makes CoQ10 and uses it inside mitochondria, the parts of your cells that turn food into energy. Levels are highest in hard-working organs like the heart, and they tend to fall with age. CoQ10 200 mg supports cellular energy.*',
+    links: [
+      { href: '/guides/coq10', label: 'Read our CoQ10 guide' },
+      { href: 'https://www.nccih.nih.gov/health/coenzyme-q10', label: 'NIH NCCIH: coenzyme Q10' },
+    ],
   },
 };

@@ -453,9 +453,12 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       {LIFESTYLE[product.slug] && (
         <section className="section">
           <div className="container grid items-center gap-10 px-6 md:grid-cols-2 md:gap-16">
-            <figure className="mx-auto w-full max-w-md">
+            <figure className="relative mx-auto w-full max-w-md">
               <img src={LIFESTYLE[product.slug].src} alt={LIFESTYLE[product.slug].alt} width={LIFESTYLE[product.slug].w ?? 1200} height={LIFESTYLE[product.slug].h ?? 1608} loading="lazy" className="w-full rounded-3xl object-cover" />
-              <figcaption className="mt-2 text-center text-xs text-[var(--color-muted)]">Illustration, not to scale</figcaption>
+              {LIFESTYLE[product.slug].detail && (
+                <img src={LIFESTYLE[product.slug].detail!.src} alt={LIFESTYLE[product.slug].detail!.alt} width={LIFESTYLE[product.slug].detail!.w} height={LIFESTYLE[product.slug].detail!.h} loading="lazy" className="absolute -bottom-6 -right-4 w-[42%] rounded-2xl border-4 border-white object-cover shadow-[0_16px_32px_-16px_rgba(20,33,61,0.45)] sm:-right-10" />
+              )}
+              <figcaption className={`mt-2 text-xs text-[var(--color-muted)] ${LIFESTYLE[product.slug].detail ? 'text-left' : 'text-center'}`}>Illustration, not to scale</figcaption>
             </figure>
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted)]">{LIFESTYLE[product.slug].eyebrow}</p>
