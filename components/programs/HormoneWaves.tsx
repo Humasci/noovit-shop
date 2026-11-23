@@ -32,7 +32,7 @@ export function HormoneWaves({ className = '' }: { className?: string }) {
         <g fontFamily="var(--font-sans)" fontSize="13" fill="currentColor" fillOpacity="0.55">
           <text x="8" y="290">Regular cycles</text>
           <text x="250" y="290">Perimenopause: bigger, uneven swings</text>
-          <text x="545" y="290">After menopause</text>
+          <text x="632" y="290" textAnchor="end">After menopause</text>
         </g>
       </svg>
       <figcaption className="mt-3 flex flex-wrap items-center gap-4 text-xs text-[var(--color-muted)]">
