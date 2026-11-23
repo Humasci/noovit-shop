@@ -62,16 +62,25 @@ export async function POST(req: NextRequest) {
       const citations = new Map<string, string>();
       let suggestions = '';
       try {
-        const res = await ai().models.generateContentStream({
+        const ask = (search: boolean) => ai().models.generateContentStream({
           model: ADVISOR_MODEL,
           contents,
           config: {
             systemInstruction: advisorSystemPrompt(products),
             maxOutputTokens: 1200,
             thinkingConfig: { thinkingLevel: ThinkingLevel.MINIMAL }, // short chat answers; keeps cost down
-            ...(advisorSearch() ? { tools: [{ googleSearch: {} }] } : {}),
+            ...(search ? { tools: [{ googleSearch: {} }] } : {}),
           },
         });
+        let res: Awaited<ReturnType<typeof ask>>;
+        try {
+          res = await ask(advisorSearch());
+        } catch (err) {
+          // A quota on Google Search grounding (common on free-tier keys) shouldn't stop answers from our own content.
+          if (!(err instanceof ApiError && err.status === 429) || !advisorSearch()) throw err;
+          console.error('Advisor 429 with Search grounding; retrying without it:', err.message);
+          res = await ask(false);
+        }
         let any = false;
         for await (const chunk of res) {
           const text = chunk.text;
@@ -82,7 +91,10 @@ export async function POST(req: NextRequest) {
         }
         if (!any) controller.enqueue(encoder.encode("Sorry, I can't help with that one. For anything medical, please check with your doctor or pharmacist."));
       } catch (err) {
-        if (err instanceof ApiError && err.status === 429) controller.enqueue(encoder.encode('The advisor is busy right now. Please try again in a minute.'));
+        if (err instanceof ApiError && err.status === 429) {
+          console.error('Advisor 429 (Gemini quota or rate limit):', err.message); // Google's reason, never the key
+          controller.enqueue(encoder.encode('The advisor is busy right now. Please try again in a minute.'));
+        }
         else {
           console.error('Advisor error', err);
           controller.enqueue(encoder.encode('Sorry, something went wrong. Please try again, or email hello@noovit.com.'));
