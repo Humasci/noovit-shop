@@ -461,6 +461,17 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               <p className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted)]">{LIFESTYLE[product.slug].eyebrow}</p>
               <h2 className="mt-2 text-3xl text-[var(--color-navy)] md:text-4xl">{LIFESTYLE[product.slug].title}</h2>
               <p className="mt-4 max-w-lg text-[var(--color-ink)]/80">{LIFESTYLE[product.slug].text}</p>
+              {LIFESTYLE[product.slug].links && (
+                <ul className="mt-5 space-y-2 text-sm">
+                  {LIFESTYLE[product.slug].links!.map((l) => (
+                    <li key={l.href}>
+                      {l.href.startsWith('http')
+                        ? <a href={l.href} target="_blank" rel="noopener noreferrer" className="font-semibold text-[var(--color-navy)] underline underline-offset-2">{l.label} ↗</a>
+                        : <Link href={l.href} className="font-semibold text-[var(--color-navy)] underline underline-offset-2">{l.label} →</Link>}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </div>
         </section>
