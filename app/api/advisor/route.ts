@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { ApiError, GoogleGenAI, ThinkingLevel, type Content } from '@google/genai';
 import { getStoreProducts } from '@/lib/catalog/server';
 import { getPublishedPosts } from '@/lib/blog';
-import { ADVISOR_MODEL, advisorApiKey, advisorEnabled, advisorSearch, advisorSystemPrompt } from '@/lib/advisor';
+import { ADVISOR_MODEL, ADVISOR_FALLBACK_MODEL, advisorApiKey, advisorEnabled, advisorSearch, advisorSystemPrompt } from '@/lib/advisor';
 import { retrieve, sourcesBlock } from '@/lib/advisor-rag';
 
 // Streams the advisor's reply as plain text. After the text, one line starting with "\u0000" carries JSON
@@ -62,25 +62,33 @@ export async function POST(req: NextRequest) {
       const citations = new Map<string, string>();
       let suggestions = '';
       try {
-        const ask = (search: boolean) => ai().models.generateContentStream({
-          model: ADVISOR_MODEL,
+        const ask = (model: string, search: boolean) => ai().models.generateContentStream({
+          model,
           contents,
           config: {
             systemInstruction: advisorSystemPrompt(products),
             maxOutputTokens: 1200,
-            thinkingConfig: { thinkingLevel: ThinkingLevel.MINIMAL }, // short chat answers; keeps cost down
+            // short chat answers; keeps cost down (Gemini 3 takes a thinking level, 2.5 a thinking budget)
+            thinkingConfig: model.startsWith('gemini-2.5') ? { thinkingBudget: 0 } : { thinkingLevel: ThinkingLevel.MINIMAL },
             ...(search ? { tools: [{ googleSearch: {} }] } : {}),
           },
         });
-        let res: Awaited<ReturnType<typeof ask>>;
-        try {
-          res = await ask(advisorSearch());
-        } catch (err) {
-          // A quota on Google Search grounding (common on free-tier keys) shouldn't stop answers from our own content.
-          if (!(err instanceof ApiError && err.status === 429) || !advisorSearch()) throw err;
-          console.error('Advisor 429 with Search grounding; retrying without it:', err.message);
-          res = await ask(false);
+        // Fallbacks (23 Nov): a quota on Search grounding (429, common on free-tier keys) → retry without Search; the model
+        // overloaded (503) or limited (429) → retry on the stable fallback model. Google's reason is logged, never the key.
+        const attempts: [string, boolean][] = [[ADVISOR_MODEL, advisorSearch()], ...(advisorSearch() ? [[ADVISOR_MODEL, false] as [string, boolean]] : []), [ADVISOR_FALLBACK_MODEL, false]];
+        let res: Awaited<ReturnType<typeof ask>> | undefined;
+        let lastErr: unknown;
+        for (const [model, search] of attempts) {
+          try {
+            res = await ask(model, search);
+            break;
+          } catch (err) {
+            lastErr = err;
+            if (!(err instanceof ApiError && (err.status === 429 || err.status === 503))) throw err;
+            console.error(`Advisor ${err.status} on ${model}${search ? ' with Search' : ''}; trying next option:`, err.message);
+          }
         }
+        if (!res) throw lastErr;
         let any = false;
         for await (const chunk of res) {
           const text = chunk.text;
@@ -91,8 +99,8 @@ export async function POST(req: NextRequest) {
         }
         if (!any) controller.enqueue(encoder.encode("Sorry, I can't help with that one. For anything medical, please check with your doctor or pharmacist."));
       } catch (err) {
-        if (err instanceof ApiError && err.status === 429) {
-          console.error('Advisor 429 (Gemini quota or rate limit):', err.message); // Google's reason, never the key
+        if (err instanceof ApiError && (err.status === 429 || err.status === 503)) {
+          console.error(`Advisor ${err.status} on every option:`, err.message); // Google's reason, never the key
           controller.enqueue(encoder.encode('The advisor is busy right now. Please try again in a minute.'));
         }
         else {

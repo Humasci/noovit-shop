@@ -8,6 +8,8 @@ import { productPath } from '@/lib/urls';
 // question, plus Google Search grounding for questions our content doesn't cover (ADVISOR_SEARCH=off disables it).
 
 export const ADVISOR_MODEL = process.env.ADVISOR_MODEL || 'gemini-3.1-flash-lite';
+// Stable model used when the main one is overloaded (503) or rate-limited (429).
+export const ADVISOR_FALLBACK_MODEL = process.env.ADVISOR_FALLBACK_MODEL || 'gemini-2.5-flash-lite';
 export const advisorApiKey = () => process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || '';
 export const advisorEnabled = () => !!advisorApiKey();
 export const advisorSearch = () => process.env.ADVISOR_SEARCH !== 'off';
