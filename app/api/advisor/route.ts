@@ -88,6 +88,12 @@ export async function POST(req: NextRequest) {
             console.error(`Advisor ${err.status} on ${model}${search ? ' with Search' : ''}; trying next option:`, err.message);
           }
         }
+        // Overloaded everywhere (503): wait a moment and try the fallback model once more (free-tier keys are deprioritized
+        // during demand spikes; a paid key mostly avoids this).
+        if (!res && lastErr instanceof ApiError && lastErr.status === 503) {
+          await new Promise((r) => setTimeout(r, 1500));
+          try { res = await ask(ADVISOR_FALLBACK_MODEL, false); } catch (err) { lastErr = err; }
+        }
         if (!res) throw lastErr;
         let any = false;
         for await (const chunk of res) {
