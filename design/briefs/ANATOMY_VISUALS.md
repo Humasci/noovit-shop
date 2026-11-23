@@ -39,6 +39,10 @@ models, colors, text styles or scripts.
 - **Order:** stomach fix first. Batch 1 images: Magnesium Sleep+, Ashwagandha Calm+, Lion's Mane, Creatine (men's version), CoQ10, Turmeric Complex, Iron. Batch 2: Vitamin D3 + K2, Collagen, Biotin, Probiotic Gut+, Creatine Hydration+, Glucosamine Joint+. Videos one at a time: Creatine for Her first, then Magnesium.
 - **Delivery:** send the results as file attachments (pasted chat images don't reach the site).
 
+## Status (23 Nov)
+- **Done and on the site:** Creatine for Her, Turmeric Complex (woman gardening, knees and hands) and Iron (woman on stairs, blood vessels). Images in `public/images/lifestyle/`; captions in `lib/lifestyle.ts`.
+- **Fix needed:** Creatine (man in a goblet squat). The muscle tint is too dark green and reads as bruised. Ask: "keep the muscles natural pink-red with only a subtle green glow at the edges, more translucent".
+
 ## Fix for the existing stomach image (woman drinking water)
 **Problem:** the tube starts at the voice box (larynx) and runs straight to the stomach, which reads as water going down the windpipe.
 

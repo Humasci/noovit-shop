@@ -454,7 +454,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         <section className="section">
           <div className="container grid items-center gap-10 px-6 md:grid-cols-2 md:gap-16">
             <figure className="mx-auto w-full max-w-md">
-              <img src={LIFESTYLE[product.slug].src} alt={LIFESTYLE[product.slug].alt} width={1200} height={1608} loading="lazy" className="w-full rounded-3xl object-cover" />
+              <img src={LIFESTYLE[product.slug].src} alt={LIFESTYLE[product.slug].alt} width={LIFESTYLE[product.slug].w ?? 1200} height={LIFESTYLE[product.slug].h ?? 1608} loading="lazy" className="w-full rounded-3xl object-cover" />
               <figcaption className="mt-2 text-center text-xs text-[var(--color-muted)]">Illustration, not to scale</figcaption>
             </figure>
             <div>
