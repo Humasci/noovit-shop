@@ -40,8 +40,8 @@ models, colors, text styles or scripts.
 - **Delivery:** send the results as file attachments (pasted chat images don't reach the site).
 
 ## Status (23 Nov)
-- **Done and on the site:** Creatine for Her, Turmeric Complex (woman gardening, knees and hands) and Iron (woman on stairs, blood vessels). Images in `public/images/lifestyle/`; captions in `lib/lifestyle.ts`.
-- **Fix needed:** Creatine (man in a goblet squat). The muscle tint is too dark green and reads as bruised. Ask: "keep the muscles natural pink-red with only a subtle green glow at the edges, more translucent".
+- **Done and on the site:** Creatine for Her, Turmeric Complex (woman gardening, knees and hands), Iron (woman on stairs, blood vessels), Magnesium Sleep+ (woman on bed, back), Ashwagandha Calm+ (man at desk, brain + adrenals), Creatine (squat, fixed tint) and Lion's Mane (woman writing). Images in `public/images/lifestyle/`; captions in `lib/lifestyle.ts`.
+- **Fix needed:** CoQ10 (man on stairs). The heart is drawn front-on and large on a body turned sideways. Ask: "rotate the heart to match his body angle (side view), make it smaller, sitting center-left behind the breastbone, more translucent".
 
 ## Fix for the existing stomach image (woman drinking water)
 **Problem:** the tube starts at the voice box (larynx) and runs straight to the stomach, which reads as water going down the windpipe.
