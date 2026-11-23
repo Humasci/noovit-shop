@@ -39,7 +39,13 @@ the Perimenopause Check (at-home test) and Menopause Balance+. It's also strong 
 4. **Six emails in the automation**, with unsubscribe and postal address. *About 1 session.*
 5. **Links in:** Women's Health hub, the Perimenopause Check page, the Menopause Balance+ product page, the perimenopause guide, the newsletter pop-up (as a goal) and the quiz result for women 40+.
 
-## Decisions for the owner
+## Decisions (owner, 23 Nov): went with the recommendations
+- **Name:** "Perimenopause, Decoded: a 6-week guide".
+- **Products:** a soft mention in emails 3 to 6 only; none in the PDF or the landing page body.
+- **Public before launch:** yes, like the early guides.
+- **Research started 23 Nov:** `docs/programs/research/` (medical basics; lifestyle and supplements).
+
+## Decisions for the owner (original options)
 - The program name.
 - Product mentions in emails 3 to 6 only (recommended), or none at all.
 - Whether to make it public before launch, like the early guides (recommended: yes, it grows the list now).
