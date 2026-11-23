@@ -14,7 +14,9 @@ models, colors, text styles or scripts.
   - Translucent, illustrated, textbook-accurate (shape, position and side of the body).
   - Soft edges where it meets skin.
   - The focus area glows slightly; nothing gory, no blood, no open skin.
-  - Tint toward the product's label color, kept subtle: Magnesium navy #4A6B94, Ashwagandha rose #AE5559, Lion's Mane teal #2B7C82, Creatine green #2F6F4E, CoQ10 plum #7B3F86, Turmeric saffron #C98F14, Creatine for Her berry #A8467A.
+  - Tint toward the product's label color, kept subtle: Magnesium navy #4A6B94, Ashwagandha rose #AE5559, Lion's Mane teal #2B7C82, Creatine green #2F6F4E, CoQ10 plum #7B3F86, Turmeric saffron #C98F14, Creatine for Her berry #A8467A,
+  Iron #D2483C, Collagen #E86AA6, Biotin #8F7BC8, Creatine Hydration+ lime #8FB339, Vitamin D3 + K2 #E0A63A, Probiotic Gut+ #5B8DB8,
+  Glucosamine Joint+ #4A9B8E, for-Men versions gold #D9A21B (accent on navy #1E2A3A).
 - **No text in the generated image.** We add captions ourselves, so the AI can't misspell or overclaim.
 - **No product in the image,** or only a blank white bottle or tub. Our real bottle or tub photos are added in editing, so the label is always correct.
 - **Format:** images 4:5 (1600 × 2000) plus a 1:1 crop. Video 9:16, 6 to 10 seconds, no sound needed (captions carry it).
@@ -28,6 +30,14 @@ models, colors, text styles or scripts.
 - **Wording:** structure/function language only, with "*" pointing to the disclaimer "These statements have not been evaluated by the FDA. This product is not intended to diagnose, treat, cure, or prevent any disease."
 - **Never** use treat, cure, fix, repair, reverse, detox, boost your brain, burns fat, or disease names.
 - **The picture and the words together must not say more than our evidence does** (FTC "net impression").
+
+## Production decisions (23 Nov, answers to Gemini)
+- **Stomach image:** keep it, once fixed. It's for "gentle on the stomach" (Magnesium Sleep+, Iron) and the gut health page. The Iron staircase/red-blood-cell image is made as well; both are wanted.
+- **Close-ups:** Collagen skin layers, Biotin follicles and CoQ10 mitochondria are separate close-up images and clips, cut together in editing (not insets).
+- **Menopause Balance+:** paused. No visuals for now (evidence weak, claim under review); adding "occasional" doesn't fix the evidence.
+- **Glucosamine Joint+:** last, after the catalog check (shellfish warning).
+- **Order:** stomach fix first. Batch 1 images: Magnesium Sleep+, Ashwagandha Calm+, Lion's Mane, Creatine (men's version), CoQ10, Turmeric Complex, Iron. Batch 2: Vitamin D3 + K2, Collagen, Biotin, Probiotic Gut+, Creatine Hydration+, Glucosamine Joint+. Videos one at a time: Creatine for Her first, then Magnesium.
+- **Delivery:** send the results as file attachments (pasted chat images don't reach the site).
 
 ## Fix for the existing stomach image (woman drinking water)
 **Problem:** the tube starts at the voice box (larynx) and runs straight to the stomach, which reads as water going down the windpipe.
