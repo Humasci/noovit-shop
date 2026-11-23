@@ -3,7 +3,7 @@ import { db } from '@/lib/db/server';
 import { signToken } from '@/lib/sign';
 import { getSettings } from '@/lib/settings';
 import { SITE_URL } from '@/lib/site';
-import { MarketingFooter, sendNewsletterWelcome, sendWaitlistConfirmation } from '@/lib/email';
+import { MarketingFooter, sendNewsletterWelcome, sendWaitlistConfirmation, sendProgramWelcome } from '@/lib/email';
 import { klaviyoSubscribe, klaviyoUnsubscribe } from './klaviyo';
 
 const UNSUB_TTL = 2 * 365 * 24 * 60 * 60;
@@ -19,7 +19,7 @@ export async function marketingFooter(email: string): Promise<MarketingFooter> {
 
 // Returns true when this email is new or re-subscribing (and so should get the welcome email).
 // `goal`: the quiz goal id picked in the newsletter pop-up, kept for segmenting (never overwritten with nothing).
-export async function subscribe(email: string, source: 'newsletter' | 'checkout' | 'pets-waitlist' | 'launch-waitlist' | 'tests-waitlist' | 'quiz', goal?: string) {
+export async function subscribe(email: string, source: 'newsletter' | 'checkout' | 'pets-waitlist' | 'launch-waitlist' | 'tests-waitlist' | 'quiz' | `program-${string}`, goal?: string) {
   const normalized = email.trim().toLowerCase();
   const { data: existing } = await db().from('subscribers').select('status').eq('email', normalized).maybeSingle();
   if (existing?.status === 'subscribed') {
@@ -39,6 +39,10 @@ export async function subscribe(email: string, source: 'newsletter' | 'checkout'
 export async function welcome(email: string) {
   const settings = await getSettings();
   await sendNewsletterWelcome(email, settings.newsletter_code, await marketingFooter(email));
+}
+
+export async function programWelcome(email: string, program: 'perimenopause') {
+  await sendProgramWelcome(email, program, await marketingFooter(email));
 }
 
 export async function waitlistConfirm(email: string, kind: 'tests' | 'pets', kitName?: string) {

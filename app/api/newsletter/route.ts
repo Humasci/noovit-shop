@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { formLimited } from '@/lib/rate-limit';
 import { dbConfigured } from '@/lib/config';
-import { subscribe, welcome, waitlistConfirm } from '@/lib/marketing/subscribers';
+import { subscribe, welcome, waitlistConfirm, programWelcome } from '@/lib/marketing/subscribers';
 import { findKit } from '@/lib/tests';
 import { KIT_RENAMES } from '@/lib/urls';
 import { GOALS } from '@/lib/quiz';
@@ -18,7 +18,8 @@ export async function POST(req: NextRequest) {
   const waitlist = body.source === 'pets';
   const launch = body.source === 'launch'; // pre-launch "coming soon" page
   const tests = body.source === 'tests'; // at-home Nutrient Check waitlist
-  const source = launch ? 'launch-waitlist' : waitlist ? 'pets-waitlist' : tests ? 'tests-waitlist' : body.source === 'quiz' ? 'quiz' : 'newsletter';
+  const program = body.source === 'program' && body.program === 'perimenopause' ? 'perimenopause' : null; // free email programs
+  const source = program ? (`program-${program}` as const) : launch ? 'launch-waitlist' : waitlist ? 'pets-waitlist' : tests ? 'tests-waitlist' : body.source === 'quiz' ? 'quiz' : 'newsletter';
   // No welcome code before launch: there's no shop to use it in yet.
   // goal: the quiz goal from the pop-up, or for the tests waitlist the kit slug (shown in Admin → Subscribers).
   const kit = tests && typeof body.kit === 'string' ? findKit(KIT_RENAMES[body.kit] ?? body.kit) : undefined;
@@ -26,9 +27,10 @@ export async function POST(req: NextRequest) {
   if (await subscribe(email, source, goal)) {
     // Waitlists get a short "you're on the list" note (no shop code: nothing to buy yet); the launch waitlist gets
     // nothing until the shop opens; everyone else gets the welcome email with the first-order code.
-    const sendIt = tests ? waitlistConfirm(email, 'tests', kit?.name) : waitlist ? waitlistConfirm(email, 'pets') : launch ? null : welcome(email);
+    const sendIt = program ? programWelcome(email, program) : tests ? waitlistConfirm(email, 'tests', kit?.name) : waitlist ? waitlistConfirm(email, 'pets') : launch ? null : welcome(email);
     await sendIt?.catch((err) => console.error('Welcome email failed', err));
   }
+  if (program) return NextResponse.json({ ok: true, message: "You're in. Check your inbox: your welcome email is on its way." });
   if (launch) return NextResponse.json({ ok: true, message: "You're on the list. We'll email you the day Noovit opens." });
   return NextResponse.json({ ok: true, message: waitlist ? "You're on the list — we'll email you when Noovit Pets launches." : tests ? "You're on the list — we'll email you when it launches." : "You're in! Check your inbox for your welcome code." });
 }

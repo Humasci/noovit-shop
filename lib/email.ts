@@ -177,6 +177,24 @@ export function sendWaitlistConfirmation(to: string, kind: 'tests' | 'pets', kit
   return send(to, subject, marketingLayout(`<h1 style="font-size:20px">You're on the list</h1>${body}`, f), unsubscribeHeaders(f));
 }
 
+// Free programs (23 Nov): welcome for "Perimenopause, Decoded". The subject stays neutral (inbox previews are visible to
+// others); week 1 and the starter kit follow from the program's email series.
+export function sendProgramWelcome(to: string, program: 'perimenopause', f: MarketingFooter) {
+  return send(
+    to,
+    'Welcome to your 6-week guide from Noovit',
+    marketingLayout(
+      `<h1 style="font-size:20px">You're in: Perimenopause, Decoded</h1>
+      <p>Thanks for joining. Over the next six weeks you'll get one short email a week: what's changing, sleep, hot flashes, strength and bones, mood, and how to make your doctor's appointment count.</p>
+      <p>Your printable starter kit (a 4-week symptom tracker and questions for your doctor) and week 1 arrive in the next few days.</p>
+      <p>Every claim is sourced and graded. It's education, not medical advice.</p>
+      <p><a href="${SITE_URL}/programs/${program}" style="display:inline-block;background:#14213d;color:#fff;padding:12px 24px;border-radius:999px;text-decoration:none;font-weight:bold">See the 6 weeks</a></p>`,
+      f
+    ),
+    unsubscribeHeaders(f)
+  );
+}
+
 export function sendAbandonedCheckout(
   to: string,
   items: { name: string; quantity: number }[],
