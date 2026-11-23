@@ -449,16 +449,18 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         </div>
       </section>
 
-      {/* Lifestyle visual (lib/lifestyle.ts) */}
+      {/* Lifestyle visual (lib/lifestyle.ts). The * links to the FDA disclaimer already on the page (benefits + footer). */}
       {LIFESTYLE[product.slug] && (
         <section className="section">
           <div className="container grid items-center gap-10 px-6 md:grid-cols-2 md:gap-16">
-            <img src={LIFESTYLE[product.slug].src} alt={LIFESTYLE[product.slug].alt} width={1200} height={1608} loading="lazy" className="mx-auto w-full max-w-md rounded-3xl object-cover" />
+            <figure className="mx-auto w-full max-w-md">
+              <img src={LIFESTYLE[product.slug].src} alt={LIFESTYLE[product.slug].alt} width={1200} height={1608} loading="lazy" className="w-full rounded-3xl object-cover" />
+              <figcaption className="mt-2 text-center text-xs text-[var(--color-muted)]">Illustration, not to scale</figcaption>
+            </figure>
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted)]">{LIFESTYLE[product.slug].eyebrow}</p>
               <h2 className="mt-2 text-3xl text-[var(--color-navy)] md:text-4xl">{LIFESTYLE[product.slug].title}</h2>
               <p className="mt-4 max-w-lg text-[var(--color-ink)]/80">{LIFESTYLE[product.slug].text}</p>
-              <p className="mt-6 text-xs text-[var(--color-muted)]">*These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease. Illustration, not to scale.</p>
             </div>
           </div>
         </section>
