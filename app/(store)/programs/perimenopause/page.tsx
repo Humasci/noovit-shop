@@ -22,7 +22,7 @@ export default function PerimenopauseProgramPage() {
       <JsonLd data={[...pageLd({ path: PROGRAM.path, name: PROGRAM.name, description: PROGRAM.tagline, crumbs: [['Women’s Health', '/womens-health'], [PROGRAM.name, PROGRAM.path]] }), faqLd(FAQS)]} />
 
       {/* Hero */}
-      <section className="relative overflow-hidden bg-[var(--studio)]">
+      <section className="relative overflow-hidden bg-[var(--lilac)]">
         <MosaicField cols={16} rows={10} tile={14} gap={4} anchor="top-right" maxOpacity={0.5} className="pointer-events-none absolute right-0 top-0 hidden md:block" />
         <div className="container relative grid gap-10 px-6 py-14 md:py-20 lg:grid-cols-[1fr_1.1fr] lg:items-center">
           <div>
@@ -43,26 +43,27 @@ export default function PerimenopauseProgramPage() {
 
       {/* Is this for me */}
       <section className="section">
-        <div className="container grid gap-10 px-6 lg:grid-cols-[1fr_1.4fr]">
+        <div className="container grid items-center gap-10 px-6 lg:grid-cols-[0.9fr_1.3fr] lg:gap-14">
+          <img src="/images/women/menopause.jpg" alt="A smiling woman in her fifties drinking a glass of water at home" width={1067} height={1600} loading="lazy" className="aspect-[4/5] w-full rounded-3xl object-cover" />
           <div>
             <h2 className="text-3xl md:text-4xl">Is this for me?</h2>
             <p className="mt-4 text-[var(--color-ink)]/80">
               Perimenopause is the transition before your periods stop. It usually starts in your mid-to-late 40s. Menopause itself is one moment: 12 months after your last period. If your cycles, sleep, mood or temperature are changing, this guide explains what’s happening and what the evidence says helps.
             </p>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-3">
+          <div className="mt-8 grid gap-4 sm:grid-cols-3">
             {FACTS.map((f) => (
-              <div key={f.big} className="rounded-3xl bg-[var(--color-soft)] p-6">
+              <div key={f.big} className="rounded-3xl bg-[var(--lilac)] p-6">
                 <p className="font-display text-3xl text-[var(--color-navy)]">{f.big}</p>
                 <p className="mt-2 text-sm text-[var(--color-ink)]/80">{f.text}</p>
               </div>
             ))}
           </div>
+          </div>
         </div>
       </section>
 
       {/* What you get + weeks */}
-      <section className="section bg-[var(--color-soft)]">
+      <section className="section bg-[var(--sage)]">
         <div className="container px-6">
           <h2 className="text-3xl md:text-4xl">What you’ll get</h2>
           <p className="mt-3 max-w-2xl text-[var(--color-ink)]/80">A printable starter kit with a 4-week symptom tracker and questions for your doctor, then one short email a week for six weeks. Each ends with one small, doable step.</p>
@@ -82,13 +83,14 @@ export default function PerimenopauseProgramPage() {
       <section className="section">
         <div className="container grid gap-10 px-6 lg:grid-cols-2">
           <div>
+            <img src="/images/women/womens-health-friend-circle.jpg" alt="Four women laughing and dancing in a circle in a summer garden" width={1600} height={1067} loading="lazy" className="mb-8 aspect-[16/9] w-full rounded-3xl object-cover" />
             <h2 className="text-3xl md:text-4xl">Evidence, not hype</h2>
             <p className="mt-4 text-[var(--color-ink)]/80">
               Every claim comes from a source we opened and read: position statements from The Menopause Society, ACOG and NIH guidance, and peer-reviewed trials. We grade the evidence (Moderate, Limited, Early or Insufficient) and include what didn’t work, not only what did.
             </p>
             <p className="mt-4 text-[var(--color-ink)]/80">It’s education, not medical advice. Your doctor is the right person for diagnosis and treatment, and week 6 helps you make that appointment count.</p>
           </div>
-          <div className="rounded-3xl bg-[var(--color-navy)] p-8 text-white">
+          <div className="self-end rounded-3xl bg-[var(--color-navy)] p-8 text-white">
             <h2 className="text-2xl text-white">Start with week 1</h2>
             <p className="mt-2 text-white/75">Your starter kit and the first email arrive by email.</p>
             <ProgramSignup program={PROGRAM.slug} dark />
@@ -97,7 +99,7 @@ export default function PerimenopauseProgramPage() {
       </section>
 
       {/* FAQ */}
-      <section className="section bg-[var(--color-soft)]">
+      <section className="section bg-[var(--studio)]">
         <div className="container max-w-3xl px-6">
           <h2 className="text-3xl md:text-4xl">Questions</h2>
           <div className="mt-6 divide-y divide-[var(--color-line)] border-y border-[var(--color-line)]">
