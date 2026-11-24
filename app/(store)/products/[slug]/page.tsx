@@ -313,20 +313,19 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             <span className="text-[var(--color-orange)]">{product.name}:</span> {product.tagline || product.shortBenefit.replace(/\.$/, '')}
           </h1>
           <div className="mt-3 flex flex-wrap items-center justify-between gap-3 text-sm">
-            <a href="#write" className="flex items-center gap-2">
-              {product.reviewCount > 0 ? (
-                <>
-                  <Stars rating={product.rating} /> <span className="underline">{product.rating.toFixed(1)} ({product.reviewCount.toLocaleString()})</span>
-                </>
-              ) : placeholders ? (
-                <span className="flex flex-wrap items-center gap-2">
-                  <Stars rating={5} /> <span className="underline">4.8 (1,234)</span>
-                  <PlaceholderNote className="py-1">Real average and count show here automatically</PlaceholderNote>
-                </span>
-              ) : (
-                <span className="font-semibold text-[var(--color-accent)]">Be the first to review</span>
-              )}
-            </a>
+            {/* Rating link only when there are reviews (owner, 24 Nov: no "Be the first to review" prompt). */}
+            {product.reviewCount > 0 ? (
+              <a href="#write" className="flex items-center gap-2">
+                <Stars rating={product.rating} /> <span className="underline">{product.rating.toFixed(1)} ({product.reviewCount.toLocaleString()})</span>
+              </a>
+            ) : placeholders ? (
+              <a href="#write" className="flex flex-wrap items-center gap-2">
+                <Stars rating={5} /> <span className="underline">4.8 (1,234)</span>
+                <PlaceholderNote className="py-1">Real average and count show here automatically</PlaceholderNote>
+              </a>
+            ) : (
+              <span />
+            )}
             <span className="text-[var(--color-ink)]">
               <a href="#ingredients" className="underline">Ingredients</a> · <a href="#benefits" className="underline">Benefits</a>
             </span>

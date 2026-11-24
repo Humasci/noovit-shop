@@ -103,7 +103,7 @@ export function ReviewsModule({
             ) : (
               <>
                 <h2 className="text-2xl">Reviews</h2>
-                <p className="mt-1 text-sm text-[var(--color-muted)]">{reviews ? 'No reviews yet. Tried it? Be the first to share your experience.' : 'Loading reviews…'}</p>
+                <p className="mt-1 text-sm text-[var(--color-muted)]">{reviews ? 'No reviews yet.' : 'Loading reviews…'}</p>
               </>
             )}
             <div className={`mt-5 space-y-1.5 ${total ? '' : 'hidden'}`}>
