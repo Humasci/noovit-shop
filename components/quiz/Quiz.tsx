@@ -217,6 +217,17 @@ export function Quiz({ products, code }: { products: Product[]; code: string }) 
             })}
           </div>
         )}
+        {/* Free program for women in midlife or anyone who picked menopause / hot flashes (24 Nov). */}
+        {a.sex !== 'male' && (a.age === '45-59' || a.goals.includes('menopause') || a.symptoms.includes('flushes')) && (
+          <a href="/programs/perimenopause" className="mx-auto mt-10 flex max-w-xl items-center justify-between gap-4 rounded-3xl bg-[var(--lilac)] p-6 text-left hover:brightness-[0.98]">
+            <span>
+              <span className="block text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted)]">Free 6-week email guide</span>
+              <span className="mt-1 block text-lg font-semibold text-[var(--color-navy)]">Perimenopause, Decoded</span>
+              <span className="mt-1 block text-sm text-[var(--color-ink)]/80">What’s changing, what helps, and what to ask your doctor. Every claim sourced.</span>
+            </span>
+            <span aria-hidden className="text-2xl text-[var(--color-navy)]">→</span>
+          </a>
+        )}
         {recs.length > 0 && (
           <div className="mx-auto mt-10 max-w-xl rounded-3xl bg-[var(--color-navy)] p-8 text-center text-white">
             <h2 className="text-2xl text-white">Start your plan</h2>

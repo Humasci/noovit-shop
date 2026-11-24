@@ -75,7 +75,7 @@ const KITS: TestKit[] = [
     figure: { src: '/images/tests/perimenopause-test.jpg', alt: 'The estradiol molecule as a bead ball-and-stick model', caption: 'Estradiol, one of the hormones this test measures. Structure from PubChem.' },
     seoTitle: 'Menopause & Perimenopause Test at Home (FSH) | Noovit',
     seoDescription: 'An at-home perimenopause hormone test (FSH, LH, estradiol, progesterone and TSH) is coming. What each hormone can and can’t tell you, and when to test.',
-    related: [{ href: '/womens-health#midlife', label: "Women's Health: perimenopause & menopause" }],
+    related: [{ href: '/programs/perimenopause', label: 'Free 6-week guide: Perimenopause, Decoded' }, { href: '/womens-health#midlife', label: "Women's Health: perimenopause & menopause" }],
   },
   {
     slug: 'womens-health-test',

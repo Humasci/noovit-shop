@@ -66,7 +66,7 @@ export const WOMEN_SECTIONS: WomenSection[] = [
       { eyebrow: 'Pair it', big: '5 g', text: 'Creatine alongside strength training supports muscle at every age*', tone: 'accent' },
     ],
     products: ['menopause-complex', 'creatine-for-women', 'magnesium-complex', 'vitamin-d3-k2'],
-    guides: [{ href: '/at-home-tests/perimenopause-test', label: 'At-home Perimenopause Check (coming soon)' }, { href: '/guides/creatine', label: 'Creatine after 40' }],
+    guides: [{ href: '/programs/perimenopause', label: 'Free 6-week guide: Perimenopause, Decoded' }, { href: '/at-home-tests/perimenopause-test', label: 'At-home Perimenopause Check (coming soon)' }, { href: '/guides/creatine', label: 'Creatine after 40' }],
   },
   {
     id: 'energy',
