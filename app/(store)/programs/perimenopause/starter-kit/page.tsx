@@ -13,12 +13,13 @@ export const metadata: Metadata = {
   robots: { index: false },
 };
 
-const STAGES = [
-  ['Before', 'Regular cycles.'],
-  ['Early transition', 'Your cycle length starts to vary: a difference of 7 days or more between cycles that keeps coming back.'],
-  ['Late transition', 'Long gaps between periods: 60 days or more. This stage usually lasts 1 to 3 years.'],
-  ['Menopause', 'One point in time: 12 months in a row with no period. Around age 51 to 52 on average.'],
-  ['After', 'Postmenopause: everything after that point.'],
+// Typical ages for the average woman (Santoro: early transition ~47, late ~49, final period ~51); they vary widely.
+const STAGES: { name: string; age: string; text: string; peri: boolean }[] = [
+  { name: 'Before', age: '', text: 'Regular cycles.', peri: false },
+  { name: 'Early transition', age: '~47', text: 'Cycle length starts to vary by 7 days or more, again and again.', peri: true },
+  { name: 'Late transition', age: '~49', text: 'Gaps of 60 days or more between periods. Usually lasts 1 to 3 years.', peri: true },
+  { name: 'Menopause', age: '~51', text: 'One point in time: 12 months in a row with no period.', peri: true },
+  { name: 'After', age: '', text: 'Postmenopause: everything after that point.', peri: false },
 ];
 
 const TRACK = ['Sleep', 'Hot flashes', 'Mood', 'Energy', 'Bleeding', 'Notes'];
@@ -78,18 +79,38 @@ export default function StarterKitPage() {
       <div id="kit" className="px-4">
         <Sheet n={1} title="What’s happening">
           <p className="text-[var(--color-ink)]/85">Perimenopause is the transition before your last period. It usually starts in your mid-to-late 40s and lasts about four years on average, up to ten. You can still get pregnant during it.</p>
-          <ol className="mt-6 grid gap-3 sm:grid-cols-5">
-            {STAGES.map(([t, d], i) => (
-              <li key={t} className="rounded-2xl bg-[var(--color-soft)] p-4">
-                <p className="text-xs font-semibold tabular-nums text-[var(--color-muted)]">{String(i + 1).padStart(2, '0')}</p>
-                <p className="mt-1 font-semibold text-[var(--color-navy)]">{t}</p>
-                <p className="mt-1 text-sm text-[var(--color-ink)]/80">{d}</p>
-              </li>
+          <div className="mt-6">
+            <div className="mb-2 grid grid-cols-[2.5rem_1fr_6rem] text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted)]">
+              <span />
+              <span>Stage</span>
+              <span className="text-right">Typical age</span>
+            </div>
+            {[STAGES.slice(0, 1), STAGES.slice(1, 4), STAGES.slice(4)].map((group, gi) => (
+              <div key={gi} className={gi === 1 ? 'relative my-1 rounded-2xl bg-[var(--lilac)] py-1' : ''}>
+                {gi === 1 && <span className="absolute -top-2.5 right-3 rounded-full bg-[var(--color-navy)] px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-white">Perimenopause</span>}
+                {group.map((st) => {
+                  const i = STAGES.indexOf(st);
+                  return (
+                    <div key={st.name} className="grid grid-cols-[2.5rem_1fr_6rem] items-start py-2.5">
+                      <span className="relative flex justify-center">
+                        {i < STAGES.length - 1 && <span aria-hidden className="absolute left-1/2 top-6 h-[calc(100%+1.25rem)] w-px -translate-x-1/2 bg-[var(--color-navy)]/25" />}
+                        <span className={`relative z-10 flex h-6 w-6 items-center justify-center rounded-full text-[11px] font-semibold tabular-nums ${st.peri ? 'bg-[var(--color-navy)] text-white' : 'border border-[var(--color-navy)]/40 bg-white text-[var(--color-navy)]'}`}>{i + 1}</span>
+                      </span>
+                      <span className="pr-3">
+                        <span className="block font-semibold text-[var(--color-navy)]">{st.name}</span>
+                        <span className="block text-sm text-[var(--color-ink)]/80">{st.text}</span>
+                      </span>
+                      <span className="pr-3 text-right text-sm font-semibold tabular-nums text-[var(--color-navy)]">{st.age}</span>
+                    </div>
+                  );
+                })}
+              </div>
             ))}
-          </ol>
+            <p className="mt-2 text-xs text-[var(--color-muted)]">Ages are averages; many women start earlier or later. Perimenopause ends 12 months after the final period.</p>
+          </div>
           <h3 className="mt-8 text-xl">Hormones swing, they don’t fall in a straight line</h3>
           <p className="mt-2 text-[var(--color-ink)]/85">Estrogen can be low one month and high the next. Progesterone drops because ovulation becomes less regular. That is why one blood test often doesn’t tell the whole story, and why your own record of symptoms is so useful.</p>
-          <p className="mt-4 text-sm text-[var(--color-muted)]">Stage definitions: STRAW+10 (Harlow et al., 2012). Timing: HHS Office on Women’s Health; ACOG.</p>
+          <p className="mt-4 text-sm text-[var(--color-muted)]">Stage definitions: STRAW+10 (Harlow et al., 2012). Timing: Santoro (2016); HHS Office on Women’s Health; ACOG.</p>
         </Sheet>
 
         <Sheet n={2} title="4-week tracker">
