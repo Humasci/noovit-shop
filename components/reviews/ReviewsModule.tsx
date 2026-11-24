@@ -117,9 +117,13 @@ export function ReviewsModule({
                 </div>
               ))}
             </div>
-            <button onClick={() => setToggled(!showForm)} className="btn btn-primary mt-6 w-full">
-              Write a Review
-            </button>
+            {/* Button only once real reviews exist (owner, 24 Nov). Buyers still reach the form from the review-request
+                email link (#write). */}
+            {total > 0 && (
+              <button onClick={() => setToggled(!showForm)} className="btn btn-primary mt-6 w-full">
+                Write a Review
+              </button>
+            )}
           </div>
 
           <div>
