@@ -250,3 +250,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 24 Nov (84): hello@noovit.com moved to Gmail (Google MX + SPF in Vercel DNS); outreach drafts signed with hello@
 - [x] 24 Nov (85): EIN received; TODO reordered into the post-EIN path (bank → Stripe → live keys → affiliates → Merchant Center → launch)
 - [x] 24 Nov (86): site live early for the bank review; public checkout held until live Stripe keys (stripeLive), friendly 'orders open soon' message
+- [x] 24 Nov (87): homepage reorder (quiz → Pets → community → the dose on the front → FAQ)

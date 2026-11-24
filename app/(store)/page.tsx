@@ -105,23 +105,6 @@ export default async function HomePage() {
 
       <SubscriptionPerks />
 
-      {/* Inside the bottle (owner, 20 Nov): scene shots of the core formulas with their key facts (scripts/scene-shots.ts). */}
-      <section className="section">
-        <div className="container px-6">
-          <div className="mb-8 flex items-end justify-between gap-4">
-            <h2 className="text-4xl md:text-5xl">The dose on the front</h2>
-            <Link href="/shop" className="hidden items-center gap-1 text-sm font-semibold text-[var(--color-navy)] hover:underline sm:inline-flex">Shop all <ArrowRight className="h-4 w-4" /></Link>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-3">
-            {SCENES.map((sc) => (
-              <Link key={sc.slug} href={productPath(sc.slug)} className="group overflow-hidden rounded-3xl">
-                <img src={sc.src} alt={sc.alt} loading="lazy" className="aspect-square w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Women's Health: the lead category on the human side (owner, 19 Nov), straight under the hero. */}
       {women.length > 0 && (
         <section className="section">
@@ -196,7 +179,27 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* Noovit Pets teaser, above the FAQ (owner, 17 Nov): "Coming soon" until pet products are on sale. */}
+      {/* Quiz: lifestyle split (Thorne's "science is personal" pattern) */}
+      <section className="section">
+        <div className="container grid items-center gap-10 px-6 md:grid-cols-2 md:gap-16">
+          <img src={IMAGES.womanRun} srcSet={unsplashSrcSet(IMAGES.womanRun)} sizes="(min-width: 768px) 50vw, 100vw" alt="A woman running by a river in winter" className="aspect-[4/3] w-full rounded-3xl object-cover" loading="lazy" />
+          <div>
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-muted)]">Not sure where to start?</p>
+            <h2 className="text-4xl md:text-5xl">Built around your goals.</h2>
+            <p className="mt-4 max-w-lg text-lg text-[var(--color-muted)]">
+              Tell us your goals, diet and routine and we&apos;ll suggest up to three products, with the reasons why. Two minutes, no sign-up needed.
+            </p>
+            <ul className="mt-6 grid gap-2 text-sm font-semibold sm:grid-cols-2">
+              {['Matched to your goals', 'Filtered for your diet', 'Pregnancy and medication aware', 'Change or cancel anytime'].map((t) => (
+                <li key={t} className="flex items-center gap-2"><Check className="h-4 w-4 shrink-0 text-[var(--color-accent)]" /> {t}</li>
+              ))}
+            </ul>
+            <Link href="/quiz" className="btn btn-primary mt-8">Take the quiz</Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Noovit Pets teaser, under the quiz (owner, 24 Nov; was above the FAQ): "Coming soon" until pet products are on sale. */}
       <section className="pb-4">
         <div className="container px-6">
           <Link href="/pets" className="group grid overflow-hidden rounded-3xl bg-[var(--color-pets-soft)] md:h-[28rem] md:grid-cols-2">
@@ -215,22 +218,19 @@ export default async function HomePage() {
       </section>
       <CommunitySection />
 
-      {/* Quiz: lifestyle split (Thorne's "science is personal" pattern) */}
+      {/* Inside the bottle (owner, 20 Nov; moved right before the FAQ 24 Nov): scene shots of the core formulas with their key facts (scripts/scene-shots.ts). */}
       <section className="section">
-        <div className="container grid items-center gap-10 px-6 md:grid-cols-2 md:gap-16">
-          <img src={IMAGES.womanRun} srcSet={unsplashSrcSet(IMAGES.womanRun)} sizes="(min-width: 768px) 50vw, 100vw" alt="A woman running by a river in winter" className="aspect-[4/3] w-full rounded-3xl object-cover" loading="lazy" />
-          <div>
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-muted)]">Not sure where to start?</p>
-            <h2 className="text-4xl md:text-5xl">Built around your goals.</h2>
-            <p className="mt-4 max-w-lg text-lg text-[var(--color-muted)]">
-              Tell us your goals, diet and routine and we&apos;ll suggest up to three products, with the reasons why. Two minutes, no sign-up needed.
-            </p>
-            <ul className="mt-6 grid gap-2 text-sm font-semibold sm:grid-cols-2">
-              {['Matched to your goals', 'Filtered for your diet', 'Pregnancy and medication aware', 'Change or cancel anytime'].map((t) => (
-                <li key={t} className="flex items-center gap-2"><Check className="h-4 w-4 shrink-0 text-[var(--color-accent)]" /> {t}</li>
-              ))}
-            </ul>
-            <Link href="/quiz" className="btn btn-primary mt-8">Take the quiz</Link>
+        <div className="container px-6">
+          <div className="mb-8 flex items-end justify-between gap-4">
+            <h2 className="text-4xl md:text-5xl">The dose on the front</h2>
+            <Link href="/shop" className="hidden items-center gap-1 text-sm font-semibold text-[var(--color-navy)] hover:underline sm:inline-flex">Shop all <ArrowRight className="h-4 w-4" /></Link>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-3">
+            {SCENES.map((sc) => (
+              <Link key={sc.slug} href={productPath(sc.slug)} className="group overflow-hidden rounded-3xl">
+                <img src={sc.src} alt={sc.alt} loading="lazy" className="aspect-square w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
+              </Link>
+            ))}
           </div>
         </div>
       </section>
