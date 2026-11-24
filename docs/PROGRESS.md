@@ -253,3 +253,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 24 Nov (87): homepage reorder (quiz → Pets → community → the dose on the front → FAQ)
 - [x] 24 Nov (88): 'dose on the front' → 'Every dose clearly labeled' sitewide; at-home tests on the shop page (tab + section, shared KitCard)
 - [x] 24 Nov (89): coming-soon mode for all products (ORDERS_OPEN switch, Notify me form on product pages, cards, stacks, quiz)
+- [x] 24 Nov (90): homepage hero = supplements + test kits scene (scripts/hero-mix.ts → public/images/hero-mix.jpg); hero text mentions tests

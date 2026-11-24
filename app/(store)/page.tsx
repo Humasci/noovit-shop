@@ -56,8 +56,7 @@ export default async function HomePage() {
   return (
     <>
       <JsonLd data={[organizationLd, websiteLd]} />
-      {/* Hero: one full-bleed studio scene. The copy sits on the same grey backdrop as the bottles
-          (public/images/lineup-hero.png, scripts/site-images.ts), so there is no card edge. */}
+      {/* Hero: copy on sage, with the supplements-and-kits scene as a rounded photo on the right. */}
       <section className="relative overflow-hidden bg-[var(--sage)]">
         <div className="container grid items-center gap-2 px-6 md:grid-cols-[1fr_1fr] md:gap-6">
           <div className="relative z-10 pt-14 md:py-24">
@@ -74,8 +73,10 @@ export default async function HomePage() {
               ))}
             </ul>
           </div>
-          <Link href="/shop" aria-label="Shop the range" className="block">
-            <img src="/images/lineup-hero.png?v=6" alt="Noovit Magnesium Sleep+, Lion's Mane and Ashwagandha Calm+ bottles" className="w-full" fetchPriority="high" />
+          {/* Supplements and at-home test kits in one scene (owner, 24 Nov; scripts/hero-mix.ts). The bottles-only
+              line-up (/images/lineup-hero.png) is kept as the fallback. */}
+          <Link href="/shop" aria-label="Shop supplements and at-home tests" className="block pb-10 md:py-14">
+            <img src="/images/hero-mix.jpg?v=1" alt="Noovit Magnesium Sleep+, Lion's Mane and Ashwagandha Calm+ bottles in front of Noovit at-home test kit boxes" width={1500} height={1200} className="w-full rounded-3xl shadow-[0_20px_40px_-24px_rgba(20,33,61,0.35)]" fetchPriority="high" />
           </Link>
         </div>
       </section>
