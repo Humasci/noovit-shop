@@ -222,7 +222,10 @@ export default async function HomePage() {
       <section className="section">
         <div className="container px-6">
           <div className="mb-8 flex items-end justify-between gap-4">
-            <h2 className="text-4xl md:text-5xl">The dose on the front</h2>
+            <div>
+              <h2 className="text-4xl md:text-5xl">Exactly what&apos;s inside</h2>
+              <p className="mt-3 max-w-xl text-[var(--color-muted)]">The amount of the key ingredient is printed big on the front of every bottle, so you can compare at a glance. No hidden blends.</p>
+            </div>
             <Link href="/shop" className="hidden items-center gap-1 text-sm font-semibold text-[var(--color-navy)] hover:underline sm:inline-flex">Shop all <ArrowRight className="h-4 w-4" /></Link>
           </div>
           <div className="grid gap-4 sm:grid-cols-3">
