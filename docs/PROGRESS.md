@@ -249,3 +249,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 24 Nov (83): supplier outreach v3 (17 kits, STI safeguards, Choose Health + My Labs Direct, contact order in 3 waves) and a Notion supplier tracker (30 suppliers with status, wave, contact, next step)
 - [x] 24 Nov (84): hello@noovit.com moved to Gmail (Google MX + SPF in Vercel DNS); outreach drafts signed with hello@
 - [x] 24 Nov (85): EIN received; TODO reordered into the post-EIN path (bank → Stripe → live keys → affiliates → Merchant Center → launch)
+- [x] 24 Nov (86): site live early for the bank review; public checkout held until live Stripe keys (stripeLive), friendly 'orders open soon' message

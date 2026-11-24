@@ -8,6 +8,7 @@ import { getSettings } from '@/lib/settings';
 import { autoDiscountCoupon, autoDiscountFrom } from '@/lib/marketing/auto-discount';
 import { REF_COOKIE, activeAffiliateByCode } from '@/lib/affiliates';
 import { shopOpenFor } from '@/lib/launch-request';
+import { ORDERS_SOON } from '@/lib/launch';
 
 async function resolvePriceIds(lookupKeys: string[]) {
   const ids = new Map<string, { id: string; amount: number | null }>();
@@ -22,7 +23,7 @@ const CHECKOUT_TTL_SECONDS = 2 * 60 * 60;
 
 export async function POST(req: NextRequest) {
   // Pre-launch only staff and preview-link holders can check out (21 Nov audit).
-  if (!shopOpenFor(req)) return NextResponse.json({ error: 'The shop opens soon.' }, { status: 503 });
+  if (!shopOpenFor(req)) return NextResponse.json({ error: ORDERS_SOON }, { status: 503 });
   if (!stripeConfigured()) {
     return NextResponse.json({ error: 'Checkout is not set up yet. Please try again soon.' }, { status: 503 });
   }
