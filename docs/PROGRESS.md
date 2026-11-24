@@ -248,3 +248,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 23 Nov (82): anatomy lifestyle images on 8 product pages (Creatine for Her, Turmeric, Iron, Magnesium, Ashwagandha, Creatine, Lion's Mane, CoQ10 with mitochondria inset); program page pastel rhythm and photos; lilac token.
 - [x] 24 Nov (83): supplier outreach v3 (17 kits, STI safeguards, Choose Health + My Labs Direct, contact order in 3 waves) and a Notion supplier tracker (30 suppliers with status, wave, contact, next step)
 - [x] 24 Nov (84): hello@noovit.com moved to Gmail (Google MX + SPF in Vercel DNS); outreach drafts signed with hello@
+- [x] 24 Nov (85): EIN received; TODO reordered into the post-EIN path (bank → Stripe → live keys → affiliates → Merchant Center → launch)
