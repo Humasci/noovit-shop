@@ -74,7 +74,7 @@ Send IHD Lab and Spot on the same day so the quotes compare. Pets stay for after
 >
 > Thank you,
 > [Your name]
-> Noovit LLC · [Your email]
+> Noovit LLC · hello@noovit.com
 
 ---
 
@@ -110,7 +110,7 @@ Email hello@spotkits.com, then book the 30-minute call. **Subject:** White-label
 >
 > Thank you,
 > [Your name]
-> Noovit LLC · [Your email]
+> Noovit LLC · hello@noovit.com
 
 **Calendly note (short box):** Supplement brand (noovit.com) looking for white-label at-home kits: nutrients and iron,
 vitamin D/B12, perimenopause and women's panel, heart and A1c, thyroid, cortisol, men's/PSA, AMH, kidney, liver; STI later.
@@ -139,7 +139,7 @@ Partner / contact form at choosehealth.io. **Subject:** Private-label hormone te
 >
 > Thank you,
 > [Your name]
-> Noovit LLC · [Your email]
+> Noovit LLC · hello@noovit.com
 
 ---
 
@@ -159,7 +159,7 @@ Partner form on mylabsdirect.com. **Subject:** Custom-branded nutrient test kit 
 >
 > Thank you,
 > [Your name]
-> Noovit LLC · [Your email]
+> Noovit LLC · hello@noovit.com
 
 ---
 
@@ -181,7 +181,7 @@ Same email to each: **Rocktomic**, **On Demand Fulfillment**, **Professional Nut
 >
 > Thank you,
 > [Your name]
-> Noovit LLC · [Your email]
+> Noovit LLC · hello@noovit.com
 
 ---
 
