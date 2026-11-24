@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { formLimited } from '@/lib/rate-limit';
 import { dbConfigured } from '@/lib/config';
 import { subscribe, welcome, waitlistConfirm, programWelcome } from '@/lib/marketing/subscribers';
+import { enroll } from '@/lib/marketing/programs';
 import { findKit } from '@/lib/tests';
 import { KIT_RENAMES } from '@/lib/urls';
 import { GOALS } from '@/lib/quiz';
@@ -26,6 +27,12 @@ export async function POST(req: NextRequest) {
   // Coming-soon "Notify me" on a product page: keep which product they asked about (Admin → Subscribers).
   const product = launch && typeof body.product === 'string' && /^[a-z0-9-]{2,60}$/.test(body.product) ? body.product : undefined;
   const goal = kit ? kit.slug : product ? product : GOALS.some((g) => g.id === body.goal) ? (body.goal as string) : undefined;
+  // Programs: anyone can join, even an existing subscriber; the welcome goes out once per enrollment.
+  if (program) {
+    await subscribe(email, source, goal);
+    if (await enroll(email, program)) await programWelcome(email, program).catch((err) => console.error('Welcome email failed', err));
+    return NextResponse.json({ ok: true, message: "You're in. Check your inbox: your welcome email is on its way." });
+  }
   if (await subscribe(email, source, goal)) {
     // Waitlists get a short "you're on the list" note (no shop code: nothing to buy yet); the launch waitlist gets
     // nothing until the shop opens; everyone else gets the welcome email with the first-order code.

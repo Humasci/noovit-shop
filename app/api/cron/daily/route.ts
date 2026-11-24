@@ -4,6 +4,7 @@ import { dbConfigured } from '@/lib/config';
 import { sendReviewRequests } from '@/lib/marketing/review-requests';
 import { approveDueCommissions } from '@/lib/affiliates';
 import { loadSettings } from '@/lib/settings';
+import { sendProgramEmails } from '@/lib/marketing/programs';
 
 // Vercel Cron calls this daily (vercel.json) with "Authorization: Bearer <CRON_SECRET>".
 export async function GET(req: NextRequest) {
@@ -16,5 +17,6 @@ export async function GET(req: NextRequest) {
   const reviewRequests = await sendReviewRequests();
   const holdDays = Number((await loadSettings()).affiliate_hold_days || 30);
   const commissionsApproved = await approveDueCommissions(holdDays);
-  return NextResponse.json({ ok: true, reviewRequests, commissionsApproved });
+  const programEmails = await sendProgramEmails();
+  return NextResponse.json({ ok: true, reviewRequests, commissionsApproved, programEmails });
 }
