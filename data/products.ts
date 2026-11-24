@@ -13,6 +13,7 @@ const seeds: Seed[] = [
   {
     name: 'Probiotic Gut+',
     slug: 'probiotic-complex',
+    status: 'hidden', // 24 Nov: formula not matched to a Supliful product yet (owner check)
     tagline: 'Digestive Balance & Gut Comfort',
     shortBenefit: 'Supports gut balance and healthy digestion.',
     description: 'A multi-strain probiotic paired with a prebiotic fiber, in delayed-release capsules built to reach the gut intact.',
@@ -32,6 +33,7 @@ const seeds: Seed[] = [
   {
     name: 'Glucosamine Joint+',
     slug: 'glucosamine-complex',
+    status: 'hidden', // 24 Nov: formula not matched to a Supliful product yet (owner check)
     tagline: 'Joint Comfort & Mobility',
     shortBenefit: 'Supports joint comfort and mobility.',
     description: 'Glucosamine, chondroitin and MSM with a touch of curcumin for joints that keep up with you.',
@@ -52,6 +54,7 @@ const seeds: Seed[] = [
   {
     name: 'Collagen Glow+',
     slug: 'collagen-complex',
+    status: 'hidden', // 24 Nov: formula not matched to a Supliful product yet (owner check)
     tagline: 'Skin, Hair & Nail Support',
     shortBenefit: 'Supports skin elasticity, hair and nails.',
     description: 'Hydrolyzed collagen peptides with vitamin C and hyaluronic acid for skin support from within.',
@@ -71,6 +74,7 @@ const seeds: Seed[] = [
   {
     name: 'Menopause Balance+',
     slug: 'menopause-complex',
+    status: 'hidden', // 24 Nov: formula not matched to a Supliful product yet (owner check)
     tagline: 'Support Through Menopause',
     shortBenefit: 'Supports balance through menopause.',
     description: 'Botanicals and key nutrients chosen to support women through perimenopause and menopause.',
@@ -127,6 +131,7 @@ const seeds: Seed[] = [
   {
     name: 'Iron Complex',
     slug: 'iron-complex',
+    status: 'hidden', // 24 Nov: formula not matched to a Supliful product yet (owner check)
     tagline: 'Gentle Iron for Everyday Energy',
     shortBenefit: 'Supports energy without the stomach upset.',
     description: 'Gentle iron bisglycinate with vitamin C, B12 and folate to support normal energy levels.*',
@@ -147,6 +152,7 @@ const seeds: Seed[] = [
   {
     name: 'Vitamin D3 & K2',
     slug: 'vitamin-d3-k2',
+    status: 'hidden', // 24 Nov: formula not matched to a Supliful product yet (owner check)
     tagline: 'Bone, Immune & Energy Support',
     shortBenefit: 'Supports bones, immunity and calcium use.',
     description: 'Vitamin D3 paired with K2 (MK-7) so calcium goes where your body needs it.',
@@ -300,6 +306,7 @@ const seeds: Seed[] = [
   {
     name: 'Biotin Complex',
     slug: 'biotin-complex',
+    status: 'hidden', // 24 Nov: formula not matched to a Supliful product yet (owner check)
     tagline: 'Hair, Skin & Nail Support',
     shortBenefit: 'Supports stronger hair and nails.',
     description: 'High-strength biotin with zinc and selenium for hair, skin and nails.',
@@ -435,6 +442,7 @@ const seeds: Seed[] = [
   {
     name: 'Mushroom Clarity+',
     slug: 'mushroom-blend-powder',
+    status: 'hidden', // 24 Nov: formula not matched to a Supliful product yet (owner check)
     tagline: 'Focus & Daily Energy',
     shortBenefit: 'Supports focus, energy and immunity.',
     description: "A functional mushroom blend — lion's mane, cordyceps, reishi and chaga — to stir into coffee or smoothies.",
@@ -795,8 +803,8 @@ const seeds: Seed[] = [
   {
     name: 'Joint Support Trio',
     slug: 'joint-support-trio',
+    status: 'hidden', // 24 Nov: formula not matched to a Supliful product yet (owner check)
     tagline: 'A Complete Joint Routine',
-    status: 'active',
     shortBenefit: 'Glucosamine Joint+, Turmeric Complex and Collagen Glow+ for comfortable movement.',
     description: 'A complete joint routine, together for less: Glucosamine Joint+ (with chondroitin and MSM), Turmeric Complex and Collagen Glow+.',
     whoFor: 'Active people, runners and anyone who wants to keep moving comfortably. Not for anyone with a shellfish allergy.',
