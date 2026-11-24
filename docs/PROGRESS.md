@@ -256,3 +256,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 24 Nov (90): homepage hero = supplements + test kits scene (scripts/hero-mix.ts → public/images/hero-mix.jpg); hero text mentions tests
 - [x] 24 Nov (91): mosaic cross fixed on the creatine tub renders (scripts/fix-cross.ts); logo PNGs for AI renders (design/brand); image audit
 - [x] 24 Nov (92): perimenopause email series (starter kit + 6 weeks via daily cron, program_enrollments migration 0008), printable starter kit page
+- [x] 24 Nov (93): catalog clean-up SQL (hide 3 unconfirmed products, shellfish warnings) and seed

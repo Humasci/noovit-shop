@@ -35,7 +35,7 @@ const seeds: Seed[] = [
     tagline: 'Joint Comfort & Mobility',
     shortBenefit: 'Supports joint comfort and mobility.',
     description: 'Glucosamine, chondroitin and MSM with a touch of curcumin for joints that keep up with you.',
-    whoFor: 'Active people, runners, and anyone who wants to keep joints moving comfortably.',
+    whoFor: 'Active people, runners, and anyone who wants to keep joints moving comfortably. Not for anyone with a shellfish allergy.',
     benefits: ['Supports cartilage health', 'Promotes joint flexibility', 'Supports a healthy inflammatory response', 'Triple-action formula'],
     ingredients: [
       { name: 'Glucosamine Sulfate', amount: '1500mg' },
@@ -43,7 +43,7 @@ const seeds: Seed[] = [
       { name: 'MSM', amount: '500mg' },
       { name: 'Curcumin', amount: '50mg' },
     ],
-    otherIngredients: 'Vegetable capsule (HPMC).',
+    otherIngredients: 'Vegetable capsule (HPMC). Contains: shellfish (glucosamine is made from crustacean shells).',
     dosage: 'Take 3 capsules daily with a meal.',
     servings: 30, form: 'capsules', basePrice: 36, color: '#4A9B8E',
     productType: 'supplements', dietaryTags: ['gluten-free', 'sugar-free'],
@@ -108,6 +108,7 @@ const seeds: Seed[] = [
   {
     name: 'Zinc',
     slug: 'zinc',
+    status: 'hidden', // 24 Nov: supplier and formula not confirmed
     tagline: 'Immune & Skin Support',
     shortBenefit: 'Supports immune function and skin health.',
     description: 'Highly absorbable zinc picolinate with copper to keep minerals in balance.',
@@ -258,6 +259,7 @@ const seeds: Seed[] = [
   {
     name: 'Daily Multi+',
     slug: 'multivitamin',
+    status: 'hidden', // 24 Nov: supplier and formula not confirmed
     tagline: 'Your Daily Foundation',
     shortBenefit: 'Daily foundation of essential vitamins and minerals.',
     description: '23 vitamins and minerals in active, bioavailable forms to fill the gaps in a busy diet.',
@@ -773,7 +775,7 @@ const seeds: Seed[] = [
     name: 'Gut & Immunity Reset',
     slug: 'gut-immunity-reset',
     tagline: 'Gut & Immune Essentials',
-    status: 'active',
+    status: 'hidden', // 24 Nov: contains Zinc (hidden until confirmed)
     shortBenefit: 'Probiotic Gut+, Vitamin D3 & K2 and Zinc for digestion and immune support.',
     description: 'Three everyday essentials for a healthy gut and a normal immune system, together for less: Probiotic Gut+, Vitamin D3 & K2 and Zinc.',
     whoFor: 'Anyone who wants year-round support for digestion and immunity.',
@@ -797,14 +799,14 @@ const seeds: Seed[] = [
     status: 'active',
     shortBenefit: 'Glucosamine Joint+, Turmeric Complex and Collagen Glow+ for comfortable movement.',
     description: 'A complete joint routine, together for less: Glucosamine Joint+ (with chondroitin and MSM), Turmeric Complex and Collagen Glow+.',
-    whoFor: 'Active people, runners and anyone who wants to keep moving comfortably.',
+    whoFor: 'Active people, runners and anyone who wants to keep moving comfortably. Not for anyone with a shellfish allergy.',
     benefits: ['Supports joint comfort and flexibility', 'Supports cartilage and connective tissue', 'Supports a healthy inflammatory response'],
     ingredients: [
       { name: 'Glucosamine Joint+ (1 bottle)', amount: '1 × 90 capsules' },
       { name: 'Turmeric Complex (1 bottle)', amount: '1 × 60 capsules' },
       { name: 'Collagen Glow+ (1 bottle)', amount: '1 × 60 capsules' },
     ],
-    otherIngredients: 'See each product page for full Supplement Facts and allergen information.',
+    otherIngredients: 'Contains: shellfish (in Glucosamine Joint+ and Turmeric Complex). See each product page for full Supplement Facts and allergen information.',
     dosage: 'Follow the directions on each bottle.',
     servings: 30, form: 'capsules', basePrice: 89, color: '#2E8B7A',
     productType: 'supplements', dietaryTags: ['gluten-free', 'sugar-free'],
