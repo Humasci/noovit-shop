@@ -417,7 +417,7 @@ const seeds: Seed[] = [
     // basePrice is a placeholder until the owner sends the delivered cost. Hidden until then.
     name: 'Creatine Hydration+',
     slug: 'creatine-hydration',
-    status: 'hidden',
+    status: 'active', // 24 Nov: matches Supliful's Creatine Hydration Powder; Pro cost $9.85 + shipping/fulfilment
     tagline: 'Strength & Hydration',
     shortBenefit: 'Creatine plus electrolytes for training and hot days.',
     description: '5 g of creatine monohydrate with sodium, potassium and magnesium in one lemon drink. Sweetened with stevia, no sugar.',

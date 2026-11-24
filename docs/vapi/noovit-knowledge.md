@@ -42,7 +42,7 @@ These are the only facts the assistant may use. If something is not here, the as
 - Q: How can I contact customer service? A: Use our contact form or email us. We reply within one business day.
 - Q: Is it dairy and lactose free? A: Yes, unless the label states otherwise.
 
-## Products (7)
+## Products (8)
 Core range first. All doses are per serving.
 
 ### Lion's Mane
@@ -159,6 +159,24 @@ Core range first. All doses are per serving.
 - Who it's for: Active people and anyone who wants daily joint support. Not for anyone with a shellfish allergy.
 - Dietary: Gluten-free.
 - Important: Contains shellfish (crab, lobster, crawfish). Not for anyone with a shellfish allergy.
+
+### Creatine Hydration+
+- What it is for: Creatine plus electrolytes for training and hot days.
+- Headline: Strength & Hydration
+- Web page: noovit dot com/products/creatine-hydration
+- Description: 5 g of creatine monohydrate with sodium, potassium and magnesium in one lemon drink. Sweetened with stevia, no sugar.
+- Key ingredients per serving: Magnesium (as Magnesium Malate), 60 mg; Sodium (as Sea Salt), 1,000 mg; Potassium (as Potassium Chloride), 200 mg; Creatine Monohydrate, 5 g.
+- Other ingredients: Natural flavors, stevia extract (leaf), silicon dioxide.
+- Size: 30 servings, net weight 300 g (10.6 oz), powder.
+- Price: $36 for one tub, one-time.
+- Multi-packs, one-time: 3 for $31 each; 6 for $26 each.
+- Subscribe & Save, per delivery: 1 for $31 each; 2 for $28.50 each; 3 for $26 each. Lowest price per unit: $26.
+- How to take it: Mix 1 scoop (10 g) with 6–8 oz (177–237 ml) of water once a day, ideally around training.
+- Who it's for: Adults who train hard or sweat a lot and want creatine and electrolytes in one scoop.
+- Dietary: Gluten-free, Sugar-free.
+- Important: Adults 18 and over only.
+- Q: How much sodium is in a scoop? A: 1,000 mg, about 43% of the Daily Value. That suits heavy sweaters. If you are on a low-sodium diet or have high blood pressure, heart or kidney problems, talk to your doctor first.
+- Q: What does it taste like? A: Lemon, sweetened with stevia leaf extract. No sugar.
 
 ## Bundles (5)
 A bundle is a set of separate products sold together at a lower price.

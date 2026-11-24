@@ -261,3 +261,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 24 Nov (95): Vapi phone agent "Noovit Care": setup guide, system prompt and first message (docs/vapi), knowledge file built from the catalog (`npm run vapi:knowledge`)
 - [x] 24 Nov (96): Stripe sandbox webhook + customer portal; staff/preview see buy buttons in coming-soon mode; Write a Review hidden until real reviews
 - [x] 24 Nov (97): hid 9 products not matched to a Supliful formula (SQL + seed); Vapi knowledge rebuilt
+- [x] 24 Nov (98): Creatine Hydration+ matched to Supliful, priced $36 (SQL + seed); Supliful pricing-tier finding logged
