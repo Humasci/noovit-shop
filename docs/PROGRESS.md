@@ -259,3 +259,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 24 Nov (93): catalog clean-up SQL (hide 3 unconfirmed products, shellfish warnings) and seed
 - [x] 24 Nov (94): brand kit (scripts/brand-kit.ts: logos, social avatars/banners for 6 platforms, email logo, Gmail signature page), emails show the logo image, starter kit and 404 page carry the logo
 - [x] 24 Nov (95): Vapi phone agent "Noovit Care": setup guide, system prompt and first message (docs/vapi), knowledge file built from the catalog (`npm run vapi:knowledge`)
+- [x] 24 Nov (96): Stripe sandbox webhook + customer portal; staff/preview see buy buttons in coming-soon mode; Write a Review hidden until real reviews

@@ -6,6 +6,7 @@ import { signToken } from '@/lib/sign';
 import { db } from '@/lib/db/server';
 import { dbConfigured } from '@/lib/config';
 import { ADMIN_COOKIE, readSession } from './session';
+import { SHOP_PREVIEW_HINT } from '@/lib/launch';
 import { can, Permission, Role } from './permissions';
 import { hashPassword, verifyPassword } from './password';
 
@@ -84,10 +85,12 @@ export async function startSession(staff: Staff) {
     path: '/',
     maxAge: SESSION_TTL,
   });
+  (await cookies()).set(SHOP_PREVIEW_HINT, '1', { sameSite: 'lax', path: '/', maxAge: SESSION_TTL, secure: process.env.NODE_ENV === 'production' });
 }
 
 export async function endSession() {
   (await cookies()).delete(ADMIN_COOKIE);
+  (await cookies()).delete(SHOP_PREVIEW_HINT);
 }
 
 export async function currentStaff(): Promise<Staff | null> {

@@ -12,6 +12,7 @@ export const stripeLive = () => /^(sk|rk)_live_/.test(process.env.STRIPE_SECRET_
 // "Coming soon" mode for products (owner, 24 Nov): buy buttons become "Notify me" until ORDERS_OPEN=true in Vercel,
 // and orders also need live Stripe keys. Staff and preview links can still reach checkout (for the test order).
 export const ordersOpen = () => process.env.ORDERS_OPEN === 'true' && stripeLive();
+export { SHOP_PREVIEW_HINT } from '@/lib/shop-preview';
 export const ORDERS_SOON = 'Orders open in a few days. Sign up for our emails and we’ll tell you the moment they do.';
 
 export const PREVIEW_COOKIE = 'noovit_preview';
