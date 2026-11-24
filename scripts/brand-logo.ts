@@ -4,7 +4,9 @@
 import { readdirSync, writeFileSync, mkdirSync } from 'fs';
 import path from 'path';
 import { Resvg } from '@resvg/resvg-js';
-import { wordmark, mosaicCross, NAVY, ORANGE } from '@/lib/labels/svg';
+import { wordmark, mosaicCross, ORANGE } from '@/lib/labels/svg';
+
+const NAVY = '#14213d'; // brand navy (same as lib/labels/svg.ts)
 
 const FONT_DIR = path.join(process.cwd(), 'assets/fonts');
 const fontFiles = readdirSync(FONT_DIR).filter((f) => f.endsWith('.ttf')).map((f) => path.join(FONT_DIR, f));
