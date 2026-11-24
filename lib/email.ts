@@ -29,11 +29,17 @@ async function send(to: string, subject: string, html: string, headers?: Record<
   return res.ok;
 }
 
+// Email layout (24 Nov): the real logo as an image (Funnel Display can't load in email clients), navy rule, branded footer.
+// Logo: public/brand/noovit-logo-email.png (scripts/brand-kit.ts), 2× size shown at 132 × 33.
+const LOGO = `<a href="${SITE_URL}" style="text-decoration:none"><img src="${SITE_URL}/brand/noovit-logo-email.png" width="132" height="33" alt="noovit" style="display:block;border:0;outline:none;height:33px;width:132px"/></a>`;
 const layout = (body: string) => `
-<div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;color:#1f2937">
-  <p style="font-size:24px;font-weight:600;color:#14213d;margin:0 0 16px">noovit<table role="presentation" cellpadding="0" cellspacing="1" style="display:inline-table;vertical-align:top;margin-left:2px;margin-top:2px;border-collapse:separate"><tr><td style="width:4px;height:4px;padding:0;background:transparent;border-radius:1px"></td><td style="width:4px;height:4px;padding:0;background:#ff9f66;border-radius:1px"></td><td style="width:4px;height:4px;padding:0;background:transparent;border-radius:1px"></td></tr><tr><td style="width:4px;height:4px;padding:0;background:#ffbf99;border-radius:1px"></td><td style="width:4px;height:4px;padding:0;background:#ff5f00;border-radius:1px"></td><td style="width:4px;height:4px;padding:0;background:#ff7f33;border-radius:1px"></td></tr><tr><td style="width:4px;height:4px;padding:0;background:transparent;border-radius:1px"></td><td style="width:4px;height:4px;padding:0;background:#ffaf80;border-radius:1px"></td><td style="width:4px;height:4px;padding:0;background:transparent;border-radius:1px"></td></tr></table></p>
+<div style="font-family:Arial,Helvetica,sans-serif;max-width:560px;margin:0 auto;color:#1f2937;line-height:1.55">
+  <div style="padding:8px 0 14px;border-bottom:2px solid #14213d;margin-bottom:20px">${LOGO}</div>
   ${body}
-  <p style="margin-top:32px;font-size:12px;color:#6b7280">Questions? Just reply to this email.<br/>Noovit · Evidence-led supplements<br/>${LEGAL_NAME}</p>
+  <div style="margin-top:32px;padding-top:14px;border-top:1px solid #e5e7eb;font-size:12px;color:#6b7280">
+    Questions? Just reply to this email, or write to <a href="mailto:hello@noovit.com" style="color:#14213d">hello@noovit.com</a>.<br/>
+    Noovit · Evidence-led supplements · Every dose clearly labeled<br/>${LEGAL_NAME}
+  </div>
 </div>`;
 
 export interface EmailOrder {

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { PROGRAM } from '@/lib/programs/perimenopause';
 import { PrintButton } from '@/components/programs/PrintButton';
+import { Logo } from '@/components/layout/Logo';
 
 // Printable starter kit for "Perimenopause, Decoded" (24 Nov), linked from the day-1 email. Four A4/Letter pages; the
 // browser's "Save as PDF" makes the PDF. Facts from docs/programs/research (STRAW+10, ACOG, OWH, NAMS); no brand names.
@@ -47,7 +48,10 @@ const QUESTIONS = [
 function Sheet({ n, title, children }: { n: number; title: string; children: React.ReactNode }) {
   return (
     <section className="kit-page mx-auto mb-8 max-w-[52rem] rounded-3xl border border-[var(--color-line)] bg-white p-8 sm:p-10">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--color-muted)]">Perimenopause, Decoded · Starter kit · Page {n} of 4</p>
+      <div className="flex items-start justify-between gap-4">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--color-muted)]">Perimenopause, Decoded · Starter kit · Page {n} of 4</p>
+        <span className="text-xl text-[var(--color-navy)]" aria-label="noovit"><Logo /></span>
+      </div>
       <h2 className="mt-2 text-3xl text-[var(--color-navy)]">{title}</h2>
       <div className="mt-6">{children}</div>
     </section>

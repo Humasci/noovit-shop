@@ -257,3 +257,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 24 Nov (91): mosaic cross fixed on the creatine tub renders (scripts/fix-cross.ts); logo PNGs for AI renders (design/brand); image audit
 - [x] 24 Nov (92): perimenopause email series (starter kit + 6 weeks via daily cron, program_enrollments migration 0008), printable starter kit page
 - [x] 24 Nov (93): catalog clean-up SQL (hide 3 unconfirmed products, shellfish warnings) and seed
+- [x] 24 Nov (94): brand kit (scripts/brand-kit.ts: logos, social avatars/banners for 6 platforms, email logo, Gmail signature page), emails show the logo image, starter kit and 404 page carry the logo
