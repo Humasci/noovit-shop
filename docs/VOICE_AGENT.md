@@ -1,5 +1,7 @@
 # Noovit phone line (Vapi): v0 receptionist
 
+> Superseded (24 Nov) by the customer-service agent "Noovit Care": `docs/vapi/AGENT.md`.
+
 v0 exists so the business has a working US number before launch: for the EIN application, the bank and Stripe. It only
 answers, takes messages and passes on anything urgent. The customer-service agent (v1/v2) is planned in `docs/TODO.md`.
 

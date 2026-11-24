@@ -3,6 +3,7 @@
 _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only you can do it. **Build** = Claude does it. Tick items off here; `PROGRESS.md` keeps the history._
 
 ## 🔴 Before launch: owner
+- [ ] **(24 Nov) Phone agent "Noovit Care" (Vapi): set it up following `docs/vapi/AGENT.md`** (paste the prompt and first message from `docs/vapi/system-prompt.md`, upload `docs/vapi/noovit-knowledge.md`, attach your Vapi number, then the 10 test calls). After any catalog, price or policy change: re-run `npm run vapi:knowledge` and re-upload the file. On the day orders open, swap the `STATUS:` line in the prompt.
 - [x] **(24 Nov) Vercel env added by me:** `SITE_LIVE=false` (the launch switch, now visible: edit to `true` + redeploy), `NEXT_PUBLIC_SITE_URL`, `SUPPORT_EMAIL=hello@noovit.com`, `BUSINESS_ADDRESS`. Owner has the Vapi number (business phone) and Gmail; Mercury application in progress.
 - [x] **(24 Nov) Gmail DKIM added by me** (`google._domainkey` TXT in Vercel DNS, 2048-bit, verified live). Owner: tick both boxes on Google's DKIM page and press Confirm (Google may take up to 48 h to show it as authenticated).
 - [x] **(24 Nov, done and verified live) Catalog clean-up: `supabase/manual/2026-11-24-catalog-cleanup.sql`** in the Supabase SQL editor (hides Zinc, Daily Multi+, Gut & Immunity Reset; shellfish warnings on Glucosamine Joint+ and Joint Support Trio; seed updated to match). Then save any product in Admin. **Ask Supliful** which shellfish the glucosamine comes from: US allergen law (FALCPA) needs the species named on the label (e.g. "Contains: shrimp, crab"), as on Turmeric Complex; I'll update the label once you have it.
@@ -196,7 +197,7 @@ _Consolidated 28 Oct 2026 from the whole build conversation. **Owner** = only yo
   - **Owner:** buy a US number in Vapi; it becomes the business number (EIN form, website, label — it also covers the label's US contact for adverse-event reports).
   - **v1 (launch):** the agent says it's an AI assistant, answers from our FAQ/shipping/returns/subscription pages, takes messages, and **captures any health problem report** (name, contact, product, lot, what happened) → emails the owner immediately and logs it (serious events → FDA within 15 business days). No medical advice, no dosing advice beyond the label; offers a human callback by email. Recording disclosure at the start (two-party-consent states).
   - **v2 (after launch):** order status by order number + email via a small API endpoint (build), and texting the customer a link to manage their subscription (no account changes by voice).
-  - **Build when the account exists:** system prompt + knowledge from the site, the message/adverse-event webhook into Admin, order-lookup endpoint.
+  - **Build when the account exists:** ~~system prompt + knowledge from the site~~ (done 24 Nov: `docs/vapi/`), the message/adverse-event webhook into Admin (then turn on Vapi no-storage mode), order-lookup endpoint.
 - [ ] **HSA/FSA payments** via Flex or Truemed (Absorption Company and Naomi both show it).
 - [x] Newsletter pop-up asks the **goal first** (30 Oct); goal shown in Admin → Subscribers for segmenting.
 - [ ] **Build-your-stack** (multi-buy discount) and a **rewards** programme.

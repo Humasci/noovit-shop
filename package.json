@@ -11,6 +11,7 @@
     "catalog:seed": "tsx --env-file-if-exists=.env.local scripts/seed-catalog.ts",
     "labels": "tsx scripts/render-labels.ts",
     "advisor:snapshot": "tsx scripts/advisor-snapshot.ts",
+    "vapi:knowledge": "tsx --conditions=react-server --env-file-if-exists=.env.local scripts/vapi-knowledge.ts",
     "social": "tsx scripts/social-templates.ts",
     "infographic": "tsx scripts/infographic.ts"
   },
