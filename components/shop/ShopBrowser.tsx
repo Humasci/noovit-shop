@@ -7,8 +7,9 @@ import { ProductCard } from '@/components/product/ProductCard';
 import { TrustSection } from '@/components/sections/Sections';
 import { PRODUCT_TYPES, PUBLIC_DIETARY_TAGS, asLowAs } from '@/data/products';
 import { DietaryTag, Product, ProductType } from '@/types';
+import { KitCard, type KitSummary } from '@/components/tests/KitCard';
 
-export type TypeFilter = ProductType | 'all' | 'best-sellers';
+export type TypeFilter = ProductType | 'all' | 'best-sellers' | 'tests';
 type Sort = 'featured' | 'az' | 'za' | 'low' | 'high';
 
 const SORTS: { value: Sort; label: string }[] = [
@@ -23,6 +24,7 @@ const TYPE_TABS: { value: TypeFilter; label: string }[] = [
   { value: 'all', label: 'All Products' },
   { value: 'best-sellers', label: 'Best Sellers' },
   ...PRODUCT_TYPES,
+  { value: 'tests', label: 'At-Home Tests' },
 ];
 
 function Pill({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
@@ -42,8 +44,10 @@ export function ShopBrowser({
   products,
   initialType,
   collections = [],
+  kits = [],
 }: {
   products: Product[];
+  kits?: KitSummary[];
   initialType: TypeFilter;
   collections?: { slug: string; title: string }[];
 }) {
@@ -68,6 +72,7 @@ export function ShopBrowser({
   const filtered = useMemo(() => {
     const list = products.filter(
       (p) =>
+        type !== 'tests' &&
         (type === 'all' || (type === 'best-sellers' ? p.bestSeller : p.productType === type)) &&
         tags.every((t) => p.dietaryTags.includes(t))
     );
@@ -81,6 +86,7 @@ export function ShopBrowser({
     return [...list].sort(sorters[sort]);
   }, [products, type, tags, sort]);
 
+  const showKits = kits.length > 0 && (type === 'all' || type === 'tests') && tags.length === 0;
   const groups = PRODUCT_TYPES.map((t) => ({ ...t, items: filtered.filter((p) => p.productType === t.value) })).filter(
     (g) => g.items.length > 0
   );
@@ -92,7 +98,7 @@ export function ShopBrowser({
       <section className="bg-[var(--color-soft)] py-14">
         <div className="container px-6 text-center">
           <h1 className="mx-auto max-w-3xl text-balance text-3xl md:text-5xl">Clean, science-driven nutrition for every body.</h1>
-          <p className="mt-4 text-[var(--color-muted)]">Every dose on the front · No proprietary blends · Free US shipping</p>
+          <p className="mt-4 text-[var(--color-muted)]">Every dose clearly labeled · No proprietary blends · Free US shipping</p>
           {collections.length > 0 && (
             <div className="mt-6 flex flex-wrap justify-center gap-2">
               {collections.map((c) => (
@@ -111,7 +117,7 @@ export function ShopBrowser({
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between md:gap-4">
             <div className="no-scrollbar flex items-center gap-2 overflow-x-auto">
               <span className="mr-1 hidden shrink-0 text-xs font-bold uppercase tracking-wider text-[var(--color-muted)] sm:inline">Product Type</span>
-              {TYPE_TABS.filter((t) => t.value === 'all' || t.value === 'best-sellers' || products.some((p) => p.productType === t.value)).map((t) => (
+              {TYPE_TABS.filter((t) => t.value === 'all' || t.value === 'best-sellers' || (t.value === 'tests' ? kits.length > 0 : products.some((p) => p.productType === t.value))).map((t) => (
                 <Pill key={t.value} active={type === t.value} onClick={() => setType(t.value)}>
                   {t.label}
                 </Pill>
@@ -198,7 +204,7 @@ export function ShopBrowser({
       )}
 
       <div className="container px-4 py-8 sm:px-6 md:py-12">
-        {groups.length === 0 ? (
+        {groups.length === 0 && !showKits ? (
           <p className="py-20 text-center text-[var(--color-muted)]">No products match your search criteria.</p>
         ) : (
           <div className="space-y-12 md:space-y-16">
@@ -214,6 +220,20 @@ export function ShopBrowser({
                 </div>
               </section>
             ))}
+            {showKits && (
+              <section id="at-home-tests">
+                <div className="mb-5 flex flex-wrap items-baseline justify-between gap-2 md:mb-8">
+                  <h2 className="text-2xl md:text-3xl">
+                    At-home tests <span className="text-[var(--color-muted)]">({kits.length})</span>
+                  </h2>
+                  <Link href="/at-home-tests" className="text-sm font-semibold text-[var(--color-navy)] underline">All tests by category</Link>
+                </div>
+                <p className="-mt-3 mb-6 max-w-2xl text-sm text-[var(--color-muted)]">Coming soon: simple kits you collect at home, run by a certified US lab. Join the waitlist on any kit page.</p>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {kits.map((k) => <KitCard key={k.slug} kit={k} />)}
+                </div>
+              </section>
+            )}
           </div>
         )}
       </div>

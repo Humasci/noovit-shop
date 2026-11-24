@@ -9,7 +9,7 @@ const base: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: 'Noovit — Evidence-Led Supplements, Doses on the Label',
   description:
-    'Evidence-led supplements with the dose on the front of every bottle: magnesium glycinate, KSM-66 ashwagandha, creatine and more. Free US shipping.',
+    'Evidence-led supplements with every dose clearly labeled: magnesium glycinate, KSM-66 ashwagandha, creatine and more. Free US shipping.',
   keywords: ['supplements', 'magnesium glycinate', 'ksm-66 ashwagandha', 'creatine monohydrate', "lion's mane", 'coq10', 'turmeric curcumin'],
   openGraph: { siteName: 'Noovit', type: 'website', locale: 'en_US' },
   twitter: { card: 'summary_large_image' },

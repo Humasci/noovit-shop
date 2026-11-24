@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { collection: c } = data;
   return {
     title: c.seoTitle || (`${c.title} Supplements | Noovit`.length <= 60 && !/supplement/i.test(c.title) ? `${c.title} Supplements | Noovit` : `${c.title} | Noovit`),
-    description: c.seoDescription || (c.description && c.description.length >= 70 ? c.description : `${c.title}: ${c.description ? c.description.replace(/\.?$/, '. ') : ''}Evidence-led supplements with the dose on the front. Free US shipping, 90-day guarantee.`.slice(0, 160)),
+    description: c.seoDescription || (c.description && c.description.length >= 70 ? c.description : `${c.title}: ${c.description ? c.description.replace(/\.?$/, '. ') : ''}Evidence-led supplements with every dose clearly labeled. Free US shipping, 90-day guarantee.`.slice(0, 160)),
     alternates: { canonical: `/collections/${c.slug}` },
     ...(c.image ? { openGraph: { images: [{ url: c.image }] } } : {}),
   };

@@ -26,7 +26,7 @@ export default async function StacksPage() {
         <nav className="mb-4 text-xs text-[var(--color-muted)]"><Link href="/">Home</Link> / <Link href="/shop">Shop</Link> / <span className="text-[var(--color-ink)]">Stacks</span></nav>
         <p className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-navy)]"><span aria-hidden className="h-1.5 w-1.5 bg-[var(--color-orange)]" /> Noovit stacks</p>
         <h1 className="mt-3 max-w-3xl text-balance font-display text-4xl font-light text-[var(--color-navy)] md:text-6xl">Pairs that work together, for less</h1>
-        <p className="mt-4 max-w-2xl text-lg text-[var(--color-ink)]/80">Each stack is two of our formulas that suit the same goal, priced below buying them one at a time. Same bottles, same doses, printed on the front.</p>
+        <p className="mt-4 max-w-2xl text-lg text-[var(--color-ink)]/80">Each stack is two of our formulas that suit the same goal, priced below buying them one at a time. Same bottles, same clearly labeled doses.</p>
       </section>
       <section className="container space-y-12 px-6 pb-20">
         {stacks.map((s, i) => <StackFolder key={s.slug} stack={s} parts={stackParts(s, all)} index={i + 1} isNew={NEW_STACKS.has(s.slug)} />)}

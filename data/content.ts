@@ -1,6 +1,6 @@
 import { Expert, FAQ } from '@/types';
 
-export const TRUST_BAR = ['Dose on the Front', 'Free US Shipping', 'Evidence-Graded Guides', '90-Day Guarantee', 'Cancel Anytime'];
+export const TRUST_BAR = ['Every Dose Clearly Labeled', 'Free US Shipping', 'Evidence-Graded Guides', '90-Day Guarantee', 'Cancel Anytime'];
 
 export const IMAGES = {
   // Sports lifestyle (Unsplash License, free): sprinter by Jorge Alberto Vega Barrera; runner by Sherise Van Dyk.

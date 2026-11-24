@@ -5,14 +5,19 @@ import { PRODUCT_TYPES } from '@/data/products';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { pageLd } from '@/lib/structured-data';
 import { productPath } from '@/lib/urls';
+import { TEST_KITS } from '@/lib/tests';
+import { kitSummary } from '@/components/tests/KitCard';
+
+// Human at-home test kits (owner, 24 Nov: tests on the shop page too). Pet kits stay on /pets.
+const KITS = TEST_KITS.filter((k) => !k.pets).map(kitSummary);
 
 export const metadata: Metadata = {
-  title: 'Shop All Supplements: Evidence-Led, Clear Doses | Noovit',
-  description: 'Clean, science-driven supplements for gut health, sleep, joints, skin, energy, sports and pets. Filter by vegan, gluten-free and more.',
+  title: 'Shop Supplements and At-Home Tests | Noovit',
+  description: 'Evidence-led supplements for sleep, stress, focus, joints, skin and energy, plus at-home health tests (coming soon). Filter by vegan, gluten-free and more.',
   alternates: { canonical: '/shop' },
 };
 
-const TYPES: string[] = ['all', 'best-sellers', ...PRODUCT_TYPES.map((t) => t.value)];
+const TYPES: string[] = ['all', 'best-sellers', 'tests', ...PRODUCT_TYPES.map((t) => t.value)];
 
 export default async function ShopPage({ searchParams }: { searchParams: Promise<{ type?: string }> }) {
   const { type } = await searchParams;
@@ -24,6 +29,7 @@ export default async function ShopPage({ searchParams }: { searchParams: Promise
     <ShopBrowser
       key={initialType}
       products={products}
+      kits={KITS}
       initialType={initialType}
       collections={collections.map((c) => ({ slug: c.slug, title: c.title }))}
     />

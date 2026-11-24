@@ -26,7 +26,7 @@ export const TRUST_ITEMS = [
   // Only claims we can prove today. Add "Third-party tested" / "GMP" / "Made in the USA" back once Supliful's
   // certificates and COAs are on file (docs/TODO.md), ideally linking to them.
   { icon: GraduationCap, label: 'Evidence Graded' },
-  { icon: Award, label: 'Dose on the Front' },
+  { icon: Award, label: 'Every Dose Clearly Labeled' },
   { icon: FlaskConical, label: 'Every Ingredient Listed' },
   { icon: MapPin, label: 'Free US Shipping' },
   { icon: ShieldCheck, label: '90-Day Money-Back Guarantee' },

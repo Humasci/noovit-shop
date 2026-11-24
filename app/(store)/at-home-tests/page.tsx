@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { ArrowRight, Droplet, Flower2, Activity, HeartPulse, Brain, User, PawPrint, FlaskConical, ShieldCheck } from 'lucide-react';
 import { TEST_CATEGORY_LIST, TEST_KITS, type TestCategoryId } from '@/lib/tests';
 import { TestsWaitlist } from '@/components/tests/TestsWaitlist';
+import { KitCard, kitSummary } from '@/components/tests/KitCard';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { pageLd } from '@/lib/structured-data';
 import { MosaicField } from '@/components/brand/MosaicField';
@@ -73,14 +74,7 @@ export default function TestsPage() {
                   </div>
                   <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {g.kits.map((k) => (
-                      <KitLink key={k.slug} sensitive={k.sensitive} href={`/at-home-tests/${k.slug}`} className="group relative flex flex-col overflow-hidden rounded-3xl border border-[var(--color-line)] bg-white p-6 transition hover:border-[var(--color-navy)]">
-                        <MosaicField cols={6} rows={5} tile={10} gap={3} anchor="top-right" color="var(--color-navy)" maxOpacity={0.55} animate={false} seed={k.slug.length} className="pointer-events-none absolute right-0 top-0 transition-opacity duration-300 group-hover:opacity-0" />
-                        <MosaicField cols={6} rows={5} tile={10} gap={3} anchor="top-right" maxOpacity={0.95} animate={false} seed={k.slug.length} className="pointer-events-none absolute right-0 top-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                        <h3 className="pr-16 text-xl">{k.name}</h3>
-                        <p className="mt-2 flex-1 text-sm text-[var(--color-ink)]/80">{k.short}</p>
-                        <p className="mt-4 text-xs text-[var(--color-muted)]">Coming soon · {k.markers.length} {k.markers.length === 1 ? 'marker' : 'markers'} · {k.collection}</p>
-                        <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-[var(--color-navy)]">See what it measures <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
-                      </KitLink>
+                      <KitCard key={k.slug} kit={kitSummary(k)} />
                     ))}
                   </div>
                 </div>
@@ -101,9 +95,4 @@ export default function TestsPage() {
       </p>
     </>
   );
-}
-
-// Privacy-sensitive kits open with a full page load (plain <a>), so analytics tags from this page don't carry over.
-function KitLink({ sensitive, ...props }: React.ComponentProps<typeof Link> & { sensitive?: boolean }) {
-  return sensitive ? <a {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)} href={String(props.href)} /> : <Link {...props} />;
 }

@@ -5,7 +5,7 @@ Read this first. It is the standing context for any session working on this repo
 
 ## What this is
 - **Noovit** (noovit.com): a US direct-to-consumer supplement store. Evidence-led, minimal "nootropic" look,
-  doses printed on the front of every bottle. Subscribe & save, free US shipping, 90-day guarantee.
+  doses printed on the front of every bottle (site wording since 24 Nov: "Every dose clearly labeled"; the owner found "dose on the front" unclear). Subscribe & save, free US shipping, 90-day guarantee.
 - **Owner:** UK resident, bootstrapping, budget-constrained (no accountant budget). Company: **Noovit LLC (Wyoming)**,
   being formed via Wyoming Agents (late Oct 2026). Owner also has Barbill LLC (media/legal projects): never trade under it.
 - **Status:** pre-launch. `SITE_LIVE` is off in production: the public sees `/coming-soon` (waitlist), every response is

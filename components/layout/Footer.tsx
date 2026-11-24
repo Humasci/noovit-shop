@@ -90,7 +90,7 @@ export function Footer() {
           <Link href="/" aria-label="Noovit home" className="mb-4 inline-block text-[2rem] leading-none text-white">
             <Logo />
           </Link>
-          <p className="max-w-xs text-sm text-white/70">Evidence-led supplements, with every dose on the front.</p>
+          <p className="max-w-xs text-sm text-white/70">Evidence-led supplements, with every dose clearly labeled.</p>
           <SocialLinks className="mt-5 text-white/80" />
         </div>
         {COLUMNS.map((col) => (
