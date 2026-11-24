@@ -1,7 +1,7 @@
 // Homepage hero (owner, 24 Nov): supplements and at-home test kits in one scene. Our studio bottles (lib/labels/studio.ts
 // cutouts, warmed to the room light) stand on the stone table in front of the kit-box render (public/images/tests/hero-kits.jpg).
 // Run: npx tsx --conditions=react-server scripts/hero-mix.ts  → public/images/hero-mix.jpg
-import sharp from 'sharp';
+import sharp, { type OverlayOptions } from 'sharp';
 import { SEED_PRODUCTS } from '@/data/products';
 import { studioCutout } from '@/lib/labels/studio';
 
@@ -23,7 +23,7 @@ const W = 1500, H = 1200; // hero slot (5:4)
     { slug: 'ashwagandha', x: 470, h: 400, floor: 1125 },
     { slug: 'lions-mane', x: 255, h: 430, floor: 1165 },
   ];
-  const layers: sharp.OverlayOptions[] = [];
+  const layers: OverlayOptions[] = [];
   for (const b of bottles) {
     const c = await studioCutout(P(b.slug), tint);
     const scale = b.h / c.height, w = Math.round(c.width * scale);
