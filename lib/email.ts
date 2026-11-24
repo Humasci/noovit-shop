@@ -206,6 +206,24 @@ export function sendProgramEmail(to: string, subject: string, bodyHtml: string, 
   return send(to, subject, marketingLayout(bodyHtml, f), unsubscribeHeaders(f));
 }
 
+// Phone agent (Vapi) call report to the support inbox (app/api/vapi/webhook): summary, caller number, transcript.
+export function sendCallReport(to: string, c: { caller: string; summary: string; transcript: string; endedReason: string; minutes: string }) {
+  const lines = esc(c.transcript).replace(/\n/g, '<br/>');
+  return send(
+    to,
+    `Phone call to Noovit Care from ${c.caller}`,
+    layout(
+      `<h1 style="font-size:20px">New phone call</h1>
+      <p><b>From:</b> ${esc(c.caller)} · <b>Length:</b> ${esc(c.minutes)} · <b>Ended:</b> ${esc(c.endedReason)}</p>
+      <h2 style="font-size:16px;margin:16px 0 6px">Summary</h2>
+      <p>${esc(c.summary) || 'No summary.'}</p>
+      <h2 style="font-size:16px;margin:16px 0 6px">Transcript</h2>
+      <div style="font-size:13px;color:#374151;background:#f9fafb;border-radius:8px;padding:12px">${lines || 'No transcript.'}</div>
+      <p style="font-size:12px;color:#6b7280">If this was a report of a side effect or reaction: reply to the caller, keep a copy of this email, and ask Claude whether it needs reporting to the FDA.</p>`
+    )
+  );
+}
+
 export function sendAbandonedCheckout(
   to: string,
   items: { name: string; quantity: number }[],

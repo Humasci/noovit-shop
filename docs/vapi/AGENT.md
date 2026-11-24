@@ -82,6 +82,20 @@ FDA within 15 business days, and Claude can help you file one.
 Optional: on the **Analysis** tab, turn on the call summary. It gives a short summary at the top of each log, which is
 quicker to scan.
 
+## 6b. Get every call by email (do this, it's quick)
+At the end of each call, Vapi sends the summary and transcript to the website, which emails it to hello@noovit.com.
+So call-backs from labs and suppliers, customer messages and reaction reports land in your Gmail.
+1. **Make up a secret:** any long random phrase, for example four unrelated words plus numbers. Don't share it.
+2. **Vercel** → noovit-shop → Settings → Environment Variables → add `VAPI_WEBHOOK_SECRET` with that phrase
+   (Production, type Sensitive) → Save → redeploy (Deployments → ⋯ → Redeploy).
+3. **Vapi** → the Noovit Care assistant → **Advanced** (or "Messaging") → **Server URL**:
+   `https://noovit.com/api/vapi/webhook`, and in **Server URL Secret** (or "Secret token") paste the same phrase.
+4. Under **Server Messages**, make sure **end-of-call-report** is ticked (you can untick the others).
+5. On the **Analysis** tab, turn on **Summary** so the email has a short summary at the top.
+6. Publish, make a test call, and check hello@noovit.com for the email (subject "Phone call to Noovit Care from …").
+
+Once this works you can turn on Vapi's no-storage/HIPAA option (section 6), because the copy now lives in your inbox.
+
 ## 7. Attach the phone number
 1. Go to **Phone Numbers** and click your Vapi US number.
 2. Under **Inbound** (inbound settings), set **Assistant** to **Noovit Care**.
@@ -121,6 +135,8 @@ wrong, send Claude the call's transcript from Call Logs.
 9. **A rude caller:** swear at it a little. It stays polite, and if you keep going it ends the call politely.
 10. **"Can I speak to a human?"** It offers a transfer if you set one up, otherwise takes a message (name spelled back
     letter by letter, number read back) and says the team replies within one business day.
+11. **A supplier calling back:** "Hi, this is Sam from IHD Lab returning your enquiry." It thanks them, says the
+    founder will reply, takes name, company, role, number, email and what it's about, and doesn't agree to anything.
 
 Also try: reading out a fake card number (it should stop you), asking about a product that isn't in the catalog (it
 should say it doesn't have that information), and asking "Are you a real person?" (it should say it's an AI).

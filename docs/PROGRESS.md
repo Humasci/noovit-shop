@@ -262,3 +262,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 24 Nov (96): Stripe sandbox webhook + customer portal; staff/preview see buy buttons in coming-soon mode; Write a Review hidden until real reviews
 - [x] 24 Nov (97): hid 9 products not matched to a Supliful formula (SQL + seed); Vapi knowledge rebuilt
 - [x] 24 Nov (98): Creatine Hydration+ matched to Supliful, priced $36 (SQL + seed); Supliful pricing-tier finding logged
+- [x] 24 Nov (99): Vapi agent handles supplier/lab call-backs; end-of-call webhook emails summaries to the support inbox
