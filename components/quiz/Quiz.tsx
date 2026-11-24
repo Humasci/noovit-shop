@@ -14,6 +14,8 @@ import { ProductImage } from '@/components/product/ProductImage';
 import { MosaicLoader } from '@/components/brand/MosaicLoader';
 import { trackSignup } from '@/lib/analytics';
 import { productPath } from '@/lib/urls';
+import { useStoreConfig } from '@/components/store/StoreConfig';
+import { ComingSoonNotify } from '@/components/product/ComingSoonNotify';
 
 type Step = 'intro' | 'sex' | 'age' | 'goals' | 'symptoms' | 'activity' | 'diet' | 'pregnant' | 'medication' | 'email' | 'calculating' | 'results';
 
@@ -61,6 +63,7 @@ export function Quiz({ products, code }: { products: Product[]; code: string }) 
   const [consent, setConsent] = useState(false); // marketing consent is opt-in, never pre-ticked
   const [joined, setJoined] = useState(false);
   const addItem = useCart((s) => s.addItem);
+  const { ordersOpen } = useStoreConfig();
   const openCart = useCart((s) => s.open);
 
   const female = a.sex !== 'male';
@@ -192,15 +195,21 @@ export function Quiz({ products, code }: { products: Product[]; code: string }) 
                   )}
                   <p className="mt-3 flex-1 text-sm">{product.shortBenefit}</p>
                   <div className="mt-4 flex items-center justify-between gap-2">
-                    <button
-                      onClick={() => {
-                        addItem({ product, mode: 'one-time', ...single });
-                        toast.success(`${product.name} added`);
-                      }}
-                      className="rounded border-[1.5px] border-[var(--color-navy)] px-4 py-1.5 text-sm font-bold text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-white"
-                    >
-                      Add one bottle
-                    </button>
+                    {ordersOpen ? (
+                      <button
+                        onClick={() => {
+                          addItem({ product, mode: 'one-time', ...single });
+                          toast.success(`${product.name} added`);
+                        }}
+                        className="rounded border-[1.5px] border-[var(--color-navy)] px-4 py-1.5 text-sm font-bold text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-white"
+                      >
+                        Add one bottle
+                      </button>
+                    ) : (
+                      <Link href={productPath(product.slug)} className="rounded border-[1.5px] border-[var(--color-navy)] px-4 py-1.5 text-sm font-bold text-[var(--color-navy)] transition-colors hover:bg-[var(--color-navy)] hover:text-white">
+                        See product
+                      </Link>
+                    )}
                     <span className="text-sm text-[var(--color-muted)]">as low as <b className="text-[var(--color-navy)]">{formatPrice(asLowAs(product))}</b></span>
                   </div>
                 </div>
@@ -212,9 +221,16 @@ export function Quiz({ products, code }: { products: Product[]; code: string }) 
           <div className="mx-auto mt-10 max-w-xl rounded-3xl bg-[var(--color-navy)] p-8 text-center text-white">
             <h2 className="text-2xl text-white">Start your plan</h2>
             <p className="mt-2 text-white/75">All {recs.length} on subscription, delivered every 30 days — {formatPrice(total)} a month. Change or cancel anytime.</p>
-            <button onClick={addPlan} className="btn mt-5 bg-white text-[var(--color-navy)] hover:bg-[var(--color-accent-light)]">
-              {planAdded ? '✓ In your cart — view cart' : 'Add my plan to cart'}
-            </button>
+            {ordersOpen ? (
+              <button onClick={addPlan} className="btn mt-5 bg-white text-[var(--color-navy)] hover:bg-[var(--color-accent-light)]">
+                {planAdded ? '✓ In your cart — view cart' : 'Add my plan to cart'}
+              </button>
+            ) : (
+              <div className="mt-5 text-left text-[var(--color-ink)]">
+                <p className="mb-3 text-center text-sm text-white/85">Orders open in a few days. Leave your email and we&apos;ll tell you the moment they do.</p>
+                <ComingSoonNotify compact />
+              </div>
+            )}
             {code && (joined ? (
               <p className="mt-4 text-sm text-white/85">Your {code} code is on its way to your inbox — or use <b className="text-white">{code}</b> at checkout.</p>
             ) : (

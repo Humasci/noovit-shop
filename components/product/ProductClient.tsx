@@ -13,6 +13,8 @@ import { formatPrice } from '@/lib/utils/format';
 
 import { ProductImage, ImageVariant } from './ProductImage';
 import { galleryVariants } from '@/lib/labels/gallery-data';
+import { useStoreConfig } from '@/components/store/StoreConfig';
+import { ComingSoonNotify } from '@/components/product/ComingSoonNotify';
 
 // Uploaded photos take over the gallery; until then it shows generated mockups.
 export function Gallery({ product }: { product: Product }) {
@@ -82,7 +84,9 @@ export function PurchaseBox({ product, sections = [] }: { product: Product; sect
   const [bottles, setBottles] = useState(1);
   const [frequency, setFrequency] = useState<Frequency>(30);
   const addItem = useCart((s) => s.addItem);
-  const mainButton = useRef<HTMLButtonElement>(null);
+  const mainButton = useRef<HTMLDivElement>(null);
+  const { ordersOpen } = useStoreConfig();
+  const notify = () => mainButton.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   const [buttonVisible, setButtonVisible] = useState(true);
 
   // Pack sizes differ by mode; keep the same bottle count when switching if that size exists.
@@ -194,13 +198,23 @@ export function PurchaseBox({ product, sections = [] }: { product: Product; sect
         })}
       </div>
 
-      <button ref={mainButton} disabled={!active} onClick={add} className="btn btn-primary mt-5 w-full py-4 disabled:opacity-50">
-        {label}
-      </button>
+      <div ref={mainButton} className="mt-5">
+        {ordersOpen ? (
+          <button disabled={!active} onClick={add} className="btn btn-primary w-full py-4 disabled:opacity-50">
+            {label}
+          </button>
+        ) : (
+          <div className="rounded-lg border border-[var(--color-line)] bg-[var(--color-soft)] p-4">
+            <p className="font-semibold text-[var(--color-navy)]">Coming soon</p>
+            <p className="mb-3 mt-1 text-sm text-[var(--color-muted)]">Orders open in a few days. Leave your email and we&apos;ll tell you the moment they do.</p>
+            <ComingSoonNotify product={product.slug} />
+          </div>
+        )}
+      </div>
       <p className="mt-2 text-center text-xs text-[var(--color-muted)]">
         <Truck className="mr-1 inline h-3.5 w-3.5" aria-hidden />
         Free US shipping
-        <DeliveryEstimate />
+        {ordersOpen && <DeliveryEstimate />}
       </p>
 
       <ul className="mt-5 grid grid-cols-3 divide-x divide-[var(--color-line)] border-y border-[var(--color-line)] py-3 text-center text-xs text-[var(--color-ink)]">
@@ -219,7 +233,7 @@ export function PurchaseBox({ product, sections = [] }: { product: Product; sect
                 {packTitle(pack.bottles)} · {mode === 'subscribe' ? `every ${frequency} days` : 'one-time'}
               </p>
             </div>
-            <button onClick={add} className="btn btn-primary shrink-0 px-5 py-3">Add — {formatPrice(total)}</button>
+            <button onClick={ordersOpen ? add : notify} className="btn btn-primary shrink-0 px-5 py-3">{ordersOpen ? `Add — ${formatPrice(total)}` : 'Notify me'}</button>
           </div>
           {/* Desktop: section tabs + mini product + add to cart. */}
           <div className="fixed inset-x-0 bottom-0 z-30 hidden border-t border-[var(--color-line)] bg-[var(--color-canvas)]/95 backdrop-blur md:block">
@@ -235,14 +249,14 @@ export function PurchaseBox({ product, sections = [] }: { product: Product; sect
                   <p className="font-semibold">{product.name}</p>
                   <p className="text-xs text-[var(--color-muted)]">{packTitle(pack.bottles)} · {formatPrice(total)}</p>
                 </div>
-                <button onClick={add} className="btn btn-primary px-6 py-3">Add to cart</button>
+                <button onClick={ordersOpen ? add : notify} className="btn btn-primary px-6 py-3">{ordersOpen ? 'Add to cart' : 'Notify me'}</button>
               </div>
             </div>
           </div>
         </>
       )}
 
-      <PaymentIcons methods={PAYMENT_METHODS} className="mt-4 justify-center" />
+      {ordersOpen && <PaymentIcons methods={PAYMENT_METHODS} className="mt-4 justify-center" />}
     </div>
   );
 }

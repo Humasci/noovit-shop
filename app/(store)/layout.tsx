@@ -11,6 +11,7 @@ import { StoreConfigProvider } from '@/components/store/StoreConfig';
 import { NewsletterPopup } from '@/components/marketing/NewsletterPopup';
 import { Advisor } from '@/components/advisor/Advisor';
 import { advisorEnabled } from '@/lib/advisor';
+import { ordersOpen } from '@/lib/launch';
 
 export default async function StoreLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const products = await getStoreProducts();
@@ -23,6 +24,7 @@ export default async function StoreLayout({ children }: Readonly<{ children: Rea
     autoDiscount: autoDiscountFrom(settings),
     popup: content.popup_headline ? { headline: content.popup_headline, text: content.popup_text } : null,
     placeholders: placeholdersOn(settings),
+    ordersOpen: ordersOpen(),
   };
   return (
     <StoreConfigProvider value={config}>

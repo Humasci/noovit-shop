@@ -23,7 +23,9 @@ export async function POST(req: NextRequest) {
   // No welcome code before launch: there's no shop to use it in yet.
   // goal: the quiz goal from the pop-up, or for the tests waitlist the kit slug (shown in Admin → Subscribers).
   const kit = tests && typeof body.kit === 'string' ? findKit(KIT_RENAMES[body.kit] ?? body.kit) : undefined;
-  const goal = kit ? kit.slug : GOALS.some((g) => g.id === body.goal) ? (body.goal as string) : undefined;
+  // Coming-soon "Notify me" on a product page: keep which product they asked about (Admin → Subscribers).
+  const product = launch && typeof body.product === 'string' && /^[a-z0-9-]{2,60}$/.test(body.product) ? body.product : undefined;
+  const goal = kit ? kit.slug : product ? product : GOALS.some((g) => g.id === body.goal) ? (body.goal as string) : undefined;
   if (await subscribe(email, source, goal)) {
     // Waitlists get a short "you're on the list" note (no shop code: nothing to buy yet); the launch waitlist gets
     // nothing until the shop opens; everyone else gets the welcome email with the first-order code.

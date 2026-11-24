@@ -6,9 +6,10 @@ export interface StoreConfig {
   autoDiscount: { thresholdCents: number; percent: number } | null;
   popup: { headline: string; text: string } | null;
   placeholders: boolean; // show labelled placeholder trust content (pre-launch guide)
+  ordersOpen: boolean; // false = "coming soon" mode: no add-to-cart, "Notify me" instead
 }
 
-const Ctx = createContext<StoreConfig>({ autoDiscount: null, popup: null, placeholders: false });
+const Ctx = createContext<StoreConfig>({ autoDiscount: null, popup: null, placeholders: false, ordersOpen: true });
 
 export const StoreConfigProvider = ({ value, children }: { value: StoreConfig; children: React.ReactNode }) => <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 

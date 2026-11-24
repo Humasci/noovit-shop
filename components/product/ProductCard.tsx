@@ -13,6 +13,7 @@ import { GOAL_PAGES } from '@/lib/goals';
 import { goalsForProduct } from '@/lib/quiz';
 import { Stars } from '@/components/ui/Stars';
 import { productPath } from '@/lib/urls';
+import { useStoreConfig } from '@/components/store/StoreConfig';
 
 // Hover: orange tiles assemble in the image corner, one after another.
 const CORNER: [number, number, number][] = [[0, 0, 0.95], [1, 0, 0.6], [0, 1, 0.7], [2, 0, 0.3], [1, 1, 0.35], [0, 2, 0.4], [3, 0, 0.15], [0, 3, 0.15]];
@@ -21,6 +22,7 @@ const CORNER: [number, number, number][] = [[0, 0, 0.95], [1, 0, 0.6], [0, 1, 0.
 export function ProductCard({ product, hideForHer = false }: { product: Product; hideForHer?: boolean }) {
   const addItem = useCart((s) => s.addItem);
   const [added, setAdded] = useState(false);
+  const { ordersOpen } = useStoreConfig();
 
   const add = () => {
     setAdded(true);
@@ -84,7 +86,14 @@ export function ProductCard({ product, hideForHer = false }: { product: Product;
           </span>
           {product.ageRestricted && <span className="block text-xs font-semibold text-[var(--color-navy)]">Adults 18+ only</span>}
         </p>
-        {product.status === 'active' ? (
+        {product.status === 'active' && !ordersOpen ? (
+          <Link
+            href={productPath(product.slug)}
+            className="mt-3 block w-full rounded border-[1.5px] border-[var(--color-line)] px-2 py-2 text-center text-[11px] font-semibold uppercase leading-tight tracking-[0.04em] text-[var(--color-muted)] transition-colors hover:border-[var(--color-navy)] hover:text-[var(--color-navy)] sm:px-4 sm:text-xs sm:tracking-[0.06em]"
+          >
+            Coming soon
+          </Link>
+        ) : product.status === 'active' ? (
           <button
             onClick={add}
             className="relative mt-3 w-full overflow-hidden rounded border-[1.5px] border-[var(--color-navy)] px-2 py-2 text-[11px] font-semibold uppercase leading-tight tracking-[0.04em] text-[var(--color-navy)] transition-colors hover:bg-[var(--color-navy)] hover:text-white sm:px-4 sm:text-xs sm:tracking-[0.06em]"
