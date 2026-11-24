@@ -2,7 +2,7 @@
 
 Browser and API tests that run against a **production build** of the store, with a local Postgres (PGlite),
 PostgREST in front of it (the Supabase API shape), a fake Stripe server and fake Klaviyo. Last run 30 Oct 2026:
-phase1 47/47, phase2 60/60, aff 55/55, batch3 15/15 (re-run 21 Nov 2026, same results).
+phase1 47/47, phase2 60/60, aff 55/55, batch3 15/15 (re-run 21 Nov and 24 Nov 2026, same results; in cloud sessions run with `CHROMIUM_PATH=/opt/pw-browsers/chromium`).
 
 | Suite | Covers |
 |---|---|
