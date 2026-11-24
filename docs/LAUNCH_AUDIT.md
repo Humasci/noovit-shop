@@ -83,6 +83,7 @@ price-match guard is skipped only when `STRIPE_MOCK_PORT` is set.
 8. **Vercel → Firewall:** add a rate-limit rule for `/api/*` (for example 30 requests per minute per IP), on top of the in-app limits.
 9. **Gemini:** use a paid API tier, so advisor questions aren't used for training.
 10. **Launch:** set `SITE_LIVE=true` and redeploy. Then submit the sitemap again in Search Console.
+11. **Orders open:** set `ORDERS_OPEN=true` (with live Stripe keys) and redeploy; **change the Vapi agent's `STATUS:` line** (`docs/vapi/system-prompt.md`, "When orders open") and Publish; email the launch list.
 
 ### Later (not blocking)
 - **Test fixtures:** update the fake Stripe prices (`tests/e2e/fake-stripe.mjs`) to the launch prices and pack sizes. Then remove the
