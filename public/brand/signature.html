@@ -7,35 +7,80 @@
 <title>Noovit email signature</title>
 <style>
   body { font-family: Arial, Helvetica, sans-serif; background: #f3f4f6; margin: 0; padding: 32px 16px; color: #1f2937; }
-  .card { max-width: 640px; margin: 0 auto; background: #fff; border-radius: 16px; padding: 28px; }
-  .how { font-size: 14px; color: #4b5563; line-height: 1.6; }
-  .box { border: 1px dashed #cbd5e1; border-radius: 12px; padding: 20px; margin-top: 16px; }
+  .card { max-width: 680px; margin: 0 auto; background: #fff; border-radius: 16px; padding: 28px; }
+  h1 { font-size: 20px; margin: 0 0 6px; color: #14213d; }
+  .how { font-size: 14px; color: #4b5563; line-height: 1.6; margin: 0 0 18px; }
+  .fields { display: grid; gap: 10px; grid-template-columns: 1fr 1fr; margin-bottom: 18px; }
+  .fields label { font-size: 12px; font-weight: bold; color: #6b7280; display: grid; gap: 4px; }
+  .fields input { font: inherit; font-size: 14px; padding: 9px 11px; border: 1px solid #d1d5db; border-radius: 8px; color: #1f2937; }
+  .box { border: 1px dashed #cbd5e1; border-radius: 12px; padding: 22px; }
+  button { margin-top: 14px; font: inherit; font-size: 14px; font-weight: bold; background: #14213d; color: #fff; border: 0; border-radius: 999px; padding: 11px 20px; cursor: pointer; }
+  .ok { font-size: 13px; color: #15803d; margin-left: 10px; }
+  @media (max-width: 560px) { .fields { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
 <div class="card">
-  <p class="how"><b>How to use:</b> select everything inside the dashed box (click just before the logo and drag to the end), copy it,
-  then in Gmail go to Settings (gear) → See all settings → General → Signature → Create new, paste, and save at the bottom of the page.
-  Replace "Your name" first, or edit it in Gmail after pasting.</p>
-  <div class="box">
-    <!-- signature start -->
-    <table cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;color:#1f2937;font-size:13px;line-height:1.5">
-      <tr>
-        <td style="padding:0 0 8px 0">
-          <a href="https://noovit.com" style="text-decoration:none"><img src="https://noovit.com/brand/noovit-logo-email.png" width="112" height="28" alt="noovit" style="display:block;border:0;width:112px;height:28px"></a>
-        </td>
-      </tr>
-      <tr>
-        <td style="border-top:2px solid #14213d;padding-top:8px">
-          <b style="color:#14213d;font-size:14px">Your name</b><br>
-          Noovit · Evidence-led supplements<br>
-          <a href="mailto:hello@noovit.com" style="color:#14213d;text-decoration:none">hello@noovit.com</a> · <a href="https://noovit.com" style="color:#14213d;text-decoration:none">noovit.com</a><br>
-          <span style="color:#6b7280;font-size:11px">Every dose clearly labeled. Free US shipping · 90-day money-back guarantee.</span>
-        </td>
-      </tr>
-    </table>
-    <!-- signature end -->
+  <h1>Your Noovit email signature</h1>
+  <p class="how">Type your details, press <b>Copy signature</b>, then in Gmail go to Settings (gear) → See all settings → General →
+  Signature → Create new, paste, and press <b>Save changes</b> at the bottom of the page. Under "Signature defaults", pick it for new emails and replies.</p>
+  <div class="fields">
+    <label>Name <input id="f-name" value="" placeholder="Your name"></label>
+    <label>Title <input id="f-title" value="Founder" placeholder="Founder"></label>
+    <label>Phone (optional) <input id="f-phone" value="" placeholder="+1 (555) 555-0123"></label>
+    <label>Email <input id="f-email" value="hello@noovit.com"></label>
   </div>
+  <div class="box">
+    <div id="sig">
+      <table cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;color:#1f2937;font-size:13px;line-height:1.5;border-collapse:collapse">
+        <tr>
+          <td style="padding:0 0 10px 0">
+            <a href="https://noovit.com" style="text-decoration:none"><img src="https://noovit.com/brand/noovit-logo-email.png" width="112" height="28" alt="noovit" style="display:block;border:0;width:112px;height:28px"></a>
+          </td>
+        </tr>
+        <tr>
+          <td style="border-top:2px solid #14213d;padding-top:9px">
+            <span data-f="name" style="color:#14213d;font-size:14px;font-weight:bold">Your name</span><span data-f="title-wrap" style="color:#6b7280"> · <span data-f="title">Founder</span></span><br>
+            Noovit LLC · Evidence-led supplements<br>
+            <a data-f="email-link" href="mailto:hello@noovit.com" style="color:#14213d;text-decoration:none"><span data-f="email">hello@noovit.com</span></a><span data-f="phone-wrap" style="display:none"> · <a data-f="phone-link" href="tel:" style="color:#14213d;text-decoration:none"><span data-f="phone"></span></a></span> · <a href="https://noovit.com" style="color:#14213d;text-decoration:none">noovit.com</a><br>
+            <span style="color:#6b7280;font-size:11px">Every dose clearly labeled · Free US shipping · 90-day money-back guarantee</span>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <button id="copy" type="button">Copy signature</button><span id="ok" class="ok"></span>
 </div>
+<script>
+  const $ = (id) => document.getElementById(id);
+  const set = (k, v) => document.querySelectorAll('[data-f="' + k + '"]').forEach((el) => { el.textContent = v; });
+  function render() {
+    set('name', $('f-name').value.trim() || 'Your name');
+    const title = $('f-title').value.trim();
+    set('title', title);
+    document.querySelector('[data-f="title-wrap"]').style.display = title ? '' : 'none';
+    const email = $('f-email').value.trim() || 'hello@noovit.com';
+    set('email', email);
+    document.querySelector('[data-f="email-link"]').href = 'mailto:' + email;
+    const phone = $('f-phone').value.trim();
+    set('phone', phone);
+    document.querySelector('[data-f="phone-link"]').href = 'tel:' + phone.replace(/[^+\d]/g, '');
+    document.querySelector('[data-f="phone-wrap"]').style.display = phone ? '' : 'none';
+  }
+  ['f-name', 'f-title', 'f-phone', 'f-email'].forEach((id) => $(id).addEventListener('input', render));
+  $('copy').addEventListener('click', () => {
+    const sig = $('sig');
+    // Copy as rich text, so Gmail keeps the logo and formatting.
+    const range = document.createRange();
+    range.selectNodeContents(sig);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    let done = false;
+    try { done = document.execCommand('copy'); } catch (e) { done = false; }
+    $('ok').textContent = done ? 'Copied. Now paste it in Gmail.' : 'Select the signature and press Ctrl+C (Cmd+C on Mac).';
+  });
+  render();
+</script>
 </body>
 </html>
