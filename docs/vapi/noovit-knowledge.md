@@ -30,7 +30,7 @@ These are the only facts the assistant may use. If something is not here, the as
 - Buying once without subscribing: 3 bottles take $5 off each, 6 bottles take $10 off each.
 - Bundles (stacks) are already discounted. Subscribing takes a further $5 off a bundle.
 - Shipping is free on every order, with or without a subscription.
-- To manage a subscription: go to noovit dot com/account ("My Account"), enter the email used to order, and a secure sign-in link arrives by email. The account page shows orders, tracking and subscriptions; the Manage button lets you change how often it arrives, update the card and address, see invoices, or cancel. No password needed. Or email hello@noovit.com (for example to pause).
+- To manage a subscription: go to noovit dot com/account ("My Account"), enter the email used to order, and a secure sign-in link arrives by email. In the account you can see orders and tracking, skip the next order, pause, resume or cancel a subscription, change the shipping address, update the card and see invoices. No password needed. To change how often it arrives or swap a product, email hello@noovit.com.
 
 ## General questions
 - Q: Why should I trust Noovit with my health? A: Every ingredient and amount is printed on the label, with no proprietary blends. Our guides grade the evidence honestly, including studies that found no effect. We publish quality documents on product pages as we receive them.
@@ -38,7 +38,7 @@ These are the only facts the assistant may use. If something is not here, the as
 - Q: Where are your products made? A: By our contract manufacturing partner. We will list the facility certifications and batch test results on each product page as soon as we have the paperwork.
 - Q: When will my order ship? A: Orders usually ship within 1–2 business days, and delivery takes 2–5 business days after dispatch.
 - Q: How do I track my order? A: You will receive a tracking link by email as soon as your order ships.
-- Q: Can I change or cancel my subscription? A: Yes — anytime from My Account, with no fees. Prefer to pause? Contact us and we will pause it for you.
+- Q: Can I change or cancel my subscription? A: Yes — anytime from My Account, with no fees. You can also skip the next order or pause there.
 - Q: How can I contact customer service? A: Use our contact form or email us. We reply within one business day.
 - Q: Is it dairy and lactose free? A: Yes, unless the label states otherwise.
 

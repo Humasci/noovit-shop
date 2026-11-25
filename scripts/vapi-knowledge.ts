@@ -129,7 +129,7 @@ ${SUBSCRIPTION_PERKS.map((s) => `- ${s.title}: ${s.text}`).join('\n')}
 - Buying once without subscribing: 3 bottles take $5 off each, 6 bottles take $10 off each.
 - Bundles (stacks) are already discounted. Subscribing takes a further $5 off a bundle.
 - Shipping is free on every order, with or without a subscription.
-- To manage a subscription: go to noovit dot com/account ("My Account"), enter the email used to order, and a secure sign-in link arrives by email. The account page shows orders, tracking and subscriptions; the Manage button lets you change how often it arrives, update the card and address, see invoices, or cancel. No password needed. Or email ${EMAIL} (for example to pause).
+- To manage a subscription: go to noovit dot com/account ("My Account"), enter the email used to order, and a secure sign-in link arrives by email. In the account you can see orders and tracking, skip the next order, pause, resume or cancel a subscription, change the shipping address, update the card and see invoices. No password needed. To change how often it arrives or swap a product, email ${EMAIL}.
 
 ## General questions
 ${GENERAL_FAQS.map((f) => `- Q: ${f.q} A: ${sentence(f.a)}`).join('\n')}

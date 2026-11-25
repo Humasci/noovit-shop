@@ -83,7 +83,7 @@ export function sendOrderConfirmation(order: EmailOrder) {
       <ul>${rows}</ul>
       <p><b>Total: ${formatPrice(order.totalCents / 100)}</b></p>
       ${subscriptionTerms(order.items)}
-      <p>We'll email you tracking details as soon as it ships.</p>`)
+      <p>We'll email you tracking details as soon as it ships. You can also follow this order, and manage any subscription, in <a href="${SITE_URL}/account" style="color:#3a8069">your account</a> (sign in with this email address, no password).</p>`)
   );
 }
 
@@ -95,7 +95,8 @@ export function sendShippedEmail(to: string, orderNumber: number, carrier: strin
       <h1 style="font-size:20px">Your order is on its way.</h1>
       <p>Order <b>#${orderNumber}</b>${carrier ? ` shipped with ${esc(carrier)}` : ' has shipped'}.</p>
       ${trackingNumber ? `<p>Tracking number: <b>${esc(trackingNumber)}</b></p>` : ''}
-      ${trackingUrl ? `<p><a href="${esc(trackingUrl)}" style="color:#3a8069">Track your package</a></p>` : ''}`)
+      ${trackingUrl ? `<p><a href="${esc(trackingUrl)}" style="color:#3a8069">Track your package</a></p>` : ''}
+      <p style="font-size:13px;color:#6b7280">Order details and help: <a href="${SITE_URL}/account" style="color:#3a8069">your account</a>.</p>`)
   );
 }
 
