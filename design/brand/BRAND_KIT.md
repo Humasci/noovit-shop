@@ -19,6 +19,14 @@ logo by hand or let an AI tool retype it.
 - Keep clear space around the logo equal to the height of the cross.
 - For AI image tools: upload `noovit-logo-navy.png` and write "use this exact logo; the cross is five separate square tiles, not a plus sign".
 
+## At-home test kits: the corner shape (`design/brand/mosaic-corner/`)
+One fixed shape for every kit, on the website cards and on the packaging: four tiles along the top fading to the left,
+two under them, then two more down the right edge, strongest in the corner. Only the colour changes, by service line.
+- `all-service-lines.png`: the eight lines with their colours. `corner-<line>.png`: one per line, to hand to a designer or an AI image tool.
+- **On the box:** top-right corner of the front, inset from the edges by about one tile, on the cream box colour.
+  The noovit logo sits top-left; the kit name below it. Never rearrange, rotate or add tiles.
+- For AI renders, upload `all-service-lines.png` and write: "Each box has this exact tile shape in its top-right corner, in the colour for its test line. Do not change the shape."
+
 ## Colours
 | Name | Hex | Use |
 |---|---|---|

@@ -8,6 +8,8 @@ import { readdirSync, readFileSync, writeFileSync, mkdirSync } from 'fs';
 import path from 'path';
 import { Resvg } from '@resvg/resvg-js';
 import { wordmark, icon, mosaicCross, ORANGE } from '@/lib/labels/svg';
+import { CORNER_TILES } from '@/components/brand/MosaicCorner';
+import { TEST_CATEGORIES } from '@/lib/tests';
 
 const NAVY = '#14213d'; // brand navy (lib/labels/svg.ts)
 const CREAM = '#efe9df'; // studio backdrop (--studio)
@@ -112,5 +114,27 @@ out(`${S}/linkedin/linkedin-cover-1128x191.png`, render(banner(1128, 191, { x: 2
 avatar(`${S}/youtube/youtube-profile-800.png`, 800);
 out(`${S}/youtube/youtube-banner-2560x1440.png`, render(banner(2560, 1440, { x: 507, y: 508, w: 1546, h: 423 }), 2560));
 out(`${S}/youtube/youtube-watermark-150.png`, render(iconSquare(150, '#ffffff', ORANGE, NAVY, 0.72), 150));
+
+// ---------- kit corner shape (packaging reference) ----------
+// The fixed mosaic corner used on at-home test kit cards, in each service line's colour, on the kit-box cream.
+// For packaging: the shape sits in the top-right corner of the box front. One PNG per line + one sheet of all.
+{
+  const corner = (color: string, x: number, y: number, tile: number) => {
+    const step = tile * (14 / 11);
+    return CORNER_TILES.map((t) => `<rect x="${x + t.c * step}" y="${y + t.r * step}" width="${tile}" height="${tile}" rx="${tile * 0.16}" fill="${color}" opacity="${t.o}"/>`).join('');
+  };
+  const lines = TEST_CATEGORIES.filter((c) => c.id !== 'pets');
+  for (const c of lines) {
+    out(`design/brand/mosaic-corner/corner-${c.id}.png`, render(svg(600, 600, corner(c.color, 90, 90, 88), CREAM), 1200));
+  }
+  const cell = 300;
+  const sheet = lines.map((c, i) => {
+    const x = (i % 4) * cell, y = Math.floor(i / 4) * (cell + 40);
+    return `<rect x="${x + 20}" y="${y + 20}" width="${cell - 40}" height="${cell - 40}" rx="24" fill="${CREAM}"/>${corner(c.color, x + cell - 20 - 20 - 4 * 30 * (14 / 11) + 8, y + 40, 30)}
+      <text x="${x + 40}" y="${y + cell - 44}" font-family="Manrope" font-weight="600" font-size="20" fill="${NAVY}">${c.name.replace(/&/g, '&amp;')}</text>
+      <text x="${x + 40}" y="${y + cell + 8}" font-family="Inter" font-size="16" fill="${INK}">${c.color}</text>`;
+  }).join('');
+  out('design/brand/mosaic-corner/all-service-lines.png', render(svg(cell * 4, 2 * (cell + 40), sheet, '#ffffff'), cell * 8));
+}
 
 console.log('brand kit written: design/brand/logo, design/brand/social, public/brand');
