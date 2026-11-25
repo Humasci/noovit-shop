@@ -28,8 +28,10 @@ const session = (id, mode, extra = {}) => ({
   amount_subtotal: mode === 'payment' ? 11000 : 6500, amount_total: mode === 'payment' ? 11908 : 7036,
   total_details: { amount_discount: 0, amount_tax: mode === 'payment' ? 908 : 536, amount_shipping: 0 },
   metadata: { age_confirmed: String(mode === 'payment') }, recovered_from: null, consent: null,
+  created: Math.floor(Date.now() / 1000),
   ...extra,
 });
+let LAST_CHECKOUT = null;
 const SESSIONS = {
   cs_pay: session('cs_pay', 'payment'),
   cs_sub: session('cs_sub', 'subscription'),
@@ -70,6 +72,9 @@ http.createServer((req, res) => {
     const send = (code, obj) => { res.writeHead(code, { 'Content-Type': 'application/json' }); res.end(JSON.stringify(obj)); };
     const missing = (msg) => send(404, { error: { type: 'invalid_request_error', code: 'resource_missing', message: msg } });
     let m;
+
+    // Test helper: what the app sent when it last created a checkout session.
+    if (p === '/__last_checkout') return send(200, LAST_CHECKOUT ?? {});
 
     // Google OAuth token endpoint stand-in (GOOGLE_TOKEN_URL points here). The "code" is the email to sign in;
     // a code starting with "unverified:" returns an unverified address.
@@ -130,6 +135,7 @@ http.createServer((req, res) => {
     if (req.method === 'POST' && p === '/v1/checkout/sessions') {
       // Remember what the app asked for so cs_new completes with the same metadata and discounts.
       const f = parseForm(body);
+      LAST_CHECKOUT = { customer: f.customer ?? null, customer_email: f.customer_email ?? null, customer_update: f.customer_update ?? null, customer_creation: f.customer_creation ?? null, success_url: f.success_url };
       const sub = f.mode === 'subscription';
       const discounts = f.discounts ? Object.values(f.discounts).map((d) => ({ coupon: d.coupon ?? null, promotion_code: d.promotion_code ?? null })) : [];
       const gross = sub ? 6500 : 7000;

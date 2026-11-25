@@ -1,5 +1,6 @@
 // Tests for the 30 Oct batch: newsletter goal, privacy export/delete, guide images, feeds.
 import { chromium } from 'playwright-core';
+import Stripe from 'stripe';
 import { readFileSync } from 'fs';
 const dir = new URL('.', import.meta.url).pathname;
 const base = 'http://localhost:3100';
@@ -188,10 +189,66 @@ check('compare image 404 for product without it', (await fetch(`${base}/product-
   await ap.click('button:has-text("Request deletion")');
   check('account: delete request asks to cancel the subscription first', (await flash('active_sub')).includes('cancel your subscription first'));
 
+  // Notify me list (migration 0009): every product and kit kept; shown in the account; removable
+  const notify = (b) => post('/api/newsletter', { email: 'acct@test.com', source: 'launch', ...b });
+  await notify({ product: 'lions-mane' });
+  await notify({ product: 'coq10' });
+  await post('/api/newsletter', { email: 'acct@test.com', source: 'tests', kit: 'vitamin-d-test' });
+  await notify({ product: 'not-a-product' });
+  const nr = await rest('notify_requests?email=eq.acct@test.com&select=kind,slug&order=slug');
+  check('notify: every product and kit kept, unknown ignored', nr.length === 3 && nr.some((r) => r.slug === 'lions-mane') && nr.some((r) => r.slug === 'coq10') && nr.some((r) => r.kind === 'kit') && !nr.some((r) => r.slug === 'not-a-product'), nr);
+  body = await open('/account', '[data-testid=notify-list]');
+  const listText = (await ap.textContent('[data-testid=notify-list]')) ?? '';
+  check('notify: list on the account overview', (await ap.locator('[data-testid=notify-list] li').count()) === 3 && listText.includes("Lion's Mane"), listText.slice(0, 300));
+  await ap.click('[data-testid=notify-list] button[aria-label^="Remove Lion"]');
+  check('notify: remove one', (await flash('notify_removed')).includes('Removed') && (await ap.locator('[data-testid=notify-list] li').count()) === 2 && (await rest('notify_requests?email=eq.acct@test.com&slug=eq.lions-mane')).length === 0);
+
+  // Checkout knows a signed-in customer: their Stripe customer is passed (email and saved details filled in)
+  const co = await ctx.request.post(`${base}/api/checkout`, { data: { items: [{ slug: 'magnesium-complex', mode: 'one-time', bottles: 1, quantity: 1 }] } });
+  const last = await (await fetch('http://127.0.0.1:12120/__last_checkout')).json();
+  check('checkout: signed-in customer prefilled', co.ok() && last.customer === 'cus_1' && last.customer_update?.shipping === 'auto' && !last.customer_creation && last.success_url?.includes('/api/account/after-checkout'), { s: co.status(), last });
+
   await ap.click('button:has-text("Sign out") >> visible=true');
   await ap.waitForSelector('text=Email me a sign-in link');
   check('account: sign out', true);
   await ab.close();
+}
+
+// Signed in after checkout: only the browser that started the checkout; the order email carries a 7-day sign-in link
+{
+  const cb = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
+  const guest = await cb.newContext();
+  const co = await guest.request.post(`${base}/api/checkout`, { data: { items: [{ slug: 'magnesium-complex', mode: 'one-time', bottles: 1, quantity: 1 }] } });
+  const last = await (await fetch('http://127.0.0.1:12120/__last_checkout')).json();
+  check('checkout: guest gets no customer prefill', co.ok() && !last.customer && !last.customer_email && last.customer_creation === 'always', last);
+  const stranger = await fetch(`${base}/api/account/after-checkout?session_id=cs_new`, { redirect: 'manual' });
+  check('after checkout: a copied session id signs nobody in', stranger.headers.get('location')?.endsWith('/checkout/success?session_id=cs_new') && !(stranger.headers.get('set-cookie') ?? '').includes('noovit_account='));
+  const gp = await guest.newPage();
+  await gp.goto(`${base}/api/account/after-checkout?session_id=cs_new`);
+  await gp.waitForSelector('[data-testid=success-account]');
+  check('after checkout: buyer signed in, success page says so', ((await gp.textContent('[data-testid=success-account]')) ?? '').includes('Your account is ready'));
+  await gp.goto(`${base}/account`);
+  await gp.waitForSelector('[data-testid=account-email]');
+  check('after checkout: account opens without a link', ((await gp.textContent('[data-testid=account-email]')) ?? '').includes('fan@example.com'));
+  const again = await guest.request.get(`${base}/api/account/after-checkout?session_id=cs_new`, { maxRedirects: 0 });
+  check('after checkout: works once (cookie cleared)', !(again.headers()['set-cookie'] ?? '').includes('noovit_account='));
+
+  // Order email: the webhook creates the order and emails a "View your order" sign-in link
+  const st = new Stripe('sk_test_123');
+  const payload = JSON.stringify({ id: 'evt_acct1', object: 'event', type: 'checkout.session.completed', data: { object: { id: 'cs_new' } }, api_version: '2025-11-17.clover', created: 1 });
+  const wh = await fetch(`${base}/api/stripe/webhook`, { method: 'POST', headers: { 'stripe-signature': st.webhooks.generateTestHeaderString({ payload, secret: 'whsec_test_secret' }) }, body: payload });
+  await new Promise((r) => setTimeout(r, 500));
+  const [fanOrder] = await rest('orders?email=eq.fan@example.com&select=order_number');
+  const mail = readFileSync(`${dir}next.log`, 'utf8').match(new RegExp(`to=fan@example\\.com subject="Order #${fanOrder?.order_number} confirmed"\\n[^\\n]*?\\[(http[^\\]]+/api/account/session\\?token=[^\\]]+)\\]`));
+  check('order email: View your order link', wh.ok && mail && decodeURIComponent(mail[1]).includes(`next=/account/orders/${fanOrder.order_number}`), mail?.[1]);
+  const fresh = await cb.newContext();
+  const fp = await fresh.newPage();
+  await fp.goto(mail[1]);
+  await fp.waitForSelector('text=Shipped to');
+  check('order email: link signs in and opens the order', fp.url().endsWith(`/account/orders/${fanOrder.order_number}`));
+  const evil = await fetch(`${base}/api/account/session?token=${new URL(mail[1]).searchParams.get('token')}&next=https://evil.example`, { redirect: 'manual' });
+  check('sign-in link never sends people off-site', evil.headers.get('location') === `${base}/account`);
+  await cb.close();
 }
 
 // Privacy: seed a customer with an order, review, subscriber
