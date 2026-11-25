@@ -71,6 +71,17 @@ http.createServer((req, res) => {
     const missing = (msg) => send(404, { error: { type: 'invalid_request_error', code: 'resource_missing', message: msg } });
     let m;
 
+    // Google OAuth token endpoint stand-in (GOOGLE_TOKEN_URL points here). The "code" is the email to sign in;
+    // a code starting with "unverified:" returns an unverified address.
+    if (p === '/google/token' && req.method === 'POST') {
+      const q = new URLSearchParams(body);
+      const code = q.get('code') ?? '';
+      if (q.get('client_secret') !== 'test-google-secret' || !code.includes('@')) return send(400, { error: 'invalid_grant' });
+      const claims = { iss: 'https://accounts.google.com', aud: q.get('client_id'), exp: Math.floor(Date.now() / 1000) + 3600, email: code.replace(/^unverified:/, ''), email_verified: !code.startsWith('unverified:') };
+      const b64 = (o) => Buffer.from(JSON.stringify(o)).toString('base64url');
+      return send(200, { access_token: 'x', id_token: `${b64({ alg: 'RS256' })}.${b64(claims)}.sig` });
+    }
+
     // Klaviyo stand-in (KLAVIYO_API_BASE points here)
     if (p.startsWith('/api/') && req.method === 'POST') { res.writeHead(202, { 'Content-Type': 'application/json' }); return res.end('{}'); }
 

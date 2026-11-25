@@ -64,6 +64,23 @@ check('compare image 404 for product without it', (await fetch(`${base}/product-
   check('account: bad token bounces to expired', (await fetch(`${base}/api/account/session?token=garbage`, { redirect: 'manual' })).headers.get('location')?.endsWith('/account?expired=1'));
   check('account: portal needs a session', (await fetch(`${base}/api/account/portal`, { redirect: 'manual' })).headers.get('location')?.endsWith('/account?expired=1'));
 
+  // Continue with Google (fake token endpoint): state check, verified email only, same session as the email link
+  check('account: Google button shown', out.includes('Continue with Google'));
+  const g1 = await fetch(`${base}/api/account/google`, { redirect: 'manual' });
+  const gUrl = new URL(g1.headers.get('location'));
+  const gState = gUrl.searchParams.get('state');
+  const gCookie = (g1.headers.get('set-cookie') ?? '').split(';')[0];
+  check('account: Google step 1 goes to Google asking only for the email', gUrl.origin === 'https://accounts.google.com' && gUrl.searchParams.get('scope') === 'openid email' && gUrl.searchParams.get('redirect_uri') === `${base}/api/account/google/callback` && gState?.length > 20 && gCookie.startsWith('noovit_g_state='), gUrl.href);
+  const gBack = (code, state, cookie = gCookie) => fetch(`${base}/api/account/google/callback?code=${encodeURIComponent(code)}&state=${state}`, { redirect: 'manual', headers: { cookie } });
+  const gBad = await gBack('acct@test.com', 'forged-state');
+  check('account: Google wrong state refused', gBad.headers.get('location')?.endsWith('/account?google=failed') && !(gBad.headers.get('set-cookie') ?? '').includes('noovit_account='));
+  check('account: Google without the state cookie refused', (await gBack('acct@test.com', gState, '')).headers.get('location')?.endsWith('/account?google=failed'));
+  check('account: Google unverified email refused', (await gBack('unverified:acct@test.com', gState)).headers.get('location')?.endsWith('/account?google=failed'));
+  const gOk = await gBack('Acct@Test.com', gState);
+  const gSession = (gOk.headers.getSetCookie?.() ?? []).find((c) => c.startsWith('noovit_account='))?.split(';')[0];
+  const gPage = gSession ? await (await fetch(`${base}/account/orders`, { headers: { cookie: gSession } })).text() : '';
+  check('account: Google sign-in opens the same account', gOk.headers.get('location')?.endsWith('/account') && gPage.includes(`Order #${ao.order_number}`), gOk.headers.get('location'));
+
   const ab = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
   const ctx = await ab.newContext();
   const ap = await ctx.newPage();
