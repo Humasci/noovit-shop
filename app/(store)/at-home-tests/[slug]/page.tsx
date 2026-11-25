@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { ArrowRight, Check } from 'lucide-react';
-import { TEST_KITS, findKit } from '@/lib/tests';
+import { TEST_KITS, findKit, categoryColor } from '@/lib/tests';
 import { TestsWaitlist } from '@/components/tests/TestsWaitlist';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { pageLd } from '@/lib/structured-data';
@@ -48,9 +48,9 @@ export default async function TestKitPage({ params }: { params: Promise<{ slug: 
             <TestsWaitlist kit={k.slug} />
           </div>
           <div className="relative pt-8">
-            <div className="absolute left-0 top-0 flex h-9 items-center rounded-t-2xl bg-[var(--color-navy)] px-5 text-[11px] font-semibold uppercase tracking-wider text-white">Test panel</div>
+            <div className="absolute left-0 top-0 flex h-9 items-center rounded-t-2xl px-5 text-[11px] font-semibold uppercase tracking-wider text-white" style={{ background: categoryColor(k.category) }}>Test panel</div>
             <div className="relative overflow-hidden rounded-3xl rounded-tl-none border border-[var(--color-line)] bg-white p-6 shadow-[0_8px_24px_-12px_rgba(20,33,61,0.18)] sm:p-8">
-              <MosaicField cols={7} rows={5} tile={9} gap={3} anchor="top-right" maxOpacity={0.85} className="pointer-events-none absolute right-0 top-0" />
+              <MosaicField cols={7} rows={5} tile={9} gap={3} anchor="top-right" color={categoryColor(k.category)} density={2} floor={0.4} maxOpacity={0.95} className="pointer-events-none absolute right-0 top-0" />
               <p className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted)]">What it measures</p>
               <ol className="mt-3 divide-y divide-[var(--color-line)] border-y border-[var(--color-line)]">
                 {k.markers.map((mk, i) => (

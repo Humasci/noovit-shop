@@ -17,6 +17,7 @@ export function MosaicField({
   anchor = 'top-right',
   density = 0.9,
   maxOpacity = 0.85,
+  floor = 0.12,
   animate = true,
   seed = 7,
   className = '',
@@ -29,6 +30,7 @@ export function MosaicField({
   anchor?: Anchor;
   density?: number;
   maxOpacity?: number;
+  floor?: number; // lowest tile strength before the fade (raise it for a bolder corner)
   animate?: boolean;
   seed?: number;
   className?: string;
@@ -42,7 +44,7 @@ export function MosaicField({
       const fy = r / Math.max(1, rows - 1);
       const w =
         anchor === 'right' ? fx : anchor === 'bottom' ? fy : anchor === 'top' ? 1 - fy : Math.max(0, 1 - Math.hypot(1 - fx, fy) / 1.15);
-      if (rnd() < density * w * w) tiles.push({ x: c * step, y: r * step, o: Math.min(maxOpacity, (0.12 + 0.75 * rnd()) * w), d: 4 + rnd() * 6, delay: -rnd() * 10 });
+      if (rnd() < density * w * w) tiles.push({ x: c * step, y: r * step, o: Math.min(maxOpacity, (floor + (0.87 - floor) * rnd()) * w), d: 4 + rnd() * 6, delay: -rnd() * 10 });
     }
   return (
     <div aria-hidden className={`pointer-events-none absolute ${className}`} style={{ width: cols * step - gap, height: rows * step - gap }}>

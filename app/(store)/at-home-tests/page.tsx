@@ -68,7 +68,7 @@ export default function TestsPage() {
               return (
                 <div key={g.id} id={g.id} className="scroll-mt-36">
                   <div className="flex items-center gap-3 border-b border-[var(--color-line)] pb-3">
-                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-navy)] text-white"><Icon className="h-4 w-4" /></span>
+                    <span className="flex h-9 w-9 items-center justify-center rounded-full text-white" style={{ background: g.color }}><Icon className="h-4 w-4" /></span>
                     <h2 className="text-2xl md:text-3xl">{g.name}</h2>
                     <span className="ml-auto text-sm text-[var(--color-muted)]">{g.kits.length} {g.kits.length === 1 ? 'kit' : 'kits'}</span>
                   </div>
