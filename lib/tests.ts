@@ -356,4 +356,4 @@ export const TEST_CATEGORY_LIST = TEST_CATEGORIES.filter((c) => kitsIn(c.id).len
 // Rule and Washington's My Health My Data Act). `sensitive` kits (STI) are also never named in emails.
 export const SENSITIVE_PATHS = KITS.filter((k) => !k.pets).map((k) => `/at-home-tests/${k.slug}`);
 // Free health programs (/programs/*) are health pages too: no tags (23 Nov). The account page lists what someone ordered (test kits included): no tags (25 Nov).
-export const isSensitivePath = (pathname: string | null | undefined) => !!pathname && (pathname === '/account' || pathname.startsWith('/programs/') || SENSITIVE_PATHS.some((p) => pathname === p || pathname.startsWith(`${p}/`)));
+export const isSensitivePath = (pathname: string | null | undefined) => !!pathname && (pathname === '/account' || pathname.startsWith('/account/') || pathname.startsWith('/programs/') || SENSITIVE_PATHS.some((p) => pathname === p || pathname.startsWith(`${p}/`)));
