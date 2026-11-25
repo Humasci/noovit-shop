@@ -12,7 +12,7 @@ export function KitCard({ kit: k }: { kit: KitSummary }) {
   const body = (
     <>
       {/* Mosaic tiles in the service line's colour (owner, 25 Nov); they brighten on hover. */}
-      <MosaicField cols={6} rows={5} tile={12} gap={3} anchor="top-right" color={k.color} density={2.6} floor={0.5} maxOpacity={1} animate={false} seed={k.slug.length + 3} className="pointer-events-none absolute right-0 top-0 opacity-85 transition-opacity duration-300 group-hover:opacity-100" />
+      <MosaicField cols={6} rows={5} tile={12} gap={3} anchor="top-right" color={k.color} density={2.6} floor={0.62} maxOpacity={1} animate={false} seed={k.slug.length + 3} className="pointer-events-none absolute right-0 top-0 opacity-90 transition-opacity duration-300 group-hover:opacity-100" />
       <p className="mb-2 flex items-center gap-2 pr-20 text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted)]"><span aria-hidden className="h-2 w-2 rounded-[2px]" style={{ background: k.color }} /> {k.line}</p>
       <h3 className="pr-16 text-xl">{k.name}</h3>
       <p className="mt-2 flex-1 text-sm text-[var(--color-ink)]/80">{k.short}</p>
