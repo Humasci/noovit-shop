@@ -28,6 +28,9 @@ export function proxy(req: NextRequest) {
   const secret = adminPath();
   const signedIn = isAdminToken(req.cookies.get(ADMIN_COOKIE)?.value);
 
+  // Once live, the old pre-launch page permanently points to the homepage (Search Console: no duplicate/noindex page).
+  if (siteLive() && (pathname === '/coming-soon' || pathname === '/coming-soon/')) return NextResponse.redirect(new URL('/', req.url), 308);
+
   if (!siteLive() && gated(pathname) && !signedIn && !(adminConfigured() && isPreviewToken(req.cookies.get(PREVIEW_COOKIE)?.value))) {
     if (!(secret && pathname === `/${secret}`)) return NextResponse.rewrite(new URL('/coming-soon', req.url));
   }
