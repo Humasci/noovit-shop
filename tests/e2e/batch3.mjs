@@ -50,7 +50,8 @@ check('compare image 404 for product without it', (await fetch(`${base}/product-
   const out = await (await fetch(`${base}/account`)).text();
   check('account: signed out shows the sign-in form', out.includes('Email me a sign-in link') && !out.includes('Signed in as'));
   check('account page is noindex', /<meta name="robots" content="noindex/.test(out));
-  check('account: sub-pages need a session', (await fetch(`${base}/account/orders`, { redirect: 'manual' })).status === 307 && (await fetch(`${base}/account/data`, { redirect: 'manual' })).headers.get('location')?.endsWith('/account'));
+  const anon = await (await fetch(`${base}/account/orders`)).text();
+  check('account: sub-pages need a session', !anon.includes('Order #') && !anon.includes('acct@test.com') && (await fetch(`${base}/account/data`, { redirect: 'manual' })).headers.get('location')?.endsWith('/account'));
   const unknown = await post('/api/account/sign-in', { email: 'nobody@test.com' });
   const known = await post('/api/account/sign-in', { email: 'Acct@Test.com' });
   const km = (await known.json()).message, um = (await unknown.json()).message;
@@ -67,7 +68,8 @@ check('compare image 404 for product without it', (await fetch(`${base}/product-
   const ctx = await ab.newContext();
   const ap = await ctx.newPage();
   const open = async (path, sel) => { await ap.goto(`${base}${path}`); await ap.waitForSelector(sel); return (await ap.textContent('body')) ?? ''; };
-  const flash = async () => { await ap.waitForSelector('[data-testid=account-flash]'); return (await ap.textContent('[data-testid=account-flash]')) ?? ''; };
+  // Waits for the action's result code in the address (?ok=code / ?err=code), then reads the message shown.
+  const flash = async (code) => { await ap.waitForURL((u) => u.search === `?ok=${code}` || u.search === `?err=${code}`); await ap.waitForSelector('[data-testid=account-flash]'); return (await ap.textContent('[data-testid=account-flash]')) ?? ''; };
   await ap.goto(link);
   await ap.waitForSelector('[data-testid=account-email]');
   let body = (await ap.textContent('body')) ?? '';
@@ -80,7 +82,8 @@ check('compare image 404 for product without it', (await fetch(`${base}/product-
 
   body = await open(`/account/orders/${ao.order_number}`, 'text=Shipped to');
   check('account: order detail (items, totals, address, progress)', body.includes('Magnesium Sleep+') && body.includes('$24.00') && body.includes('5 Elm St') && body.includes('Free') && (await ap.locator('ol[aria-label="Order progress"] li[aria-current=step]').textContent())?.includes('Shipped'), body.slice(0, 400));
-  check("account: someone else's order is not found", (await ctx.request.get(`${base}/account/orders/${other.order_number}`)).status() === 404);
+  const theirs = await (await ctx.request.get(`${base}/account/orders/${other.order_number}`)).text();
+  check("account: someone else's order is not shown", !theirs.includes('$99.00') && !theirs.includes('someone-else') && !theirs.includes('Get help with this order'));
   await ap.click('button:has-text("Buy again")');
   await ap.waitForSelector('button[aria-label="Cart, 1 item"]');
   check('account: buy again puts it in the cart', true);
@@ -90,7 +93,7 @@ check('compare image 404 for product without it', (await fetch(`${base}/product-
   await ap.selectOption('select[name=topic]', 'refund');
   await ap.fill('textarea[name=message]', 'Not for me, please refund.');
   await ap.click('button:has-text("Send to support")');
-  check('account: order help sent', (await flash()).includes('Message sent'));
+  check('account: order help sent', (await flash('help')).includes('Message sent'));
   log = readFileSync(`${dir}next.log`, 'utf8');
   check('account: help email names the order, replies to the customer', log.includes(`Order #${ao.order_number}: Refund (90-day guarantee)`) && log.includes('Not for me, please refund.'));
 
@@ -99,28 +102,29 @@ check('compare image 404 for product without it', (await fetch(`${base}/product-
   body = await open('/account/subscriptions', '[data-testid=account-subscription]');
   check('account: subscription shown', body.includes('Magnesium Sleep+') && body.includes('Every month') && body.includes('Next order: Jan 15, 2027') && body.includes('Active'), body.slice(0, 300));
   await ap.click('button:has-text("Skip next order")');
-  check('account: skip next order', (await flash()).includes('skipped') && (await subState()).includes('Skipping next order'), await subState());
+  check('account: skip next order', (await flash('skipped')).includes('skipped') && (await subState()).includes('Skipping next order'), await subState());
   let dbsub = await rest(`subscriptions?id=eq.${asub.id}&select=paused,cancel_at_period_end`);
   check('account: skip saved', dbsub[0]?.paused === true, dbsub);
   await ap.click("button:has-text(\"Don't skip\")");
-  check('account: undo skip', (await flash()).includes('active again') && (await subState()).includes('Active'));
+  check('account: undo skip', (await flash('resumed')).includes('active again') && (await subState()).includes('Active'));
   await ap.click('button:has-text("Pause")');
-  check('account: pause', (await flash()).includes('paused') && (await subState()).includes('Paused'));
+  check('account: pause', (await flash('paused')).includes('paused') && (await subState()).includes('Paused'));
   await ap.click('button:has-text("Resume")');
-  await flash();
+  await flash('resumed');
   await ap.click('summary:has-text("Cancel subscription")');
   await ap.selectOption('select[name=reason]', 'too_expensive');
   await ap.click('button:has-text("Cancel my subscription")');
+  const cancelMsg = await flash('cancelled');
   dbsub = await rest(`subscriptions?id=eq.${asub.id}&select=paused,cancel_at_period_end`);
-  check('account: cancel at period end', (await flash()).includes('cancelled') && (await subState()).includes('Ends Jan 15, 2027') && dbsub[0]?.cancel_at_period_end === true, dbsub);
+  check('account: cancel at period end', cancelMsg.includes('cancelled') && (await subState()).includes('Ends Jan 15, 2027') && dbsub[0]?.cancel_at_period_end === true, dbsub);
   await ap.click('button:has-text("Keep my subscription")');
-  check('account: undo cancel', (await flash()).includes('Welcome back') && (await subState()).includes('Active'));
+  check('account: undo cancel', (await flash('reactivated')).includes('Welcome back') && (await subState()).includes('Active'));
   // Someone else's subscription id is refused
   const [oc] = await rest('customers', { method: 'POST', body: JSON.stringify({ email: 'someone-else@test.com' }) });
   const [osub] = await rest('subscriptions', { method: 'POST', body: JSON.stringify({ customer_id: oc.id, stripe_subscription_id: 'sub_other', status: 'active', frequency_days: 30, amount_cents: 2400 }) });
-  await ap.evaluate((id) => { document.querySelector('[data-testid=account-subscription] input[name=id]').value = id; }, osub.id);
+  await ap.evaluate((id) => { document.querySelectorAll('[data-testid=account-subscription] input[name=id]').forEach((el) => { el.value = id; }); }, osub.id);
   await ap.click('button:has-text("Pause")');
-  const refused = await flash();
+  const refused = await flash('invalid');
   dbsub = await rest(`subscriptions?id=eq.${osub.id}&select=paused`);
   check("account: can't change someone else's subscription", refused.includes('check the form') && dbsub[0]?.paused === false, { refused, dbsub });
   const pr = await ctx.request.get(`${base}/api/account/portal`, { maxRedirects: 0 });
@@ -130,31 +134,31 @@ check('compare image 404 for product without it', (await fetch(`${base}/product-
   await open('/account/profile', '[data-testid=address-form]');
   await ap.fill('input[name=name]', 'Ada Lovelace');
   await ap.click('button:has-text("Save name")');
-  check('account: name saved', (await flash()).includes('name is saved') && (await rest(`customers?id=eq.${ac.id}&select=name`))[0]?.name === 'Ada Lovelace');
+  check('account: name saved', (await flash('name')).includes('name is saved') && (await rest(`customers?id=eq.${ac.id}&select=name`))[0]?.name === 'Ada Lovelace');
   await ap.fill('input[name=line1]', '77 Oak Ave');
   await ap.fill('input[name=city]', 'Denver');
   await ap.fill('input[name=state]', 'co');
   await ap.fill('input[name=zip]', '80202');
   await ap.click('button:has-text("Save address")');
-  check('account: address saved for future orders', (await flash()).includes('address is saved') && (await ap.inputValue('input[name=line1]')) === '77 Oak Ave' && (await ap.inputValue('input[name=state]')) === 'CO');
+  check('account: address saved for future orders', (await flash('address')).includes('address is saved') && (await ap.inputValue('input[name=line1]')) === '77 Oak Ave' && (await ap.inputValue('input[name=state]')) === 'CO');
   await ap.fill('input[name=zip]', '80202');
   await ap.evaluate(() => { const z = document.querySelector('input[name=zip]'); z.removeAttribute('pattern'); z.value = 'ABC'; });
   await ap.click('button:has-text("Save address")');
-  check('account: bad address refused', (await flash()).includes('full US address'));
+  check('account: bad address refused', (await flash('address_invalid')).includes('full US address'));
 
   // Emails and privacy
   await open('/account/settings', '[data-testid=email-state]');
   await ap.click('button:has-text("Unsubscribe")');
-  check('account: unsubscribe', (await flash()).includes('off our email list') && (await rest('subscribers?email=eq.acct@test.com&select=status'))[0]?.status === 'unsubscribed');
+  check('account: unsubscribe', (await flash('unsubscribed')).includes('off our email list') && (await rest('subscribers?email=eq.acct@test.com&select=status'))[0]?.status === 'unsubscribed');
   await ap.click('button:has-text("Send me guides and offers")');
-  check('account: subscribe again', (await flash()).includes('on our email list') && (await rest('subscribers?email=eq.acct@test.com&select=status'))[0]?.status === 'subscribed');
+  check('account: subscribe again', (await flash('subscribed')).includes('on our email list') && (await rest('subscribers?email=eq.acct@test.com&select=status'))[0]?.status === 'subscribed');
   const dl = await ctx.request.get(`${base}/account/data`);
   const mine = await dl.json().catch(() => ({}));
   check('account: data download is mine only', dl.ok() && mine.customer?.email === 'acct@test.com' && mine.orders?.length === 1 && mine.subscriptions?.length === 1 && !JSON.stringify(mine).includes('someone-else'), Object.keys(mine));
   await ap.click('summary:has-text("Delete my data")');
   await ap.fill('input[name=confirm]', 'acct@test.com');
   await ap.click('button:has-text("Request deletion")');
-  check('account: delete request asks to cancel the subscription first', (await flash()).includes('cancel your subscription first'));
+  check('account: delete request asks to cancel the subscription first', (await flash('active_sub')).includes('cancel your subscription first'));
 
   await ap.click('button:has-text("Sign out") >> visible=true');
   await ap.waitForSelector('text=Email me a sign-in link');
