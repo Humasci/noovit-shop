@@ -78,7 +78,7 @@ check('compare image 404 for product without it', (await fetch(`${base}/product-
   check('account: Google unverified email refused', (await gBack('unverified:acct@test.com', gState)).headers.get('location')?.endsWith('/account?google=failed'));
   const gOk = await gBack('Acct@Test.com', gState);
   const gSession = (gOk.headers.getSetCookie?.() ?? []).find((c) => c.startsWith('noovit_account='))?.split(';')[0];
-  const gPage = gSession ? await (await fetch(`${base}/account/orders`, { headers: { cookie: gSession } })).text() : '';
+  const gPage = gSession ? (await (await fetch(`${base}/account/orders`, { headers: { cookie: gSession } })).text()).replace(/<!-- -->/g, '') : '';
   check('account: Google sign-in opens the same account', gOk.headers.get('location')?.endsWith('/account') && gPage.includes(`Order #${ao.order_number}`), gOk.headers.get('location'));
 
   const ab = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });

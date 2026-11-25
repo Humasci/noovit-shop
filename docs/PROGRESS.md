@@ -268,3 +268,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 25 Nov (102): customer account dashboard (/account): passwordless sign-in link + 30-day session, orders + tracking, subscriptions + Stripe portal, test-kit status, email preferences; portal-link rate-limit bug fixed; batch3 31 tests
 - [x] 25 Nov (103): full account area: overview, orders + order page (progress, receipt, reorder, help form), subscriptions (skip/pause/cancel on-site), tests, profile + address, emails & privacy (data download, delete request); batch3 49 tests
 - [x] 25 Nov (104): account: bottom navigation bar on phones (owner), compact overview tiles; batch3 52 tests
+- [x] 26 Nov (105): account: Continue with Google (OAuth code flow, state cookie, verified email only; on when GOOGLE_CLIENT_ID/SECRET set); batch3 58 tests
