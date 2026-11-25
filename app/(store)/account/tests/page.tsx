@@ -40,8 +40,8 @@ export default async function TestsPage() {
         </ul>
       ) : (
         <Empty>
-          {a.testsWaitlist !== null
-            ? <>You&apos;re on the list{a.testsWaitlist ? ` for the ${a.testsWaitlist}` : ''}. We&apos;ll email you the day kits open. </>
+          {a.testsWaitlist !== null || a.waiting.some((w) => w.kind === 'kit')
+            ? <>You&apos;re on the list{a.waiting.some((w) => w.kind === 'kit') ? ` for: ${a.waiting.filter((w) => w.kind === 'kit').map((w) => w.name).join(', ')}` : a.testsWaitlist ? ` for the ${a.testsWaitlist}` : ''}. We&apos;ll email you the day kits open. </>
             : <>Kits you order will show their status here. </>}
           <Link href={HUB_URL.tests} className="font-semibold text-[var(--color-navy)] underline">See the at-home tests</Link>
         </Empty>

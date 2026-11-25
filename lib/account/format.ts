@@ -36,6 +36,7 @@ export const FLASH: Record<string, string> = {
   invalid: 'Please check the form and try again.',
   address_invalid: 'Please enter a full US address: street, city, 2-letter state and ZIP code.',
   limit: 'Too many requests. Please try again later.',
+  notify_removed: "Removed. We won't email you about that one.",
   receipt: "We couldn't find a receipt for this order. Email us and we'll send one.",
   active_sub: 'Please cancel your subscription first, then send the delete request.',
 };

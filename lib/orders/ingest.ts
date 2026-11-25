@@ -7,6 +7,8 @@ import { findProduct } from '@/data/products';
 import { getCatalog } from '@/lib/catalog/server';
 import { Product } from '@/types';
 import { sendOrderConfirmation } from '@/lib/email';
+import { accountLinkToken, ORDER_LINK_TTL } from '@/lib/account/session';
+import { SITE_URL } from '@/lib/site';
 import { subscribe } from '@/lib/marketing/subscribers';
 import { markRecovered } from '@/lib/marketing/abandoned';
 import { klaviyoEvent } from '@/lib/marketing/klaviyo';
@@ -150,6 +152,7 @@ async function createOrder(input: {
     name: input.name,
     totalCents: input.total,
     items: input.items.map((i) => ({ name: i.product_name, bottles: i.bottles, quantity: i.quantity, frequencyDays: i.frequency_days, unitCents: i.unit_amount_cents })),
+    accountUrl: `${SITE_URL}/api/account/session?token=${encodeURIComponent(accountLinkToken(input.email, ORDER_LINK_TTL))}&next=${encodeURIComponent(`/account/orders/${order.order_number}`)}`,
   }).catch((err) => console.error(`Confirmation email for order ${order.order_number} failed`, err));
   await klaviyoEvent('Placed Order', input.email.toLowerCase(), `order-${order.order_number}`, input.total / 100, {
     OrderNumber: order.order_number,

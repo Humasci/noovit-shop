@@ -10,6 +10,7 @@ import { subscribe, unsubscribe } from '@/lib/marketing/subscribers';
 import { sendContactMessage } from '@/lib/email';
 import { supportEmail } from '@/lib/settings';
 import { rateLimited } from '@/lib/rate-limit';
+import { removeNotify } from '@/lib/marketing/notify';
 
 // Customer account actions (25 Nov). Every action starts from the signed-in email and checks that the thing being
 // changed belongs to it; ids from the form are never trusted on their own. Results come back as ?ok= / ?err= codes
@@ -145,4 +146,14 @@ export async function deleteRequest(f: FormData) {
   if (limited(`acct-del:${email}`, 2)) back(P, 'err', 'limit');
   await sendContactMessage(await supportEmail(), { name: cust?.name ?? email, email, topic: 'Privacy request: delete my data', message: `Sent from the account page while signed in as ${email}. Admin → Customers → this customer → Delete personal data.` });
   back(P, 'ok', 'delete');
+}
+
+// Take one product or kit off the "Notify me" list.
+export async function notifyRemove(f: FormData) {
+  const email = await requireAccount();
+  const kind = str(f, 'kind');
+  const slug = str(f, 'slug', 60);
+  if ((kind !== 'product' && kind !== 'kit') || !/^[a-z0-9-]{2,60}$/.test(slug)) back('/account', 'err', 'invalid');
+  await removeNotify(email, kind as 'product' | 'kit', slug);
+  back('/account', 'ok', 'notify_removed');
 }

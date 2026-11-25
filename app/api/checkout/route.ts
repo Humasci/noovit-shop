@@ -9,6 +9,8 @@ import { autoDiscountCoupon, autoDiscountFrom } from '@/lib/marketing/auto-disco
 import { REF_COOKIE, activeAffiliateByCode } from '@/lib/affiliates';
 import { shopOpenFor } from '@/lib/launch-request';
 import { ORDERS_SOON } from '@/lib/launch';
+import { db } from '@/lib/db/server';
+import { ACCOUNT_COOKIE, CHECKOUT_COOKIE, emailFromSession } from '@/lib/account/session';
 
 async function resolvePriceIds(lookupKeys: string[]) {
   const ids = new Map<string, { id: string; amount: number | null }>();
@@ -55,7 +57,8 @@ export async function POST(req: NextRequest) {
     phone_number_collection: { enabled: true },
     allow_promotion_codes: true,
     automatic_tax: { enabled: process.env.STRIPE_TAX_ENABLED === 'true' },
-    success_url: `${origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+    // Through the account route: it signs the buyer in (this browser only), then shows the success page.
+    success_url: `${origin}/api/account/after-checkout?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${origin}/cart`,
     metadata: { age_confirmed: String(ageRestricted), auto_renew_consent: String(Boolean(frequency)) },
     // Abandoned-cart recovery: the session expires after 2 hours and Stripe gives us a recovery link.
@@ -100,6 +103,20 @@ export async function POST(req: NextRequest) {
     params.customer_creation = 'always';
   }
 
+  // Signed-in customers (account session): the order joins their account. With a Stripe customer on file Checkout
+  // fills in their email (and saved card/address where Stripe can); address changes made at checkout are saved back.
+  const signedIn = dbConfigured() ? emailFromSession(req.cookies.get(ACCOUNT_COOKIE)?.value) : null;
+  if (signedIn) {
+    const { data: cust } = await db().from('customers').select('stripe_customer_id').eq('email', signedIn).maybeSingle();
+    if (cust?.stripe_customer_id) {
+      params.customer = cust.stripe_customer_id;
+      params.customer_update = { shipping: 'auto', name: 'auto' };
+      delete params.customer_creation;
+    } else {
+      params.customer_email = signedIn;
+    }
+  }
+
   try {
     let session: Stripe.Checkout.Session;
     try {
@@ -112,7 +129,9 @@ export async function POST(req: NextRequest) {
       params.allow_promotion_codes = true;
       session = await stripe().checkout.sessions.create(params);
     }
-    return NextResponse.json({ url: session.url });
+    const res = NextResponse.json({ url: session.url });
+    res.cookies.set(CHECKOUT_COOKIE, session.id, { httpOnly: true, secure: origin.startsWith('https:'), sameSite: 'lax', path: '/api/account', maxAge: CHECKOUT_TTL_SECONDS + 3600 });
+    return res;
   } catch (err) {
     console.error('Checkout session failed', err);
     return NextResponse.json({ error: 'Could not start checkout. Please try again.' }, { status: 502 });

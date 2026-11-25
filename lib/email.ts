@@ -48,6 +48,7 @@ export interface EmailOrder {
   name?: string | null;
   totalCents: number;
   items: { name: string; bottles: number; quantity: number; frequencyDays?: number | null; unitCents?: number }[];
+  accountUrl?: string; // signs the customer in and opens this order (7 days)
 }
 
 // Auto-renewal acknowledgment (ROSCA / California ARL): what renews, how often, for how much, and how to cancel.
@@ -83,7 +84,8 @@ export function sendOrderConfirmation(order: EmailOrder) {
       <ul>${rows}</ul>
       <p><b>Total: ${formatPrice(order.totalCents / 100)}</b></p>
       ${subscriptionTerms(order.items)}
-      <p>We'll email you tracking details as soon as it ships. You can also follow this order, and manage any subscription, in <a href="${SITE_URL}/account" style="color:#3a8069">your account</a> (sign in with this email address, no password).</p>`)
+      ${order.accountUrl ? `<p><a href="${esc(order.accountUrl)}" style="display:inline-block;background:#14213d;color:#fff;padding:12px 24px;border-radius:999px;text-decoration:none;font-weight:bold">View your order</a></p>` : ''}
+      <p>We'll email you tracking details as soon as it ships. You can follow this order${order.items.some((i) => i.frequencyDays) ? ', and skip, pause or cancel your subscription,' : ''} in <a href="${SITE_URL}/account" style="color:#3a8069">your account</a> any time: no password, just this email address.${order.accountUrl ? ' The button above signs you straight in for the next 7 days.' : ''}</p>`)
   );
 }
 

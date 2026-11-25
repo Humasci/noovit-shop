@@ -5,6 +5,9 @@ import { dbConfigured } from '@/lib/config';
 import { findKit } from '@/lib/tests';
 import { PROGRAM_EMAILS } from '@/lib/programs/perimenopause-emails';
 import { accountEmail } from './session';
+import { listNotify } from '@/lib/marketing/notify';
+import { getCatalog } from '@/lib/catalog/server';
+import { productPath, testPath } from '@/lib/urls';
 
 // Everything the account area shows for one email. Orders are matched on the order's email, so guest checkouts
 // appear too. Every read is scoped to the signed-in email; nothing here takes an id from the browser on trust.
@@ -27,6 +30,7 @@ export interface AccountData {
   newsletter: 'subscribed' | 'unsubscribed' | 'none';
   testsWaitlist: string | null; // kit name they asked about, '' for the general list, null = not on it
   program: { sent: number; total: number; done: boolean } | null;
+  waiting: { kind: 'product' | 'kit'; slug: string; name: string; href: string; since: string }[];
 }
 
 // The signed-in email, or a redirect to the sign-in page. Call at the top of every account page and action.
@@ -58,7 +62,7 @@ export async function loadAccount(email: string): Promise<AccountData> {
   const [cust, ordersRes, subRow, enrol] = await Promise.all([
     db().from('customers').select('id, name, stripe_customer_id').eq('email', e).maybeSingle(),
     db().from('orders').select(ORDER_COLS).eq('email', e).order('created_at', { ascending: false }).limit(100),
-    db().from('subscribers').select('status, source, goal').eq('email', e).maybeSingle(),
+    db().from('subscribers').select('status, source, goal, created_at').eq('email', e).maybeSingle(),
     db().from('program_enrollments').select('last_step, completed_at').eq('email', e).eq('program', 'perimenopause').maybeSingle(),
   ]);
   const rows = (ordersRes.data ?? []) as unknown as OrderRow[];
@@ -78,6 +82,20 @@ export async function loadAccount(email: string): Promise<AccountData> {
     });
   }
 
+  // "Notify me" list (migration 0009); before it runs, the one product or kit kept in subscribers.goal.
+  const catalog = await getCatalog();
+  const saved = await listNotify(e);
+  const fromGoal = sub0(subRow.data);
+  const requests = saved ?? fromGoal;
+  const waiting = requests.flatMap((r): AccountData['waiting'] => {
+    if (r.kind === 'kit') {
+      const k = findKit(r.slug);
+      return k ? [{ kind: r.kind, slug: r.slug, name: k.sensitive ? 'At-home test' : k.name, href: testPath(k.slug), since: r.created_at }] : [];
+    }
+    const p = catalog.find((x) => x.slug === r.slug);
+    return p ? [{ kind: r.kind, slug: r.slug, name: p.name, href: productPath(p.slug), since: r.created_at }] : [];
+  });
+
   const sub = subRow.data;
   const waitKit = sub?.source === 'tests-waitlist' ? findKit(sub.goal ?? '') : undefined;
   return {
@@ -89,8 +107,15 @@ export async function loadAccount(email: string): Promise<AccountData> {
     newsletter: sub ? (sub.status === 'subscribed' ? 'subscribed' : 'unsubscribed') : 'none',
     testsWaitlist: sub?.source === 'tests-waitlist' ? (waitKit && !waitKit.sensitive ? waitKit.name : '') : null,
     program: enrol.data ? { sent: enrol.data.last_step, total: PROGRAM_EMAILS.length, done: !!enrol.data.completed_at } : null,
+    waiting,
   };
 }
+
+type SubRow = { status: string; source: string; goal: string | null; created_at: string } | null;
+const sub0 = (s: SubRow) =>
+  s?.goal && s.status === 'subscribed' && (s.source === 'launch-waitlist' || s.source === 'tests-waitlist')
+    ? [{ kind: (s.source === 'tests-waitlist' ? 'kit' : 'product') as 'kit' | 'product', slug: s.goal, created_at: s.created_at }]
+    : [];
 
 // One order by its number, only if it belongs to this email.
 export async function loadOrder(email: string, number: number): Promise<AccountOrder | null> {

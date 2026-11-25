@@ -1,5 +1,7 @@
 import Link from 'next/link';
-import { Package, RefreshCw, FlaskConical, Mail, CalendarClock, ChevronRight } from 'lucide-react';
+import { Package, RefreshCw, FlaskConical, Mail, CalendarClock, ChevronRight, BellRing, X } from 'lucide-react';
+import { notifyRemove } from './actions';
+import { Flash } from '@/components/account/ui';
 import { accountEmail } from '@/lib/account/session';
 import { loadAccount } from '@/lib/account/data';
 import { SignInForm } from '@/components/account/SignInForm';
@@ -15,8 +17,8 @@ import { HUB_URL } from '@/lib/urls';
 // Signed out: the sign-in form. Signed in: the overview; the rest lives in the sub-pages (menu in layout.tsx).
 export const dynamic = 'force-dynamic';
 
-export default async function AccountPage({ searchParams }: { searchParams: Promise<{ expired?: string; google?: string }> }) {
-  const { expired, google } = await searchParams;
+export default async function AccountPage({ searchParams }: { searchParams: Promise<{ expired?: string; google?: string; ok?: string; err?: string }> }) {
+  const { expired, google, ok, err } = await searchParams;
   const email = dbConfigured() ? await accountEmail() : null;
 
   if (!email) {
@@ -61,6 +63,7 @@ export default async function AccountPage({ searchParams }: { searchParams: Prom
 
   return (
     <>
+      <Flash ok={ok} err={err} />
       <h1 className="text-4xl">{a.name ? `Hi, ${a.name.split(' ')[0]}` : 'Welcome back'}</h1>
       <p className="mt-1 text-sm text-[var(--color-muted)]" data-testid="account-email">Signed in as {email}</p>
 
@@ -105,11 +108,33 @@ export default async function AccountPage({ searchParams }: { searchParams: Prom
         </div>
       </section>
 
-      {(a.testsWaitlist !== null || a.program) && (
+      {a.waiting.length > 0 && (
+        <section className="mt-10" data-testid="notify-list">
+          <h2 className="flex items-center gap-2.5 text-2xl"><BellRing className="h-5 w-5 text-[var(--color-accent)]" aria-hidden /> Your Notify me list</h2>
+          <p className="mt-1 text-sm text-[var(--color-muted)]">We&apos;ll email you the day each one can be ordered.</p>
+          <ul className="mt-4 divide-y divide-[var(--color-line)] rounded-2xl border border-[var(--color-line)] bg-white">
+            {a.waiting.map((w) => (
+              <li key={`${w.kind}-${w.slug}`} className="flex items-center justify-between gap-3 px-5 py-3.5 text-sm">
+                <Link href={w.href} className="font-semibold hover:underline">{w.name}</Link>
+                <span className="flex items-center gap-3">
+                  <span className="hidden text-xs text-[var(--color-muted)] sm:inline">{w.kind === 'kit' ? 'At-home test' : 'Supplement'}</span>
+                  <form action={notifyRemove}>
+                    <input type="hidden" name="kind" value={w.kind} />
+                    <input type="hidden" name="slug" value={w.slug} />
+                    <button aria-label={`Remove ${w.name}`} className="rounded-full p-1.5 text-[var(--color-muted)] hover:bg-[var(--color-soft)] hover:text-[var(--color-navy)]"><X className="h-4 w-4" aria-hidden /></button>
+                  </form>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {(a.program || (a.testsWaitlist !== null && !a.waiting.some((w) => w.kind === 'kit'))) && (
         <section className="mt-10 grid gap-4">
-          {a.testsWaitlist !== null && (
+          {a.testsWaitlist !== null && !a.waiting.some((w) => w.kind === 'kit') && (
             <Card className="text-sm">
-              <span className="font-semibold">At-home tests:</span> you&apos;re on the list{a.testsWaitlist ? ` for the ${a.testsWaitlist}` : ''}. We&apos;ll email you the day kits open.{' '}
+              <span className="font-semibold">At-home tests:</span> you&apos;re on the list. We&apos;ll email you the day kits open.{' '}
               <Link href={HUB_URL.tests} className="font-semibold underline">See the tests</Link>
             </Card>
           )}

@@ -10,7 +10,13 @@ export const ACCOUNT_TTL = 30 * 86_400;
 export const ACCOUNT_HINT = 'noovit_acct';
 const LINK_TTL = 30 * 60;
 
-export const accountLinkToken = (email: string) => signToken({ e: email.trim().toLowerCase(), p: 'acct-link' }, LINK_TTL);
+export const accountLinkToken = (email: string, ttl = LINK_TTL) => signToken({ e: email.trim().toLowerCase(), p: 'acct-link' }, ttl);
+// Order emails carry a sign-in link that lasts longer, so "View your order" still works a few days later.
+export const ORDER_LINK_TTL = 7 * 86_400;
+// Where a sign-in link may land: only account pages (never an outside address).
+export const safeAccountPath = (next: string | null | undefined) => (next && /^\/account(\/[a-z0-9/-]*)?$/.test(next) ? next : '/account');
+// Checkout started in this browser (the Stripe session id), so the success page can sign the buyer in here only.
+export const CHECKOUT_COOKIE = 'noovit_checkout';
 export const emailFromLinkToken = (token: string | null | undefined) => {
   const t = verifyToken<{ e?: string; p?: string }>(token);
   return t?.p === 'acct-link' && t.e ? t.e : null;

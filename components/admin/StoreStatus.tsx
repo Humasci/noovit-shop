@@ -5,6 +5,8 @@ import { ordersOpen, siteLive, stripeLive, previewToken } from '@/lib/launch';
 import { loadCatalog } from '@/lib/catalog/server';
 import { advisorEnabled } from '@/lib/advisor';
 import { SITE_URL } from '@/lib/site';
+import { notifyCounts } from '@/lib/marketing/notify';
+import { findKit } from '@/lib/tests';
 
 // "Store status" on the admin overview (25 Nov): what stands between the store and taking orders, plus the lists that
 // are filling up while products are in coming-soon mode. Each line is a plain yes/no with the next step.
@@ -14,11 +16,12 @@ async function count(source: string) {
 }
 
 export async function StoreStatus() {
-  const [catalog, launchList, testsList, program] = await Promise.all([
+  const [catalog, launchList, testsList, program, asked] = await Promise.all([
     loadCatalog().catch(() => []),
     count('launch-waitlist').catch(() => 0),
     count('tests-waitlist').catch(() => 0),
     count('program-perimenopause').catch(() => 0),
+    notifyCounts().catch(() => null),
   ]);
   const active = catalog.filter((p) => p.status === 'active' && p.productType !== 'pets' && !p.bundleItems?.length);
   const noSku = active.filter((p) => !p.supplierSku);
@@ -65,6 +68,20 @@ export async function StoreStatus() {
             </div>
           ))}
         </dl>
+        {asked && asked.length > 0 && (
+          <div className="mt-4 border-t border-[var(--color-line)] pt-3">
+            <p className="text-xs font-semibold text-[var(--color-navy)]">Most asked for</p>
+            <ul className="mt-2 space-y-1 text-sm">
+              {asked.slice(0, 6).map((r) => (
+                <li key={`${r.kind}-${r.slug}`} className="flex justify-between gap-3">
+                  <span>{r.kind === 'kit' ? findKit(r.slug)?.name ?? r.slug : catalog.find((p) => p.slug === r.slug)?.name ?? r.slug}</span>
+                  <span className="tabular-nums text-[var(--color-muted)]">{r.n}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {asked === null && <p className="mt-4 text-xs text-[var(--color-muted)]">Run migration 0009 to see which products and kits people ask for.</p>}
         <Link href="/admin/subscribers" className="mt-4 inline-block text-sm font-semibold text-[var(--color-navy)] underline">See subscribers</Link>
       </div>
     </div>

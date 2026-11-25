@@ -6,6 +6,8 @@ import { enroll } from '@/lib/marketing/programs';
 import { findKit } from '@/lib/tests';
 import { KIT_RENAMES } from '@/lib/urls';
 import { GOALS } from '@/lib/quiz';
+import { addNotify } from '@/lib/marketing/notify';
+import { getCatalog } from '@/lib/catalog/server';
 
 export async function POST(req: NextRequest) {
   if (!dbConfigured()) return NextResponse.json({ error: 'Sign-up is not available yet.' }, { status: 503 });
@@ -27,6 +29,9 @@ export async function POST(req: NextRequest) {
   // Coming-soon "Notify me" on a product page: keep which product they asked about (Admin → Subscribers).
   const product = launch && typeof body.product === 'string' && /^[a-z0-9-]{2,60}$/.test(body.product) ? body.product : undefined;
   const goal = kit ? kit.slug : product ? product : GOALS.some((g) => g.id === body.goal) ? (body.goal as string) : undefined;
+  // The "Notify me" list keeps every product or kit asked about (account page, launch emails).
+  if (kit) await addNotify(email, 'kit', kit.slug);
+  else if (product && (await getCatalog()).some((p) => p.slug === product)) await addNotify(email, 'product', product);
   // Programs: anyone can join, even an existing subscriber; the welcome goes out once per enrollment.
   if (program) {
     await subscribe(email, source, goal);

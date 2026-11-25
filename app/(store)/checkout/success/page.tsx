@@ -8,6 +8,7 @@ import { ClearCart } from '@/components/cart/ClearCart';
 import { PurchaseTracker } from '@/components/analytics/PurchaseTracker';
 import { CustomerReviewsOptIn } from '@/components/analytics/CustomerReviewsOptIn';
 import { getSettings } from '@/lib/settings';
+import { accountEmail } from '@/lib/account/session';
 
 export const metadata: Metadata = { title: 'Order confirmed | Noovit', robots: { index: false } };
 
@@ -35,6 +36,8 @@ export default async function SuccessPage({ searchParams }: { searchParams: Prom
   }
 
   const firstName = session.customer_details?.name?.split(' ')[0];
+  // Signed in by /api/account/after-checkout (this browser started the checkout), or already signed in as the buyer.
+  const signedIn = (await accountEmail()) === session.customer_details?.email?.trim().toLowerCase();
   const { gcr_merchant_id } = await getSettings();
 
   return (
@@ -93,6 +96,18 @@ export default async function SuccessPage({ searchParams }: { searchParams: Prom
             Your subscription is active. Manage or cancel anytime from{' '}
             <Link href="/account" className="font-semibold text-[var(--color-accent)] underline">My Account</Link>.
           </p>
+        )}
+      </div>
+
+      <div className="mt-6 rounded-3xl border border-[var(--color-line)] p-6 text-center" data-testid="success-account">
+        {signedIn ? (
+          <>
+            <p className="font-semibold">Your account is ready.</p>
+            <p className="mt-1 text-sm text-[var(--color-muted)]">Follow this order, see tracking{session.mode === 'subscription' ? ', and skip, pause or change your subscription' : ''} in My Account. No password needed.</p>
+            <Link href="/account/orders" className="btn btn-primary mt-4">View my order</Link>
+          </>
+        ) : (
+          <p className="text-sm text-[var(--color-muted)]">Track this order any time in <Link href="/account" className="font-semibold text-[var(--color-navy)] underline">My Account</Link>: sign in with this email, no password. Your confirmation email has a direct link too.</p>
         )}
       </div>
 
