@@ -6,9 +6,9 @@
 // AMH, PSA, and the STI test (sensitive: no cross-selling on that page or from it).
 export const KIT_SUPPLEMENTS: Record<string, string[]> = {
   'vitamin-d-test': ['vitamin-d3-k2'],
-  'iron-test': ['iron-complex', 'vitamin-d3-k2', 'multivitamin'],
+  'iron-test': ['magnesium-complex', 'iron-complex', 'vitamin-d3-k2', 'multivitamin'], // magnesium is on this panel; iron etc. show once live
   'b12-test': ['multivitamin'],
-  'womens-health-test': ['iron-complex', 'vitamin-d3-k2', 'multivitamin'],
+  'womens-health-test': ['magnesium-complex', 'creatine-for-women', 'iron-complex', 'vitamin-d3-k2', 'multivitamin'],
   'perimenopause-test': ['menopause-complex', 'magnesium-complex'],
   'cortisol-test': ['ashwagandha', 'magnesium-complex', 'l-theanine', 'sleep-calm-stack'],
   'testosterone-test': ['creatine-for-men', 'magnesium-for-men', 'zinc'],
@@ -17,7 +17,7 @@ export const KIT_SUPPLEMENTS: Record<string, string[]> = {
 // Why the pairing makes sense, in plain words (shown on the kit page).
 export const KIT_PAIR_NOTE: Record<string, string> = {
   'vitamin-d-test': 'Know your level before you supplement, then retest after about 3 months to see where you are.',
-  'iron-test': 'Iron is one supplement you shouldn’t take on a guess: too much can be harmful. Test first, then decide with your doctor.',
+  'iron-test': 'Iron is one supplement you shouldn’t take on a guess: too much can be harmful, so if your ferritin is low, decide on iron with your doctor. The panel also measures magnesium, vitamin D and B12, so you can choose only what you need.',
   'b12-test': 'Low B12 is more common with age, plant-based diets and some medicines. A result helps you decide whether a supplement is worth it.',
   'womens-health-test': 'See your iron, vitamin D and B12 first, then choose only what you need.',
   'perimenopause-test': 'Hormones swing in perimenopause, so a result is a snapshot. Many women look at these alongside it.',
