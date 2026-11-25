@@ -130,6 +130,17 @@ check('compare image 404 for product without it', (await fetch(`${base}/product-
   const pr = await ctx.request.get(`${base}/api/account/portal`, { maxRedirects: 0 });
   check('account: card and invoices open the Stripe portal', pr.status() >= 300 && pr.status() < 400 && (pr.headers().location ?? '').startsWith('https://billing.stripe.com/'), pr.headers().location);
 
+  // Phones: bottom navigation bar instead of the side menu
+  await ap.setViewportSize({ width: 390, height: 800 });
+  const bar = ap.locator('[data-testid=account-bottom-nav]');
+  const box = await bar.boundingBox();
+  check('account: bottom navigation on phones', (await bar.isVisible()) && box && Math.round(box.y + box.height) === 800 && (await bar.locator('a').count()) === 5 && (await bar.locator('a[aria-current=page]').textContent())?.includes('Subscriptions'), box);
+  await bar.locator('a:has-text("Orders")').click();
+  await ap.waitForURL(/\/account\/orders$/);
+  check('account: bottom navigation moves between sections', (await bar.locator('a[aria-current=page]').textContent())?.includes('Orders'));
+  await ap.setViewportSize({ width: 1280, height: 720 });
+  check('account: side menu on desktop', !(await bar.isVisible()) && (await ap.locator('aside nav[aria-label=Account]').isVisible()));
+
   // Profile and address
   await open('/account/profile', '[data-testid=address-form]');
   await ap.fill('input[name=name]', 'Ada Lovelace');

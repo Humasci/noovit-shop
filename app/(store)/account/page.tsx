@@ -47,16 +47,16 @@ export default async function AccountPage({ searchParams }: { searchParams: Prom
       <h1 className="text-4xl">{a.name ? `Hi, ${a.name.split(' ')[0]}` : 'Welcome back'}</h1>
       <p className="mt-1 text-sm text-[var(--color-muted)]" data-testid="account-email">Signed in as {email}</p>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-3">
+      <div className="mt-8 grid grid-cols-3 gap-3 sm:gap-4">
         {[
           { href: '/account/orders', icon: Package, n: a.orders.length, label: a.orders.length === 1 ? 'Order' : 'Orders' },
           { href: '/account/subscriptions', icon: RefreshCw, n: a.subscriptions.length, label: a.subscriptions.length === 1 ? 'Subscription' : 'Subscriptions' },
           { href: '/account/tests', icon: FlaskConical, n: a.orders.filter((o) => o.items.some((i) => i.isKit)).length, label: 'Test kits' },
         ].map(({ href, icon: Icon, n, label }) => (
-          <Link key={href} href={href} className="group rounded-2xl bg-[var(--color-soft)] p-5 transition hover:bg-[var(--color-line)]">
+          <Link key={href} href={href} className="group rounded-2xl bg-[var(--color-soft)] p-3.5 transition hover:bg-[var(--color-line)] sm:p-5">
             <Icon className="h-5 w-5 text-[var(--color-accent)]" aria-hidden />
-            <p className="mt-3 text-3xl font-semibold text-[var(--color-navy)]">{n}</p>
-            <p className="flex items-center justify-between text-sm text-[var(--color-muted)]">{label} <ChevronRight className="h-4 w-4 transition group-hover:translate-x-0.5" aria-hidden /></p>
+            <p className="mt-2 text-2xl font-semibold text-[var(--color-navy)] sm:mt-3 sm:text-3xl">{n}</p>
+            <p className="flex items-center justify-between text-xs text-[var(--color-muted)] sm:text-sm">{label} <ChevronRight className="hidden h-4 w-4 transition group-hover:translate-x-0.5 sm:block" aria-hidden /></p>
           </Link>
         ))}
       </div>

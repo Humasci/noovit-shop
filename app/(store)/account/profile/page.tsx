@@ -1,4 +1,5 @@
-import { UserRound } from 'lucide-react';
+import Link from 'next/link';
+import { UserRound, Settings, ChevronRight } from 'lucide-react';
 import { requireAccount, loadAccount } from '@/lib/account/data';
 import { savedShipping } from '@/lib/account/stripe';
 import { Card, Flash, Label, PageTitle, field } from '@/components/account/ui';
@@ -50,6 +51,11 @@ export default async function ProfilePage({ searchParams }: { searchParams: Prom
           <p className="mt-2 text-sm text-[var(--color-muted)]">Your address is saved when you place your first order. After that you can change it here.</p>
         )}
       </Card>
+
+      <Link href="/account/settings" className="mt-4 flex items-center justify-between rounded-2xl bg-[var(--color-soft)] p-5 text-sm font-semibold hover:bg-[var(--color-line)]">
+        <span className="flex items-center gap-2.5"><Settings className="h-4 w-4 text-[var(--color-accent)]" aria-hidden /> Emails &amp; privacy: email settings, download or delete your data, sign out</span>
+        <ChevronRight className="h-4 w-4 shrink-0" aria-hidden />
+      </Link>
     </>
   );
 }
