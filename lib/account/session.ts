@@ -6,6 +6,8 @@ import { signToken, verifyToken } from '@/lib/sign';
 // httpOnly cookie holding their email for 30 days. No passwords are stored. Admin sessions are separate (lib/admin).
 export const ACCOUNT_COOKIE = 'noovit_account';
 export const ACCOUNT_TTL = 30 * 86_400;
+// Readable by the page (not httpOnly, holds nothing): lets the header say "Account" instead of "Sign in".
+export const ACCOUNT_HINT = 'noovit_acct';
 const LINK_TTL = 30 * 60;
 
 export const accountLinkToken = (email: string) => signToken({ e: email.trim().toLowerCase(), p: 'acct-link' }, LINK_TTL);

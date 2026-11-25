@@ -9,7 +9,7 @@ phase1 47/47, phase2 60/60, aff 55/55, batch3 15/15 (re-run 21 Nov and 24 Nov 20
 | `phase1.mjs` | Catalog import, product editor, Stripe sync, feeds, SEO, discounts, newsletter, abandoned checkout, settings, consent |
 | `phase2.mjs` | Staff and roles, order tools, customers, collections, bundles, bulk edit, CSV import/export, content and blog, automations, pop-up (goal first), reports |
 | `aff.mjs` | Affiliate and influencer codes, commissions, payouts |
-| `batch3.mjs` | Newsletter goal, guide images, feed titles, gallery images, privacy export and deletion |
+| `batch3.mjs` | Newsletter goal, guide images, feed titles, gallery images, customer account (sign-in link, orders, subscriptions, portal, sign-out), privacy export and deletion |
 
 ## One-time setup
 1. `cd tests/e2e && npm install`, and point `CHROMIUM_PATH` at a Chromium binary if Playwright can't find one.

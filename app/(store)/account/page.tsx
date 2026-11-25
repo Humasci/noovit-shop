@@ -102,7 +102,10 @@ function SubscriptionCard({ s, canManage }: { s: AccountSubscription; canManage:
         {!s.paused && !s.cancelling && s.renews ? ` · Next order ${day(s.renews)}` : ''}
       </p>
       {canManage && (
-        <a href="/api/account/portal" className="btn btn-outline mt-4 inline-flex text-sm">Manage: skip, change card or cancel</a>
+        <p className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+          <a href="/api/account/portal" className="btn btn-outline inline-flex text-sm">Manage subscription</a>
+          <span className="text-xs text-[var(--color-muted)]">Skip, change card or address, or cancel</span>
+        </p>
       )}
     </li>
   );

@@ -104,6 +104,7 @@ Read this first. It is the standing context for any session working on this repo
   `components/advisor/Advisor.tsx`; shown only when the key is set. Tests: `tests/e2e/fake-gemini.mjs`.
 - Site look: Thorne-like (white, pill buttons, black announcement bar, shop-by-goal tiles).
 - **Guide layout (21 Nov):** `layout: 'file'` = evidence-file prototype (sticky TOC `components/guides/GuideToc.tsx`, `components/ui/Reveal.tsx`); magnesium glycinate only until approved. Motion: CSS + IntersectionObserver, no GSAP.
+- **Customer account (25 Nov):** `/account` (server page, no tags, noindex). Passwordless: `POST /api/account/sign-in` emails a 30-min link → `/api/account/session` sets the httpOnly `noovit_account` cookie (30 days; `lib/account/session.ts`) + the empty `noovit_acct` hint cookie the header reads. Data by email in `lib/account/data.ts` (orders, fulfilments, subscriptions, waitlist, program). Subscription changes only via Stripe's portal (`/api/account/portal`). Lab results are never shown or stored.
 - **Tests ↔ supplements:** `lib/test-pairings.ts` (no pairing for thyroid, kidney, liver, A1c, AMH, PSA, STI).
 - Key paths: catalog seed `data/products.ts` (live catalog is the `products` table, jsonb `data`; `status` is a column);
   labels `lib/labels/{svg,photo,png,gallery,gallery-data}.ts`; guides `lib/guides.ts`; quiz `lib/quiz.ts`;

@@ -58,6 +58,9 @@ const NAV: NavItem[] = [
 export function Header({ trustBar, announcement, advisor = false, bestSellers = false, pets = false }: { trustBar: string[]; announcement?: { text: string; href: string }; advisor?: boolean; bestSellers?: boolean; pets?: boolean }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
+  // Signed-in hint cookie set with the account session (lib/account/session.ts ACCOUNT_HINT); holds no data.
+  const hydrated = useHydrated();
+  const signedIn = hydrated && /(?:^|; )noovit_acct=1/.test(document.cookie);
   const onPets = pathname.startsWith('/pets');
   const [menuPath, setMenuPath] = useState(pathname);
   // Close the mobile menu on navigation and on Escape.
@@ -193,7 +196,7 @@ export function Header({ trustBar, announcement, advisor = false, bestSellers = 
               </Link>
             )}
             <Link href="/account" className="hidden rounded-full border border-[var(--color-line)] px-4 py-1.5 text-[14px] font-medium hover:border-[var(--color-navy)] sm:block">
-              Sign in
+              {signedIn ? 'Account' : 'Sign in'}
             </Link>
             <button onClick={openCart} className="relative -m-2 p-2" aria-label={`Cart, ${count} ${count === 1 ? 'item' : 'items'}`}>
               <ShoppingCart className="h-6 w-6" aria-hidden />
