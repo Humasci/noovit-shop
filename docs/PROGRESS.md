@@ -271,3 +271,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 26 Nov (105): account: Continue with Google (OAuth code flow, state cookie, verified email only; on when GOOGLE_CLIENT_ID/SECRET set); batch3 58 tests
 - [x] 26 Nov (106): signed in after checkout (checkout cookie + /api/account/after-checkout), 7-day View-your-order link in the confirmation email, checkout prefill for signed-in customers, Notify me list (migration 0009, account overview, admin Most asked for); batch3 70 tests
 - [x] 26 Nov (107): owner ran migration 0009 (Notify me list) in the Noovit project
+- [x] 26 Nov (108): Google sign-in live (owner tested); move the OAuth project to the noovit.com Google account before launch
