@@ -154,12 +154,22 @@ http.createServer((req, res) => {
     if ((m = p.match(/^\/v1\/checkout\/sessions\/(\w+)$/))) return SESSIONS[m[1]] ? send(200, { ...SESSIONS[m[1]], line_items: list(LINES[m[1]]) }) : missing('No such session');
 
     // Customers, subscriptions, invoices
-    if (p === '/v1/customers/cus_1' && req.method === 'POST') { customer.shipping = { name: 'Jane Doe', address }; return send(200, customer); }
+    if (p === '/v1/customers/cus_1' && req.method === 'POST') {
+      const q = new URLSearchParams(body);
+      if (q.get('shipping[address][line1]')) {
+        // Account page "Save address": keep exactly what was sent.
+        const g = (k) => q.get(`shipping[address][${k}]`) ?? null;
+        customer.shipping = { name: q.get('shipping[name]'), phone: q.get('shipping[phone]'), address: { line1: g('line1'), line2: g('line2'), city: g('city'), state: g('state'), postal_code: g('postal_code'), country: g('country') } };
+      } else if (q.get('name') && !q.get('shipping[name]')) customer.name = q.get('name');
+      else customer.shipping = { name: 'Jane Doe', address };
+      return send(200, customer);
+    }
     if (p === '/v1/customers/cus_1') return send(200, customer);
     if (p === '/v1/customers') return send(200, list(url.searchParams.get('email') === 'jane@example.com' ? [customer] : []));
     if (p === '/v1/subscriptions/sub_1' && req.method === 'POST') {
       const params = new URLSearchParams(body);
-      if (params.get('pause_collection[behavior]')) sub = { ...sub, pause_collection: { behavior: 'void' } };
+      if (params.get('pause_collection[behavior]')) sub = { ...sub, pause_collection: { behavior: 'void', resumes_at: params.get('pause_collection[resumes_at]') ? Number(params.get('pause_collection[resumes_at]')) : null } };
+      if (params.get('cancellation_details[feedback]')) sub = { ...sub, cancellation_details: { feedback: params.get('cancellation_details[feedback]'), comment: params.get('cancellation_details[comment]') } };
       if (params.has('pause_collection') && params.get('pause_collection') === '') sub = { ...sub, pause_collection: null };
       if (params.get('cancel_at_period_end')) sub = { ...sub, cancel_at_period_end: params.get('cancel_at_period_end') === 'true' };
       return send(200, sub);
