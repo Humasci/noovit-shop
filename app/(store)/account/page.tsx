@@ -33,9 +33,10 @@ function Account() {
 
   return (
     <div className="container max-w-xl px-6 py-20">
-      <h1 className="text-center text-4xl">My Subscriptions</h1>
+      <p className="text-center text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-muted)]">Your account</p>
+      <h1 className="mt-2 text-center text-4xl">Manage your subscription</h1>
       <p className="mt-3 text-center text-[var(--color-muted)]">
-        Enter the email you ordered with and we&apos;ll send you a secure link to manage your subscription. No password needed.
+        Enter the email you ordered with and we&apos;ll send you a secure link. No password to remember.
       </p>
 
       {expired && (
@@ -70,6 +71,9 @@ function Account() {
           </li>
         ))}
       </ul>
+      <p className="mt-8 text-center text-sm text-[var(--color-muted)]">
+        Placed a one-time order? Your tracking link is in your shipping email. Anything else: <a href="mailto:hello@noovit.com" className="font-semibold text-[var(--color-navy)] underline">hello@noovit.com</a>
+      </p>
     </div>
   );
 }

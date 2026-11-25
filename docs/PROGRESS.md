@@ -264,3 +264,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 24 Nov (98): Creatine Hydration+ matched to Supliful, priced $36 (SQL + seed); Supliful pricing-tier finding logged
 - [x] 24 Nov (99): Vapi agent handles supplier/lab call-backs; end-of-call webhook emails summaries to the support inbox
 - [x] 25 Nov (100): brand line 'evidence-led wellness' sitewide; homepage pillars strip; kit cards with service-line mosaic tiles; signature builder page; /coming-soon redirect; Rocktomic price list saved
+- [x] 25 Nov (101): audit round 2 (177 tests, live checks), advisor fixes (status, kits, lab results, cut-offs), admin Store status + People waiting panels, account page copy, IHD API notes, advisor model comparison
