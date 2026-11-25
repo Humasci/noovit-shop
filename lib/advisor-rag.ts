@@ -5,6 +5,8 @@ import { GENERAL_FAQS } from '@/data/content';
 import type { Post } from '@/lib/blog';
 import SNAPSHOTS from '@/data/advisor-snapshots.json';
 import { productPath } from '@/lib/urls';
+import { TEST_KITS } from '@/lib/tests';
+import { PROGRAM, WEEKS } from '@/lib/programs/perimenopause';
 
 // Retrieval for the AI advisor (RAG): before each answer we pick the most relevant passages from (1) our own site:
 // evidence guides with their verified sources, product data, FAQs and published Journal posts, and (2) snapshots
@@ -26,6 +28,7 @@ const SYNONYMS: Record<string, string[]> = {
   muscle: ['muscle', 'strength', 'creatine', 'performance'], gym: ['strength', 'muscle', 'creatine'], strength: ['strength', 'creatine', 'muscle'],
   joint: ['joint', 'joints', 'turmeric', 'curcumin', 'mobility'], joints: ['joint', 'turmeric', 'mobility'], knee: ['joint', 'turmeric'],
   heart: ['heart', 'cardiovascular', 'coq10'], pregnant: ['pregnancy', 'pregnant', 'breastfeeding'], pregnancy: ['pregnancy', 'pregnant'],
+  test: ['test', 'kit', 'home'], kit: ['kit', 'test'], perimenopause: ['perimenopause', 'menopause', 'hormone'], iron: ['iron', 'ferritin'],
   statin: ['statin', 'statins', 'coq10'], thyroid: ['thyroid', 'ashwagandha'], blood: ['blood', 'thinner', 'warfarin'],
 };
 const stem = (w: string) => w.replace(/(ies)$/, 'y').replace(/(ing|ed|es|s)$/, '');
@@ -54,6 +57,15 @@ function buildCorpus(products: Product[], posts: Post[]): Passage[] {
       text: `${p.description} ${p.shortBenefit} Ingredients per serving: ${p.ingredients.map((i) => `${i.name} ${i.amount}`).join('; ')}. Directions: ${p.dosage} Other ingredients: ${p.otherIngredients}${p.ageRestricted ? ' Adults 18+ only.' : ''} ${(p.faqs ?? []).map((f) => `${f.q} ${f.a}`).join(' ')}`,
     });
   }
+  // At-home test kits (coming soon) and the free program, so questions about them are answered from our own pages.
+  for (const k of TEST_KITS) {
+    if (k.pets || k.sensitive) continue;
+    out.push({
+      id: `kit-${k.slug}`, title: `${k.name} (at-home test, coming soon)`, url: `/at-home-tests/${k.slug}`,
+      text: `${k.intro} Measures: ${k.markers.map((mk) => `${mk.name} (${mk.why} ${mk.note})`).join(' ')} Sample: ${k.collection}. Coming soon: join the waitlist on the page. A wellness screen, not a diagnosis; adults 18+.`,
+    });
+  }
+  out.push({ id: 'program-perimenopause', title: `${PROGRAM.name} (free 6-week email program)`, url: PROGRAM.path, text: `A free, evidence-based 6-week email guide to perimenopause. ${WEEKS.map((w) => `Week ${w.n}: ${w.title}. ${w.line}`).join(' ')} Sign up with an email on the page; unsubscribe anytime.` });
   for (const f of GENERAL_FAQS) out.push({ id: `faq-${f.q}`, title: `Noovit FAQ: ${f.q}`, url: '/faq', text: f.a });
   for (const post of posts) {
     const plain = post.body.replace(/<[^>]+>/g, ' ').replace(/[#*_>`]/g, ' ').replace(/\s+/g, ' ');
@@ -67,7 +79,7 @@ function buildCorpus(products: Product[], posts: Post[]): Passage[] {
 // BM25 index, rebuilt when the catalog changes (keyed on the product slugs + prices).
 let cache: { key: string; docs: Passage[]; tf: Map<string, number>[]; df: Map<string, number>; len: number[]; avg: number } | null = null;
 function index(products: Product[], posts: Post[]) {
-  const key = products.map((p) => `${p.slug}:${p.status}:${p.basePrice}`).join('|') + posts.map((p) => p.updatedAt).join('|');
+  const key = 'v2|' + products.map((p) => `${p.slug}:${p.status}:${p.basePrice}`).join('|') + posts.map((p) => p.updatedAt).join('|');
   if (cache?.key === key) return cache;
   const docs = buildCorpus(products, posts);
   const df = new Map<string, number>();
