@@ -234,6 +234,8 @@ check('compare image 404 for product without it', (await fetch(`${base}/product-
   check('after checkout: works once (cookie cleared)', !(again.headers()['set-cookie'] ?? '').includes('noovit_account='));
 
   // Order email: the webhook creates the order and emails a "View your order" sign-in link
+  // (The fake checkout session belongs to Stripe customer cus_1, which the account tests above lent to acct@test.com.)
+  await rest('customers?email=eq.acct@test.com', { method: 'PATCH', body: JSON.stringify({ stripe_customer_id: 'cus_acct_done' }) });
   const st = new Stripe('sk_test_123');
   const payload = JSON.stringify({ id: 'evt_acct1', object: 'event', type: 'checkout.session.completed', data: { object: { id: 'cs_new' } }, api_version: '2025-11-17.clover', created: 1 });
   const wh = await fetch(`${base}/api/stripe/webhook`, { method: 'POST', headers: { 'stripe-signature': st.webhooks.generateTestHeaderString({ payload, secret: 'whsec_test_secret' }) }, body: payload });
