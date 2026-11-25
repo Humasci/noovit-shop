@@ -5,8 +5,7 @@ import { PRODUCT_TYPES } from '@/data/products';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { pageLd } from '@/lib/structured-data';
 import { productPath } from '@/lib/urls';
-import { TEST_KITS } from '@/lib/tests';
-import { kitSummary } from '@/components/tests/KitCard';
+import { TEST_KITS, kitSummary } from '@/lib/tests';
 
 // Human at-home test kits (owner, 24 Nov: tests on the shop page too). Pet kits stay on /pets.
 const KITS = TEST_KITS.filter((k) => !k.pets).map(kitSummary);

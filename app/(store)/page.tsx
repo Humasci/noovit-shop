@@ -16,11 +16,18 @@ import { AskButton } from '@/components/advisor/AskButton';
 import { advisorEnabled } from '@/lib/advisor';
 import { WOMEN_FEATURED } from '@/lib/women';
 import { MEN_FEATURED, MEN_LIVE, pickVersioned } from '@/lib/men';
-import { findKit } from '@/lib/tests';
+import { findKit, kitSummary } from '@/lib/tests';
+import { KitCard } from '@/components/tests/KitCard';
 import { productPath } from '@/lib/urls';
 import { organizationLd, websiteLd } from '@/lib/structured-data';
 
-const HOME_TESTS = ['iron-test', 'perimenopause-test', 'thyroid-test', 'cholesterol-test'].map((s) => findKit(s)!).filter(Boolean);
+const PILLARS: { tag: string; title: string; text: string; href?: string }[] = [
+  { tag: 'Core range', title: 'Supplements', text: 'Researched ingredients, every dose clearly labeled.', href: '/shop' },
+  { tag: 'Coming soon', title: 'At-home health tests', text: 'Know your numbers before you choose.', href: '/at-home-tests' },
+  { tag: 'Free', title: 'Guides and programs', text: 'Every source checked, every claim graded.', href: '/guides' },
+  { tag: 'On the way', title: 'Wearables and wellness tools', text: 'Only what the evidence supports.' },
+];
+const HOME_TESTS = ['iron-test', 'perimenopause-test', 'thyroid-test', 'cholesterol-test'].map((s) => findKit(s)!).filter(Boolean).map(kitSummary);
 
 const SCENES = [
   { slug: 'lions-mane', src: '/images/scenes/lions-mane.jpg', alt: "Noovit Lion's Mane bottle on lion's mane mushrooms: 1,000 mg per serving, fruiting body and mycelium, vegan capsule" },
@@ -78,6 +85,26 @@ export default async function HomePage() {
           <Link href="/shop" aria-label="Shop supplements and at-home tests" className="block pb-10 md:py-14">
             <img src="/images/hero-mix.jpg?v=1" alt="Noovit Magnesium Sleep+, Lion's Mane and Ashwagandha Calm+ bottles in front of Noovit at-home test kit boxes" width={1500} height={1200} className="w-full rounded-3xl shadow-[0_20px_40px_-24px_rgba(20,33,61,0.35)]" fetchPriority="high" />
           </Link>
+        </div>
+      </section>
+
+      {/* What Noovit is (owner, 25 Nov): not only supplements. Supplements, at-home tests, free programs, and tools later. */}
+      <section className="border-b border-[var(--color-line)] bg-white">
+        <div className="container grid gap-px px-6 py-8 sm:grid-cols-2 lg:grid-cols-4">
+          {PILLARS.map((p) => {
+            const inner = (
+              <>
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted)]">{p.tag}</span>
+                <span className="mt-1 block text-lg font-semibold text-[var(--color-navy)]">{p.title}</span>
+                <span className="mt-1 block text-sm text-[var(--color-ink)]/80">{p.text}</span>
+              </>
+            );
+            return p.href ? (
+              <Link key={p.title} href={p.href} className="group block rounded-2xl p-4 transition-colors hover:bg-[var(--color-soft)]">{inner}</Link>
+            ) : (
+              <div key={p.title} className="rounded-2xl p-4 opacity-70">{inner}</div>
+            );
+          })}
         </div>
       </section>
 
@@ -143,13 +170,7 @@ export default async function HomePage() {
             <Link href="/at-home-tests" className="hidden items-center gap-1 text-sm font-semibold text-[var(--color-navy)] hover:underline sm:inline-flex">All tests <ArrowRight className="h-4 w-4" /></Link>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {HOME_TESTS.map((k) => (
-              <Link key={k.slug} href={`/at-home-tests/${k.slug}`} className="group flex flex-col rounded-3xl bg-white p-6 transition hover:shadow-md">
-                <h3 className="text-xl">{k.name}</h3>
-                <p className="mt-2 flex-1 text-sm text-[var(--color-ink)]/80">{k.short}</p>
-                <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-[var(--color-navy)]">Join the waitlist <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
-              </Link>
-            ))}
+            {HOME_TESTS.map((k) => <KitCard key={k.slug} kit={k} />)}
           </div>
         </div>
       </section>

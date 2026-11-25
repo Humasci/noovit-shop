@@ -7,10 +7,10 @@ import { getSettings } from '@/lib/settings';
 
 const base: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: 'Noovit — Evidence-Led Supplements, Doses on the Label',
+  title: 'Noovit — Evidence-Led Supplements and At-Home Health Tests',
   description:
     'Evidence-led wellness from Noovit: supplements with every dose clearly labeled, at-home health tests and more. Free US shipping.',
-  keywords: ['supplements', 'magnesium glycinate', 'ksm-66 ashwagandha', 'creatine monohydrate', "lion's mane", 'coq10', 'turmeric curcumin'],
+  keywords: ['supplements', 'at-home health tests', 'magnesium glycinate', 'ksm-66 ashwagandha', 'creatine monohydrate', "lion's mane", 'coq10', 'turmeric curcumin'],
   openGraph: { siteName: 'Noovit', type: 'website', locale: 'en_US' },
   twitter: { card: 'summary_large_image' },
 };

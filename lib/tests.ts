@@ -23,16 +23,17 @@ export interface TestKit {
 }
 export type TestCategoryId = 'nutrients' | 'womens' | 'thyroid' | 'heart' | 'organs' | 'stress' | 'mens' | 'sexual' | 'pets';
 
-export const TEST_CATEGORIES: { id: TestCategoryId; name: string; line: string }[] = [
-  { id: 'nutrients', name: 'Nutrients & energy', line: 'Iron stores, vitamin D, B12 and more.' },
-  { id: 'womens', name: "Women's health", line: 'Hormones through perimenopause and beyond.' },
-  { id: 'thyroid', name: 'Thyroid', line: 'The hormones behind energy and metabolism.' },
-  { id: 'heart', name: 'Heart & metabolic', line: 'Cholesterol, blood sugar and inflammation.' },
-  { id: 'organs', name: 'Kidney & liver', line: 'Checks on how your kidneys and liver are working.' },
-  { id: 'stress', name: 'Stress', line: 'Cortisol and DHEA-S.' },
-  { id: 'mens', name: "Men's health", line: 'Testosterone, PSA and related markers.' },
-  { id: 'sexual', name: 'Sexual health', line: 'Private STI screening, results online.' },
-  { id: 'pets', name: 'Pets', line: 'Simple checks for dogs and cats.' },
+// `color` = the service line's colour (owner, 25 Nov): the mosaic tiles on kit cards and pages. From the label palette.
+export const TEST_CATEGORIES: { id: TestCategoryId; name: string; line: string; color: string }[] = [
+  { id: 'nutrients', name: 'Nutrients & energy', line: 'Iron stores, vitamin D, B12 and more.', color: '#C98F14' },
+  { id: 'womens', name: "Women's health", line: 'Hormones through perimenopause and beyond.', color: '#A8467A' },
+  { id: 'thyroid', name: 'Thyroid', line: 'The hormones behind energy and metabolism.', color: '#2B7C82' },
+  { id: 'heart', name: 'Heart & metabolic', line: 'Cholesterol, blood sugar and inflammation.', color: '#9B2B46' },
+  { id: 'organs', name: 'Kidney & liver', line: 'Checks on how your kidneys and liver are working.', color: '#4A6B94' },
+  { id: 'stress', name: 'Stress', line: 'Cortisol and DHEA-S.', color: '#7B3F86' },
+  { id: 'mens', name: "Men's health", line: 'Testosterone, PSA and related markers.', color: '#2F6F4E' },
+  { id: 'sexual', name: 'Sexual health', line: 'Private STI screening, results online.', color: '#5B6472' },
+  { id: 'pets', name: 'Pets', line: 'Simple checks for dogs and cats.', color: '#FF5F00' },
 ];
 
 const m = (name: string, why: string, note: string): Marker => ({ name, why, note });
@@ -339,6 +340,12 @@ const KITS: TestKit[] = [
 ];
 
 export const TEST_KITS = KITS.filter((k) => !k.hidden);
+export const categoryColor = (id: TestCategoryId) => TEST_CATEGORIES.find((c) => c.id === id)?.color ?? '#14213d';
+// Plain card data for components/tests/KitCard (service-line colour and name included).
+export const kitSummary = (k: TestKit) => {
+  const cat = TEST_CATEGORIES.find((c) => c.id === k.category);
+  return { slug: k.slug, name: k.name, short: k.short, markers: k.markers.length, collection: k.collection, sensitive: k.sensitive, color: cat?.color ?? '#14213d', line: cat?.name ?? '' };
+};
 export const findKit = (slug: string) => TEST_KITS.find((k) => k.slug === slug);
 export const kitsIn = (c: TestCategoryId) => TEST_KITS.filter((k) => k.category === c);
 export const TEST_CATEGORY_LIST = TEST_CATEGORIES.filter((c) => kitsIn(c.id).length > 0);

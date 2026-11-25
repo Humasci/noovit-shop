@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { ArrowRight, Droplet, Flower2, Activity, HeartPulse, Brain, User, PawPrint, FlaskConical, ShieldCheck } from 'lucide-react';
-import { TEST_CATEGORY_LIST, TEST_KITS, type TestCategoryId } from '@/lib/tests';
+import { TEST_CATEGORY_LIST, TEST_KITS, kitSummary, type TestCategoryId } from '@/lib/tests';
 import { TestsWaitlist } from '@/components/tests/TestsWaitlist';
-import { KitCard, kitSummary } from '@/components/tests/KitCard';
+import { KitCard } from '@/components/tests/KitCard';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { pageLd } from '@/lib/structured-data';
 import { MosaicField } from '@/components/brand/MosaicField';
