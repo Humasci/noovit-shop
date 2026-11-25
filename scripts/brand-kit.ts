@@ -50,8 +50,8 @@ function mosaicCorner(W: number, H: number, tile: number, cols: number, rows: nu
 }
 
 const lineup = `data:image/png;base64,${readFileSync('public/images/lineup-5.png').toString('base64')}`; // 1600×1200, cream backdrop
-const TAGLINE = 'Evidence-led supplements.';
-const SUB = 'Every dose clearly labeled.';
+const TAGLINE = 'Evidence-led wellness.';
+const SUB = 'Supplements and at-home health tests.';
 
 // A banner: cream, logo + tagline on the left of the safe area, the bottle line-up on the right, tiles in the corner.
 function banner(W: number, H: number, safe: { x: number; y: number; w: number; h: number }) {

@@ -57,12 +57,12 @@ All three are free (SIL Open Font License); the files are in `assets/fonts/`.
 **Link:** https://noovit.com (on Instagram and TikTok, the link in bio).
 
 ### Bios (copy-paste; no health claims, so they pass ad and platform reviews)
-- **Instagram** (150 max): `Evidence-led supplements. Every dose clearly labeled. Free US shipping · 90-day guarantee. Guides with every source graded ↓`
-- **TikTok** (80 max): `Evidence-led supplements. Every dose clearly labeled. 🇺🇸`
-- **X** (160 max): `Evidence-led supplements with every dose clearly labeled. We read the studies so you don't have to, and show our sources. US only.`
-- **Facebook** (255 max): `Noovit makes evidence-led supplements with every dose clearly labeled: no hidden blends. Free US shipping, subscribe & save, and a 90-day money-back guarantee. Our free guides grade the evidence behind every ingredient.`
-- **LinkedIn tagline** (120 max): `Evidence-led supplements and at-home health tests, with every dose clearly labeled.`
-- **LinkedIn about:** `Noovit LLC is a US direct-to-consumer health brand. We sell evidence-led supplements with every dose printed clearly on the label, and we're building at-home wellness tests with a certified US lab partner. Our guides grade the evidence behind every ingredient, null results included.`
-- **YouTube description:** `Evidence-led supplements, explained. Short videos on what the research really says about magnesium, creatine, ashwagandha, lion's mane and more, with every source linked. Education, not medical advice. Shop: noovit.com`
+- **Instagram** (150 max): `Evidence-led wellness: supplements and at-home health tests. Every dose clearly labeled. Free US shipping · Guides with every source graded ↓`
+- **TikTok** (80 max): `Evidence-led wellness. Supplements + at-home tests. 🇺🇸`
+- **X** (160 max): `Evidence-led wellness: supplements with every dose clearly labeled and at-home health tests. We read the studies and show our sources. US only.`
+- **Facebook** (255 max): `Noovit is an evidence-led wellness brand: supplements with every dose clearly labeled (no hidden blends), at-home health tests and more on the way. Free US shipping, subscribe & save, and a 90-day money-back guarantee. Our free guides grade the evidence behind every ingredient.`
+- **LinkedIn tagline** (120 max): `Evidence-led wellness: supplements, at-home health tests and more, with every dose clearly labeled.`
+- **LinkedIn about:** `Noovit LLC is a US direct-to-consumer health brand. We make evidence-led wellness simple: supplements with every dose printed clearly on the label, at-home health tests with a certified US lab partner, and more wellness products over time. Our guides grade the evidence behind every ingredient, null results included.`
+- **YouTube description:** `Evidence-led wellness, explained. Short videos on what the research really says about magnesium, creatine, ashwagandha, lion's mane and more, with every source linked. Education, not medical advice. Shop: noovit.com`
 
 **Category picks:** Health & Beauty → Vitamins/Supplements (Facebook: "Health & wellness website"; LinkedIn industry: "Wellness and Fitness Services" or "Personal Care Product Manufacturing").

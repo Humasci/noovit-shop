@@ -38,7 +38,7 @@ const layout = (body: string) => `
   ${body}
   <div style="margin-top:32px;padding-top:14px;border-top:1px solid #e5e7eb;font-size:12px;color:#6b7280">
     Questions? Just reply to this email, or write to <a href="mailto:hello@noovit.com" style="color:#14213d">hello@noovit.com</a>.<br/>
-    Noovit · Evidence-led supplements · Every dose clearly labeled<br/>${LEGAL_NAME}
+    Noovit · Evidence-led wellness: supplements and at-home health tests<br/>${LEGAL_NAME}
   </div>
 </div>`;
 

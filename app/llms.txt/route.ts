@@ -12,7 +12,7 @@ import { productPath } from '@/lib/urls';
 export const revalidate = 3600;
 
 export async function GET() {
-  const head = `# Noovit\n\n> Evidence-led US supplement brand: researched ingredients at clear doses, printed on the front of every bottle. Our ingredient guides grade the evidence (Moderate, Limited, Early, Insufficient), include null results and cite every source.\n`;
+  const head = `# Noovit\n\n> Evidence-led US wellness brand (supplements, at-home health tests coming soon): researched ingredients at clear doses, printed on the front of every bottle. Our ingredient guides grade the evidence (Moderate, Limited, Early, Insufficient), include null results and cite every source.\n`;
   if (!siteLive()) {
     // Pre-launch: only the guides that are public early.
     const early = GUIDES.filter((g) => PUBLIC_EARLY_GUIDES.includes(g.slug)).map((g) => `- [${g.metaTitle}](${SITE_URL}/guides/${g.slug}): ${g.metaDescription}`);
