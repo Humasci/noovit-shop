@@ -61,6 +61,7 @@ export async function POST(req: NextRequest) {
     async start(controller) {
       const citations = new Map<string, string>();
       let suggestions = '';
+      let any = false; // some answer text already sent (a failure after that is a cut-off, not a refusal)
       try {
         const ask = (model: string, search: boolean) => ai().models.generateContentStream({
           model,
@@ -95,7 +96,6 @@ export async function POST(req: NextRequest) {
           try { res = await ask(ADVISOR_FALLBACK_MODEL, false); } catch (err) { lastErr = err; }
         }
         if (!res) throw lastErr;
-        let any = false;
         for await (const chunk of res) {
           const text = chunk.text;
           if (text) { any = true; controller.enqueue(encoder.encode(text)); }
@@ -107,11 +107,11 @@ export async function POST(req: NextRequest) {
       } catch (err) {
         if (err instanceof ApiError && (err.status === 429 || err.status === 503)) {
           console.error(`Advisor ${err.status} on every option:`, err.message); // Google's reason, never the key
-          controller.enqueue(encoder.encode('The advisor is busy right now. Please try again in a minute.'));
+          controller.enqueue(encoder.encode(any ? '\n\n(This answer was cut short. Please ask again in a moment.)' : 'The advisor is busy right now. Please try again in a minute.'));
         }
         else {
           console.error('Advisor error', err);
-          controller.enqueue(encoder.encode('Sorry, something went wrong. Please try again, or email hello@noovit.com.'));
+          controller.enqueue(encoder.encode(any ? '\n\n(This answer was cut short. Please ask again in a moment.)' : 'Sorry, something went wrong. Please try again, or email hello@noovit.com.'));
         }
       } finally {
         if (citations.size || suggestions)

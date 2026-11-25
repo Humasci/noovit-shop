@@ -157,7 +157,7 @@ const codeCom2 = (await rest(`commissions?order_id=eq.${codeOrder.id}&select=*`)
 check('full refund voids commission', codeCom2.status === 'void' && codeCom2.amount_cents === 0, codeCom2);
 
 // Subscription via link + renewal (recurring partner)
-await fetch(`${base}/api/checkout`, { method: 'POST', headers: { 'Content-Type': 'application/json', Cookie: 'noovit_ref=SARAH10' }, body: JSON.stringify({ items: [{ slug: 'probiotic-complex', mode: 'subscribe', bottles: 2, frequency: 60, quantity: 1 }], ageConfirmed: true, autoRenewConsent: true }) });
+await fetch(`${base}/api/checkout`, { method: 'POST', headers: { 'Content-Type': 'application/json', Cookie: 'noovit_ref=SARAH10' }, body: JSON.stringify({ items: [{ slug: 'lions-mane', mode: 'subscribe', bottles: 2, frequency: 60, quantity: 1 }], ageConfirmed: true, autoRenewConsent: true }) });
 const subCreate = fakeLog().split('\n').filter((l) => l.startsWith('POST /v1/checkout/sessions ')).pop() ?? '';
 check('subscription checkout carries affiliate on the subscription', subCreate.includes(`subscription_data[metadata][affiliate_id]=${sarah.id}`), subCreate);
 await rest(`orders?stripe_checkout_session_id=eq.cs_new`, { method: 'PATCH', body: JSON.stringify({ stripe_checkout_session_id: 'cs_new_first' }) }); // the fake reuses cs_new

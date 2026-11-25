@@ -8,7 +8,7 @@ const price = (id, lookup, amount, meta, interval) => ({
 const PRICES = {
   price_mag1: price('price_mag1', 'noovit_magnesium-complex_once_1b', 3500, { slug: 'magnesium-complex', mode: 'one-time', bottles: '1' }),
   price_cre1: price('price_cre1', 'noovit_creatine_once_1b', 4000, { slug: 'creatine', mode: 'one-time', bottles: '1' }),
-  price_pro2: price('price_pro2', 'noovit_probiotic-complex_sub_2b_60d', 6500, { slug: 'probiotic-complex', mode: 'subscribe', bottles: '2', frequency_days: '60' }, 60),
+  price_pro2: price('price_pro2', 'noovit_lions-mane_sub_2b_60d', 6500, { slug: 'lions-mane', mode: 'subscribe', bottles: '2', frequency_days: '60' }, 60),
 };
 const STORE = { products: {}, coupons: [], promos: [] };
 let seq = 0;
