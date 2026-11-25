@@ -93,7 +93,7 @@ export async function POST(req: NextRequest) {
     params.subscription_data = { metadata: { frequency_days: String(frequency), ...(affiliate ? { affiliate_id: affiliate.id } : {}) } };
     params.custom_text = {
       submit: {
-        message: `Your subscription renews automatically every ${frequency} days at the price shown until you cancel. Cancel anytime from "My Subscriptions" at noovit.com.`,
+        message: `Your subscription renews automatically every ${frequency} days at the price shown until you cancel. Cancel anytime from "My Account" at noovit.com.`,
       },
     };
   } else {

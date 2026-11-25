@@ -111,6 +111,19 @@ export function sendPortalLink(to: string, url: string) {
   );
 }
 
+// Passwordless sign-in link for the customer account page (lib/account).
+export function sendAccountLink(to: string, url: string) {
+  return send(
+    to,
+    'Your Noovit sign-in link',
+    layout(`
+      <h1 style="font-size:20px">Sign in to your account</h1>
+      <p>Use the button below to see your orders, tracking and subscriptions. The link works for 30 minutes and signs in this browser only.</p>
+      <p><a href="${esc(url)}" style="display:inline-block;background:#14213d;color:#fff;padding:12px 24px;border-radius:999px;text-decoration:none;font-weight:bold">Open my account</a></p>
+      <p style="font-size:12px;color:#6b7280">If you didn't ask for this, you can ignore this email. Nobody can sign in without this link.</p>`)
+  );
+}
+
 export function sendPartnerWelcome(
   to: string,
   p: { name: string; code: string; discountPct: number; commissionPct: number; recurring: boolean; link: string; dashboard: string }

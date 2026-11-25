@@ -35,7 +35,7 @@ export const GENERAL_FAQS: FAQ[] = [
   { q: 'Where are your products made?', a: 'By our contract manufacturing partner. We will list the facility certifications and batch test results on each product page as soon as we have the paperwork.' },
   { q: 'When will my order ship?', a: 'Orders usually ship within 1–2 business days, and delivery takes 2–5 business days after dispatch.' },
   { q: 'How do I track my order?', a: 'You will receive a tracking link by email as soon as your order ships.' },
-  { q: 'Can I change or cancel my subscription?', a: 'Yes — anytime from My Subscriptions, with no fees. Prefer to pause? Contact us and we will pause it for you.' },
+  { q: 'Can I change or cancel my subscription?', a: 'Yes — anytime from My Account, with no fees. Prefer to pause? Contact us and we will pause it for you.' },
   { q: 'How can I contact customer service?', a: 'Use our contact form or email us. We reply within one business day.' },
 ];
 

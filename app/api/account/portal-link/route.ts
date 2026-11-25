@@ -14,8 +14,8 @@ export async function POST(req: NextRequest) {
   const { email } = await req.json().catch(() => ({}));
   if (typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return NextResponse.json({ error: 'Please enter a valid email address.' }, { status: 400 });
-  if (formLimited(req, 'portal', email)) return NextResponse.json({ error: 'Too many requests. Please try again in a few minutes.' }, { status: 429 });
   }
+  if (formLimited(req, 'portal', email)) return NextResponse.json({ error: 'Too many requests. Please try again in a few minutes.' }, { status: 429 });
 
   // Same response whether or not the customer exists, so emails can't be enumerated.
   // Prefer the Stripe customer we recorded for this email (the one holding subscriptions); Stripe's email

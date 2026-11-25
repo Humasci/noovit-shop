@@ -12,7 +12,7 @@ const COLUMNS = [
   {
     title: 'Customer Support',
     links: [
-      { name: 'Manage Subscriptions', href: '/account' },
+      { name: 'My Account', href: '/account' },
       { name: 'FAQ', href: '/faq' },
       { name: 'Delivery & Returns', href: '/policies/delivery-returns' },
       { name: 'Contact Us', href: '/contact' },

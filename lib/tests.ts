@@ -355,5 +355,5 @@ export const TEST_CATEGORY_LIST = TEST_CATEGORIES.filter((c) => kitsIn(c.id).len
 // No analytics or ad tags on any human test page (21 Nov audit: health pages under the FTC Health Breach Notification
 // Rule and Washington's My Health My Data Act). `sensitive` kits (STI) are also never named in emails.
 export const SENSITIVE_PATHS = KITS.filter((k) => !k.pets).map((k) => `/at-home-tests/${k.slug}`);
-// Free health programs (/programs/*) are health pages too: no tags (23 Nov).
-export const isSensitivePath = (pathname: string | null | undefined) => !!pathname && (pathname.startsWith('/programs/') || SENSITIVE_PATHS.some((p) => pathname === p || pathname.startsWith(`${p}/`)));
+// Free health programs (/programs/*) are health pages too: no tags (23 Nov). The account page lists what someone ordered (test kits included): no tags (25 Nov).
+export const isSensitivePath = (pathname: string | null | undefined) => !!pathname && (pathname === '/account' || pathname.startsWith('/programs/') || SENSITIVE_PATHS.some((p) => pathname === p || pathname.startsWith(`${p}/`)));

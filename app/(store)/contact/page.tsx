@@ -45,7 +45,7 @@ export default async function ContactPage() {
             <div>
               <h2 className="text-base">Manage a subscription</h2>
               <p className="text-[var(--color-muted)]">
-                Skip, change or cancel anytime from <Link href="/account" className="text-[var(--color-accent)] hover:underline">My Subscriptions</Link>.
+                Skip, change or cancel anytime from <Link href="/account" className="text-[var(--color-accent)] hover:underline">My Account</Link>.
               </p>
             </div>
           </div>

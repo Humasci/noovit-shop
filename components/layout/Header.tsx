@@ -245,7 +245,7 @@ export function Header({ trustBar, announcement, advisor = false, bestSellers = 
                 )}
               </div>
             ))}
-            <Link href="/account" onClick={() => setMenuOpen(false)}>My Subscriptions</Link>
+            <Link href="/account" onClick={() => setMenuOpen(false)}>My Account</Link>
           </nav>
         )}
       </header>

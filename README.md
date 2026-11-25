@@ -34,7 +34,7 @@ Everything degrades gracefully without keys: the store works, checkout shows "no
 5. **Tax (before live):** set up Stripe Tax registrations, then `STRIPE_TAX_ENABLED=true`.
 
 ### 3. Email
-Create a Resend account, verify your sending domain, set `RESEND_API_KEY` and `EMAIL_FROM`. Sends order confirmations, shipping notifications and "My Subscriptions" links.
+Create a Resend account, verify your sending domain, set `RESEND_API_KEY` and `EMAIL_FROM`. Sends order confirmations, shipping notifications and account sign-in links.
 
 ### 4. Admin
 Set `APP_SECRET` (`openssl rand -base64 48`) and a one-time setup password `ADMIN_PASSWORD`. Set `ADMIN_PATH` to a hard-to-guess word (e.g. `team-k7q2x9m4`); open `/<ADMIN_PATH>` to reach the login (plain `/admin` returns 404 until a browser has used the secret address). Sign in with the setup password, create the Owner account on the Staff page, and from then on everyone signs in with their own email and password (the setup password stops working once a staff account exists). Roles: Owner, Manager, Fulfilment.
@@ -53,7 +53,7 @@ Create the `WELCOME10` discount, then in Settings add it as the newsletter code,
 - **Checkout** (`/api/checkout`): the server re-validates the cart against the catalog, resolves Stripe prices by lookup key, and creates a Stripe Checkout session. All subscription items share one delivery frequency; subscriptions require auto-renewal consent, and Creatine requires an 18+ confirmation.
 - **Webhook** (`/api/stripe/webhook`): verifies the signature, then creates orders (one-time, first subscription order, each renewal), mirrors subscriptions, and marks refunds. Order + items + fulfilment are inserted in one transaction, and duplicate deliveries are ignored.
 - **Fulfilment:** each paid order gets a queued fulfilment. In `/admin/fulfilment`, export the CSV for your supplier, mark as submitted, and add tracking when it ships — the customer is emailed.
-- **My Subscriptions** (`/account`): customers enter their email and receive a 30-minute signed link to the Stripe customer portal. No passwords.
+- **My Account** (`/account`): customers enter their email and receive a 30-minute sign-in link (30-day session). Shows orders, tracking, subscriptions (Manage → Stripe customer portal), test-kit status and email preferences. No passwords.
 - **Catalog:** products live in the `products` table (seeded from `data/products.ts`) and are cached for the storefront; admin saves refresh the cache instantly and sync prices to Stripe. Hidden products disappear from the store, feeds and sitemap; out-of-stock products stay visible but can't be bought.
 - **Marketing:** newsletter sign-ups and checkout opt-ins are stored as subscribers; every marketing email has a postal address and one-click unsubscribe. Checkouts expire after 2 hours; consenting shoppers get one recovery email (max one a week) and recovered orders are linked back.
 - **SEO & channels:** sitemap, robots, canonical URLs, Product/Organization structured data (ratings only from real reviews), PNG product images at `/product-image/<slug>`, and feeds at `/feeds/google.xml`, `/feeds/meta.csv`, `/feeds/tiktok.csv`.
