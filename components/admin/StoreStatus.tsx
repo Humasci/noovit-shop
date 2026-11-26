@@ -6,6 +6,8 @@ import { loadCatalog } from '@/lib/catalog/server';
 import { advisorEnabled } from '@/lib/advisor';
 import { SITE_URL } from '@/lib/site';
 import { notifyCounts } from '@/lib/marketing/notify';
+import { openNoticePlan } from '@/lib/marketing/launch';
+import { sendOpenNoticesAction } from '@/app/admin/launch-actions';
 import { findKit } from '@/lib/tests';
 
 // "Store status" on the admin overview (25 Nov): what stands between the store and taking orders, plus the lists that
@@ -16,12 +18,13 @@ async function count(source: string) {
 }
 
 export async function StoreStatus() {
-  const [catalog, launchList, testsList, program, asked] = await Promise.all([
+  const [catalog, launchList, testsList, program, asked, notices] = await Promise.all([
     loadCatalog().catch(() => []),
     count('launch-waitlist').catch(() => 0),
     count('tests-waitlist').catch(() => 0),
     count('program-perimenopause').catch(() => 0),
     notifyCounts().catch(() => null),
+    openNoticePlan(),
   ]);
   const active = catalog.filter((p) => p.status === 'active' && p.productType !== 'pets' && !p.bundleItems?.length);
   const noSku = active.filter((p) => !p.supplierSku);
@@ -82,6 +85,21 @@ export async function StoreStatus() {
           </div>
         )}
         {asked === null && <p className="mt-4 text-xs text-[var(--color-muted)]">Run migration 0009 to see which products and kits people ask for.</p>}
+        {notices && notices.productPeople + notices.generalPeople > 0 && (
+          <div className="mt-4 border-t border-[var(--color-line)] pt-3" data-testid="open-notices">
+            <p className="text-xs font-semibold text-[var(--color-navy)]">&quot;Now open&quot; emails</p>
+            <p className="mt-1 text-xs text-[var(--color-muted)]">
+              {notices.productPeople} {notices.productPeople === 1 ? 'person is' : 'people are'} waiting for a product that is live, and {notices.generalPeople} on the launch list didn&apos;t pick one. Each gets one email, once.
+            </p>
+            {ordersOpen() ? (
+              <form action={sendOpenNoticesAction} className="mt-2">
+                <button className="btn btn-primary px-4 py-2 text-xs">Send &quot;now open&quot; emails</button>
+              </form>
+            ) : (
+              <p className="mt-2 text-xs text-[var(--color-muted)]">The send button appears once orders are open.</p>
+            )}
+          </div>
+        )}
         <Link href="/admin/subscribers" className="mt-4 inline-block text-sm font-semibold text-[var(--color-navy)] underline">See subscribers</Link>
       </div>
     </div>

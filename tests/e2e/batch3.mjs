@@ -284,5 +284,29 @@ const sb = await rest('subscribers?email=eq.erase@test.com&select=id');
 check('customer anonymised', after[0]?.email.endsWith('@deleted.invalid') && after[0]?.name === null, after);
 check('order kept without personal data', ord.length === 1 && ord[0].email.endsWith('@deleted.invalid') && ord[0].shipping_name === null && ord[0].shipping_address === null, ord);
 check('review and subscriber deleted', rev.length === 0 && sb.length === 0, { rev, sb });
+// "Now open" emails to the Notify me list (Admin overview → People waiting)
+{
+  await rest('subscribers', { method: 'POST', body: JSON.stringify([{ email: 'wait1@test.com', source: 'launch-waitlist', status: 'subscribed' }, { email: 'wait2@test.com', source: 'launch-waitlist', status: 'subscribed' }, { email: 'gone@test.com', source: 'launch-waitlist', status: 'unsubscribed' }]) });
+  await rest('notify_requests', { method: 'POST', body: JSON.stringify([
+    { email: 'wait1@test.com', kind: 'product', slug: 'lions-mane' }, { email: 'wait1@test.com', kind: 'product', slug: 'coq10' },
+    { email: 'wait1@test.com', kind: 'kit', slug: 'vitamin-d-test' }, { email: 'gone@test.com', kind: 'product', slug: 'lions-mane' },
+  ]) });
+  await p.goto(`${base}/admin`);
+  await p.waitForSelector('[data-testid=open-notices]');
+  await p.click('[data-testid=open-notices] button');
+  await p.waitForURL(/msg=/);
+  const msg = decodeURIComponent(p.url());
+  const log = readFileSync(`${dir}next.log`, 'utf8');
+  check('now open: sent, with a count', /\d+ "now open" emails? sent/.test(msg), msg);
+  check('now open: one email listing both products', log.includes('to=wait1@test.com subject="What you asked about is now available"') && (log.match(/to=wait1@test\.com subject=/g) ?? []).length === 1);
+  check('now open: general launch email for people who picked nothing', log.includes('to=wait2@test.com subject="Noovit is open"'));
+  check('now open: unsubscribed skipped', !log.includes('to=gone@test.com'));
+  const w1 = await rest('notify_requests?email=eq.wait1@test.com&select=kind,slug,notified_at');
+  check('now open: products marked, kit still waiting', w1.filter((r) => r.kind === 'product').every((r) => r.notified_at) && w1.find((r) => r.kind === 'kit')?.notified_at === null, w1);
+  check('now open: launch list moved to newsletter', (await rest('subscribers?email=in.(wait1@test.com,wait2@test.com)&select=source')).every((r) => r.source === 'newsletter'));
+  await p.goto(`${base}/admin`);
+  await p.waitForLoadState('networkidle');
+  check('now open: nobody emailed twice (panel gone)', (await p.locator('[data-testid=open-notices]').count()) === 0);
+}
 await b.close();
 console.log(`\n${results.filter(Boolean).length}/${results.length} passed`);

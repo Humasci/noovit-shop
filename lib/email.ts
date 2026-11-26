@@ -223,6 +223,24 @@ export function sendProgramEmail(to: string, subject: string, bodyHtml: string, 
 }
 
 // Phone agent (Vapi) call report to the support inbox (app/api/vapi/webhook): summary, caller number, transcript.
+// "Now open" notice for the Notify me list (lib/marketing/launch.ts): the products this person asked about, with links.
+// Without items it's the general "Noovit is open" email for the launch list.
+export function sendOpenNotice(to: string, items: { name: string; url: string }[], f: MarketingFooter) {
+  const list = items.map((i) => `<li style="margin:6px 0"><a href="${esc(i.url)}" style="color:#14213d;font-weight:bold">${esc(i.name)}</a></li>`).join('');
+  return send(
+    to,
+    items.length === 1 ? `${items[0].name} is now available` : items.length ? 'What you asked about is now available' : 'Noovit is open',
+    marketingLayout(
+      `<h1 style="font-size:20px">${items.length ? "It's here." : 'We\'re open.'}</h1>
+      ${items.length ? `<p>You asked us to tell you when ${items.length === 1 ? 'this was' : 'these were'} ready to order:</p><ul style="padding-left:18px">${list}</ul>` : '<p>Thanks for waiting. Noovit is now taking orders: evidence-led supplements with every dose clearly labeled.</p>'}
+      <p>Free US shipping on every order, subscribe and save, and a 90-day money-back guarantee.</p>
+      <p><a href="${SITE_URL}${items.length ? '/account' : '/shop'}" style="display:inline-block;background:#14213d;color:#fff;padding:12px 24px;border-radius:999px;text-decoration:none;font-weight:bold">${items.length ? 'See your list' : 'Visit the shop'}</a></p>`,
+      f
+    ),
+    unsubscribeHeaders(f)
+  );
+}
+
 export function sendCallReport(to: string, c: { caller: string; summary: string; transcript: string; endedReason: string; minutes: string }) {
   const lines = esc(c.transcript).replace(/\n/g, '<br/>');
   return send(
