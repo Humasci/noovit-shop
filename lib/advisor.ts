@@ -74,7 +74,7 @@ export function advisorSystemPrompt(products: Product[]) {
     .join('\n');
   const guides = [...GUIDES].sort((a, b) => a.slug.localeCompare(b.slug)).map((g) => `- ${g.ingredient}: /guides/${g.slug}`).join('\n');
   const status = ordersOpen()
-    ? 'Store status: orders are open. Shoppers order on the product pages; free US shipping, usually shipped in 1–2 business days.'
+    ? 'Store status: orders are open. Shoppers order on the product pages; free US shipping, usually shipped in 2–5 business days and delivered 2–4 business days later.'
     : 'Store status: orders are NOT open yet. Every product page shows "Coming soon" with a "Notify me" email box; prices are already shown. Nobody can order today, and there is no opening date to give. Tell shoppers to leave their email on the product page (Notify me) and we will email them the day orders open. Do not say "add to cart", "order today" or give shipping times as if they could buy now.';
   const kits = TEST_KITS.filter((k) => !k.pets).map((k) => `- ${k.name} (/at-home-tests/${k.slug})${k.sensitive ? '' : `: ${k.short}`}`).join('\n');
   return `${RULES}\n\n${status}\n\nCatalog (the only products you may recommend)\n${catalog}\n\nAt-home tests (all coming soon; waitlist on each page; all tests: /at-home-tests)\n${kits}\n\nFree program\n- ${PROGRAM.name} (${PROGRAM.path}): a free 6-week email guide to perimenopause.\n\nEvidence guides\n${guides}`;

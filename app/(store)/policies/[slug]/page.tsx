@@ -13,7 +13,7 @@ const POLICIES: Record<string, { title: string; intro?: string; sections: Sectio
   'delivery-returns': {
     title: 'Delivery & Returns',
     sections: [
-      { h: 'Shipping', p: 'Free standard shipping on all US orders. Orders usually ship within 1–2 business days and arrive 2–5 business days after shipping. You get a tracking link by email as soon as your order ships. We ship to US addresses only.' },
+      { h: 'Shipping', p: 'Free standard shipping on all US orders. Orders usually ship within 2–5 business days and arrive 2–4 business days after shipping (USPS). You get a tracking link by email as soon as your order ships. We ship to US addresses only.' },
       { h: '90-day money-back guarantee', p: 'If you are not happy with your purchase, contact us within 90 days of delivery for a full refund of the product price, even if the bottle is empty. One refund per product per customer.' },
       { h: 'Damaged or missing items', p: 'Let us know within 14 days of delivery and we will send a replacement at no cost.' },
     ],

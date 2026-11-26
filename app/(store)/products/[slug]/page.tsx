@@ -157,7 +157,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       price: product.basePrice.toFixed(2),
       availability: product.status === 'active' ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
       itemCondition: 'https://schema.org/NewCondition',
-      // Matches /policies/delivery-returns: free US shipping, ships in 1–2 business days, arrives 2–5 days later;
+      // Matches /policies/delivery-returns: free US shipping, ships in 2–5 business days (Supliful), arrives 2–4 days later (USPS);
       // 90-day money-back guarantee.
       shippingDetails: {
         '@type': 'OfferShippingDetails',
@@ -165,8 +165,8 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'US' },
         deliveryTime: {
           '@type': 'ShippingDeliveryTime',
-          handlingTime: { '@type': 'QuantitativeValue', minValue: 1, maxValue: 2, unitCode: 'DAY' },
-          transitTime: { '@type': 'QuantitativeValue', minValue: 2, maxValue: 5, unitCode: 'DAY' },
+          handlingTime: { '@type': 'QuantitativeValue', minValue: 2, maxValue: 5, unitCode: 'DAY' },
+          transitTime: { '@type': 'QuantitativeValue', minValue: 2, maxValue: 4, unitCode: 'DAY' },
         },
       },
       hasMerchantReturnPolicy: {

@@ -11,11 +11,11 @@ declare global {
 }
 
 // Google Customer Reviews: after checkout Google offers a short survey; ratings feed seller ratings in Shopping and Ads.
-// Skipped when the visitor declined cookies. Delivery estimate: 7 days (ships in 1–2 business days, 2–5 days transit).
+// Skipped when the visitor declined cookies. Delivery estimate: 12 days (ships in 2–5 business days, 2–4 days transit, plus weekends).
 export function CustomerReviewsOptIn({ merchantId, orderId, email }: { merchantId: string; orderId: string; email: string }) {
   useEffect(() => {
     if (!merchantId || !email || !hasConsent()) return;
-    const delivery = new Date(Date.now() + 7 * 86_400_000).toISOString().slice(0, 10);
+    const delivery = new Date(Date.now() + 12 * 86_400_000).toISOString().slice(0, 10);
     window.renderOptIn = () =>
       window.gapi?.load('surveyoptin', () =>
         window.gapi?.surveyoptin.render({ merchant_id: Number(merchantId), order_id: orderId, email, delivery_country: 'US', estimated_delivery_date: delivery }),
