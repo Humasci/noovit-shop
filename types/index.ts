@@ -119,6 +119,7 @@ export interface Review {
   body: string;
   date: string;
   verified?: boolean;
+  freeProduct?: boolean; // reviewer programme: received the product free (disclosed on the review)
   image?: string;
 }
 

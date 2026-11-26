@@ -17,6 +17,7 @@ interface ApiReview {
   title: string;
   body: string;
   verified_buyer: boolean;
+  free_product?: boolean;
   created_at: string;
 }
 
@@ -59,6 +60,7 @@ export function ReviewsModule({
             body: r.body,
             date: r.created_at.slice(0, 10),
             verified: r.verified_buyer,
+            freeProduct: r.free_product === true,
           }))
         )
       )
@@ -174,6 +176,7 @@ export function ReviewsModule({
                   <p className="mt-2 text-xs font-bold">
                     {r.name}
                     {r.verified === true && <span className="ml-1 font-semibold text-[var(--color-green)]">Verified Buyer</span>}
+                    {r.freeProduct && <span className="ml-1 font-normal text-[var(--color-muted)]" data-testid="free-product">· Free sample</span>}
                   </p>
                 </article>
               ))}

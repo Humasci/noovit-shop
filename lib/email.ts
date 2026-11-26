@@ -298,6 +298,22 @@ export function sendPaymentLink(to: string, name: string, url: string, items: { 
   );
 }
 
+// Reviewer programme: we send someone free product and ask for an honest review through their personal link.
+export function sendReviewerInvite(to: string, firstName: string, products: string[], url: string) {
+  const list = products.map((n) => `<li>${esc(n)}</li>`).join('');
+  return send(
+    to,
+    'Your Noovit products, and a favour',
+    layout(`
+      <h1 style="font-size:20px">Hi ${esc(firstName)}, thank you for trying Noovit.</h1>
+      <p>We've sent you, free of charge:</p>
+      <ul style="padding-left:18px">${list}</ul>
+      <p>Once you've used them for a couple of weeks, we'd love an honest review on our website. Good, bad or in between: we publish every rating. Your review will be marked as written from a free sample, as US law requires.</p>
+      <p><a href="${esc(url)}" style="display:inline-block;background:#14213d;color:#fff;padding:12px 24px;border-radius:999px;text-decoration:none;font-weight:bold">Write my review</a></p>
+      <p style="font-size:12px;color:#6b7280">Please describe your own experience only, and don't mention medical conditions or medicines: we can't publish health claims. The link is personal and works for 120 days.</p>`)
+  );
+}
+
 export function sendReviewRequest(to: string, name: string | null, products: { name: string; url: string }[], f: MarketingFooter) {
   const rows = products
     .map(

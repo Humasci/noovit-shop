@@ -280,3 +280,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 26 Nov (114): shipping times aligned with Supliful (ships 2–5 business days, USPS 2–4): policy, FAQs, product structured data, Google feed, advisor, phone agent, Google Customer Reviews estimate
 - [x] 26 Nov (115): launch price rise (Mg $32, CoQ10 $32, Creatine $34, stacks $52/$56/$57): SQL, seed, price list, CLAUDE.md
 - [x] 26 Nov (116): samples go straight to a US photographer (brief 03 ready to post, now includes a print check); not a launch blocker
+- [x] 26 Nov (117): reviewer programme (admin invite → personal review link → reviews labelled "Free sample"; migration 0010); batch3 85 tests

@@ -4,8 +4,9 @@ import { dbConfigured } from '@/lib/config';
 import { findProduct } from '@/data/products';
 import { loadCatalog } from '@/lib/catalog/server';
 import { moderateReview } from '@/app/admin/actions';
+import { inviteReviewer } from '@/app/admin/review-actions';
 import { Stars } from '@/components/ui/Stars';
-import { Badge, Card, FilterLinks, Flash, NotConfigured, PageTitle, btnSm, btnSmOutline, dateTime } from '@/components/admin/ui';
+import { Badge, Card, FilterLinks, Flash, NotConfigured, PageTitle, btnSm, btnSmOutline, dateTime, inputCls } from '@/components/admin/ui';
 
 const TABS = ['pending', 'approved', 'rejected'];
 
@@ -37,8 +38,28 @@ export default async function ReviewsAdmin({ searchParams }: { searchParams: Pro
         <FilterLinks base="/admin/reviews" param="status" current={tab} options={TABS.slice(1)} />
       </div>
       <p className="mb-4 text-sm text-[var(--color-muted)]">
-        Approved reviews replace the placeholder reviews on that product&apos;s page. &quot;Verified buyer&quot; is set automatically when the email matches an order for that product.
+        &quot;Verified buyer&quot; is set automatically when the email matches an order for that product. <b>Approve every honest review, whatever the rating</b>: holding back negative ones is illegal (FTC rule on consumer reviews, 16 CFR 465). Reject only health or medicine claims, personal data, abuse or off-topic text.
       </p>
+      <Card className="mb-6">
+        <details>
+          <summary className="cursor-pointer text-sm font-bold text-[var(--color-navy)]">Send free samples for review</summary>
+          <p className="mt-2 text-xs text-[var(--color-muted)]">
+            Order the samples in Supliful to their US address, then send them their personal review link here. Their reviews are marked &quot;Free sample&quot; (required by the FTC when product is given free). Ask for an honest review, never a good one.
+          </p>
+          <form action={inviteReviewer} className="mt-3 grid gap-3" data-testid="invite-reviewer">
+            <div className="flex flex-wrap gap-3">
+              <input name="name" required placeholder="Their name" className={inputCls} />
+              <input name="email" type="email" required placeholder="Their email" className={inputCls} />
+            </div>
+            <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
+              {catalog.filter((p) => p.status === 'active' && !p.bundleItems?.length && p.productType !== 'pets').map((p) => (
+                <label key={p.slug} className="flex items-center gap-1.5"><input type="checkbox" name="products" value={p.slug} /> {p.name}</label>
+              ))}
+            </div>
+            <div><button className={btnSm}>Email their review link</button></div>
+          </form>
+        </details>
+      </Card>
       {!data?.length ? (
         <Card><p className="text-center text-sm text-[var(--color-muted)]">No {tab} reviews.</p></Card>
       ) : (
@@ -50,6 +71,7 @@ export default async function ReviewsAdmin({ searchParams }: { searchParams: Pro
                 <span className="font-semibold">{findProduct(catalog, r.product_slug)?.name ?? r.product_slug}</span>
                 <Badge status={r.status} />
                 {r.verified_buyer ? <Badge status="verified buyer" /> : <span className="text-xs text-[var(--color-muted)]">not a verified buyer</span>}
+                {r.free_product && <Badge status="free sample" />}
                 <span className="text-xs text-[var(--color-muted)]">{dateTime(r.created_at)}</span>
               </div>
               <h3 className="mt-3 text-base">{r.title}</h3>
