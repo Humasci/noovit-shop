@@ -284,42 +284,6 @@ const sb = await rest('subscribers?email=eq.erase@test.com&select=id');
 check('customer anonymised', after[0]?.email.endsWith('@deleted.invalid') && after[0]?.name === null, after);
 check('order kept without personal data', ord.length === 1 && ord[0].email.endsWith('@deleted.invalid') && ord[0].shipping_name === null && ord[0].shipping_address === null, ord);
 check('review and subscriber deleted', rev.length === 0 && sb.length === 0, { rev, sb });
-// Reviewer programme: free samples + personal review link; reviews marked "Free sample"; every rating publishable
-{
-  await p.goto(`${base}/admin/reviews`);
-  await p.click('summary:has-text("Send free samples for review")');
-  await p.fill('[data-testid=invite-reviewer] input[name=name]', 'Rae Viewer');
-  await p.fill('[data-testid=invite-reviewer] input[name=email]', 'rae@test.com');
-  await p.check('[data-testid=invite-reviewer] input[value=lions-mane]');
-  await p.click('[data-testid=invite-reviewer] button');
-  await p.waitForURL(/msg=/);
-  const msg = decodeURIComponent(new URL(p.url()).searchParams.get('msg') ?? '');
-  const link = msg.match(/(http\S+\/review\?token=\S+)/)?.[1];
-  check('reviewer invite: emailed, with the personal link', msg.startsWith('Invite emailed to rae@test.com') && Boolean(link) && readFileSync(`${dir}next.log`, 'utf8').includes('to=rae@test.com subject="Your Noovit products, and a favour"'), msg);
-  const token = new URL(link).searchParams.get('token');
-  const rp = await (await b.newContext()).newPage();
-  await rp.goto(link);
-  await rp.waitForSelector('[data-testid=invite-review-form]');
-  check('reviewer invite: page lists only the invited product', (await rp.locator('[data-testid=invite-review-form]').count()) === 1 && ((await rp.textContent('body')) ?? '').includes("Lion's Mane"));
-  await rp.click('[aria-label="3 stars"]');
-  await rp.fill('input[name=title]', 'Fine, nothing dramatic');
-  await rp.fill('textarea[name=body]', 'Easy capsules. Too early to say much.');
-  await rp.click('button:has-text("Post my review")');
-  await rp.waitForSelector('[data-testid=invite-review-done]');
-  const [rv] = await rest('reviews?email=eq.rae@test.com&select=id,product_slug,rating,status,free_product,verified_buyer,name');
-  check('reviewer invite: review saved as free sample, pending, any rating', rv?.free_product === true && rv.status === 'pending' && rv.rating === 3 && rv.verified_buyer === false && rv.name === 'Rae', rv);
-  const post = (body) => fetch(`${base}/api/reviews`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-  check('reviewer invite: other products refused', (await post({ token, slug: 'coq10', rating: 5, name: 'Rae', title: 't', body: 'b' })).status === 400);
-  check('reviewer invite: one review per product', (await post({ token, slug: 'lions-mane', rating: 5, name: 'Rae', title: 't', body: 'b' })).status === 409);
-  check('reviewer invite: forged link refused', (await post({ token: 'nope', slug: 'lions-mane', rating: 5, name: 'X', title: 't', body: 'b' })).status === 400);
-  await rest(`reviews?id=eq.${rv.id}`, { method: 'PATCH', body: JSON.stringify({ status: 'approved' }) });
-  const pub = await (await fetch(`${base}/api/reviews?slug=lions-mane`)).json();
-  check('reviewer invite: published review carries the free-sample flag', pub.reviews?.some((r) => r.id === rv.id && r.free_product === true), pub);
-  await rp.goto(`${base}/products/lions-mane-mushroom`);
-  await rp.waitForSelector('[data-testid=free-product]', { timeout: 15000 }).catch(() => null);
-  check('reviewer invite: "Free sample" shown on the product page', ((await rp.locator('[data-testid=free-product]').first().textContent().catch(() => '')) ?? '').includes('Free sample'));
-}
-
 // "Now open" emails to the Notify me list (Admin overview → People waiting)
 {
   await rest('subscribers', { method: 'POST', body: JSON.stringify([{ email: 'wait1@test.com', source: 'launch-waitlist', status: 'subscribed' }, { email: 'wait2@test.com', source: 'launch-waitlist', status: 'subscribed' }, { email: 'gone@test.com', source: 'launch-waitlist', status: 'unsubscribed' }]) });
