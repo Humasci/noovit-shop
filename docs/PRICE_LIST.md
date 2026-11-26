@@ -1,4 +1,20 @@
-# Price list (updated 30 Oct 2026)
+# Price list (updated 26 Nov 2026)
+
+## 26 Nov 2026: launch price rise (owner approved)
+Supliful confirmed the real cost per order = Pro product price + $1.99 fulfilment (+$1.29 per extra unit of the same product) + 2.99% processing + shipping (~$5.29 under 0.5 lb). Single-bottle subscriptions were left with ~$10, so three products with room under their identical-formula competitors went up (SQL: `supabase/manual/2026-11-26-price-rise.sql`):
+
+| Product | Was | **Now** | Left one-time / subscribed (after Supliful + card fee) |
+|---|---|---|---|
+| Magnesium Sleep+ (+ Magnesium for Men) | $29 | **$32** | ~$18.00 / ~$13.15 (Fernwood same formula $39.99) |
+| CoQ10 | $28 | **$32** | ~$18.90 / ~$14.05 (Cortex $39.99) |
+| Creatine, Creatine for Her (+ for Men) | $32 | **$34** | ~$18.00 / ~$13.15 (Kinetic $44.99) |
+| Sleep & Calm Stack | $49 | **$52** | parts $61 |
+| Strength / Strength for Her / for Men | $52 | **$56** | parts $66 |
+| Focus Stack | $54 | **$57** | parts $67 |
+
+Unchanged: Ashwagandha Calm+ $29 (Cortex $29.99), Lion's Mane $35, Turmeric Complex $29, Creatine Hydration+ $36, Calm & Focus $55.
+Margins for everything at the new prices: `docs/research/SUPLIFUL_ANSWERS_2026-11-26.md`. The tables below are history.
+
 
 _How prices work: the **one-time price** is per bottle. **Subscribe** and the **3-pack** are $5 less per bottle, the **6-pack** and **subscribe ×3** are $10 less ("From $x" on cards). Bundles have one price, with $5 off on subscription. Shipping is free on everything._
 

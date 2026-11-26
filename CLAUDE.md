@@ -22,8 +22,8 @@ Read this first. It is the standing context for any session working on this repo
   ingredient listed (KSM-66 600 mg + D3, B6, B12, L-arginine, maca, ginseng, shatavari; $10.25 delivered). Wider range unlocked 31 Oct
   (probiotic, joint, collagen, D3/K2, sleep, omega-3, colostrum, menopause, NMN; see `SUPLIFUL_PRODUCT_SCREEN.md`).
   Competitor teardown: `docs/research/COMPETITORS_CORE5.md`. **24 Nov: only products matched to a real Supliful product are active** (core six + Creatine for Her + stacks of them); Iron, Biotin (not on Supliful), Glucosamine Joint+ (= Supliful "Joint Support", vegan glucosamine), Collagen Glow+ (= collagen peptides powder), Menopause Balance+ (= "Women's Vitality"), D3 & K2 (= "Bone & Heart Support"), Probiotic Gut+, Mushroom Clarity+ are hidden until rewritten from the real facts panel.
-- **Prices (31 Oct 2026):** Mg $29, Ashwa $29, Lion's Mane $35, Creatine $32, CoQ10 $28; subscribe/3-pack −$5,
-  6-pack −$10; Sleep & Calm Stack $49. Never above the Vitasy twins (Cortex/Compass/Fernwood/Kinetic) on identical
+- **Prices (26 Nov 2026, owner):** Mg $32, Ashwa $29, Lion's Mane $35, Creatine $34 (and Creatine for Her), CoQ10 $32, Turmeric $29, Creatine Hydration+ $36; subscribe/3-pack −$5,
+  6-pack −$10; Sleep & Calm Stack $52, Strength stacks $56, Focus $57, Calm & Focus $55. Supliful's real cost = Pro product price + $1.99 fulfilment + 2.99% + shipping (~$5.29; `docs/research/SUPLIFUL_ANSWERS_2026-11-26.md`). Never above the Vitasy twins (Cortex/Compass/Fernwood/Kinetic) on identical
   Supliful formulas. No fake "was" prices. Free shipping on everything. Supliful price ranges read "product –
   delivered cost" (e.g. creatine $7.14–$14.69); aim for ≥ ~$15 left per first order after the delivered cost and card fee.
   `docs/PRICE_LIST.md`.
