@@ -275,3 +275,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 26 Nov (109): "now open" emails to the Notify me list (Admin → People waiting button, once per person, kits wait); found 8 unconfirmed products still public (hide SQL not run) → TODO; batch3 77 tests
 - [x] 26 Nov (110): live Stripe account activated; webhook picks STRIPE_WEBHOOK_SECRET_LIVE when the live key is in; owner to add the live webhook + portal in the Dashboard (connector dropped)
 - [x] 26 Nov (111): live Stripe key, webhook secret, portal and public details set by owner; site redeployed in live mode
+- [x] 26 Nov (112): Notion "Noovit — Gemini prompts" list (13 prompts with uploads, formats, uses); Supliful reply sent by owner
