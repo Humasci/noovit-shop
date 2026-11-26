@@ -7,7 +7,10 @@ import { handleCheckoutCompleted, handleInvoicePaid, handleChargeRefunded, syncS
 import { handleCheckoutExpired } from '@/lib/marketing/abandoned';
 
 export async function POST(req: NextRequest) {
-  const secret = process.env.STRIPE_WEBHOOK_SECRET;
+  // Live and test mode have separate webhook endpoints, each with its own signing secret. The one used follows the
+  // secret key in use, so switching STRIPE_SECRET_KEY to the live key also switches the webhook (no second step).
+  const live = /^(sk|rk)_live_/.test(process.env.STRIPE_SECRET_KEY ?? '');
+  const secret = (live && process.env.STRIPE_WEBHOOK_SECRET_LIVE) || process.env.STRIPE_WEBHOOK_SECRET;
   if (!secret || !stripeConfigured() || !dbConfigured()) {
     return NextResponse.json({ error: 'Webhook not configured' }, { status: 503 });
   }
