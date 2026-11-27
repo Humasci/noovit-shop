@@ -46,7 +46,7 @@ export default async function StoreLayout({ children }: Readonly<{ children: Rea
       <main id="main" tabIndex={-1} className="min-h-screen outline-none">{children}</main>
       <Footer />
       <CartDrawer suggestions={suggestions} catalog={products.filter((p) => p.status === 'active')} />
-      <Analytics ids={{ gtm: settings.gtm_id, ga4: settings.ga4_id, meta: settings.meta_pixel_id, tiktok: settings.tiktok_pixel_id }} />
+      <Analytics ids={{ gtm: settings.gtm_id, ga4: settings.ga4_id, meta: settings.meta_pixel_id, tiktok: settings.tiktok_pixel_id, bing: settings.bing_uet_id }} />
       <NewsletterPopup />
       {advisorEnabled() && <Advisor />}
     </StoreConfigProvider>

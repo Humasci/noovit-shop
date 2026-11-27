@@ -31,6 +31,19 @@ void gi;
 const feed = await (await fetch(`${base}/feeds/google.xml`)).text();
 check('feed title has spec', feed.includes('Noovit Magnesium Sleep+ – Magnesium Glycinate 275 mg – 90 Capsules'), feed.slice(0, 300));
 
+// Microsoft Ads (Bing) UET tag: on normal pages, never on health pages, gone after Decline
+{
+  const tb = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
+  const tp = await (await tb.newContext()).newPage();
+  await tp.goto(`${base}/shop`);
+  await tp.waitForFunction(() => document.getElementById('bing-uet') !== null, null, { timeout: 15000 }).catch(() => null);
+  check('bing uet: tag on the shop', (await tp.content()).includes('bat.bing.net/bat.js') && (await tp.content()).includes('97296488'));
+  await tp.goto(`${base}/at-home-tests/vitamin-d-test`);
+  await tp.waitForLoadState('networkidle');
+  check('bing uet: never on health pages', !(await tp.content()).includes('bat.bing.net'));
+  await tb.close();
+}
+
 // ChatGPT shopping feed (OpenAI JSONL spec)
 {
   const txt = await (await fetch(`${base}/feeds/openai.jsonl`)).text();
@@ -102,7 +115,7 @@ check('compare image 404 for product without it', (await fetch(`${base}/product-
   await ap.waitForSelector('[data-testid=account-email]');
   let body = (await ap.textContent('body')) ?? '';
   check('account: overview greets by first name, shows next delivery', body.includes('Hi, Ada') && body.includes('Signed in as acct@test.com') && body.includes('Next delivery: Jan 15, 2027'), body.slice(0, 300));
-  check('account: no analytics tags', !(await ap.content()).includes('googletagmanager.com/gtm.js'));
+  check('account: no analytics tags', !(await ap.content()).includes('googletagmanager.com/gtm.js') && !(await ap.content()).includes('bat.bing.net'));
 
   body = await open('/account/orders', '[data-testid=account-order]');
   check('account: orders list', (await ap.locator('[data-testid=account-order]').count()) === 1 && body.includes(`Order #${ao.order_number}`) && body.includes('Magnesium Sleep+') && body.includes('Shipped') && !body.includes('$99.00'));

@@ -11,6 +11,7 @@ export interface PixelIds {
   ga4: string;
   meta: string;
   tiktok: string;
+  bing?: string;
 }
 
 const CHANGE_EVENT = 'noovit-consent-change';
@@ -48,7 +49,7 @@ function PageViews() {
       // never report views of health pages; if tags already loaded on an earlier page (client navigation or back
       // button), reload so this page runs without them
       const w = window as unknown as Record<string, unknown>;
-      if (w.google_tag_manager || w.fbq || w.ttq || w.gtag) window.location.reload();
+      if (w.google_tag_manager || w.fbq || w.ttq || w.gtag || w.uetq) window.location.reload();
       return;
     }
     window.gtag?.('event', 'page_view', { page_path: pathname, page_location: window.location.href.replace(/([?&])session_id=[^&]*&?/, '$1').replace(/[?&]$/, '') });
@@ -63,7 +64,7 @@ function PageViews() {
 export function Analytics({ ids }: { ids: PixelIds }) {
   const consent = useSyncExternalStore(subscribe, readConsent, () => 'pending');
   const pathname = usePathname();
-  const any = Boolean(ids.gtm || ids.ga4 || ids.meta || ids.tiktok);
+  const any = Boolean(ids.gtm || ids.ga4 || ids.meta || ids.tiktok || ids.bing);
   // Sensitive pages (STI test) load no tags at all; links to them are full page loads, so earlier tags don't carry over.
   if (!any || consent === 'pending' || consent === 'denied' || isSensitivePath(pathname)) return null;
 
@@ -115,6 +116,13 @@ function Tags({ ids }: { ids: PixelIds }) {
       {ids.tiktok && (
         <Script id="tiktok-pixel" strategy="afterInteractive">
           {`!function(w,d,t){w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js";ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};var o=d.createElement("script");o.type="text/javascript",o.async=!0,o.src=r+"?sdkid="+e+"&lib="+t;var a=d.getElementsByTagName("script")[0];a.parentNode.insertBefore(o,a)};ttq.load(${JSON.stringify(ids.tiktok)});ttq.page();}(window,document,'ttq');`}
+        </Script>
+      )}
+      {/* Microsoft Ads UET (Bing): page views on every page incl. single-page navigations (enableAutoSpaTracking),
+          shop events via lib/analytics.ts. Same opt-out and health-page rules as the other tags. */}
+      {ids.bing && (
+        <Script id="bing-uet" strategy="afterInteractive">
+          {`(function(w,d,t,r,u){var f,n,i;w[u]=w[u]||[],f=function(){var o={ti:${JSON.stringify(ids.bing)},enableAutoSpaTracking:true};o.q=w[u],w[u]=new UET(o),w[u].push("pageLoad")},n=d.createElement(t),n.src=r,n.async=1,n.onload=n.onreadystatechange=function(){var s=this.readyState;s&&s!=="loaded"&&s!=="complete"||(f(),n.onload=n.onreadystatechange=null)},i=d.getElementsByTagName(t)[0],i.parentNode.insertBefore(n,i)})(window,document,"script","https://bat.bing.net/bat.js","uetq");`}
         </Script>
       )}
       <PageViews />

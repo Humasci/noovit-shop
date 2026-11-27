@@ -7,6 +7,7 @@ declare global {
     gtag?: Fn;
     fbq?: Fn;
     ttq?: { track: Fn; page: Fn };
+    uetq?: { push: Fn } | unknown[];
   }
 }
 
@@ -52,6 +53,14 @@ export function track(e: TrackEvent) {
 
   const meta = { view_item: 'ViewContent', add_to_cart: 'AddToCart', begin_checkout: 'InitiateCheckout', purchase: 'Purchase' }[e.name];
   window.fbq?.('track', meta, { currency: 'USD', value, content_ids: ids, content_type: 'product' }, e.name === 'purchase' ? { eventID: e.transactionId } : undefined);
+
+  // Microsoft Ads (UET): standard ecommerce events; purchases carry revenue for conversion tracking.
+  (window.uetq as { push: Fn } | undefined)?.push('event', e.name, {
+    ecomm_prodid: ids,
+    ecomm_pagetype: e.name === 'purchase' ? 'purchase' : e.name === 'view_item' ? 'product' : 'cart',
+    revenue_value: value,
+    currency: 'USD',
+  });
 
   const tiktok = { view_item: 'ViewContent', add_to_cart: 'AddToCart', begin_checkout: 'InitiateCheckout', purchase: 'CompletePayment' }[e.name];
   window.ttq?.track(tiktok, {

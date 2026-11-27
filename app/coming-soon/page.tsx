@@ -27,7 +27,7 @@ export default async function ComingSoon() {
       <WaitlistForm />
       <p className="mt-16 text-xs text-[var(--color-muted)]">© {new Date().getFullYear()} {LEGAL_NAME}</p>
       {/* Tag Manager here too, so waitlist traffic is measured before launch. */}
-      <Analytics ids={{ gtm: settings.gtm_id, ga4: settings.ga4_id, meta: settings.meta_pixel_id, tiktok: settings.tiktok_pixel_id }} />
+      <Analytics ids={{ gtm: settings.gtm_id, ga4: settings.ga4_id, meta: settings.meta_pixel_id, tiktok: settings.tiktok_pixel_id, bing: settings.bing_uet_id }} />
     </main>
   );
 }

@@ -75,7 +75,7 @@ Read this first. It is the standing context for any session working on this repo
   images (`lib/labels/png.ts`). Group shots: `studioGroupPng` (each bottle = its difference from the empty backdrop, added onto one shared
   backdrop, so shadows overlap and no tiles show). Older Supliful-photo path (`lib/labels/photo.ts`) is legacy. **Powder tubs (21 Nov):** creatine products use the owner's tub renders (`assets/mockups/tub-*.jpg`, `lib/labels/tub.ts`), placed by studioPhotoPng/studioGroupPng. Framed tight (~85% height). Gallery: front, "In every serving" fact image,
   dose comparison (Mg, CoQ10), label close-up, Supplement Facts. Bump `MOCKUP_VERSION` when images change.
-- **Analytics:** GTM `GTM-5LKW5HGS` built in; GA4 lives inside GTM (leave the site GA4 field empty). Consent is
+- **Analytics:** GTM `GTM-5LKW5HGS` built in; Microsoft Ads UET tag `97296488` (27 Nov, setting `bing_uet_id`, same consent/health-page rules); GA4 lives inside GTM (leave the site GA4 field empty). Consent is
   opt-out (banner; Decline = denied). GA4 ecommerce events + `generate_lead` with `lead_source`.
 - **Trend drafts (31 Oct, hidden until facts/costs confirmed):** NMN 500 mg ($39), NAD+ Complex (NAD+ 500 mg + quercetin +
   resveratrol, $38, delivered cost $12.99; never claim "DNA repair"), Colostrum+ powder 2,300 mg ($35, contains milk),

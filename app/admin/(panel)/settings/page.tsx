@@ -15,7 +15,7 @@ const GROUPS: { title: string; note: string; keys: (keyof typeof SETTING_FIELDS)
   {
     title: 'Analytics & ad tracking',
     note: 'Paste the IDs from each platform. Tracking only starts after a visitor accepts cookies. Tracked events: page views, product views, add to cart, checkout started and purchases.',
-    keys: ['ga4_id', 'meta_pixel_id', 'tiktok_pixel_id'],
+    keys: ['ga4_id', 'meta_pixel_id', 'tiktok_pixel_id', 'bing_uet_id'],
   },
   {
     title: 'Pre-launch',

@@ -11,6 +11,7 @@ export const SETTING_FIELDS = {
   ga4_id: { label: 'Google Analytics 4 measurement ID (leave empty if GA4 is set up inside Tag Manager, or visits count twice)', placeholder: 'G-XXXXXXXXXX', pattern: /^G-[A-Z0-9]{4,16}$/, env: 'NEXT_PUBLIC_GA4_ID', upper: true },
   meta_pixel_id: { label: 'Meta (Facebook/Instagram) Pixel ID', placeholder: '123456789012345', pattern: /^\d{10,20}$/, env: 'NEXT_PUBLIC_META_PIXEL_ID', upper: true },
   tiktok_pixel_id: { label: 'TikTok Pixel ID', placeholder: 'C123ABC456DEF789GHI0', pattern: /^[A-Z0-9]{10,30}$/, env: 'NEXT_PUBLIC_TIKTOK_PIXEL_ID', upper: true },
+  bing_uet_id: { label: 'Microsoft Ads (Bing) UET tag ID', placeholder: '12345678', pattern: /^\d{5,12}$/, env: 'NEXT_PUBLIC_BING_UET_ID', upper: true, fallback: '97296488' },
   newsletter_code: { label: 'Newsletter welcome discount code', placeholder: 'WELCOME10', pattern: /^[A-Z0-9_-]{3,30}$/, env: 'NEWSLETTER_CODE', upper: true },
   show_placeholders: { label: 'Show placeholder trust content (on / off)', placeholder: 'off', pattern: /^(on|off)$/, env: 'SHOW_PLACEHOLDERS', upper: false },
   support_email: { label: 'Customer support email (shown on the site; contact form messages go here)', placeholder: 'hello@noovit.com', pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, env: 'SUPPORT_EMAIL', upper: false },
@@ -40,7 +41,7 @@ async function load(): Promise<Settings> {
   return settings;
 }
 
-export const getSettings = unstable_cache(load, ['settings-v4'], { tags: [SETTINGS_TAG], revalidate: 300 });
+export const getSettings = unstable_cache(load, ['settings-v5'], { tags: [SETTINGS_TAG], revalidate: 300 });
 
 export const loadSettings = load;
 
