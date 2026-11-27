@@ -283,3 +283,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 26 Nov (117): reviewer programme (admin invite → personal review link → reviews labelled "Free sample"; migration 0010); batch3 85 tests
 - [x] 26 Nov (118): owner: no free-sample reviews; admin invite form removed (code dormant)
 - [x] 26 Nov (119): Supliful API researched: automation = hidden Shopify store + Admin API (notes saved); Stripe sync done by owner
+- [x] 27 Nov (120): feeds + sitemap made per-request (were stale at build), feed/structured-data availability follows coming-soon; discovery plan (Merchant Center, ChatGPT merchants, Bing; no GBP; no extra logins)
