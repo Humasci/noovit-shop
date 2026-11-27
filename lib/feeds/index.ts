@@ -1,3 +1,4 @@
+import { ordersOpen } from '@/lib/launch';
 import { Product } from '@/types';
 import { SITE_URL, productImageUrl, productUrl } from '@/lib/site';
 import { productSpec } from '@/lib/seo';
@@ -52,7 +53,8 @@ export const toFeedItem = (p: Product): FeedItem => ({
   image: productImageUrl(p),
   // Fact images, label close-up and Supplement Facts as extra images (Shopping shows them in the product panel).
   extraImages: productGalleryUrls(p, SITE_URL).slice(1, 11),
-  inStock: p.status === 'active',
+  // Google rejects a feed that says "in stock" while the page says "Coming soon": follow the coming-soon switch.
+  inStock: p.status === 'active' && ordersOpen(),
   price: `${p.basePrice.toFixed(2)} USD`,
   category: p.productType === 'pets' ? GOOGLE_CATEGORY.pets : GOOGLE_CATEGORY.human,
   productType: feedProductType(p),

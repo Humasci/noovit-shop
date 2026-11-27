@@ -33,6 +33,7 @@ import { heroDose, netQuantity } from '@/lib/labels/svg';
 import { PUBLIC_DIETARY_TAGS, asLowAs } from '@/data/products';
 import { formatPrice } from '@/lib/utils/format';
 import { productPath, productSlugFromUrl, productUrlSlug } from '@/lib/urls';
+import { ordersOpen } from '@/lib/launch';
 
 export async function generateStaticParams() {
   return (await getStoreProducts()).map((p) => ({ slug: productUrlSlug(p.slug) }));
@@ -155,7 +156,8 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       url: productUrl(product),
       priceCurrency: 'USD',
       price: product.basePrice.toFixed(2),
-      availability: product.status === 'active' ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+      // Matches what the page offers: "Coming soon" (no Add to cart) while orders are closed.
+      availability: product.status === 'active' && ordersOpen() ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
       itemCondition: 'https://schema.org/NewCondition',
       // Matches /policies/delivery-returns: free US shipping, ships in 2–5 business days (Supliful), arrives 2–4 days later (USPS);
       // 90-day money-back guarantee.

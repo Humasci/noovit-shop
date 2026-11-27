@@ -11,6 +11,9 @@ import { MEN_LIVE } from '@/lib/men';
 import { TEST_KITS } from '@/lib/tests';
 import { productPath } from '@/lib/urls';
 
+// Always current (prices, products, launch switch): built per request, the catalog itself is cached.
+export const dynamic = 'force-dynamic';
+
 const PAGES = ['', '/womens-health', ...(MEN_LIVE ? ['/mens-health'] : []), '/at-home-tests', ...TEST_KITS.map((k) => `/at-home-tests/${k.slug}`), '/shop', '/stacks', '/quiz', '/about', '/reviews', '/faq', '/contact', '/policies/delivery-returns', '/policies/privacy', '/policies/terms', '/policies/consumer-health-data', '/policies/accessibility', ...PUBLIC_EARLY_PROGRAMS];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
