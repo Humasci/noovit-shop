@@ -137,6 +137,18 @@ export function catalogCsv(items: FeedItem[], idColumn: 'id' | 'sku_id') {
   return [head.join(','), ...rows].join('\n') + '\n';
 }
 
+// Google Merchant Center as CSV (same data as google.xml), for a Google Sheet that pulls it live with
+// =IMPORTDATA("https://noovit.com/feeds/google.csv"). Shipping as country:region:service:price; handling/transit columns.
+export function googleCsv(items: FeedItem[]) {
+  const head = ['id', 'title', 'description', 'availability', 'condition', 'price', 'link', 'image_link', 'additional_image_link', 'brand', 'identifier_exists', 'google_product_category', 'product_type', 'product_highlight', 'shipping', 'min_handling_time', 'max_handling_time', 'min_transit_time', 'max_transit_time', 'custom_label_0', 'custom_label_1'];
+  const rows = items.map((i) =>
+    [i.id, i.title, i.description, i.inStock ? 'in_stock' : 'out_of_stock', 'new', i.price, i.link, i.image, i.extraImages.join(','), 'Noovit', 'no', i.category, i.productType, i.highlights.join(','), 'US::Standard:0.00 USD', '2', '5', '2', '4', i.goal || 'other', i.forHer ? 'for-her' : 'all']
+      .map(csvCell)
+      .join(',')
+  );
+  return [head.join(','), ...rows].join('\n') + '\n';
+}
+
 // OpenAI (ChatGPT shopping) product feed, JSON Lines, one product per line
 // (spec: developers.openai.com/commerce/specs/file-upload/products). Delivered as a hosted HTTPS URL
 // (/feeds/openai.jsonl) set up in OpenAI's merchant portal. Discovery only: buyers check out on noovit.com.
