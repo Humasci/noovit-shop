@@ -9,6 +9,12 @@ _Set up 28 Oct 2026. The site loads **Google Tag Manager `GTM-5LKW5HGS`** on eve
 - **Page views** on client-side navigation are caught by GA4's enhanced measurement ("page changes based on browser history events").
 - **Leave Admin → Settings → "Google Analytics 4 measurement ID" empty.** If it's filled as well as GA4 inside GTM, every visit counts twice.
 
+## Vercel Web Analytics
+
+`@vercel/analytics/next` is included in the shared analytics component used by the storefront and coming-soon page, independently of the pixel IDs in Admin settings. The existing GTM / GA4 setup is unchanged.
+
+After merging and deploying, visit a public page and confirm incoming views in the project's Analytics page. Decline and Global Privacy Control disable collection. The existing sensitive-path rules exclude human test pages, health programs and customer account pages on initial loads and client navigation. Query strings and fragments are removed before sending events. The pre-launch proxy excludes `/_vercel/` so collection requests are not rewritten to coming-soon.
+
 ## One-time setup in GTM (≈10 minutes)
 1. **tagmanager.google.com** → container `GTM-5LKW5HGS` → **Tags → New**
    - Tag type **Google Tag**, Tag ID **`G-JHK7BF5QB1`**

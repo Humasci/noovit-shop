@@ -14,6 +14,7 @@ _Last updated: 2026-10-27_
 - **Documentation:** owner/team user guide in [`USER_GUIDE.md`](USER_GUIDE.md); this file tracks progress and roadmap.
 
 ## Done
+- [x] **27 Nov — Vercel Web Analytics integration refreshed:** installed `@vercel/analytics` in the shared storefront / coming-soon analytics component. Preserves Decline / Global Privacy Control and current sensitive health, program and account exclusions; strips query strings and fragments; collection endpoints bypass the pre-launch proxy. Production collection remains pending merge and deployment.
 - [x] Storefront: home, shop (type/diet filters, sort), product pages (packs, subscribe & save, tabs, FAQ, reviews), Reviews, FAQ, About, Contact, policy pages, cart drawer + cart page.
 - [x] Noovit Pets section (`/pets`) with Dog/Cat filtering and pet-aware product pages.
 - [x] Database schema (`supabase/migrations/`), validated against Postgres.
