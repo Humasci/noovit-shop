@@ -3,6 +3,8 @@
 import { useEffect, useSyncExternalStore } from 'react';
 import { usePathname } from 'next/navigation';
 import Script from 'next/script';
+import { Analytics as VercelAnalytics } from '@vercel/analytics/next';
+import { beforeSendAnalytics } from '@/lib/vercel-analytics';
 import { CONSENT_KEY } from '@/lib/analytics';
 import { isSensitivePath } from '@/lib/tests';
 
@@ -65,11 +67,12 @@ export function Analytics({ ids }: { ids: PixelIds }) {
   const pathname = usePathname();
   const any = Boolean(ids.gtm || ids.ga4 || ids.meta || ids.tiktok);
   // Sensitive pages (STI test) load no tags at all; links to them are full page loads, so earlier tags don't carry over.
-  if (!any || consent === 'pending' || consent === 'denied' || isSensitivePath(pathname)) return null;
+  if (consent === 'pending' || consent === 'denied' || isSensitivePath(pathname)) return null;
 
   return (
     <>
-      <Tags ids={ids} />
+      <VercelAnalytics beforeSend={beforeSendAnalytics} />
+      {any && <Tags ids={ids} />}
       {consent === 'unset' && <Banner />}
     </>
   );
