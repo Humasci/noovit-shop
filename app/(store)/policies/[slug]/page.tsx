@@ -14,7 +14,7 @@ const POLICIES: Record<string, { title: string; intro?: string; sections: Sectio
     title: 'Delivery & Returns',
     sections: [
       { h: 'Shipping', p: 'Free standard shipping on all US orders. Orders usually ship within 2–5 business days and arrive 2–4 business days after shipping (USPS). You get a tracking link by email as soon as your order ships. We ship to US addresses only.' },
-      { h: '90-day money-back guarantee', p: 'If you are not happy with your purchase, contact us within 90 days of delivery for a full refund of the product price, even if the bottle is empty. One refund per product per customer.' },
+      { h: '90-day first-bottle guarantee', p: "If the first bottle you try of any product isn't right for you, tell us within 90 days of delivery and we'll refund the price of that bottle, opened or not. No need to send it back. One refund per product per customer. Damaged, missing or wrong items are replaced free (see below)." },
       { h: 'Damaged or missing items', p: 'Let us know within 14 days of delivery and we will send a replacement at no cost.' },
     ],
   },
@@ -65,7 +65,7 @@ const POLICIES: Record<string, { title: string; intro?: string; sections: Sectio
       { h: 'Eligibility', p: 'You must be 18 or older to buy from us. Some products, such as creatine, are sold only to adults 18+, and we ship only to US addresses.' },
       { h: 'Orders and pricing', p: 'Prices are in USD and may change. We may refuse or cancel an order (for example a pricing error or suspected fraud) and will refund any payment in full.' },
       { h: 'Subscriptions', p: 'Subscriptions renew automatically at the frequency and price shown when you subscribed until you cancel. You can change or cancel online from “My Account” at any time before your next billing date. If a subscription price changes, we email you before your next renewal so you can cancel or change it.' },
-      { h: 'Returns and guarantee', p: 'See Delivery & Returns for our 90-day money-back guarantee and how to claim it.' },
+      { h: 'Returns and guarantee', p: 'See Delivery & Returns for our 90-day first-bottle guarantee and how to claim it.' },
       { h: 'Discount codes', p: 'One code per order unless stated. Codes have no cash value and may expire.' },
       { h: 'Reviews', p: 'Reviews must be honest and about your own experience. We moderate reviews for spam and offensive content, but we do not remove reviews because they are negative.' },
       { h: 'Intellectual property', p: 'The site’s content, design and brand belong to Noovit LLC and may not be copied without permission.' },
@@ -84,7 +84,7 @@ const POLICIES: Record<string, { title: string; intro?: string; sections: Sectio
 };
 
 const POLICY_DESCRIPTIONS: Record<string, string> = {
-  'delivery-returns': 'Free standard shipping on all US orders, delivery times and tracking, damaged items, and our 90-day money-back guarantee.',
+  'delivery-returns': 'Free standard shipping on all US orders, delivery times and tracking, damaged items, and our 90-day first-bottle guarantee.',
   privacy: 'What personal data Noovit collects, who we share it with, cookies and ads, and your privacy choices and rights.',
   terms: 'The terms for using noovit.com: eligibility, how subscriptions renew and how to cancel, returns, liability and governing law.',
   'consumer-health-data': 'How Noovit collects, uses and shares consumer health data, and your rights under Washington, Nevada and similar laws.',

@@ -74,7 +74,7 @@ function DeliveryEstimate() {
   ) : null;
 }
 
-const PERKS = ['Change, skip or cancel anytime online', 'Free US shipping on every delivery', '90-day money-back guarantee'];
+const PERKS = ['Change, skip or cancel anytime online', 'Free US shipping on every delivery', '90-day first-bottle guarantee'];
 
 // Plan selector, add to cart and sticky bars (The Absorption Company layout, Noovit colours).
 // One-time is the default so the first price matches the Google Shopping feed and nothing is pre-selected
@@ -219,7 +219,7 @@ export function PurchaseBox({ product, sections = [] }: { product: Product; sect
 
       <ul className="mt-5 grid grid-cols-3 divide-x divide-[var(--color-line)] border-y border-[var(--color-line)] py-3 text-center text-xs text-[var(--color-ink)]">
         <li className="flex flex-col items-center gap-1 px-2"><Truck className="h-5 w-5" strokeWidth={1.25} aria-hidden /> Free US shipping</li>
-        <li className="flex flex-col items-center gap-1 px-2"><ShieldCheck className="h-5 w-5" strokeWidth={1.25} aria-hidden /> 90-day money-back</li>
+        <li className="flex flex-col items-center gap-1 px-2"><ShieldCheck className="h-5 w-5" strokeWidth={1.25} aria-hidden /> 90-day guarantee</li>
         <li className="flex flex-col items-center gap-1 px-2"><RefreshCw className="h-5 w-5" strokeWidth={1.25} aria-hidden /> Cancel anytime</li>
       </ul>
 

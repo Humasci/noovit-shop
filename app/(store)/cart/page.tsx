@@ -85,7 +85,7 @@ export default function CartPage() {
         </div>
         <ul className="mt-6 space-y-2 text-sm text-[var(--color-muted)]">
           <li className="flex items-center gap-2"><Truck className="h-4 w-4" /> Free shipping on every order</li>
-          <li className="flex items-center gap-2"><RotateCcw className="h-4 w-4" /> 90-day money-back guarantee</li>
+          <li className="flex items-center gap-2"><RotateCcw className="h-4 w-4" /> 90-day first-bottle guarantee</li>
           <li className="flex items-center gap-2"><ShieldCheck className="h-4 w-4" /> Secure checkout</li>
         </ul>
       </aside>

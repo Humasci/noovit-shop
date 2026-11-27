@@ -90,7 +90,7 @@ export function Header({ trustBar, announcement, advisor = false, bestSellers = 
             brandify(announcement.text)
           )
         ) : (
-          brandify(trustBar.slice(0, 2).join('  ·  ') || 'Free US shipping  ·  90-day money-back guarantee')
+          brandify(trustBar.slice(0, 2).join('  ·  ') || 'Free US shipping  ·  90-day first-bottle guarantee')
         )}
       </div>
 

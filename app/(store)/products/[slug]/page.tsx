@@ -51,7 +51,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
-const USPS = ['Every dose clearly labeled', 'Free US shipping', '90-day money-back guarantee', 'Cancel anytime online', 'No proprietary blends'];
+const USPS = ['Every dose clearly labeled', 'Free US shipping', '90-day first-bottle guarantee', 'Cancel anytime online', 'No proprietary blends'];
 
 // Collapsible row for the right-hand column (native <details>: works without JavaScript and is crawlable).
 function Row({ title, children, open = false }: { title: string; children: React.ReactNode; open?: boolean }) {
@@ -160,7 +160,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       availability: product.status === 'active' && ordersOpen() ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
       itemCondition: 'https://schema.org/NewCondition',
       // Matches /policies/delivery-returns: free US shipping, ships in 2–5 business days (Supliful), arrives 2–4 days later (USPS);
-      // 90-day money-back guarantee.
+      // 90-day first-bottle guarantee.
       shippingDetails: {
         '@type': 'OfferShippingDetails',
         shippingRate: { '@type': 'MonetaryAmount', value: 0, currency: 'USD' },

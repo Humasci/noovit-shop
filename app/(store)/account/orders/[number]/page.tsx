@@ -112,7 +112,7 @@ export default async function OrderPage({ params, searchParams }: { params: Prom
                 <option value="" disabled>Choose one</option>
                 <option value="missing">It hasn&apos;t arrived</option>
                 <option value="damaged">Damaged or wrong item</option>
-                <option value="refund">I&apos;d like a refund (90-day guarantee)</option>
+                <option value="refund">I&apos;d like a refund (90-day first-bottle guarantee)</option>
                 <option value="address">Change the address</option>
                 <option value="other">Something else</option>
               </select>
@@ -121,7 +121,7 @@ export default async function OrderPage({ params, searchParams }: { params: Prom
               <textarea name="message" required minLength={5} maxLength={2000} rows={4} className={field} />
             </Label>
             <div><button className="btn btn-primary text-sm">Send to support</button></div>
-            <p className="text-xs text-[var(--color-muted)]">We reply by email, usually within one business day. 90-day money-back guarantee on every order.</p>
+            <p className="text-xs text-[var(--color-muted)]">We reply by email, usually within one business day. 90-day first-bottle guarantee on every product.</p>
           </form>
         </details>
       </Card>

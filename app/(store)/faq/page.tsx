@@ -7,7 +7,7 @@ import { GENERAL_FAQS } from '@/data/content';
 
 export const metadata: Metadata = {
   title: 'FAQ: Shipping, Subscriptions & Products | Noovit',
-  description: 'Answers about Noovit supplements, subscriptions, shipping, returns and our 90-day money-back guarantee.',
+  description: 'Answers about Noovit supplements, subscriptions, shipping, returns and our 90-day first-bottle guarantee.',
   alternates: { canonical: '/faq' },
 };
 

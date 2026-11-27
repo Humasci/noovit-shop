@@ -2,7 +2,7 @@ import { FAQ, Product, ProductData, ProductStatus } from '@/types';
 
 const COMMON_FAQS: FAQ[] = [
   { q: 'Is it dairy and lactose free?', a: 'Yes, unless the label states otherwise.' },
-  { q: 'What is your return policy?', a: 'Try it for 90 days. If you are not happy, contact us for a full refund — even on an empty bottle.' },
+  { q: 'What is your return policy?', a: "If the first bottle you try of any product isn't right for you, tell us within 90 days of delivery and we'll refund it, opened or not. No need to send it back. One refund per product per customer. Damaged, missing or wrong items are replaced free." },
   { q: 'When will my order ship?', a: 'Orders usually ship within 2–5 business days and arrive 2–4 business days later, with tracking by email.' },
 ];
 

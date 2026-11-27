@@ -112,7 +112,7 @@ export async function emailPreference(f: FormData) {
 const HELP_TOPICS: Record<string, string> = {
   missing: "It hasn't arrived",
   damaged: 'Damaged or wrong item',
-  refund: 'Refund (90-day guarantee)',
+  refund: 'Refund (90-day first-bottle guarantee)',
   address: 'Change the address',
   other: 'Something else',
 };

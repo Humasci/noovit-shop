@@ -15,7 +15,7 @@ export const CONTENT_FIELDS = {
   hero_subheadline: { label: 'Hero text', hint: '', max: 300, rows: 3, default: 'Evidence-led supplements and at-home health tests, with more wellness tools on the way. Every dose clearly labeled, every claim sourced.' },
   hero_cta_label: { label: 'Button label', hint: '', max: 30, rows: 1, default: 'Shop Now' },
   hero_cta_link: { label: 'Button link', hint: 'e.g. /shop or /collections/best-sellers', max: 200, rows: 1, default: '/shop' },
-  hero_bullets: { label: 'Hero bullet points', hint: 'Up to 3, one per line.', max: 200, rows: 3, default: '90-day money-back guarantee\nFree delivery' },
+  hero_bullets: { label: 'Hero bullet points', hint: 'Up to 3, one per line.', max: 200, rows: 3, default: '90-day first-bottle guarantee\nFree delivery' },
   hero_image: { label: 'Hero image', hint: '', max: 500, rows: 0, default: IMAGES.hero },
   popup_headline: { label: 'Pop-up headline', hint: 'Leave empty to turn the newsletter pop-up off.', max: 80, rows: 1, default: '' },
   popup_text: { label: 'Pop-up text', hint: 'e.g. Join for 10% off your first order, plus nutrition tips.', max: 200, rows: 2, default: '' },

@@ -31,7 +31,7 @@ export const IMAGES = {
 
 export const GENERAL_FAQS: FAQ[] = [
   { q: 'Why should I trust Noovit with my health?', a: 'Every ingredient and amount is printed on the label, with no proprietary blends. Our guides grade the evidence honestly, including studies that found no effect. We publish quality documents on product pages as we receive them.' },
-  { q: 'Do you offer a money-back guarantee?', a: 'Yes. You have 90 days to try any product. If it is not for you, we will refund you in full.' },
+  { q: 'Do you offer a money-back guarantee?', a: "If the first bottle you try of any product isn't right for you, tell us within 90 days of delivery and we'll refund it, opened or not. No need to send it back. One refund per product per customer. Damaged, missing or wrong items are replaced free." },
   { q: 'Where are your products made?', a: 'By our contract manufacturing partner. We will list the facility certifications and batch test results on each product page as soon as we have the paperwork.' },
   { q: 'When will my order ship?', a: 'Orders usually ship within 2–5 business days, and delivery takes 2–4 business days after dispatch.' },
   { q: 'How do I track my order?', a: 'You will receive a tracking link by email as soon as your order ships.' },

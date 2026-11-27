@@ -136,7 +136,7 @@ check('compare image 404 for product without it', (await fetch(`${base}/product-
   await ap.click('button:has-text("Send to support")');
   check('account: order help sent', (await flash('help')).includes('Message sent'));
   log = readFileSync(`${dir}next.log`, 'utf8');
-  check('account: help email names the order, replies to the customer', log.includes(`Order #${ao.order_number}: Refund (90-day guarantee)`) && log.includes('Not for me, please refund.'));
+  check('account: help email names the order, replies to the customer', log.includes(`Order #${ao.order_number}: Refund (90-day first-bottle guarantee)`) && log.includes('Not for me, please refund.'));
 
   // Subscriptions
   const subState = async () => `${await ap.textContent('[data-testid=account-subscription]')}`;

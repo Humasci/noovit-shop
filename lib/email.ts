@@ -233,7 +233,7 @@ export function sendOpenNotice(to: string, items: { name: string; url: string }[
     marketingLayout(
       `<h1 style="font-size:20px">${items.length ? "It's here." : 'We\'re open.'}</h1>
       ${items.length ? `<p>You asked us to tell you when ${items.length === 1 ? 'this was' : 'these were'} ready to order:</p><ul style="padding-left:18px">${list}</ul>` : '<p>Thanks for waiting. Noovit is now taking orders: evidence-led supplements with every dose clearly labeled.</p>'}
-      <p>Free US shipping on every order, subscribe and save, and a 90-day money-back guarantee.</p>
+      <p>Free US shipping on every order, subscribe and save, and a 90-day first-bottle guarantee.</p>
       <p><a href="${SITE_URL}${items.length ? '/account' : '/shop'}" style="display:inline-block;background:#14213d;color:#fff;padding:12px 24px;border-radius:999px;text-decoration:none;font-weight:bold">${items.length ? 'See your list' : 'Visit the shop'}</a></p>`,
       f
     ),
@@ -277,7 +277,7 @@ export function sendAbandonedCheckout(
       <p><b>Total: ${formatPrice(totalCents / 100)}</b></p>
       ${code ? `<p>First order? Use <b>${esc(code)}</b> at checkout for your welcome discount.</p>` : ''}
       <p><a href="${esc(recoveryUrl)}" style="display:inline-block;background:#14213d;color:#fff;padding:12px 24px;border-radius:999px;text-decoration:none;font-weight:bold">Complete my order</a></p>
-      <p style="font-size:12px;color:#6b7280">Free shipping and a 90-day money-back guarantee on every order.</p>`,
+      <p style="font-size:12px;color:#6b7280">Free shipping and a 90-day first-bottle guarantee on every product.</p>`,
       f
     ),
     unsubscribeHeaders(f)

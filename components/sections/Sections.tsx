@@ -29,7 +29,7 @@ export const TRUST_ITEMS = [
   { icon: Award, label: 'Every Dose Clearly Labeled' },
   { icon: FlaskConical, label: 'Every Ingredient Listed' },
   { icon: MapPin, label: 'Free US Shipping' },
-  { icon: ShieldCheck, label: '90-Day Money-Back Guarantee' },
+  { icon: ShieldCheck, label: '90-Day First-Bottle Guarantee' },
 ];
 
 export function TrustSection() {

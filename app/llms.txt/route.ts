@@ -34,7 +34,7 @@ export async function GET() {
     ...TEST_KITS.map((k) => `- [${k.name}](${SITE_URL}/at-home-tests/${k.slug}): ${k.short}`),
     '',
     '## Policies',
-    `- [Delivery & returns](${SITE_URL}/policies/delivery-returns): free US shipping, 90-day money-back guarantee`,
+    `- [Delivery & returns](${SITE_URL}/policies/delivery-returns): free US shipping, 90-day first-bottle guarantee (refund on the first bottle of any product, opened or not)`,
     `- [FAQ](${SITE_URL}/faq)`,
     '',
     'These statements have not been evaluated by the Food and Drug Administration. Our products are not intended to diagnose, treat, cure, or prevent any disease.',
