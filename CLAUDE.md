@@ -111,7 +111,7 @@ Read this first. It is the standing context for any session working on this repo
 - Key paths: catalog seed `data/products.ts` (live catalog is the `products` table, jsonb `data`; `status` is a column);
   labels `lib/labels/{svg,photo,png,gallery,gallery-data}.ts`; guides `lib/guides.ts`; quiz `lib/quiz.ts`;
   settings `lib/settings.ts` (admin values > env > defaults); pre-launch gate `proxy.ts` + `lib/launch.ts`;
-  feeds `lib/feeds`; company name `LEGAL_NAME` in `lib/site.ts`.
+  feeds `lib/feeds` (`/feeds/google.xml`, `meta.csv`, `tiktok.csv`, `openai.jsonl`; built per request; availability follows `ordersOpen()`); company name `LEGAL_NAME` in `lib/site.ts`.
   Product SEO titles/descriptions: `lib/seo.ts` (Admin SEO fields > that map > name + tagline). Default share image:
   `app/opengraph-image.png` (`npx tsx scripts/og-default.ts`). Launch content plan: `docs/CONTENT_PLAN.md`.
 - Live DB changes: migrations in `supabase/migrations` and one-off SQL in `supabase/manual` are **run by the owner**

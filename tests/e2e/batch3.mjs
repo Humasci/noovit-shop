@@ -31,6 +31,16 @@ void gi;
 const feed = await (await fetch(`${base}/feeds/google.xml`)).text();
 check('feed title has spec', feed.includes('Noovit Magnesium Sleep+ – Magnesium Glycinate 275 mg – 90 Capsules'), feed.slice(0, 300));
 
+// ChatGPT shopping feed (OpenAI JSONL spec)
+{
+  const txt = await (await fetch(`${base}/feeds/openai.jsonl`)).text();
+  const rows = txt.trim().split('\n').map((l) => JSON.parse(l));
+  const mag = rows.find((r) => r.item_id === 'magnesium-complex');
+  const req = ['item_id', 'title', 'description', 'url', 'brand', 'seller_name', 'image_url', 'availability', 'price', 'target_countries', 'store_country'];
+  check('openai feed: every row has the required fields', rows.length > 3 && rows.every((r) => req.every((k) => r[k] !== undefined && r[k] !== '')), rows[0]);
+  check('openai feed: price, availability, returns in spec format', /^\d+\.\d{2} USD$/.test(mag?.price) && ['in_stock', 'out_of_stock'].includes(mag?.availability) && mag?.return_deadline_in_days === 90 && mag?.is_eligible_checkout === false && mag?.target_countries?.[0] === 'US', mag);
+}
+
 // Product images: gallery variants
 const hl = await fetch(`${base}/product-image/magnesium-complex/highlights-abc.png`);
 check('highlights image renders', hl.ok && hl.headers.get('content-type') === 'image/png', hl.status);

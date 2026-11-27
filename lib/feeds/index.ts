@@ -136,3 +136,38 @@ export function catalogCsv(items: FeedItem[], idColumn: 'id' | 'sku_id') {
   );
   return [head.join(','), ...rows].join('\n') + '\n';
 }
+
+// OpenAI (ChatGPT shopping) product feed, JSON Lines, one product per line
+// (spec: developers.openai.com/commerce/specs/file-upload/products). Delivered as a hosted HTTPS URL
+// (/feeds/openai.jsonl) set up in OpenAI's merchant portal. Discovery only: buyers check out on noovit.com.
+export function openaiFeed(items: FeedItem[], site: string) {
+  return items
+    .map((i) =>
+      JSON.stringify({
+        item_id: i.id,
+        title: i.title,
+        description: i.description,
+        url: i.link,
+        brand: 'Noovit',
+        seller_name: 'Noovit',
+        seller_url: site,
+        image_url: i.image,
+        ...(i.extraImages.length ? { additional_image_urls: i.extraImages } : {}),
+        availability: i.inStock ? 'in_stock' : 'out_of_stock',
+        price: i.price,
+        condition: 'new',
+        product_category: i.category,
+        target_countries: ['US'],
+        store_country: 'US',
+        shipping_price: '0.00 USD',
+        accepts_returns: true,
+        return_deadline_in_days: 90,
+        return_policy: `${site}/policies/delivery-returns`,
+        seller_privacy_policy: `${site}/policies/privacy`,
+        seller_tos: `${site}/policies/terms`,
+        is_eligible_search: true,
+        is_eligible_checkout: false,
+      })
+    )
+    .join('\n') + '\n';
+}
