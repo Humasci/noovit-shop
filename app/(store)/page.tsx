@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import type { Metadata } from 'next';
 import { getSettings } from '@/lib/settings';
 import Link from 'next/link';
@@ -83,7 +84,8 @@ export default async function HomePage() {
           {/* Supplements and at-home test kits in one scene (owner, 24 Nov; scripts/hero-mix.ts). The bottles-only
               line-up (/images/lineup-hero.png) is kept as the fallback. */}
           <Link href="/shop" aria-label="Shop supplements and at-home tests" className="block pb-10 md:py-14">
-            <img src="/images/hero-mix.jpg?v=1" alt="Noovit Magnesium Sleep+, Lion's Mane and Ashwagandha Calm+ bottles in front of Noovit at-home test kit boxes" width={1500} height={1200} className="w-full rounded-3xl shadow-[0_20px_40px_-24px_rgba(20,33,61,0.35)]" fetchPriority="high" />
+            {/* next/image: AVIF/WebP at the size the screen needs (PageSpeed, 27 Nov). New hero file = new file name. */}
+            <Image src="/images/hero-mix.jpg" alt="Noovit Magnesium Sleep+, Lion's Mane and Ashwagandha Calm+ bottles in front of Noovit at-home test kit boxes" width={1500} height={1200} sizes="(min-width: 1280px) 600px, (min-width: 768px) 50vw, 100vw" priority className="w-full rounded-3xl shadow-[0_20px_40px_-24px_rgba(20,33,61,0.35)]" />
           </Link>
         </div>
       </section>
@@ -102,7 +104,7 @@ export default async function HomePage() {
             return p.href ? (
               <Link key={p.title} href={p.href} className="group block rounded-2xl p-4 transition-colors hover:bg-[var(--color-soft)]">{inner}</Link>
             ) : (
-              <div key={p.title} className="rounded-2xl p-4 opacity-70">{inner}</div>
+              <div key={p.title} className="rounded-2xl border border-dashed border-[var(--color-line)] p-4">{inner}</div>
             );
           })}
         </div>

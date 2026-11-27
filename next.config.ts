@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
   },
   images: {
     // Bottle mockups are rendered by our own route and resized/converted by next/image.
-    localPatterns: [{ pathname: '/product-image/**', search: '' }],
+    localPatterns: [{ pathname: '/product-image/**', search: '' }, { pathname: '/images/**', search: '' }],
     remotePatterns: [{ protocol: 'https', hostname: 'images.unsplash.com' }],
     formats: ['image/avif', 'image/webp'],
   },

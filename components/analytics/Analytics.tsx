@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useSyncExternalStore } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 import { usePathname } from 'next/navigation';
 import Script from 'next/script';
 import { CONSENT_KEY } from '@/lib/analytics';
@@ -70,10 +70,39 @@ export function Analytics({ ids }: { ids: PixelIds }) {
 
   return (
     <>
-      <Tags ids={ids} />
+      <DeferredTags ids={ids} />
       {consent === 'unset' && <Banner />}
     </>
   );
+}
+
+// PageSpeed (27 Nov): Tag Manager (and Clarity inside it) blocked the phone's main thread for ~0.6 s during load.
+// Tags now load on the visitor's first interaction (tap, scroll, key) or 3.5 s after the page has loaded, whichever
+// comes first; checkout pages load them straight away so purchases are never missed. Events fired before that wait
+// in the dataLayer / uetq queues, which GTM and UET read when they start.
+function DeferredTags({ ids }: { ids: PixelIds }) {
+  const pathname = usePathname();
+  const immediate = pathname.startsWith('/checkout');
+  const [ready, setReady] = useState(immediate);
+  useEffect(() => {
+    const w = window as unknown as { dataLayer?: unknown[]; uetq?: unknown[] };
+    w.dataLayer = w.dataLayer || [];
+    w.uetq = w.uetq || [];
+    if (ready) return;
+    const go = () => setReady(true);
+    const events = ['pointerdown', 'keydown', 'scroll', 'touchstart'] as const;
+    events.forEach((e) => window.addEventListener(e, go, { once: true, passive: true }));
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const startTimer = () => { timer = setTimeout(go, 3500); };
+    if (document.readyState === 'complete') startTimer();
+    else window.addEventListener('load', startTimer, { once: true });
+    return () => {
+      events.forEach((e) => window.removeEventListener(e, go));
+      window.removeEventListener('load', startTimer);
+      if (timer) clearTimeout(timer);
+    };
+  }, [ready]);
+  return ready ? <Tags ids={ids} /> : null;
 }
 
 function Banner() {

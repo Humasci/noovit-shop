@@ -165,7 +165,11 @@ await store.route('https://connect.facebook.net/**', (r) => r.fulfill({ body: ''
 await store.goto(`${base}/`);
 const banner = store.locator('text=We use cookies');
 check('cookie banner shown', await banner.waitFor({ timeout: 10000 }).then(() => true, () => false));
-// Opt-out model: tags load straight away; Accept just dismisses the banner; Decline removes them (after a reload).
+// Opt-out model: tags load without waiting for consent (deferred to the first interaction or ~3.5 s after load, for
+// page speed); Accept just dismisses the banner; Decline removes them (after a reload).
+await store.waitForTimeout(500);
+check('tags wait until the visitor interacts or the page has settled', (await store.locator('#gtm').count()) === 0);
+await store.mouse.wheel(0, 200);
 await store.waitForTimeout(1500);
 check('GA, GTM and Meta load without waiting for consent', (await store.locator('script[src*="googletagmanager.com/gtag/js?id=G-TEST1234"]').count()) === 1 && (await store.locator('#gtm').count()) === 1 && (await store.locator('#meta-pixel').count()) === 1);
 await store.click('button:has-text("Accept")');

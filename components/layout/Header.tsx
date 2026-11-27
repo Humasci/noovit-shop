@@ -161,7 +161,7 @@ export function Header({ trustBar, announcement, advisor = false, bestSellers = 
               <button
                 type="button"
                 onClick={() => { setMenuOpen(false); window.dispatchEvent(new Event('noovit:advisor')); }}
-                aria-label="Ask Noovit AI"
+                aria-label="Ask AI, the Noovit advisor"
                 className="flex items-center gap-1.5 rounded-full bg-[var(--color-navy)] px-3 py-1.5 text-[13px] font-semibold text-white md:hidden max-[370px]:px-2"
               >
                 <CrossIcon className="h-3 w-3" /> <span className="max-[370px]:sr-only">Ask AI</span>
