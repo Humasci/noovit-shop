@@ -32,4 +32,4 @@ async function load(limit: number): Promise<Review[]> {
 }
 
 // Approving a review already calls updateTag(CATALOG_TAG), which refreshes this too.
-export const latestReviews = unstable_cache(load, ['latest-reviews-v1'], { tags: [CATALOG_TAG] });
+export const latestReviews = unstable_cache(load, ['latest-reviews-v1'], { tags: [CATALOG_TAG], revalidate: 300 });

@@ -40,7 +40,7 @@ async function load(): Promise<Settings> {
   return settings;
 }
 
-export const getSettings = unstable_cache(load, ['settings-v4'], { tags: [SETTINGS_TAG] });
+export const getSettings = unstable_cache(load, ['settings-v4'], { tags: [SETTINGS_TAG], revalidate: 300 });
 
 export const loadSettings = load;
 

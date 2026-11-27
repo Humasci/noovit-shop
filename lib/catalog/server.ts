@@ -33,7 +33,10 @@ export async function loadCatalog(): Promise<Product[]> {
 }
 
 // Cached for the storefront; admin saves call updateTag(CATALOG_TAG).
-export const getCatalog = unstable_cache(loadCatalog, ['catalog-v4'], { tags: [CATALOG_TAG] }); // v4 (26 Nov): fresh load after the hide-unconfirmed SQL
+// Admin saves call updateTag(CATALOG_TAG), but changes made straight in the database (SQL) don't, and on 26 Nov a stale
+// copy survived an Admin save. So the cache also expires on its own every 5 minutes: the shop is never more than
+// 5 minutes behind the database. v5 (27 Nov): fresh load after the price rise.
+export const getCatalog = unstable_cache(loadCatalog, ['catalog-v5'], { tags: [CATALOG_TAG], revalidate: 300 });
 
 // Everything a shopper may see (hidden products excluded).
 export async function getStoreProducts() {
@@ -74,7 +77,7 @@ export async function loadCollections(): Promise<Collection[]> {
   return (data as CollectionRow[]).map(toCollection);
 }
 
-export const getCollections = unstable_cache(loadCollections, ['collections-v1'], { tags: [CATALOG_TAG] });
+export const getCollections = unstable_cache(loadCollections, ['collections-v1'], { tags: [CATALOG_TAG], revalidate: 300 });
 
 export async function getStoreCollections() {
   return (await getCollections()).filter((c) => c.status === 'active');

@@ -40,6 +40,6 @@ export async function loadContent(): Promise<Content> {
   return content;
 }
 
-export const getContent = unstable_cache(loadContent, ['content-v2'], { tags: [SETTINGS_TAG] });
+export const getContent = unstable_cache(loadContent, ['content-v2'], { tags: [SETTINGS_TAG], revalidate: 300 });
 
 export const lines = (v: string, max: number) => v.split('\n').map((s) => s.trim()).filter(Boolean).slice(0, max);

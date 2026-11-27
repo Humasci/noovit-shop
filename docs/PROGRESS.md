@@ -287,3 +287,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 27 Nov (121): shopping channel plan (launch: Microsoft, Meta, Pinterest, Perplexity; later: TikTok Shop, Amazon, Walmart); Bing Webmaster Tools done by owner
 - [x] 27 Nov (122): social banners use the fixed corner shape (was a random tile scatter); X header text no longer overlaps the bottles
 - [x] 27 Nov (123): ChatGPT shopping feed /feeds/openai.jsonl (OpenAI file-upload spec); batch3 79 tests
+- [x] 27 Nov (124): live shop still showed old prices (stale catalog cache after the SQL + Admin save): cache bumped to catalog-v5 and every store cache now also expires every 5 minutes
