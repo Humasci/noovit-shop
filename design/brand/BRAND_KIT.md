@@ -27,6 +27,10 @@ two under them, then two more down the right edge, strongest in the corner. Only
   The noovit logo sits top-left; the kit name below it. Never rearrange, rotate or add tiles.
 - For AI renders, upload `all-service-lines.png` and write: "Each box has this exact tile shape in its top-right corner, in the colour for its test line. Do not change the shape."
 
+## The corner shape on the social banners
+The banners (Facebook, X, LinkedIn, YouTube) carry the same fixed corner shape in orange, top-right (27 Nov; it replaced a
+scattered random tile pattern that didn't match the rest of the brand). The logo's own cross is the five-tile cross everywhere.
+
 ## Colours
 | Name | Hex | Use |
 |---|---|---|

@@ -37,36 +37,34 @@ function logo(size: number, color: string, bg?: string, pad = 0.12) {
 const iconSquare = (s: number, fg: string, accent: string, bg: string, scale = 0.62) =>
   svg(s, s, `<g transform="translate(${(s * (1 - scale)) / 2} ${(s * (1 - scale)) / 2}) scale(${(s * scale) / 100})">${solidCross(icon(fg, accent))}</g>`, bg);
 
-// Mosaic tiles breaking out of the top-right corner (seeded, so every run is identical).
-function mosaicCorner(W: number, H: number, tile: number, cols: number, rows: number) {
-  let seed = 7;
-  const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
-  const gap = tile * 0.22, out: string[] = [];
-  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
-    const d = Math.hypot(c / cols, r / rows); // 0 at the corner
-    const o = Math.max(0, 0.85 - d * 1.05) * (0.55 + rnd() * 0.45);
-    if (o < 0.08 || rnd() < d * 0.5) continue;
-    out.push(`<rect x="${W - (c + 1) * (tile + gap)}" y="${r * (tile + gap)}" width="${tile}" height="${tile}" rx="${tile * 0.12}" fill="${ORANGE}" opacity="${o.toFixed(2)}"/>`);
-  }
-  return out.join('');
+// The brand's one fixed corner shape (components/brand/MosaicCorner.tsx, owner 25 Nov: "only this shape"), in orange,
+// inset from the top-right corner by one tile. Same shape as on the kit cards and kit boxes.
+function mosaicCorner(W: number, tile: number) {
+  const gap = tile * (3 / 11), step = tile + gap, inset = tile;
+  const x0 = W - inset - 4 * step + gap;
+  return CORNER_TILES.map((t) => `<rect x="${x0 + t.c * step}" y="${inset + t.r * step}" width="${tile}" height="${tile}" rx="${tile * 0.16}" fill="${ORANGE}" opacity="${t.o}"/>`).join('');
 }
 
 const lineup = `data:image/png;base64,${readFileSync('public/images/lineup-5.png').toString('base64')}`; // 1600×1200, cream backdrop
 const TAGLINE = 'Evidence-led wellness.';
 const SUB = 'Supplements and at-home health tests.';
 
-// A banner: cream, logo + tagline on the left of the safe area, the bottle line-up on the right, tiles in the corner.
+// A banner: cream, logo + tagline on the left of the safe area, the bottle line-up on the right, the corner shape top-right.
 function banner(W: number, H: number, safe: { x: number; y: number; w: number; h: number }) {
   const s = Math.min(safe.h * 0.26, safe.w * 0.075); // logo size from the safe area
   const textX = safe.x + safe.w * 0.04;
   const midY = safe.y + safe.h / 2;
-  const imgH = Math.min(safe.h * 1.15, H); // the line-up can bleed a little beyond the safe height
+  // The line-up sits right of the text (never overlapping the tagline) and left of the corner shape.
+  const textRight = textX + s * 5.3; // widest text line ("Supplements and at-home health tests.")
+  const right = Math.min(safe.x + safe.w, W * 0.86);
+  let imgH = Math.min(safe.h * 1.15, H); // the line-up can bleed a little beyond the safe height
+  if (right - textRight < imgH * (1600 / 1200) * 0.92) imgH = (right - textRight) / ((1600 / 1200) * 0.92);
   const imgW = imgH * (1600 / 1200);
-  const imgX = Math.min(safe.x + safe.w, W * 0.86) - imgW * 0.92; // keep the top-right corner free for the tiles
+  const imgX = right - imgW * 0.92;
   const imgY = midY - imgH / 2;
-  const tile = Math.max(8, Math.min(W, H) * 0.035);
+  const tile = Math.max(10, Math.min(W * 0.022, H * 0.09));
   const body = `<image href="${lineup}" x="${imgX}" y="${imgY}" width="${imgW}" height="${imgH}" preserveAspectRatio="xMidYMid meet"/>
-    ${mosaicCorner(W, H, tile, Math.ceil((W * 0.22) / (tile * 1.22)), Math.ceil((H * 0.45) / (tile * 1.22)))}
+    ${mosaicCorner(W, tile)}
     ${wordmark(textX + (WM_W * s) / 2, midY - s * 0.05, s, 'print', NAVY)}
     <text x="${textX}" y="${midY + s * 0.62}" font-family="Manrope" font-weight="600" font-size="${s * 0.34}" fill="${NAVY}">${TAGLINE}</text>
     <text x="${textX}" y="${midY + s * 1.05}" font-family="Inter" font-weight="500" font-size="${s * 0.25}" fill="${INK}" fill-opacity="0.75">${SUB}</text>`;

@@ -285,3 +285,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 26 Nov (119): Supliful API researched: automation = hidden Shopify store + Admin API (notes saved); Stripe sync done by owner
 - [x] 27 Nov (120): feeds + sitemap made per-request (were stale at build), feed/structured-data availability follows coming-soon; discovery plan (Merchant Center, ChatGPT merchants, Bing; no GBP; no extra logins)
 - [x] 27 Nov (121): shopping channel plan (launch: Microsoft, Meta, Pinterest, Perplexity; later: TikTok Shop, Amazon, Walmart); Bing Webmaster Tools done by owner
+- [x] 27 Nov (122): social banners use the fixed corner shape (was a random tile scatter); X header text no longer overlaps the bottles
