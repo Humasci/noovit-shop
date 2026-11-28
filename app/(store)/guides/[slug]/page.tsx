@@ -21,6 +21,7 @@ async function storeVisible() {
 }
 import { PlaceholderNote } from '@/components/ui/Placeholder';
 import { GuideToc } from '@/components/guides/GuideToc';
+import { PUBLIC_EARLY_GUIDES } from '@/lib/public-early';
 import { Reveal } from '@/components/ui/Reveal';
 import { ReviewedBy } from '@/components/experts/ReviewedBy';
 import { reviewFor } from '@/lib/experts';
@@ -108,6 +109,30 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
   // Pre-launch, public visitors of an early guide don't see products (the shop isn't open); staff and preview links do.
   const related = !shop ? [] : g.relatedProducts.map((s) => products.find((p) => p.slug === s && p.status === 'active')).filter((p) => p !== undefined);
   const goals = !shop ? [] : g.relatedGoals.map(findGoal).filter((x) => x !== undefined);
+  // Related guides (owner, 28 Nov): guides sharing goals or products with this one, most overlap first. Pre-launch,
+  // public visitors only get the guides that are public already.
+  const relatedGuides = GUIDES.filter((x) => x.slug !== g.slug && (shop || PUBLIC_EARLY_GUIDES.includes(x.slug)))
+    .map((x) => ({ x, score: 2 * x.relatedGoals.filter((s) => g.relatedGoals.includes(s)).length + x.relatedProducts.filter((s) => g.relatedProducts.includes(s)).length + (x.ingredient.split(' ')[0] === g.ingredient.split(' ')[0] ? 5 : 0) }))
+    .filter((r) => r.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 3)
+    .map((r) => r.x);
+  const relatedGuidesBlock = relatedGuides.length > 0 && (
+    <section className="mt-12" aria-labelledby="related-guides">
+      <h2 id="related-guides" className="text-2xl">Related guides</h2>
+      <ul className="mt-5 grid gap-3 sm:grid-cols-3">
+        {relatedGuides.map((x) => (
+          <li key={x.slug}>
+            <Link href={`/guides/${x.slug}`} className="block h-full rounded-2xl border border-[var(--color-line)] bg-white p-5 transition hover:border-[var(--color-navy)]">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted)]">Guide</span>
+              <span className="mt-1 block font-semibold text-[var(--color-navy)]">{x.ingredient}</span>
+              <span className="mt-1 block text-sm text-[var(--color-ink)]/75">{x.summary.replace(/\s*\[\d+(?:[,\u2013-]\d+)*\]/g, '').split('. ')[0]}.</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
   const url = `${SITE_URL}/guides/${g.slug}`;
   const title = g.h1 ?? `${g.ingredient}: benefits, uses, dosage & side effects`;
   const h = headings(g);
@@ -325,6 +350,7 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
                 <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-5">{related.map((p) => <ProductCard key={p.id} product={p} />)}</div>
               </Reveal>
             )}
+            {relatedGuidesBlock && <div className="rounded-3xl border border-[var(--color-line)] bg-white p-6 sm:p-8 [&>section]:mt-0">{relatedGuidesBlock}</div>}
             <Card id="sources" title="Sources">
               <ol className="mt-4 space-y-2 text-sm">
                 {g.sources.map((s, i) => (
@@ -350,14 +376,18 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
     <>
     {/* Plain soft header (the particle artwork was retired 17 Nov) */}
     <div className="relative overflow-hidden bg-[var(--color-soft)]">
-      <div className="container relative max-w-3xl px-6 pb-10 pt-12">
+      <div className="container relative max-w-6xl px-6 pb-10 pt-12 lg:pl-[calc(15rem+3rem+1.5rem)]">
         <nav className="mb-4 text-xs text-[var(--color-muted)]">
           <Link href="/">Home</Link> / <Link href="/guides">Supplement guides</Link> / <span className="text-[var(--color-ink)]">{g.ingredient}</span>
         </nav>
         <h1 className="max-w-2xl text-balance text-3xl sm:text-4xl md:text-5xl">{title}</h1>
       </div>
     </div>
-    <article className="container max-w-3xl px-6 pb-12 pt-6">
+    {/* Contents in a left sidebar that follows you (owner, 28 Nov: like the magnesium glycinate guide); a slim
+        sticky bar on phones. */}
+    <div className="container grid max-w-6xl grid-cols-1 gap-8 px-6 pb-12 pt-6 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-12">
+    <aside className="sticky top-[4.25rem] z-20 lg:static"><GuideToc items={toc} /></aside>
+    <article className="min-w-0 max-w-3xl">
       <JsonLd data={structured} />
       <p className="mt-4 text-sm text-[var(--color-muted)]">
         Updated {fmt(g.updated)}
@@ -384,14 +414,6 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
         </dl>
       </section>
 
-      <nav aria-label="On this page" className="mt-8 rounded-2xl border border-[var(--color-line)] p-5 text-sm">
-        <p className="font-semibold">On this page</p>
-        <ol className="mt-2 grid gap-1 sm:grid-cols-2">
-          {toc.map(([id, label]) => (
-            <li key={id}><a href={`#${id}`} className="text-[var(--color-accent)] hover:underline">{label}</a></li>
-          ))}
-        </ol>
-      </nav>
 
       <div className="prose-noovit mt-10">
         <h2 id="what-is">{h.what}</h2>
@@ -482,6 +504,8 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
         </div>
       </section>
 
+      {relatedGuidesBlock}
+
       {(related.length > 0 || goals.length > 0) && (
         <section className="mt-12">
           <h2 className="text-2xl">From our range</h2>
@@ -522,6 +546,7 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
         Administration. Supplements are not intended to diagnose, treat, cure, or prevent any disease.
       </p>
     </article>
+    </div>
     </>
   );
 }
