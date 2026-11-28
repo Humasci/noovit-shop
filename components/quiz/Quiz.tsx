@@ -172,7 +172,13 @@ export function Quiz({ products, code }: { products: Product[]; code: string }) 
             You mentioned taking medication. Please check these suggestions with your doctor or pharmacist before you start, as some supplements can interact with medicines.
           </p>
         )}
-        {recs.length === 0 ? (
+        {recs.length === 0 && (a.pregnant === 'pregnant' || a.pregnant === 'breastfeeding') ? (
+          <div className="mx-auto max-w-2xl rounded-3xl bg-[var(--color-soft)] p-6 text-center">
+            <p className="font-semibold text-[var(--color-navy)]">Congratulations{a.pregnant === 'pregnant' ? ' on your pregnancy' : ''}.</p>
+            <p className="mt-2 text-[var(--color-ink)]/85">While you&apos;re {a.pregnant === 'pregnant' ? 'pregnant' : 'breastfeeding'}, we don&apos;t suggest supplements through a quiz. Your doctor or midwife can tell you what&apos;s right for you, including prenatal vitamins. Our guides explain what the research says about each ingredient.</p>
+            <Link href="/guides" className="btn btn-outline mt-4 inline-flex text-sm">Read the guides</Link>
+          </div>
+        ) : recs.length === 0 ? (
           <p className="text-center text-[var(--color-muted)]">We couldn&apos;t find a match with those filters. <Link href="/shop" className="font-semibold underline">Browse the full range</Link>.</p>
         ) : (
           <div className="grid gap-6 md:grid-cols-3">

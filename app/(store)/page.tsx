@@ -22,12 +22,6 @@ import { KitCard } from '@/components/tests/KitCard';
 import { productPath } from '@/lib/urls';
 import { organizationLd, websiteLd } from '@/lib/structured-data';
 
-const PILLARS: { tag: string; title: string; text: string; href?: string }[] = [
-  { tag: 'Core range', title: 'Supplements', text: 'Researched ingredients, every dose clearly labeled.', href: '/shop' },
-  { tag: 'Coming soon', title: 'At-home health tests', text: 'Know your numbers before you choose.', href: '/at-home-tests' },
-  { tag: 'Free', title: 'Guides and programs', text: 'Every source checked, every claim graded.', href: '/guides' },
-  { tag: 'On the way', title: 'Wearables and wellness tools', text: 'Only what the evidence supports.' },
-];
 const HOME_TESTS = ['iron-test', 'perimenopause-test', 'thyroid-test', 'cholesterol-test'].map((s) => findKit(s)!).filter(Boolean).map(kitSummary);
 
 const SCENES = [
@@ -87,26 +81,6 @@ export default async function HomePage() {
             {/* next/image: AVIF/WebP at the size the screen needs (PageSpeed, 27 Nov). New hero file = new file name. */}
             <Image src="/images/hero-mix.jpg" alt="Noovit Magnesium Sleep+, Lion's Mane and Ashwagandha Calm+ bottles in front of Noovit at-home test kit boxes" width={1500} height={1200} sizes="(min-width: 1280px) 600px, (min-width: 768px) 50vw, 100vw" priority className="w-full rounded-3xl shadow-[0_20px_40px_-24px_rgba(20,33,61,0.35)]" />
           </Link>
-        </div>
-      </section>
-
-      {/* What Noovit is (owner, 25 Nov): not only supplements. Supplements, at-home tests, free programs, and tools later. */}
-      <section className="border-b border-[var(--color-line)] bg-white">
-        <div className="container grid gap-px px-6 py-8 sm:grid-cols-2 lg:grid-cols-4">
-          {PILLARS.map((p) => {
-            const inner = (
-              <>
-                <span className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-muted)]">{p.tag}</span>
-                <span className="mt-1 block text-lg font-semibold text-[var(--color-navy)]">{p.title}</span>
-                <span className="mt-1 block text-sm text-[var(--color-ink)]/80">{p.text}</span>
-              </>
-            );
-            return p.href ? (
-              <Link key={p.title} href={p.href} className="group block rounded-2xl p-4 transition-colors hover:bg-[var(--color-soft)]">{inner}</Link>
-            ) : (
-              <div key={p.title} className="rounded-2xl border border-dashed border-[var(--color-line)] p-4">{inner}</div>
-            );
-          })}
         </div>
       </section>
 

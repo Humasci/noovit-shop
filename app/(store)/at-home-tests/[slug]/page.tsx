@@ -10,7 +10,7 @@ import { Reveal } from '@/components/ui/Reveal';
 import { MosaicCorner } from '@/components/brand/MosaicCorner';
 import { getStoreProducts } from '@/lib/catalog/server';
 import { ProductCard } from '@/components/product/ProductCard';
-import { KIT_PAIR_NOTE, supplementsForKit } from '@/lib/test-pairings';
+import { KIT_PAIR_NOTE, supplementsForKit, stacksForPairs } from '@/lib/test-pairings';
 
 export function generateStaticParams() {
   return TEST_KITS.map((k) => ({ slug: k.slug }));
@@ -26,10 +26,18 @@ export default async function TestKitPage({ params }: { params: Promise<{ slug: 
   const k = findKit((await params).slug);
   if (!k) notFound();
   const catalog = await getStoreProducts();
-  const pairs = supplementsForKit(k.slug).map((s) => catalog.find((p) => p.slug === s && p.status === 'active')).filter((p) => p !== undefined);
+  const single = supplementsForKit(k.slug).map((s) => catalog.find((p) => p.slug === s && p.status === 'active')).filter((p) => p !== undefined);
+  const audience = k.category === 'womens' || k.slug === 'iron-test' ? 'female' : k.category === 'mens' ? 'male' : null;
+  const pairs = single.length ? [...single, ...stacksForPairs(single.map((p) => p.slug), catalog, audience)] : single;
   const steps = k.pets
     ? ['Order your kit; it ships free.', 'Collect a sample at home in minutes.', 'Read the result, or get it from our testing partner, and share it with your vet.']
-    : ['Order your kit; it ships free with a prepaid return.', `Collect your sample at home (${k.collection.replace(/, at home$/, '').toLowerCase()}) and post it back.`, 'Your results arrive online. Details on lab processing and physician review come at launch.'];
+    : [
+        'Order online. Your kit ships free, in plain packaging.',
+        `Collect your sample at home: ${k.collection.replace(/, at home$/, '').toLowerCase()}. It takes a few minutes, with step-by-step instructions in the box.`,
+        'Post it back the same day in the prepaid return envelope.',
+        'Our US lab partner analyzes your sample.',
+        'Your results arrive online, usually a few days after the lab receives your sample, with each marker explained. Share them with your doctor.',
+      ];
   return (
     <>
       <JsonLd data={pageLd({ path: `/at-home-tests/${k.slug}`, name: k.name, description: k.seoDescription, crumbs: [[k.pets ? 'Noovit Pets' : 'At-home tests', k.pets ? '/pets' : '/at-home-tests'], [k.name, `/at-home-tests/${k.slug}`]] })} />
@@ -70,6 +78,22 @@ export default async function TestKitPage({ params }: { params: Promise<{ slug: 
           </div>
         </div>
       </section>
+      {/* How it works (owner, 28 Nov: test pages need the steps), straight under the hero. */}
+      <section className="border-b border-[var(--color-line)] bg-white">
+        <div className="container px-6 py-12">
+          <h2 className="text-3xl md:text-4xl">How it works</h2>
+          {!k.pets && <p className="mt-2 text-sm text-[var(--color-muted)]">Coming soon: join the list above and we&apos;ll email you the day kits open.</p>}
+          <ol className={`mt-8 grid gap-4 sm:grid-cols-2 ${steps.length > 3 ? 'lg:grid-cols-5' : 'lg:grid-cols-3'}`}>
+            {steps.map((s, i) => (
+              <li key={s} className="relative rounded-3xl border border-[var(--color-line)] bg-[var(--color-soft)] p-6">
+                <span className="flex h-9 w-9 items-center justify-center rounded-full text-sm font-semibold text-white" style={{ background: categoryColor(k.category) }}>{i + 1}</span>
+                <p className="mt-4 text-[var(--color-ink)]/90">{s}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
       {k.figure && (
         <figure className="bg-[#05061a]">
           <img src={k.figure.src} alt={k.figure.alt} width={1600} height={k.figure.height ?? 700} className="mx-auto block h-auto w-full max-w-[1600px]" loading="lazy" />
@@ -91,15 +115,6 @@ export default async function TestKitPage({ params }: { params: Promise<{ slug: 
             ))}
           </div>
 
-          <h2 className="mt-14 text-3xl md:text-4xl">How it will work</h2>
-          <ol className="mt-6 grid gap-4 md:grid-cols-3">
-            {steps.map((s, i) => (
-              <li key={s} className="rounded-3xl border border-[var(--color-line)] bg-white p-6">
-                <p className="font-display text-4xl text-[var(--color-navy)]">{String(i + 1).padStart(2, '0')}</p>
-                <p className="mt-2">{s}</p>
-              </li>
-            ))}
-          </ol>
 
           <ul className="mt-10 space-y-2 text-sm text-[var(--color-ink)]/85">
             {(k.pets

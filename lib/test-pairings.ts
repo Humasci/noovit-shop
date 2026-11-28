@@ -29,3 +29,14 @@ export const supplementsForKit = (kit: string) => KIT_SUPPLEMENTS[kit] ?? [];
 // Kits that pair with a product (or with any part of a stack).
 export const kitsForProduct = (slug: string, parts: string[] = []) =>
   Object.entries(KIT_SUPPLEMENTS).filter(([, s]) => s.includes(slug) || parts.some((p) => s.includes(p))).map(([k]) => k);
+
+// Up to two stacks that contain a paired product (owner, 28 Nov: "add another 2 stacks with magnesium"), matched to the
+// kit's audience: women's kits get the "for Her" strength stack, men's kits the men's one, others the regular one.
+type StackLike = { slug: string; status: string; bundleItems?: { slug: string }[] };
+export function stacksForPairs<T extends StackLike>(pairSlugs: string[], catalog: T[], audience: 'female' | 'male' | null, max = 2): T[] {
+  const skip = new Set(audience === 'female' ? ['strength-stack', 'men-strength-stack'] : audience === 'male' ? ['strength-stack', 'her-strength-stack'] : ['her-strength-stack', 'men-strength-stack']);
+  return catalog
+    .filter((p) => p.status === 'active' && p.bundleItems?.length && !pairSlugs.includes(p.slug) && !skip.has(p.slug))
+    .filter((p) => p.bundleItems!.some((b) => pairSlugs.includes(b.slug)))
+    .slice(0, max);
+}

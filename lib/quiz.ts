@@ -117,8 +117,9 @@ function allowed(p: Product, a: QuizAnswers, live: Set<string>) {
   if (version && live.has(version)) return false; // their own version is live: show that instead
   if (a.diet.includes('vegan') && !p.dietaryTags.includes('vegan')) return false;
   if (a.diet.includes('gluten-free') && !p.dietaryTags.includes('gluten-free')) return false;
-  if (a.pregnant === 'pregnant' && !p.dietaryTags.includes('pregnancy-safe')) return false;
-  if (a.pregnant === 'breastfeeding' && !p.dietaryTags.includes('postpartum-safe')) return false;
+  // Pregnant or breastfeeding: no product suggestions at all (28 Nov). Whether a supplement suits a pregnancy is a call
+  // for a doctor or midwife, not a quiz; the results screen says so and points to the guides.
+  if (a.pregnant === 'pregnant' || a.pregnant === 'breastfeeding') return false;
   return true;
 }
 
