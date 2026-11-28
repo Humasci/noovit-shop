@@ -33,7 +33,7 @@ export default async function TestKitPage({ params }: { params: Promise<{ slug: 
     ? ['Order your kit; it ships free.', 'Collect a sample at home in minutes.', 'Read the result, or get it from our testing partner, and share it with your vet.']
     : [
         'Order online. Your kit ships free, in plain packaging.',
-        `Collect your sample at home: ${k.collection.replace(/, at home$/, '').toLowerCase()}. It takes a few minutes, with step-by-step instructions in the box.`,
+        `Collect your sample at home: ${k.collection.replace(/,? at home/i, '').toLowerCase()}. It takes a few minutes, with step-by-step instructions in the box.`,
         'Post it back the same day in the prepaid return envelope.',
         'Our US lab partner analyzes your sample.',
         'Your results arrive online, usually a few days after the lab receives your sample, with each marker explained. Share them with your doctor.',

@@ -292,3 +292,4 @@ Status: **Have** · **Phase N** = planned (Phases 1–2 done Oct 2026) · **Tool
 - [x] 27 Nov (125): Microsoft Ads (Bing) UET tag 97296488 (setting bing_uet_id; opt-out + no health pages; purchase/cart events)
 - [x] 27 Nov (126): PageSpeed mobile: third-party tags deferred to first interaction / 3.5 s after load (checkout immediate), store-wide loading spinner removed (streamed the hero late), hero via next/image (AVIF/WebP), contrast + Ask AI label fixes
 - [x] 27 Nov (127): guarantee → 90-day first-bottle guarantee everywhere; Merchant Center shipping + returns done by owner; Vercel Web Analytics PR #1 merged
+- [x] 28 Nov (128): homepage pillars strip removed; quiz shows no products in pregnancy/breastfeeding; test pages get How it works steps + 2 matching stacks; every guide has the left contents sidebar + Related guides; kit packaging drafts modelled on the kit cards
